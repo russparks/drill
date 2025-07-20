@@ -74,11 +74,7 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
     if (status === "open") {
       return <div className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" />;
     }
-    return (
-      <Badge className="bg-gray-200 text-gray-700 text-xs px-2 py-0.5">
-        {formatStatus(status)}
-      </Badge>
-    );
+    return <div className="w-2 h-2 rounded-full bg-gray-500 flex-shrink-0" />;
   };
 
   const getDisciplineColor = (discipline: string) => {
