@@ -335,38 +335,38 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                         { 
                           value: "tender", 
                           label: "Tender", 
-                          active: "bg-blue-300 text-white",
-                          inactive: "bg-blue-50 text-blue-800 hover:bg-blue-100"
+                          active: "bg-blue-400 text-white",
+                          inactive: "bg-blue-100 text-blue-800 hover:bg-blue-200"
                         },
                         { 
                           value: "precon", 
                           label: "Precon", 
-                          active: "bg-blue-500 text-white",
-                          inactive: "bg-blue-100 text-blue-800 hover:bg-blue-200"
+                          active: "bg-blue-600 text-white border border-blue-800",
+                          inactive: "bg-blue-100 text-blue-800 border border-blue-600 hover:bg-blue-200"
                         },
                         { 
                           value: "production", 
                           label: "Production", 
-                          active: "bg-green-500 text-white",
-                          inactive: "bg-green-100 text-green-800 hover:bg-green-200"
+                          active: "bg-green-600 text-white border border-green-800",
+                          inactive: "bg-green-100 text-green-800 border border-green-600 hover:bg-green-200"
                         },
                         { 
                           value: "design", 
                           label: "Design", 
-                          active: "bg-purple-600 text-white",
+                          active: "bg-purple-500 text-white",
                           inactive: "bg-purple-100 text-purple-800 hover:bg-purple-200"
                         },
                         { 
                           value: "commercial", 
                           label: "Commercial", 
-                          active: "bg-green-600 text-white",
-                          inactive: "bg-green-100 text-green-800 hover:bg-green-200"
+                          active: "bg-cyan-500 text-white",
+                          inactive: "bg-cyan-100 text-cyan-800 hover:bg-cyan-200"
                         },
                         { 
                           value: "aftercare", 
                           label: "Aftercare", 
-                          active: "bg-purple-500 text-white",
-                          inactive: "bg-purple-100 text-purple-800 hover:bg-purple-200"
+                          active: "bg-green-500 text-white",
+                          inactive: "bg-green-100 text-green-800 hover:bg-green-200"
                         }
                       ].map((discipline) => (
                         <button

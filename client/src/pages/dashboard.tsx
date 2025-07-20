@@ -98,14 +98,14 @@ export default function Dashboard() {
             onClick={() => handleStatusFilter("open")}
             className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
               statusFilter === "open" 
-                ? "bg-red-600 text-white" 
+                ? "bg-red-500 text-white" 
                 : "bg-red-100 text-red-800 hover:bg-red-200"
             }`}
           >
             <span>Open</span>
             <span className={`px-2 py-0.5 rounded-full text-xs ${
               statusFilter === "open"
-                ? "bg-red-500 text-white"
+                ? "bg-red-400 text-white"
                 : "bg-red-200 text-red-800"
             }`}>
               {stats?.open || 0}
@@ -115,15 +115,15 @@ export default function Dashboard() {
             onClick={() => handleStatusFilter("closed")}
             className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
               statusFilter === "closed" 
-                ? "bg-green-600 text-white" 
-                : "bg-green-100 text-green-800 hover:bg-green-200"
+                ? "bg-gray-500 text-white" 
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
             }`}
           >
             <span>Closed</span>
             <span className={`px-2 py-0.5 rounded-full text-xs ${
               statusFilter === "closed"
-                ? "bg-green-500 text-white"
-                : "bg-green-200 text-green-800"
+                ? "bg-gray-400 text-white"
+                : "bg-gray-300 text-gray-700"
             }`}>
               {stats?.closed || 0}
             </span>
@@ -134,31 +134,31 @@ export default function Dashboard() {
             onClick={() => handleDisciplineFilter("tender")}
             className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
               disciplineFilter === "tender" 
-                ? "bg-blue-300 text-white" 
-                : "bg-blue-50 text-blue-800 hover:bg-blue-100"
+                ? "bg-blue-400 text-white" 
+                : "bg-blue-100 text-blue-800 hover:bg-blue-200"
             }`}
           >
             <span>Tender</span>
             <span className={`px-2 py-0.5 rounded-full text-xs ${
               disciplineFilter === "tender"
-                ? "bg-blue-200 text-white"
-                : "bg-blue-100 text-blue-800"
+                ? "bg-blue-300 text-white"
+                : "bg-blue-200 text-blue-800"
             }`}>
               {currentActions.filter((a: any) => a.discipline === "tender").length}
             </span>
           </button>
           <button
             onClick={() => handleDisciplineFilter("precon")}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
               disciplineFilter === "precon" 
-                ? "bg-blue-500 text-white" 
-                : "bg-blue-100 text-blue-800 hover:bg-blue-200"
+                ? "bg-blue-600 text-white border-blue-800" 
+                : "bg-blue-100 text-blue-800 border-blue-600 hover:bg-blue-200"
             }`}
           >
             <span>Precon</span>
             <span className={`px-2 py-0.5 rounded-full text-xs ${
               disciplineFilter === "precon"
-                ? "bg-blue-400 text-white"
+                ? "bg-blue-500 text-white"
                 : "bg-blue-200 text-blue-800"
             }`}>
               {currentActions.filter((a: any) => a.discipline === "precon").length}
@@ -166,16 +166,16 @@ export default function Dashboard() {
           </button>
           <button
             onClick={() => handleDisciplineFilter("production")}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
               disciplineFilter === "production" 
-                ? "bg-green-500 text-white" 
-                : "bg-green-100 text-green-800 hover:bg-green-200"
+                ? "bg-green-600 text-white border-green-800" 
+                : "bg-green-100 text-green-800 border-green-600 hover:bg-green-200"
             }`}
           >
             <span>Production</span>
             <span className={`px-2 py-0.5 rounded-full text-xs ${
               disciplineFilter === "production"
-                ? "bg-green-400 text-white"
+                ? "bg-green-500 text-white"
                 : "bg-green-200 text-green-800"
             }`}>
               {currentActions.filter((a: any) => a.discipline === "production").length}
@@ -185,14 +185,14 @@ export default function Dashboard() {
             onClick={() => handleDisciplineFilter("design")}
             className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
               disciplineFilter === "design" 
-                ? "bg-purple-600 text-white" 
+                ? "bg-purple-500 text-white" 
                 : "bg-purple-100 text-purple-800 hover:bg-purple-200"
             }`}
           >
             <span>Design</span>
             <span className={`px-2 py-0.5 rounded-full text-xs ${
               disciplineFilter === "design"
-                ? "bg-purple-500 text-white"
+                ? "bg-purple-400 text-white"
                 : "bg-purple-200 text-purple-800"
             }`}>
               {currentActions.filter((a: any) => a.discipline === "design").length}
@@ -202,15 +202,15 @@ export default function Dashboard() {
             onClick={() => handleDisciplineFilter("commercial")}
             className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
               disciplineFilter === "commercial" 
-                ? "bg-green-600 text-white" 
-                : "bg-green-100 text-green-800 hover:bg-green-200"
+                ? "bg-cyan-500 text-white" 
+                : "bg-cyan-100 text-cyan-800 hover:bg-cyan-200"
             }`}
           >
             <span>Commercial</span>
             <span className={`px-2 py-0.5 rounded-full text-xs ${
               disciplineFilter === "commercial"
-                ? "bg-green-500 text-white"
-                : "bg-green-200 text-green-800"
+                ? "bg-cyan-400 text-white"
+                : "bg-cyan-200 text-cyan-800"
             }`}>
               {currentActions.filter((a: any) => a.discipline === "commercial").length}
             </span>
@@ -219,15 +219,15 @@ export default function Dashboard() {
             onClick={() => handleDisciplineFilter("aftercare")}
             className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
               disciplineFilter === "aftercare" 
-                ? "bg-purple-500 text-white" 
-                : "bg-purple-100 text-purple-800 hover:bg-purple-200"
+                ? "bg-green-500 text-white" 
+                : "bg-green-100 text-green-800 hover:bg-green-200"
             }`}
           >
             <span>Aftercare</span>
             <span className={`px-2 py-0.5 rounded-full text-xs ${
               disciplineFilter === "aftercare"
-                ? "bg-purple-400 text-white"
-                : "bg-purple-200 text-purple-800"
+                ? "bg-green-400 text-white"
+                : "bg-green-200 text-green-800"
             }`}>
               {currentActions.filter((a: any) => a.discipline === "aftercare").length}
             </span>

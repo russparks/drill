@@ -14,19 +14,19 @@ export default function ActionCard({ action, onEdit, onComplete }: ActionCardPro
   const getStatusColor = (status: string) => {
     switch (status) {
       case "open": return "bg-red-100 text-red-800";
-      case "closed": return "bg-green-100 text-green-800";
+      case "closed": return "bg-gray-200 text-gray-700";
       default: return "bg-gray-100 text-gray-800";
     }
   };
 
   const getDisciplineColor = (discipline: string) => {
     switch (discipline) {
-      case "tender": return "bg-blue-50 text-blue-800";
-      case "precon": return "bg-blue-100 text-blue-800";
-      case "production": return "bg-green-100 text-green-800";
+      case "tender": return "bg-blue-100 text-blue-800";
+      case "precon": return "bg-blue-100 text-blue-800 border border-blue-600";
+      case "production": return "bg-green-100 text-green-800 border border-green-600";
       case "design": return "bg-purple-100 text-purple-800";
-      case "commercial": return "bg-green-100 text-green-800";
-      case "aftercare": return "bg-purple-100 text-purple-800";
+      case "commercial": return "bg-cyan-100 text-cyan-800";
+      case "aftercare": return "bg-green-100 text-green-800";
       default: return "bg-gray-100 text-gray-800";
     }
   };
