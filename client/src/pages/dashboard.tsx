@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { Plus, AlertCircle, ChevronLeft, ChevronRight, Filter, FilterX } from "lucide-react";
+import { Plus, AlertCircle, ChevronLeft, ChevronRight, Filter, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -213,7 +213,7 @@ export default function Dashboard() {
                 <span className="text-xs text-gray-500 italic">
                   {statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1)}
                 </span>
-                <FilterX className="w-3 h-3 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <X className="w-3 h-3 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             )}
           </div>
@@ -298,7 +298,7 @@ export default function Dashboard() {
                 <span className="text-xs text-gray-500 italic">
                   {disciplineFilter.charAt(0).toUpperCase() + disciplineFilter.slice(1)}
                 </span>
-                <FilterX className="w-3 h-3 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <X className="w-3 h-3 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             )}
           </div>
@@ -372,7 +372,7 @@ export default function Dashboard() {
                 <span className="text-xs text-gray-500 italic">
                   {phaseFilter.charAt(0).toUpperCase() + phaseFilter.slice(1)}
                 </span>
-                <FilterX className="w-3 h-3 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <X className="w-3 h-3 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             )}
           </div>
