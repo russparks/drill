@@ -26,7 +26,7 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
   const abbreviateDiscipline = (discipline: string) => {
     switch (discipline) {
       case "operations": return "Ops";
-      case "commercial": return "Comm";
+      case "commercial": return "Com";
       case "design": return "Des";
       case "she": return "SHE";
       case "qa": return "QA";
@@ -46,6 +46,14 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
 
   const getFirstName = (fullName: string) => {
     return fullName.split(' ')[0];
+  };
+
+  const getInitialsAndSurname = (fullName: string) => {
+    const parts = fullName.split(' ');
+    if (parts.length === 1) return parts[0];
+    if (parts.length === 2) return `${parts[0][0]}. ${parts[1]}`;
+    // For names with more than 2 parts, use first initial and last part
+    return `${parts[0][0]}. ${parts[parts.length - 1]}`;
   };
 
   const getFirstLetter = (text: string) => {
@@ -220,7 +228,6 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
             <div className="w-[40%] flex-shrink-0 flex items-center text-xs text-action-text-secondary">
               {action.project && (
                 <span className="flex items-center">
-                  <Building className="w-3 h-3 mr-1" />
                   {action.project.name}
                 </span>
               )}
@@ -231,13 +238,13 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
               {action.assignee && (
                 <span className="flex items-center">
                   <User className="w-3 h-3 mr-1" />
-                  {action.assignee.name}
+                  {getInitialsAndSurname(action.assignee.name)}
                 </span>
               )}
             </div>
             
             {/* Due Date (takes remaining space before buttons) */}
-            <div className="flex-1 flex items-center justify-end text-xs text-action-text-secondary">
+            <div className="flex-1 flex items-center justify-end text-xs text-action-text-secondary pr-4">
               {action.dueDate && (
                 <span className="flex items-center">
                   <Calendar className="w-3 h-3 mr-1" />
