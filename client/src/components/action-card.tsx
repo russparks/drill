@@ -1,6 +1,8 @@
+import React, { useState } from "react";
 import { Edit, Check, User, Calendar, Building } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ActionWithRelations } from "@shared/schema";
 import { format, differenceInBusinessDays } from "date-fns";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -14,6 +16,7 @@ interface ActionCardProps {
 
 export default function ActionCard({ action, onEdit, onComplete, isEven }: ActionCardProps) {
   const isMobile = useIsMobile();
+  const [showFullDescription, setShowFullDescription] = useState(false);
   
   const formatStatus = (status: string) => {
     return status.charAt(0).toUpperCase() + status.slice(1).replace('-', ' ');
@@ -56,16 +59,23 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
     return `${parts[0][0]}. ${parts[parts.length - 1]}`;
   };
 
+  const truncateDescription = (description: string, wordLimit: number = 25) => {
+    if (!description) return '';
+    const words = description.split(' ');
+    if (words.length <= wordLimit) return description;
+    return words.slice(0, wordLimit).join(' ') + '...';
+  };
+
   const getFirstLetter = (text: string) => {
     return text.charAt(0).toUpperCase();
   };
 
   const getStatusIndicator = (status: string) => {
     if (status === "open") {
-      return <div className="w-2 h-2 rounded-full bg-red-500" />;
+      return <div className="w-2 h-full min-h-[20px] rounded-full bg-red-500 flex-shrink-0" />;
     }
     return (
-      <Badge className="bg-gray-200 text-gray-700 text-xs px-2 py-0.5">
+      <Badge className="bg-gray-200 text-gray-700 text-xs px-2 py-0.5 h-full min-h-[20px] flex items-center">
         {formatStatus(status)}
       </Badge>
     );
@@ -196,10 +206,16 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
           {/* Row 1 */}
           <div className="flex items-center mb-3">
             {/* Status Indicator + Action Description (flexible, takes remaining space) */}
-            <div className="flex-1 flex items-center gap-3">
+            <div className="flex-1 flex items-start gap-3">
               {getStatusIndicator(action.status)}
               {action.description && (
-                <p className="text-sm text-action-text-primary font-medium">{action.description}</p>
+                <p 
+                  className="text-sm text-action-text-primary font-medium cursor-pointer hover:text-blue-600 flex-1"
+                  onClick={() => setShowFullDescription(true)}
+                  title="Click to see full description"
+                >
+                  {truncateDescription(action.description)}
+                </p>
               )}
             </div>
             
@@ -276,6 +292,20 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
           </div>
         </>
       )}
+      
+      {/* Full Description Modal */}
+      <Dialog open={showFullDescription} onOpenChange={setShowFullDescription}>
+        <DialogContent className="sm:max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Action Description</DialogTitle>
+          </DialogHeader>
+          <div className="mt-4">
+            <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
+              {action.description}
+            </p>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
