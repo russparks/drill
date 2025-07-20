@@ -74,6 +74,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
       title: action?.title || "",
       description: action?.description || "",
       discipline: action?.discipline || "",
+      phase: action?.phase || "",
       status: action?.status || "open",
       priority: action?.priority || "medium",
       assigneeId: action?.assigneeId || undefined,
@@ -92,6 +93,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
         title: action.title,
         description: action.description || "",
         discipline: action.discipline,
+        phase: action.phase,
         status: action.status,
         priority: action.priority,
         assigneeId: action.assigneeId || undefined,
@@ -108,6 +110,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
         title: "",
         description: "",
         discipline: "",
+        phase: "",
         status: "open",
         priority: "medium",
         assigneeId: undefined,
@@ -337,28 +340,10 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                     <div className="grid grid-cols-3 gap-2">
                       {[
                         { 
-                          value: "tender", 
-                          label: "Tender", 
-                          active: "bg-blue-400 text-white",
-                          inactive: "bg-blue-100 text-blue-800 hover:bg-blue-200"
-                        },
-                        { 
-                          value: "precon", 
-                          label: "Precon", 
+                          value: "operations", 
+                          label: "Operations", 
                           active: "bg-blue-600 text-white border border-blue-800",
                           inactive: "bg-blue-100 text-blue-800 border border-blue-600 hover:bg-blue-200"
-                        },
-                        { 
-                          value: "production", 
-                          label: "Production", 
-                          active: "bg-green-600 text-white border border-green-800",
-                          inactive: "bg-green-100 text-green-800 border border-green-600 hover:bg-green-200"
-                        },
-                        { 
-                          value: "design", 
-                          label: "Design", 
-                          active: "bg-purple-500 text-white",
-                          inactive: "bg-purple-100 text-purple-800 hover:bg-purple-200"
                         },
                         { 
                           value: "commercial", 
@@ -367,10 +352,22 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                           inactive: "bg-cyan-100 text-cyan-800 hover:bg-cyan-200"
                         },
                         { 
-                          value: "aftercare", 
-                          label: "Aftercare", 
-                          active: "bg-green-500 text-white",
-                          inactive: "bg-green-100 text-green-800 hover:bg-green-200"
+                          value: "design", 
+                          label: "Design", 
+                          active: "bg-purple-500 text-white",
+                          inactive: "bg-purple-100 text-purple-800 hover:bg-purple-200"
+                        },
+                        { 
+                          value: "she", 
+                          label: "SHE", 
+                          active: "bg-orange-500 text-white",
+                          inactive: "bg-orange-100 text-orange-800 hover:bg-orange-200"
+                        },
+                        { 
+                          value: "qa", 
+                          label: "QA", 
+                          active: "bg-indigo-500 text-white",
+                          inactive: "bg-indigo-100 text-indigo-800 hover:bg-indigo-200"
                         }
                       ].map((discipline) => (
                         <button
@@ -384,6 +381,60 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                           }`}
                         >
                           {discipline.label}
+                        </button>
+                      ))}
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="phase"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Phase</FormLabel>
+                  <FormControl>
+                    <div className="grid grid-cols-2 gap-2">
+                      {[
+                        { 
+                          value: "tender", 
+                          label: "Tender", 
+                          active: "bg-blue-400 text-white border border-blue-600",
+                          inactive: "bg-blue-50 text-blue-700 border border-blue-300 hover:bg-blue-100"
+                        },
+                        { 
+                          value: "precon", 
+                          label: "Precon", 
+                          active: "bg-green-400 text-white border border-green-600",
+                          inactive: "bg-green-50 text-green-700 border border-green-300 hover:bg-green-100"
+                        },
+                        { 
+                          value: "construction", 
+                          label: "Construction", 
+                          active: "bg-yellow-500 text-white border border-yellow-700",
+                          inactive: "bg-yellow-50 text-yellow-800 border border-yellow-400 hover:bg-yellow-100"
+                        },
+                        { 
+                          value: "aftercare", 
+                          label: "Aftercare", 
+                          active: "bg-gray-500 text-white border border-gray-700",
+                          inactive: "bg-gray-50 text-gray-700 border border-gray-300 hover:bg-gray-100"
+                        }
+                      ].map((phase) => (
+                        <button
+                          key={phase.value}
+                          type="button"
+                          onClick={() => field.onChange(phase.value)}
+                          className={`px-4 py-3 rounded-md text-sm font-medium transition-colors ${
+                            field.value === phase.value
+                              ? phase.active
+                              : phase.inactive
+                          }`}
+                        >
+                          {phase.label}
                         </button>
                       ))}
                     </div>

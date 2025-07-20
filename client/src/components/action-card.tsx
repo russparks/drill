@@ -8,10 +8,10 @@ interface ActionCardProps {
   action: ActionWithRelations;
   onEdit: (action: ActionWithRelations) => void;
   onComplete: (actionId: number) => void;
-  index: number;
+  isEven: boolean;
 }
 
-export default function ActionCard({ action, onEdit, onComplete, index }: ActionCardProps) {
+export default function ActionCard({ action, onEdit, onComplete, isEven }: ActionCardProps) {
   const formatStatus = (status: string) => {
     return status.charAt(0).toUpperCase() + status.slice(1).replace('-', ' ');
   };
@@ -33,12 +33,21 @@ export default function ActionCard({ action, onEdit, onComplete, index }: Action
 
   const getDisciplineColor = (discipline: string) => {
     switch (discipline) {
-      case "tender": return "bg-blue-100 text-blue-800";
-      case "precon": return "bg-blue-100 text-blue-800 border border-blue-600";
-      case "production": return "bg-green-100 text-green-800 border border-green-600";
-      case "design": return "bg-purple-100 text-purple-800";
+      case "operations": return "bg-blue-100 text-blue-800 border border-blue-600";
       case "commercial": return "bg-cyan-100 text-cyan-800";
-      case "aftercare": return "bg-green-100 text-green-800";
+      case "design": return "bg-purple-100 text-purple-800";
+      case "she": return "bg-orange-100 text-orange-800";
+      case "qa": return "bg-indigo-100 text-indigo-800";
+      default: return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  const getPhaseColor = (phase: string) => {
+    switch (phase) {
+      case "tender": return "bg-blue-50 text-blue-700 border border-blue-300";
+      case "precon": return "bg-green-50 text-green-700 border border-green-300";
+      case "construction": return "bg-yellow-50 text-yellow-800 border border-yellow-400";
+      case "aftercare": return "bg-gray-50 text-gray-700 border border-gray-300";
       default: return "bg-gray-100 text-gray-800";
     }
   };
@@ -54,10 +63,9 @@ export default function ActionCard({ action, onEdit, onComplete, index }: Action
   };
 
   const workingDays = getWorkingDaysRemaining(action.dueDate);
-  const isOddRow = index % 2 === 0; // Note: index is 0-based, so even index = odd row
 
   return (
-    <div className={`action-card border-b border-gray-100 last:border-b-0 p-4 ${isOddRow ? 'bg-gray-25' : 'bg-white'}`}>
+    <div className={`action-card border-b border-gray-100 last:border-b-0 p-4 ${isEven ? 'bg-gray-50' : 'bg-white'}`}>
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <div className="flex items-center justify-between mb-2">
@@ -65,7 +73,10 @@ export default function ActionCard({ action, onEdit, onComplete, index }: Action
             <div className="flex items-center space-x-2">
               {getStatusIndicator(action.status)}
               <Badge className={`discipline-badge ${getDisciplineColor(action.discipline)} text-xs px-2 py-0.5`}>
-                {formatDiscipline(action.discipline)}
+                {formatDiscipline(action.discipline).toUpperCase()}
+              </Badge>
+              <Badge className={`phase-badge ${getPhaseColor(action.phase)} text-xs px-2 py-0.5`}>
+                {action.phase?.toUpperCase()}
               </Badge>
               <div className="flex items-center space-x-1">
                 <Button
