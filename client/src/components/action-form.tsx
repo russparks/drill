@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { insertActionSchema, type ActionWithRelations, type User, type Project } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
+import { insertActionSchema, type ActionWithRelations, type User, type Project } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
@@ -36,6 +36,9 @@ const actionFormSchema = insertActionSchema.extend({
   assigneeId: z.number().optional().nullable(),
   projectId: z.number().optional().nullable(),
   dueDate: z.string().optional().nullable(),
+  newProjectName: z.string().optional(),
+  newPersonName: z.string().optional(),
+  newPersonEmail: z.string().email().optional(),
 }).transform((data) => ({
   ...data,
   assigneeId: data.assigneeId || null,
@@ -54,6 +57,8 @@ interface ActionFormProps {
 export default function ActionForm({ isOpen, onClose, action }: ActionFormProps) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [showNewProjectInput, setShowNewProjectInput] = useState(false);
+  const [showNewPersonInput, setShowNewPersonInput] = useState(false);
 
   const { data: users = [] } = useQuery({
     queryKey: ["/api/users"],
@@ -159,11 +164,51 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
     },
   });
 
-  const onSubmit = (data: ActionFormData) => {
-    if (action) {
-      updateActionMutation.mutate(data);
-    } else {
-      createActionMutation.mutate(data);
+  const onSubmit = async (data: ActionFormData) => {
+    try {
+      let finalData = { ...data };
+      
+      // Create new project if needed
+      if (showNewProjectInput && data.newProjectName) {
+        const newProject = await apiRequest("/api/projects", {
+          method: "POST",
+          body: JSON.stringify({ 
+            name: data.newProjectName,
+            description: "",
+            status: "active" 
+          }),
+        });
+        finalData.projectId = newProject.id;
+      }
+      
+      // Create new person if needed
+      if (showNewPersonInput && data.newPersonName && data.newPersonEmail) {
+        const newUser = await apiRequest("/api/users", {
+          method: "POST", 
+          body: JSON.stringify({
+            name: data.newPersonName,
+            email: data.newPersonEmail,
+            username: data.newPersonEmail.split('@')[0],
+            password: "defaultpassword"
+          }),
+        });
+        finalData.assigneeId = newUser.id;
+      }
+      
+      // Remove the temporary fields
+      const { newProjectName, newPersonName, newPersonEmail, ...actionData } = finalData;
+      
+      if (action) {
+        updateActionMutation.mutate(actionData);
+      } else {
+        createActionMutation.mutate(actionData);
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to create new project or person",
+        variant: "destructive",
+      });
     }
   };
 
@@ -187,8 +232,16 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                 <FormItem>
                   <FormLabel>Project</FormLabel>
                   <Select 
-                    onValueChange={(value) => field.onChange(value === "new" ? undefined : parseInt(value))}
-                    value={field.value?.toString() || ""}
+                    onValueChange={(value) => {
+                      if (value === "new") {
+                        setShowNewProjectInput(true);
+                        field.onChange(undefined);
+                      } else {
+                        setShowNewProjectInput(false);
+                        field.onChange(parseInt(value));
+                      }
+                    }}
+                    value={showNewProjectInput ? "new" : field.value?.toString() || ""}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -204,6 +257,21 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                       <SelectItem value="new">+ New Project</SelectItem>
                     </SelectContent>
                   </Select>
+                  {showNewProjectInput && (
+                    <FormField
+                      control={form.control}
+                      name="newProjectName"
+                      render={({ field: projectField }) => (
+                        <FormControl>
+                          <Input 
+                            placeholder="Enter new project name" 
+                            className="mt-2"
+                            {...projectField}
+                          />
+                        </FormControl>
+                      )}
+                    />
+                  )}
                   <FormMessage />
                 </FormItem>
               )}
@@ -307,8 +375,16 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                 <FormItem>
                   <FormLabel>Assign To</FormLabel>
                   <Select 
-                    onValueChange={(value) => field.onChange(value === "new" ? undefined : parseInt(value))}
-                    value={field.value?.toString() || ""}
+                    onValueChange={(value) => {
+                      if (value === "new") {
+                        setShowNewPersonInput(true);
+                        field.onChange(undefined);
+                      } else {
+                        setShowNewPersonInput(false);
+                        field.onChange(parseInt(value));
+                      }
+                    }}
+                    value={showNewPersonInput ? "new" : field.value?.toString() || ""}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -324,6 +400,35 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                       <SelectItem value="new">+ New Person</SelectItem>
                     </SelectContent>
                   </Select>
+                  {showNewPersonInput && (
+                    <div className="space-y-2 mt-2">
+                      <FormField
+                        control={form.control}
+                        name="newPersonName"
+                        render={({ field: nameField }) => (
+                          <FormControl>
+                            <Input 
+                              placeholder="Enter person's name" 
+                              {...nameField}
+                            />
+                          </FormControl>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="newPersonEmail"
+                        render={({ field: emailField }) => (
+                          <FormControl>
+                            <Input 
+                              placeholder="Enter person's email" 
+                              type="email"
+                              {...emailField}
+                            />
+                          </FormControl>
+                        )}
+                      />
+                    </div>
+                  )}
                   <FormMessage />
                 </FormItem>
               )}
