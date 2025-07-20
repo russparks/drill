@@ -299,6 +299,45 @@ export default function Dashboard() {
             </button>
           </div>
         </div>
+
+        {/* Active Filters Breadcrumb */}
+        {(statusFilter !== "open" || disciplineFilter || projectFilter) && (
+          <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-200 mb-6">
+            <div className="flex items-center gap-2 text-sm">
+              <span className="text-gray-600">Active filters:</span>
+              <div className="flex items-center gap-2 flex-wrap">
+                {statusFilter !== "open" && (
+                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-white rounded text-gray-700 border">
+                    Status: {statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1)}
+                  </span>
+                )}
+                {disciplineFilter && (
+                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-white rounded text-gray-700 border">
+                    Discipline: {disciplineFilter.charAt(0).toUpperCase() + disciplineFilter.slice(1)}
+                  </span>
+                )}
+                {projectFilter && (
+                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-white rounded text-gray-700 border">
+                    Project: {projects?.find(p => p.id === projectFilter)?.name}
+                  </span>
+                )}
+              </div>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setStatusFilter("open");
+                setDisciplineFilter("");
+                setProjectFilter(null);
+                setCurrentPage(1);
+              }}
+              className="text-blue-700 border-blue-300 hover:bg-blue-100"
+            >
+              Clear all filters
+            </Button>
+          </div>
+        )}
       </div>
 
       {/* Current Actions */}
