@@ -65,6 +65,10 @@ export const insertUserSchema = createInsertSchema(users).omit({
 export const insertProjectSchema = createInsertSchema(projects).omit({
   id: true,
   createdAt: true,
+}).extend({
+  startOnSiteDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
+  contractCompletionDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
+  constructionCompletionDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
 });
 
 export const insertActionSchema = createInsertSchema(actions).omit({

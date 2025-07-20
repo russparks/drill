@@ -17,15 +17,7 @@ import { Pencil, Trash2, Plus } from "lucide-react";
 
 const projectFormSchema = insertProjectSchema.extend({
   id: z.number().optional(),
-  startOnSiteDate: z.string().optional().nullable(),
-  contractCompletionDate: z.string().optional().nullable(),
-  constructionCompletionDate: z.string().optional().nullable(),
-}).transform((data) => ({
-  ...data,
-  startOnSiteDate: data.startOnSiteDate ? new Date(data.startOnSiteDate) : null,
-  contractCompletionDate: data.contractCompletionDate ? new Date(data.contractCompletionDate) : null,
-  constructionCompletionDate: data.constructionCompletionDate ? new Date(data.constructionCompletionDate) : null,
-}));
+});
 
 const userFormSchema = insertUserSchema.extend({
   id: z.number().optional(),
