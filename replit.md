@@ -9,6 +9,8 @@ Action Track is a full-stack project management application built for constructi
 Preferred communication style: Simple, everyday language.
 Preferred interface style: Extremely clean, minimal interface with no titles or subtitles in action lists, custom modals preferred over browser dialogs, slim design elements.
 Mobile optimization requirements: Abbreviated phases (Ten/Pre/Con/Aft) and disciplines (Ops/Comm/Des/SHE/QA) in action cards, first name only for assignees on small screens.
+Navigation preferences: Minimal navbar with Drill logo, Home instead of Dashboard, '+ Action' button in navbar, settings cog icon, no profile pictures or notification bells.
+Color scheme: Accent color changed to #cc3333 (hsl(350, 61%, 50%)) instead of blue.
 
 ## System Architecture
 

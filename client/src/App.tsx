@@ -21,8 +21,6 @@ function Router() {
       
       <Switch>
         <Route path="/" component={Dashboard} />
-        <Route path="/actions" component={Actions} />
-        <Route path="/manage" component={Manage} />
         <Route component={NotFound} />
       </Switch>
 
