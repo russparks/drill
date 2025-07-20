@@ -165,7 +165,7 @@ export default function Dashboard() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 pb-20 md:pb-8">
       <div className="mb-8">
         {/* Filter Buttons in Three Rows */}
-        <div className="space-y-3 mb-8">
+        <div className="space-y-3 mb-4">
           {/* Row 1: Status */}
           <div className="flex flex-wrap items-center gap-2">
             <button
@@ -335,7 +335,7 @@ export default function Dashboard() {
 
         {/* Active Filters Breadcrumb */}
         {(statusFilter !== "open" || disciplineFilter || phaseFilter || projectFilter) && (
-          <div className="flex items-center justify-between py-2 px-3 bg-gray-50 border-l-4 border-blue-400 mb-4">
+          <div className="flex items-center justify-between py-2 px-3 bg-gray-50 border-l-4 border-blue-400 mb-2">
             <div className="flex items-center gap-2 text-xs text-gray-600">
               <span>Filters:</span>
               {statusFilter !== "open" && <span className="font-medium">{statusFilter}</span>}
