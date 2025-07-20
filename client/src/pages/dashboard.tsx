@@ -449,7 +449,11 @@ export default function Dashboard() {
                   {assigneeFilter && (
                     <>
                       {(statusFilter || disciplineFilter || phaseFilter || projectFilter) && <span>,</span>}
-                      <span className="relative">
+                      <span 
+                        className="relative cursor-pointer hover:line-through transition-all"
+                        onClick={() => setAssigneeFilter("")}
+                        title="Click to remove assignee filter"
+                      >
                         {assigneeFilter}
                         <div className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-green-500" />
                       </span>
