@@ -87,8 +87,8 @@ function ProjectForm({ project, onClose }: { project?: Project; onClose: () => v
   };
 
   const statusButtons = [
-    { value: "tender", label: "Tender", color: "bg-blue-500 text-white" },
-    { value: "precon", label: "Precon", color: "bg-yellow-500 text-white" },
+    { value: "tender", label: "Tender", color: "bg-blue-300 text-white" },
+    { value: "precon", label: "Precon", color: "bg-blue-500 text-white" },
     { value: "production", label: "Production", color: "bg-green-500 text-white" },
     { value: "aftercare", label: "Aftercare", color: "bg-purple-500 text-white" },
   ];
@@ -460,8 +460,8 @@ export default function ManagePage() {
                       </TableCell>
                       <TableCell>
                         <span className={`text-xs px-2 py-1 rounded text-white ${
-                          project.status === "tender" ? "bg-blue-500" :
-                          project.status === "precon" ? "bg-yellow-500" :
+                          project.status === "tender" ? "bg-blue-300" :
+                          project.status === "precon" ? "bg-blue-500" :
                           project.status === "production" ? "bg-green-500" :
                           project.status === "aftercare" ? "bg-purple-500" :
                           "bg-gray-500"
