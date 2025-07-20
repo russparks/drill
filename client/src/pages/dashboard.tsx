@@ -94,7 +94,7 @@ export default function Dashboard() {
         {/* Filter Buttons in Two Rows */}
         <div className="space-y-3 mb-8">
           {/* Row 1: open - precon - production - design - commercial */}
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex items-center justify-between">
             <button
               onClick={() => handleStatusFilter("open")}
               className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
@@ -183,7 +183,7 @@ export default function Dashboard() {
           </div>
 
           {/* Row 2: closed - tender - aftercare - projects dropdown */}
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex items-center justify-between">
             <button
               onClick={() => handleStatusFilter("closed")}
               className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
@@ -236,9 +236,7 @@ export default function Dashboard() {
               </span>
             </button>
             
-            <div className="ml-auto">
-              <ProjectsDropdown onProjectSelect={handleProjectSelect} selectedProjectId={projectFilter} />
-            </div>
+            <ProjectsDropdown onProjectSelect={handleProjectSelect} selectedProjectId={projectFilter} />
           </div>
         </div>
       </div>
