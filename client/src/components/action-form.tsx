@@ -38,7 +38,7 @@ const actionFormSchema = insertActionSchema.extend({
   dueDate: z.string().optional().nullable(),
   newProjectName: z.string().optional(),
   newPersonName: z.string().optional(),
-  newPersonEmail: z.string().email().optional(),
+  newPersonEmail: z.string().optional(),
 }).transform((data) => ({
   ...data,
   assigneeId: data.assigneeId || null,
@@ -81,6 +81,9 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
       assigneeId: action?.assigneeId || undefined,
       projectId: action?.projectId || undefined,
       dueDate: action?.dueDate ? new Date(action.dueDate).toISOString().split('T')[0] : "",
+      newProjectName: "",
+      newPersonName: "",
+      newPersonEmail: "",
     },
   });
 
@@ -96,7 +99,12 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
         assigneeId: action.assigneeId || undefined,
         projectId: action.projectId || undefined,
         dueDate: action.dueDate ? new Date(action.dueDate).toISOString().split('T')[0] : "",
+        newProjectName: "",
+        newPersonName: "",
+        newPersonEmail: "",
       });
+      setShowNewProjectInput(false);
+      setShowNewPersonInput(false);
     } else {
       form.reset({
         title: "",
@@ -107,7 +115,12 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
         assigneeId: undefined,
         projectId: undefined,
         dueDate: "",
+        newProjectName: "",
+        newPersonName: "",
+        newPersonEmail: "",
       });
+      setShowNewProjectInput(false);
+      setShowNewPersonInput(false);
     }
   }, [action, form]);
 
@@ -170,27 +183,21 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
       
       // Create new project if needed
       if (showNewProjectInput && data.newProjectName) {
-        const newProject = await apiRequest("/api/projects", {
-          method: "POST",
-          body: JSON.stringify({ 
-            name: data.newProjectName,
-            description: "",
-            status: "active" 
-          }),
+        const newProject = await apiRequest("/api/projects", "POST", { 
+          name: data.newProjectName,
+          description: "",
+          status: "active" 
         });
         finalData.projectId = newProject.id;
       }
       
       // Create new person if needed
       if (showNewPersonInput && data.newPersonName && data.newPersonEmail) {
-        const newUser = await apiRequest("/api/users", {
-          method: "POST", 
-          body: JSON.stringify({
-            name: data.newPersonName,
-            email: data.newPersonEmail,
-            username: data.newPersonEmail.split('@')[0],
-            password: "defaultpassword"
-          }),
+        const newUser = await apiRequest("/api/users", "POST", {
+          name: data.newPersonName,
+          email: data.newPersonEmail,
+          username: data.newPersonEmail.split('@')[0],
+          password: "defaultpassword"
         });
         finalData.assigneeId = newUser.id;
       }
