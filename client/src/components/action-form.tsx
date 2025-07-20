@@ -184,7 +184,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
         const response = await apiRequest("POST", "/api/projects", { 
           name: data.newProjectName,
           description: "",
-          status: "active" 
+          status: "tender" 
         });
         const newProject = await response.json();
         finalData.projectId = newProject.id;

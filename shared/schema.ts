@@ -13,9 +13,13 @@ export const users = pgTable("users", {
 
 export const projects = pgTable("projects", {
   id: serial("id").primaryKey(),
+  projectNumber: text("project_number"),
   name: text("name").notNull(),
+  startOnSiteDate: timestamp("start_on_site_date"),
+  contractCompletionDate: timestamp("contract_completion_date"),
+  constructionCompletionDate: timestamp("construction_completion_date"),
+  status: text("status", { enum: ["tender", "precon", "production", "aftercare"] }).notNull().default("tender"),
   description: text("description"),
-  status: text("status").notNull().default("active"), // active, completed, on-hold
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

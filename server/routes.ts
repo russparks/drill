@@ -104,7 +104,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const stats = {
         ...actionStats,
-        projects: projects.filter(p => p.status === 'active').length,
+        projects: projects.length,
         teamMembers: users.length,
       };
       

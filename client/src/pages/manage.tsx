@@ -17,7 +17,15 @@ import { Pencil, Trash2, Plus } from "lucide-react";
 
 const projectFormSchema = insertProjectSchema.extend({
   id: z.number().optional(),
-});
+  startOnSiteDate: z.string().optional().nullable(),
+  contractCompletionDate: z.string().optional().nullable(),
+  constructionCompletionDate: z.string().optional().nullable(),
+}).transform((data) => ({
+  ...data,
+  startOnSiteDate: data.startOnSiteDate ? new Date(data.startOnSiteDate) : null,
+  contractCompletionDate: data.contractCompletionDate ? new Date(data.contractCompletionDate) : null,
+  constructionCompletionDate: data.constructionCompletionDate ? new Date(data.constructionCompletionDate) : null,
+}));
 
 const userFormSchema = insertUserSchema.extend({
   id: z.number().optional(),
@@ -32,9 +40,13 @@ function ProjectForm({ project, onClose }: { project?: Project; onClose: () => v
   const form = useForm<ProjectFormData>({
     resolver: zodResolver(projectFormSchema),
     defaultValues: {
+      projectNumber: project?.projectNumber || "",
       name: project?.name || "",
+      startOnSiteDate: project?.startOnSiteDate ? project.startOnSiteDate.toISOString().split('T')[0] : "",
+      contractCompletionDate: project?.contractCompletionDate ? project.contractCompletionDate.toISOString().split('T')[0] : "",
+      constructionCompletionDate: project?.constructionCompletionDate ? project.constructionCompletionDate.toISOString().split('T')[0] : "",
+      status: project?.status || "tender",
       description: project?.description || "",
-      status: project?.status || "active",
     },
   });
 
@@ -72,17 +84,106 @@ function ProjectForm({ project, onClose }: { project?: Project; onClose: () => v
     }
   };
 
+  const statusButtons = [
+    { value: "tender", label: "Tender", color: "bg-blue-500" },
+    { value: "precon", label: "Precon", color: "bg-yellow-500" },
+    { value: "production", label: "Production", color: "bg-green-500" },
+    { value: "aftercare", label: "Aftercare", color: "bg-purple-500" },
+  ];
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
+          name="projectNumber"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Project Number</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Project Name</FormLabel>
+              <FormLabel>Project Title</FormLabel>
               <FormControl>
                 <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="startOnSiteDate"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Start on Site Date</FormLabel>
+              <FormControl>
+                <Input type="date" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="contractCompletionDate"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Contract Completion Date</FormLabel>
+              <FormControl>
+                <Input type="date" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="constructionCompletionDate"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Construction Completion Date</FormLabel>
+              <FormControl>
+                <Input type="date" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="status"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Project Status</FormLabel>
+              <FormControl>
+                <div className="grid grid-cols-2 gap-2">
+                  {statusButtons.map((status) => (
+                    <Button
+                      key={status.value}
+                      type="button"
+                      variant={field.value === status.value ? "default" : "outline"}
+                      className={field.value === status.value ? status.color : ""}
+                      onClick={() => field.onChange(status.value)}
+                    >
+                      {status.label}
+                    </Button>
+                  ))}
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -341,12 +442,30 @@ export default function ManagePage() {
                     <div className="flex justify-between items-start">
                       <div>
                         <CardTitle className="text-lg">{project.name}</CardTitle>
+                        {project.projectNumber && (
+                          <p className="text-sm font-medium text-muted-foreground">
+                            #{project.projectNumber}
+                          </p>
+                        )}
                         <p className="text-sm text-muted-foreground mt-1">
                           {project.description || "No description"}
                         </p>
-                        <p className="text-xs text-muted-foreground mt-2">
-                          Status: {project.status}
-                        </p>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          <span className={`text-xs px-2 py-1 rounded text-white ${
+                            project.status === "tender" ? "bg-blue-500" :
+                            project.status === "precon" ? "bg-yellow-500" :
+                            project.status === "production" ? "bg-green-500" :
+                            project.status === "aftercare" ? "bg-purple-500" :
+                            "bg-gray-500"
+                          }`}>
+                            {project.status}
+                          </span>
+                          {project.startOnSiteDate && (
+                            <span className="text-xs text-muted-foreground">
+                              Start: {new Date(project.startOnSiteDate).toLocaleDateString()}
+                            </span>
+                          )}
+                        </div>
                       </div>
                       <div className="flex gap-2">
                         <Button
