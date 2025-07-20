@@ -180,9 +180,7 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 statusFilter === "open" 
                   ? "bg-red-500 text-white" 
-                  : statusFilter && statusFilter !== "open"
-                    ? "bg-gray-100 text-gray-400 cursor-default"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
               }`}
             >
               OPEN
@@ -192,21 +190,17 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 statusFilter === "closed" 
                   ? "bg-gray-500 text-white" 
-                  : statusFilter && statusFilter !== "closed"
-                    ? "bg-gray-100 text-gray-400 cursor-default"
-                    : "bg-gray-500 text-white hover:bg-gray-600"
+                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
               }`}
             >
               CLOSED
             </button>
             <button
               onClick={() => handleStatusFilter("overdue")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 statusFilter === "overdue" 
-                  ? "bg-red-600 text-white border-red-600" 
-                  : statusFilter && statusFilter !== "overdue"
-                    ? "bg-gray-100 text-gray-400 border-gray-300 cursor-default"
-                    : "bg-gray-100 text-black border-red-500 hover:bg-gray-200"
+                  ? "bg-red-600 text-white" 
+                  : "bg-red-100 text-red-800 hover:bg-red-200"
               }`}
             >
               OVERDUE
@@ -220,9 +214,7 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
                 disciplineFilter === "operations" 
                   ? "bg-blue-600 text-white border-blue-800" 
-                  : disciplineFilter && disciplineFilter !== "operations"
-                    ? "bg-gray-100 text-gray-400 border-gray-300 cursor-default"
-                    : "bg-blue-100 text-blue-800 border-blue-600 hover:bg-blue-200"
+                  : "bg-blue-100 text-blue-800 border-blue-600 hover:bg-blue-200"
               }`}
             >
               OPERATIONS
@@ -232,9 +224,7 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 disciplineFilter === "commercial" 
                   ? "bg-cyan-500 text-white" 
-                  : disciplineFilter && disciplineFilter !== "commercial"
-                    ? "bg-gray-100 text-gray-400 cursor-default"
-                    : "bg-cyan-100 text-cyan-800 hover:bg-cyan-200"
+                  : "bg-cyan-100 text-cyan-800 hover:bg-cyan-200"
               }`}
             >
               COMMERCIAL
@@ -244,9 +234,7 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 disciplineFilter === "design" 
                   ? "bg-purple-500 text-white" 
-                  : disciplineFilter && disciplineFilter !== "design"
-                    ? "bg-gray-100 text-gray-400 cursor-default"
-                    : "bg-purple-100 text-purple-800 hover:bg-purple-200"
+                  : "bg-purple-100 text-purple-800 hover:bg-purple-200"
               }`}
             >
               DESIGN
@@ -256,9 +244,7 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 disciplineFilter === "she" 
                   ? "bg-orange-500 text-white" 
-                  : disciplineFilter && disciplineFilter !== "she"
-                    ? "bg-gray-100 text-gray-400 cursor-default"
-                    : "bg-orange-100 text-orange-800 hover:bg-orange-200"
+                  : "bg-orange-100 text-orange-800 hover:bg-orange-200"
               }`}
             >
               SHE
@@ -268,9 +254,7 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 disciplineFilter === "qa" 
                   ? "bg-indigo-500 text-white" 
-                  : disciplineFilter && disciplineFilter !== "qa"
-                    ? "bg-gray-100 text-gray-400 cursor-default"
-                    : "bg-indigo-100 text-indigo-800 hover:bg-indigo-200"
+                  : "bg-indigo-100 text-indigo-800 hover:bg-indigo-200"
               }`}
             >
               QA
@@ -280,9 +264,7 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 disciplineFilter === "general" 
                   ? "bg-gray-600 text-white" 
-                  : disciplineFilter && disciplineFilter !== "general"
-                    ? "bg-gray-100 text-gray-400 cursor-default"
-                    : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
               }`}
             >
               GENERAL
@@ -296,9 +278,7 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
                 phaseFilter === "tender" 
                   ? "bg-blue-400 text-white border-blue-600" 
-                  : phaseFilter && phaseFilter !== "tender"
-                    ? "bg-gray-100 text-gray-400 border-gray-300 cursor-default"
-                    : "bg-blue-50 text-blue-700 border-blue-300 hover:bg-blue-100"
+                  : "bg-blue-50 text-blue-700 border-blue-300 hover:bg-blue-100"
               }`}
             >
               TENDER
@@ -308,9 +288,7 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
                 phaseFilter === "precon" 
                   ? "bg-green-400 text-white border-green-600" 
-                  : phaseFilter && phaseFilter !== "precon"
-                    ? "bg-gray-100 text-gray-400 border-gray-300 cursor-default"
-                    : "bg-green-50 text-green-700 border-green-300 hover:bg-green-100"
+                  : "bg-green-50 text-green-700 border-green-300 hover:bg-green-100"
               }`}
             >
               PRECON
@@ -320,9 +298,7 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
                 phaseFilter === "construction" 
                   ? "bg-yellow-500 text-white border-yellow-700" 
-                  : phaseFilter && phaseFilter !== "construction"
-                    ? "bg-gray-100 text-gray-400 border-gray-300 cursor-default"
-                    : "bg-yellow-50 text-yellow-800 border-yellow-400 hover:bg-yellow-100"
+                  : "bg-yellow-50 text-yellow-800 border-yellow-400 hover:bg-yellow-100"
               }`}
             >
               CONSTRUCTION
@@ -332,9 +308,7 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
                 phaseFilter === "aftercare" 
                   ? "bg-gray-500 text-white border-gray-700" 
-                  : phaseFilter && phaseFilter !== "aftercare"
-                    ? "bg-gray-100 text-gray-400 border-gray-300 cursor-default"
-                    : "bg-gray-50 text-gray-700 border-gray-300 hover:bg-gray-100"
+                  : "bg-gray-50 text-gray-700 border-gray-300 hover:bg-gray-100"
               }`}
             >
               AFTERCARE
@@ -344,9 +318,7 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 phaseFilter === "strategy" 
                   ? "bg-black text-white" 
-                  : phaseFilter && phaseFilter !== "strategy"
-                    ? "bg-gray-100 text-gray-400 cursor-default"
-                    : "bg-black text-white hover:bg-gray-800"
+                  : "bg-black text-white hover:bg-gray-800"
               }`}
             >
               STRATEGY
