@@ -163,10 +163,7 @@ export default function Dashboard() {
                 {currentActions.filter((a: any) => a.discipline === "commercial").length}
               </span>
             </button>
-            
-            <div className="ml-auto">
-              <ProjectsDropdown onProjectSelect={handleProjectSelect} selectedProjectId={projectFilter} />
-            </div>
+
           </div>
 
           {/* Row 2: open - closed - tender - aftercare */}
@@ -245,8 +242,9 @@ export default function Dashboard() {
 
       {/* Current Actions */}
       <Card className="material-shadow">
-        <div className="px-6 py-4 border-b border-gray-200">
+        <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
           <h2 className="text-lg font-medium text-action-text-primary">Current Actions</h2>
+          <ProjectsDropdown onProjectSelect={handleProjectSelect} selectedProjectId={projectFilter} />
         </div>
 
         <CardContent className="p-0">
