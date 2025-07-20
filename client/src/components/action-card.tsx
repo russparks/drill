@@ -187,13 +187,13 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
         <>
           {/* Row 1 */}
           <div className="flex items-center gap-2 mb-3">
-            {/* Col 1: Status Indicator (auto width minimal) */}
-            <div className="flex-shrink-0 flex justify-center items-center">
+            {/* Col 1: Status Indicator (5%) */}
+            <div className="w-[5%] flex-shrink-0 flex justify-center items-center">
               {getStatusIndicator(action.status)}
             </div>
             
-            {/* Col 2: Action Description (min 70%) */}
-            <div className="min-w-[70%] flex-1 flex items-center">
+            {/* Col 2: Action Description (75%) */}
+            <div className="w-[75%] flex-shrink-0 flex items-center">
               {action.description && (
                 <p className="text-sm text-action-text-primary font-medium">{action.description}</p>
               )}
