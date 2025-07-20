@@ -72,10 +72,10 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
 
   const getStatusIndicator = (status: string) => {
     if (status === "open") {
-      return <div className="w-2 h-full min-h-[20px] rounded-full bg-red-500 flex-shrink-0" />;
+      return <div className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" />;
     }
     return (
-      <Badge className="bg-gray-200 text-gray-700 text-xs px-2 py-0.5 h-full min-h-[20px] flex items-center">
+      <Badge className="bg-gray-200 text-gray-700 text-xs px-2 py-0.5">
         {formatStatus(status)}
       </Badge>
     );
@@ -206,7 +206,7 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
           {/* Row 1 */}
           <div className="flex items-center mb-3">
             {/* Status Indicator + Action Description (flexible, takes remaining space) */}
-            <div className="flex-1 flex items-start gap-3">
+            <div className="flex-1 flex items-center gap-3">
               {getStatusIndicator(action.status)}
               {action.description && (
                 <p 
@@ -250,7 +250,7 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
             {/* Project (flexible width) */}
             <div className="flex-1 flex items-center text-xs text-action-text-secondary ml-4">
               {action.project && (
-                <span className="flex items-center">
+                <span className="flex items-center italic">
                   {action.project.name}
                 </span>
               )}
@@ -281,18 +281,7 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
               )}
             </div>
             
-            {/* Edit Action (minimal width) */}
-            <div className="flex items-center justify-center ml-4">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => onEdit(action)}
-                className="p-1 text-action-text-secondary hover:text-primary rounded hover:bg-blue-50 h-6 w-6"
-                title="Edit Action"
-              >
-                <Edit className="h-3 w-3" />
-              </Button>
-            </div>
+
           </div>
         </>
       )}
@@ -301,9 +290,37 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
       <Dialog open={showFullDescription} onOpenChange={setShowFullDescription}>
         <DialogContent className="sm:max-w-2xl">
           <div className="mt-2">
-            <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
+            <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap mb-6">
               {action.description}
             </p>
+            <div className="flex justify-end gap-3 pt-4 border-t">
+              {action.status !== "closed" && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    onComplete(action.id);
+                    setShowFullDescription(false);
+                  }}
+                  className="flex items-center gap-2 text-green-600 border-green-600 hover:bg-green-50"
+                >
+                  <Check className="h-4 w-4" />
+                  Mark Complete
+                </Button>
+              )}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  onEdit(action);
+                  setShowFullDescription(false);
+                }}
+                className="flex items-center gap-2"
+              >
+                <Edit className="h-4 w-4" />
+                Edit Action
+              </Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
