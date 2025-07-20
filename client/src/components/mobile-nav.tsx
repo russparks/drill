@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { BarChart3, List, Plus, Building, BarChart } from "lucide-react";
+import { BarChart3, List, Plus, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface MobileNavProps {
@@ -38,15 +38,14 @@ export default function MobileNav({ onCreateAction }: MobileNavProps) {
           <Plus className="h-5 w-5" />
         </Button>
         
-        <button className="flex flex-col items-center p-2 text-action-text-secondary">
-          <Building className="h-5 w-5" />
-          <span className="text-xs mt-1">Projects</span>
-        </button>
-        
-        <button className="flex flex-col items-center p-2 text-action-text-secondary">
-          <BarChart className="h-5 w-5" />
-          <span className="text-xs mt-1">Reports</span>
-        </button>
+        <Link href="/manage">
+          <span className={`flex flex-col items-center p-2 cursor-pointer ${
+            location === "/manage" ? "text-primary" : "text-action-text-secondary"
+          }`}>
+            <Settings className="h-5 w-5" />
+            <span className="text-xs mt-1">Manage</span>
+          </span>
+        </Link>
       </div>
     </nav>
   );

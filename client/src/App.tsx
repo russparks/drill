@@ -8,6 +8,7 @@ import Navbar from "@/components/navbar";
 import MobileNav from "@/components/mobile-nav";
 import Dashboard from "@/pages/dashboard";
 import Actions from "@/pages/actions";
+import Manage from "@/pages/manage";
 import NotFound from "@/pages/not-found";
 import ActionForm from "@/components/action-form";
 
@@ -21,6 +22,7 @@ function Router() {
       <Switch>
         <Route path="/" component={Dashboard} />
         <Route path="/actions" component={Actions} />
+        <Route path="/manage" component={Manage} />
         <Route component={NotFound} />
       </Switch>
 

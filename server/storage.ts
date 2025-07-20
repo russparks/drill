@@ -19,11 +19,15 @@ export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  updateUser(id: number, updates: Partial<InsertUser>): Promise<User | undefined>;
+  deleteUser(id: number): Promise<boolean>;
   getAllUsers(): Promise<User[]>;
 
   // Projects
   getProject(id: number): Promise<Project | undefined>;
   createProject(project: InsertProject): Promise<Project>;
+  updateProject(id: number, updates: Partial<InsertProject>): Promise<Project | undefined>;
+  deleteProject(id: number): Promise<boolean>;
   getAllProjects(): Promise<Project[]>;
 
   // Actions
@@ -65,6 +69,20 @@ export class DatabaseStorage implements IStorage {
     return user;
   }
 
+  async updateUser(id: number, updates: Partial<InsertUser>): Promise<User | undefined> {
+    const [user] = await db
+      .update(users)
+      .set(updates)
+      .where(eq(users.id, id))
+      .returning();
+    return user || undefined;
+  }
+
+  async deleteUser(id: number): Promise<boolean> {
+    const result = await db.delete(users).where(eq(users.id, id));
+    return (result.rowCount || 0) > 0;
+  }
+
   async getAllUsers(): Promise<User[]> {
     return await db.select().from(users);
   }
@@ -81,6 +99,20 @@ export class DatabaseStorage implements IStorage {
       .values(insertProject)
       .returning();
     return project;
+  }
+
+  async updateProject(id: number, updates: Partial<InsertProject>): Promise<Project | undefined> {
+    const [project] = await db
+      .update(projects)
+      .set(updates)
+      .where(eq(projects.id, id))
+      .returning();
+    return project || undefined;
+  }
+
+  async deleteProject(id: number): Promise<boolean> {
+    const result = await db.delete(projects).where(eq(projects.id, id));
+    return (result.rowCount || 0) > 0;
   }
 
   async getAllProjects(): Promise<Project[]> {

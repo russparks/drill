@@ -34,6 +34,15 @@ export default function Navbar() {
                   Actions
                 </span>
               </Link>
+              <Link href="/manage">
+                <span className={`px-3 py-2 text-sm font-medium cursor-pointer ${
+                  location === "/manage" 
+                    ? "text-primary border-b-2 border-primary" 
+                    : "text-action-text-secondary hover:text-action-text-primary"
+                }`}>
+                  Manage
+                </span>
+              </Link>
             </nav>
           </div>
           <div className="hidden md:flex items-center space-x-4">
