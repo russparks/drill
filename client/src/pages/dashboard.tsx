@@ -91,6 +91,7 @@ export default function Dashboard() {
   };
 
   const handleCompleteAction = async (actionId: number) => {
+    console.log("handleCompleteAction called with actionId:", actionId);
     setConfirmDialog({ open: true, actionId });
   };
 
@@ -462,17 +463,11 @@ export default function Dashboard() {
       </Card>
 
       {/* Action Form Modal */}
-      {isActionFormOpen && (
-        <ActionForm
-          action={selectedAction}
-          onClose={() => setIsActionFormOpen(false)}
-          onSave={() => {
-            setIsActionFormOpen(false);
-            queryClient.invalidateQueries({ queryKey: ["/api/actions"] });
-            queryClient.invalidateQueries({ queryKey: ["/api/stats"] });
-          }}
-        />
-      )}
+      <ActionForm
+        isOpen={isActionFormOpen}
+        action={selectedAction}
+        onClose={() => setIsActionFormOpen(false)}
+      />
 
       {/* Confirm Dialog */}
       <ConfirmDialog
