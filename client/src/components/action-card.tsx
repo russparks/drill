@@ -102,20 +102,20 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
 
   return (
     <div className={`action-card border-b border-gray-100 last:border-b-0 p-4 ${isEven ? 'bg-gray-50' : 'bg-white'}`}>
-      {/* Row 1 */}
-      <div className={`flex items-start gap-4 mb-3 ${isMobile ? '' : ''}`}>
-        {/* Col 1: Action Description */}
-        <div className={`${isMobile ? 'w-[85%]' : 'w-[70%]'} flex-shrink-0`}>
-          {action.description && (
-            <p className="text-sm text-action-text-primary font-medium">{action.description}</p>
-          )}
-        </div>
-        
-        {/* Col 2: Status, Discipline, Phase */}
-        <div className={`${isMobile ? 'w-[15%]' : 'w-[30%]'} flex-shrink-0 flex ${isMobile ? 'flex-col' : 'flex-row'} items-start ${isMobile ? 'gap-1' : 'gap-2'} justify-end`}>
-          {isMobile ? (
-            <>
-              {/* Mobile: Just circles with first letters */}
+      {isMobile ? (
+        /* Mobile Layout */
+        <>
+          {/* Row 1 */}
+          <div className="flex items-start gap-4 mb-3">
+            {/* Col 1: Action Description */}
+            <div className="w-[85%] flex-shrink-0">
+              {action.description && (
+                <p className="text-sm text-action-text-primary font-medium">{action.description}</p>
+              )}
+            </div>
+            
+            {/* Col 2: Status, Discipline, Phase */}
+            <div className="w-[15%] flex-shrink-0 flex flex-col items-start gap-1 justify-end">
               <div className="flex items-center gap-1">
                 {getStatusIndicator(action.status)}
                 <div className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${getDisciplineColor(action.discipline)}`} title={formatDiscipline(action.discipline)}>
@@ -125,76 +125,147 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
                   {getFirstLetter(abbreviatePhase(action.phase))}
                 </div>
               </div>
-            </>
-          ) : (
-            <>
-              {/* Desktop: Full badges */}
+            </div>
+          </div>
+
+          {/* Row 2 */}
+          <div className="flex items-center justify-between gap-4">
+            {/* Col 1: Project, Assignee, Due Date */}
+            <div className="flex items-center gap-4 text-xs text-action-text-secondary flex-1">
+              {action.project && (
+                <span className="flex items-center">
+                  <Building className="w-3 h-3 mr-1" />
+                  {truncateText(action.project.name, 15)}
+                </span>
+              )}
+              {action.assignee && (
+                <span className="flex items-center" title={action.assignee.name}>
+                  <User className="w-3 h-3 mr-1" />
+                </span>
+              )}
+              {action.dueDate && (
+                <span className="flex items-center">
+                  <Calendar className="w-3 h-3 mr-1" />
+                  {format(new Date(action.dueDate), "MMM dd")}
+                  {workingDays && (
+                    <span className={`ml-2 font-medium ${workingDays.color}`}>
+                      {workingDays.text}
+                    </span>
+                  )}
+                </span>
+              )}
+            </div>
+            
+            {/* Col 2: Edit and Complete Actions */}
+            <div className="flex items-center gap-1">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => onEdit(action)}
+                className="p-1 text-action-text-secondary hover:text-primary rounded hover:bg-blue-50 h-6 w-6"
+                title="Edit Action"
+              >
+                <Edit className="h-3 w-3" />
+              </Button>
+              
+              {action.status !== "closed" && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => onComplete(action.id)}
+                  className="p-1 text-action-text-secondary hover:text-green-600 rounded hover:bg-green-50 h-6 w-6"
+                  title="Mark Complete"
+                >
+                  <Check className="h-3 w-3" />
+                </Button>
+              )}
+            </div>
+          </div>
+        </>
+      ) : (
+        /* Desktop Layout */
+        <>
+          {/* Row 1 */}
+          <div className="flex items-center gap-4 mb-3">
+            {/* Col 1: Status Indicator (10%) */}
+            <div className="w-[10%] flex-shrink-0 flex justify-center items-center">
               {getStatusIndicator(action.status)}
+            </div>
+            
+            {/* Col 2: Action Description (70%) */}
+            <div className="w-[70%] flex-shrink-0 flex items-center">
+              {action.description && (
+                <p className="text-sm text-action-text-primary font-medium">{action.description}</p>
+              )}
+            </div>
+            
+            {/* Col 3: Edit and Complete Actions (20%) */}
+            <div className="w-[20%] flex-shrink-0 flex items-center justify-center gap-1">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => onEdit(action)}
+                className="p-1 text-action-text-secondary hover:text-primary rounded hover:bg-blue-50 h-6 w-6"
+                title="Edit Action"
+              >
+                <Edit className="h-3 w-3" />
+              </Button>
+              
+              {action.status !== "closed" && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => onComplete(action.id)}
+                  className="p-1 text-action-text-secondary hover:text-green-600 rounded hover:bg-green-50 h-6 w-6"
+                  title="Mark Complete"
+                >
+                  <Check className="h-3 w-3" />
+                </Button>
+              )}
+            </div>
+          </div>
+
+          {/* Row 2 */}
+          <div className="flex items-center gap-4">
+            {/* Col 1: Project, Assignee, Due Date (80%) */}
+            <div className="w-[80%] flex-shrink-0 flex items-center gap-4 text-xs text-action-text-secondary">
+              {action.project && (
+                <span className="flex items-center">
+                  <Building className="w-3 h-3 mr-1" />
+                  {action.project.name}
+                </span>
+              )}
+              {action.assignee && (
+                <span className="flex items-center">
+                  <User className="w-3 h-3 mr-1" />
+                  {action.assignee.name}
+                </span>
+              )}
+              {action.dueDate && (
+                <span className="flex items-center">
+                  <Calendar className="w-3 h-3 mr-1" />
+                  {format(new Date(action.dueDate), "MMM dd, yyyy")}
+                  {workingDays && (
+                    <span className={`ml-2 font-medium ${workingDays.color}`}>
+                      {workingDays.text}
+                    </span>
+                  )}
+                </span>
+              )}
+            </div>
+            
+            {/* Col 2: Discipline and Phase (20%) */}
+            <div className="w-[20%] flex-shrink-0 flex items-center justify-evenly">
               <Badge className={`discipline-badge ${getDisciplineColor(action.discipline)} text-xs px-2 py-0.5`}>
                 {abbreviateDiscipline(action.discipline).toUpperCase()}
               </Badge>
               <Badge className={`phase-badge ${getPhaseColor(action.phase)} text-xs px-2 py-0.5`}>
                 {abbreviatePhase(action.phase).toUpperCase()}
               </Badge>
-            </>
-          )}
-        </div>
-      </div>
-
-      {/* Row 2 */}
-      <div className={`flex items-center justify-between gap-4`}>
-        {/* Col 1: Project, Assignee, Due Date */}
-        <div className="flex items-center gap-4 text-xs text-action-text-secondary flex-1">
-          {action.project && (
-            <span className="flex items-center">
-              <Building className="w-3 h-3 mr-1" />
-              {isMobile ? truncateText(action.project.name, 15) : action.project.name}
-            </span>
-          )}
-          {action.assignee && (
-            <span className="flex items-center" title={action.assignee.name}>
-              <User className="w-3 h-3 mr-1" />
-              {!isMobile && action.assignee.name}
-            </span>
-          )}
-          {action.dueDate && (
-            <span className="flex items-center">
-              <Calendar className="w-3 h-3 mr-1" />
-              {isMobile ? format(new Date(action.dueDate), "MMM dd") : format(new Date(action.dueDate), "MMM dd, yyyy")}
-              {workingDays && (
-                <span className={`ml-2 font-medium ${workingDays.color}`}>
-                  {workingDays.text}
-                </span>
-              )}
-            </span>
-          )}
-        </div>
-        
-        {/* Col 2: Edit and Complete Actions */}
-        <div className="flex items-center gap-1">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => onEdit(action)}
-            className="p-1 text-action-text-secondary hover:text-primary rounded hover:bg-blue-50 h-6 w-6"
-            title="Edit Action"
-          >
-            <Edit className="h-3 w-3" />
-          </Button>
-          
-          {action.status !== "closed" && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => onComplete(action.id)}
-              className="p-1 text-action-text-secondary hover:text-green-600 rounded hover:bg-green-50 h-6 w-6"
-              title="Mark Complete"
-            >
-              <Check className="h-3 w-3" />
-            </Button>
-          )}
-        </div>
-      </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
