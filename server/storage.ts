@@ -79,8 +79,20 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteUser(id: number): Promise<boolean> {
-    const result = await db.delete(users).where(eq(users.id, id));
-    return (result.rowCount || 0) > 0;
+    try {
+      // First check if user has any actions assigned
+      const userActions = await db.select().from(actions).where(eq(actions.assigneeId, id));
+      if (userActions.length > 0) {
+        // Set assigneeId to null for all actions assigned to this user
+        await db.update(actions).set({ assigneeId: null }).where(eq(actions.assigneeId, id));
+      }
+      
+      const result = await db.delete(users).where(eq(users.id, id));
+      return (result.rowCount || 0) > 0;
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      return false;
+    }
   }
 
   async getAllUsers(): Promise<User[]> {
@@ -111,8 +123,20 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteProject(id: number): Promise<boolean> {
-    const result = await db.delete(projects).where(eq(projects.id, id));
-    return (result.rowCount || 0) > 0;
+    try {
+      // First check if project has any actions
+      const projectActions = await db.select().from(actions).where(eq(actions.projectId, id));
+      if (projectActions.length > 0) {
+        // Set projectId to null for all actions in this project
+        await db.update(actions).set({ projectId: null }).where(eq(actions.projectId, id));
+      }
+      
+      const result = await db.delete(projects).where(eq(projects.id, id));
+      return (result.rowCount || 0) > 0;
+    } catch (error) {
+      console.error('Error deleting project:', error);
+      return false;
+    }
   }
 
   async getAllProjects(): Promise<Project[]> {
