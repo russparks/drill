@@ -17,7 +17,7 @@ function Router() {
 
   return (
     <div className="min-h-screen bg-action-surface">
-      <Navbar />
+      <Navbar onCreateAction={() => setIsActionFormOpen(true)} />
       
       <Switch>
         <Route path="/" component={Dashboard} />

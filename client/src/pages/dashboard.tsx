@@ -168,12 +168,7 @@ export default function Dashboard() {
           <div className="flex-1 min-w-0">
             {/* Removed dashboard title and subtitle */}
           </div>
-          <div className="mt-4 md:mt-0 md:ml-4">
-            <Button onClick={handleCreateAction} className="material-shadow">
-              <Plus className="h-4 w-4 mr-2" />
-              New Action
-            </Button>
-          </div>
+
         </div>
 
         {/* Filter Buttons in Three Rows */}

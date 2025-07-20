@@ -1,9 +1,13 @@
 import { Link, useLocation } from "wouter";
-import { HardHat, Bell, Menu } from "lucide-react";
+import { Plus, Bell, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
-export default function Navbar() {
+interface NavbarProps {
+  onCreateAction?: () => void;
+}
+
+export default function Navbar({ onCreateAction }: NavbarProps) {
   const [location] = useLocation();
 
   return (
@@ -12,7 +16,6 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <HardHat className="text-primary text-2xl mr-3" />
               <span className="text-xl font-medium text-action-text-primary">Action Track</span>
             </div>
             <nav className="hidden md:ml-8 md:flex md:space-x-8">
@@ -46,6 +49,10 @@ export default function Navbar() {
             </nav>
           </div>
           <div className="hidden md:flex items-center space-x-4">
+            <Button size="sm" className="ml-4" onClick={onCreateAction}>
+              <Plus className="h-4 w-4 mr-1" />
+              Action
+            </Button>
             <Button variant="ghost" size="icon">
               <Bell className="h-5 w-5" />
             </Button>

@@ -19,19 +19,19 @@
   --card-foreground: hsl(0, 0%, 13%);
   --border: hsl(0, 0%, 90%);
   --input: hsl(0, 0%, 90%);
-  --primary: hsl(207, 90%, 54%);
-  --primary-foreground: hsl(211, 100%, 99%);
+  --primary: hsl(350, 61%, 50%);
+  --primary-foreground: hsl(0, 0%, 98%);
   --secondary: hsl(0, 0%, 98%);
   --secondary-foreground: hsl(0, 0%, 6%);
   --accent: hsl(0, 0%, 98%);
   --accent-foreground: hsl(0, 0%, 6%);
   --destructive: hsl(0, 84%, 60%);
   --destructive-foreground: hsl(0, 0%, 98%);
-  --ring: hsl(207, 90%, 54%);
+  --ring: hsl(350, 61%, 50%);
   --radius: 0.5rem;
 
   /* Custom Action Track colors */
-  --action-primary: hsl(207, 90%, 54%);
+  --action-primary: hsl(350, 61%, 50%);
   --action-secondary: hsl(122, 39%, 49%);
   --action-accent: hsl(32, 100%, 47%);
   --action-surface: hsl(0, 0%, 98%);
@@ -52,8 +52,8 @@
   --card-foreground: hsl(0, 0%, 98%);
   --border: hsl(240, 4%, 16%);
   --input: hsl(240, 4%, 16%);
-  --primary: hsl(207, 90%, 54%);
-  --primary-foreground: hsl(211, 100%, 99%);
+  --primary: hsl(350, 61%, 50%);
+  --primary-foreground: hsl(0, 0%, 98%);
   --secondary: hsl(240, 4%, 16%);
   --secondary-foreground: hsl(0, 0%, 98%);
   --accent: hsl(240, 4%, 16%);
