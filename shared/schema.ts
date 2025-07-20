@@ -67,6 +67,8 @@ export const insertActionSchema = createInsertSchema(actions).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
+}).extend({
+  dueDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
 });
 
 export const updateActionSchema = insertActionSchema.partial();

@@ -35,7 +35,6 @@ import { z } from "zod";
 const actionFormSchema = insertActionSchema.extend({
   assigneeId: z.number().optional().nullable(),
   projectId: z.number().optional().nullable(),
-  dueDate: z.string().optional().nullable(),
   newProjectName: z.string().optional(),
   newPersonName: z.string().optional(),
   newPersonEmail: z.string().optional(),
@@ -43,7 +42,6 @@ const actionFormSchema = insertActionSchema.extend({
   ...data,
   assigneeId: data.assigneeId || null,
   projectId: data.projectId || null,
-  dueDate: data.dueDate ? new Date(data.dueDate) : null,
 }));
 
 type ActionFormData = z.infer<typeof actionFormSchema>;
@@ -206,11 +204,6 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
       
       // Remove the temporary fields and convert dueDate to proper format
       const { newProjectName, newPersonName, newPersonEmail, ...actionData } = finalData;
-      
-      // Convert dueDate string to Date object if it exists
-      if (actionData.dueDate) {
-        actionData.dueDate = new Date(actionData.dueDate);
-      }
       
       console.log('Submitting action data:', actionData);
       
