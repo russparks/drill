@@ -93,25 +93,8 @@ export default function Dashboard() {
 
         {/* Filter Buttons in Two Rows */}
         <div className="space-y-3 mb-8">
-          {/* Row 1: open - precon - production - design - commercial */}
+          {/* Row 1: precon - production - design - commercial */}
           <div className="flex flex-wrap items-center gap-3">
-            <button
-              onClick={() => handleStatusFilter("open")}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                statusFilter === "open" 
-                  ? "bg-red-500 text-white" 
-                  : "bg-red-100 text-red-800 hover:bg-red-200"
-              }`}
-            >
-              <span>Open</span>
-              <span className={`px-2 py-0.5 rounded-full text-xs ${
-                statusFilter === "open"
-                  ? "bg-red-400 text-white"
-                  : "bg-red-200 text-red-800"
-              }`}>
-                {stats?.open || 0}
-              </span>
-            </button>
             <button
               onClick={() => handleDisciplineFilter("precon")}
               className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
@@ -180,10 +163,31 @@ export default function Dashboard() {
                 {currentActions.filter((a: any) => a.discipline === "commercial").length}
               </span>
             </button>
+            
+            <div className="ml-auto">
+              <ProjectsDropdown onProjectSelect={handleProjectSelect} selectedProjectId={projectFilter} />
+            </div>
           </div>
 
-          {/* Row 2: closed - tender - aftercare - projects dropdown */}
+          {/* Row 2: open - closed - tender - aftercare */}
           <div className="flex flex-wrap items-center gap-3">
+            <button
+              onClick={() => handleStatusFilter("open")}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                statusFilter === "open" 
+                  ? "bg-red-500 text-white" 
+                  : "bg-red-100 text-red-800 hover:bg-red-200"
+              }`}
+            >
+              <span>Open</span>
+              <span className={`px-2 py-0.5 rounded-full text-xs ${
+                statusFilter === "open"
+                  ? "bg-red-400 text-white"
+                  : "bg-red-200 text-red-800"
+              }`}>
+                {stats?.open || 0}
+              </span>
+            </button>
             <button
               onClick={() => handleStatusFilter("closed")}
               className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
@@ -235,10 +239,6 @@ export default function Dashboard() {
                 {currentActions.filter((a: any) => a.discipline === "aftercare").length}
               </span>
             </button>
-            
-            <div className="ml-auto">
-              <ProjectsDropdown onProjectSelect={handleProjectSelect} selectedProjectId={projectFilter} />
-            </div>
           </div>
         </div>
       </div>
