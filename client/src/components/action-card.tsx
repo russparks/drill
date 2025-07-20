@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ActionWithRelations } from "@shared/schema";
 import { format, differenceInBusinessDays } from "date-fns";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ActionCardProps {
   action: ActionWithRelations;
@@ -12,12 +13,39 @@ interface ActionCardProps {
 }
 
 export default function ActionCard({ action, onEdit, onComplete, isEven }: ActionCardProps) {
+  const isMobile = useIsMobile();
+  
   const formatStatus = (status: string) => {
     return status.charAt(0).toUpperCase() + status.slice(1).replace('-', ' ');
   };
 
   const formatDiscipline = (discipline: string) => {
     return discipline.charAt(0).toUpperCase() + discipline.slice(1);
+  };
+
+  const abbreviateDiscipline = (discipline: string) => {
+    switch (discipline) {
+      case "operations": return "Ops";
+      case "commercial": return "Comm";
+      case "design": return "Des";
+      case "she": return "SHE";
+      case "qa": return "QA";
+      default: return discipline;
+    }
+  };
+
+  const abbreviatePhase = (phase: string) => {
+    switch (phase) {
+      case "tender": return "Ten";
+      case "precon": return "Pre";
+      case "construction": return "Con";
+      case "aftercare": return "Aft";
+      default: return phase;
+    }
+  };
+
+  const getFirstName = (fullName: string) => {
+    return fullName.split(' ')[0];
   };
 
   const getStatusIndicator = (status: string) => {
@@ -69,14 +97,14 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-medium text-action-text-primary flex-1 mr-4">{action.title}</h3>
+
             <div className="flex items-center space-x-2">
               {getStatusIndicator(action.status)}
               <Badge className={`discipline-badge ${getDisciplineColor(action.discipline)} text-xs px-2 py-0.5`}>
-                {formatDiscipline(action.discipline).toUpperCase()}
+                {abbreviateDiscipline(action.discipline).toUpperCase()}
               </Badge>
               <Badge className={`phase-badge ${getPhaseColor(action.phase)} text-xs px-2 py-0.5`}>
-                {action.phase?.toUpperCase()}
+                {abbreviatePhase(action.phase).toUpperCase()}
               </Badge>
               <div className="flex items-center space-x-1">
                 <Button
@@ -112,7 +140,7 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
             {action.assignee && (
               <span className="flex items-center">
                 <User className="w-3 h-3 mr-1" />
-                {action.assignee.name}
+                {isMobile ? getFirstName(action.assignee.name) : action.assignee.name}
               </span>
             )}
             {action.dueDate && (

@@ -7,6 +7,8 @@ Action Track is a full-stack project management application built for constructi
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+Preferred interface style: Extremely clean, minimal interface with no titles or subtitles in action lists, custom modals preferred over browser dialogs, slim design elements.
+Mobile optimization requirements: Abbreviated phases (Ten/Pre/Con/Aft) and disciplines (Ops/Comm/Des/SHE/QA) in action cards, first name only for assignees on small screens.
 
 ## System Architecture
 
