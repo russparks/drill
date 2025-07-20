@@ -1,0 +1,161 @@
+import type { Express } from "express";
+import { createServer, type Server } from "http";
+import { storage } from "./storage";
+import { insertActionSchema, updateActionSchema, insertProjectSchema, insertUserSchema } from "@shared/schema";
+import { z } from "zod";
+
+export async function registerRoutes(app: Express): Promise<Server> {
+  
+  // Actions routes
+  app.get("/api/actions", async (req, res) => {
+    try {
+      const filters = {
+        discipline: req.query.discipline as string,
+        status: req.query.status as string,
+        assigneeId: req.query.assigneeId ? parseInt(req.query.assigneeId as string) : undefined,
+        projectId: req.query.projectId ? parseInt(req.query.projectId as string) : undefined,
+        search: req.query.search as string,
+      };
+
+      // Remove undefined values
+      const cleanFilters = Object.fromEntries(
+        Object.entries(filters).filter(([_, value]) => value !== undefined)
+      );
+
+      const actions = await storage.getAllActions(cleanFilters);
+      res.json(actions);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch actions" });
+    }
+  });
+
+  app.get("/api/actions/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const action = await storage.getAction(id);
+      
+      if (!action) {
+        return res.status(404).json({ message: "Action not found" });
+      }
+      
+      res.json(action);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch action" });
+    }
+  });
+
+  app.post("/api/actions", async (req, res) => {
+    try {
+      const validatedData = insertActionSchema.parse(req.body);
+      const action = await storage.createAction(validatedData);
+      res.status(201).json(action);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create action" });
+    }
+  });
+
+  app.patch("/api/actions/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const validatedData = updateActionSchema.parse(req.body);
+      const action = await storage.updateAction(id, validatedData);
+      
+      if (!action) {
+        return res.status(404).json({ message: "Action not found" });
+      }
+      
+      res.json(action);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to update action" });
+    }
+  });
+
+  app.delete("/api/actions/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const success = await storage.deleteAction(id);
+      
+      if (!success) {
+        return res.status(404).json({ message: "Action not found" });
+      }
+      
+      res.status(204).send();
+    } catch (error) {
+      res.status(500).json({ message: "Failed to delete action" });
+    }
+  });
+
+  // Stats route
+  app.get("/api/stats", async (req, res) => {
+    try {
+      const actionStats = await storage.getActionStats();
+      const projects = await storage.getAllProjects();
+      const users = await storage.getAllUsers();
+      
+      const stats = {
+        ...actionStats,
+        projects: projects.filter(p => p.status === 'active').length,
+        teamMembers: users.length,
+      };
+      
+      res.json(stats);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch stats" });
+    }
+  });
+
+  // Users routes
+  app.get("/api/users", async (req, res) => {
+    try {
+      const users = await storage.getAllUsers();
+      res.json(users);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch users" });
+    }
+  });
+
+  app.post("/api/users", async (req, res) => {
+    try {
+      const validatedData = insertUserSchema.parse(req.body);
+      const user = await storage.createUser(validatedData);
+      res.status(201).json(user);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create user" });
+    }
+  });
+
+  // Projects routes
+  app.get("/api/projects", async (req, res) => {
+    try {
+      const projects = await storage.getAllProjects();
+      res.json(projects);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch projects" });
+    }
+  });
+
+  app.post("/api/projects", async (req, res) => {
+    try {
+      const validatedData = insertProjectSchema.parse(req.body);
+      const project = await storage.createProject(validatedData);
+      res.status(201).json(project);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create project" });
+    }
+  });
+
+  const httpServer = createServer(app);
+  return httpServer;
+}
