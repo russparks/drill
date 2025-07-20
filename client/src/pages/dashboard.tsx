@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { Plus, AlertCircle, ChevronLeft, ChevronRight } from "lucide-react";
+import { Plus, AlertCircle, ChevronLeft, ChevronRight, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -205,7 +205,7 @@ export default function Dashboard() {
             </button>
             </div>
             {statusFilter && (
-              <div className="w-2 h-2 bg-[#cc3333] rounded-full ml-2"></div>
+              <Filter className="w-4 h-4 text-gray-500 ml-2" />
             )}
           </div>
 
@@ -281,7 +281,7 @@ export default function Dashboard() {
             </button>
             </div>
             {disciplineFilter && (
-              <div className="w-2 h-2 bg-[#cc3333] rounded-full ml-2"></div>
+              <Filter className="w-4 h-4 text-gray-500 ml-2" />
             )}
           </div>
 
@@ -346,7 +346,7 @@ export default function Dashboard() {
             </button>
             </div>
             {phaseFilter && (
-              <div className="w-2 h-2 bg-[#cc3333] rounded-full ml-2"></div>
+              <Filter className="w-4 h-4 text-gray-500 ml-2" />
             )}
           </div>
         </div>
