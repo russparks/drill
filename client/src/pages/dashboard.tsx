@@ -259,6 +259,16 @@ export default function Dashboard() {
             >
               QA
             </button>
+            <button
+              onClick={() => handleDisciplineFilter("general")}
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
+                disciplineFilter === "general" 
+                  ? "bg-gray-600 text-white" 
+                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+              }`}
+            >
+              GENERAL
+            </button>
           </div>
 
           {/* Row 3: Phase */}
@@ -302,6 +312,16 @@ export default function Dashboard() {
               }`}
             >
               AFTERCARE
+            </button>
+            <button
+              onClick={() => handlePhaseFilter("strategy")}
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
+                phaseFilter === "strategy" 
+                  ? "bg-black text-white" 
+                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+              }`}
+            >
+              STRATEGY
             </button>
           </div>
         </div>
