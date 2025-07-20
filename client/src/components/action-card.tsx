@@ -2,7 +2,7 @@ import { Edit, Check, User, Calendar, Building } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ActionWithRelations } from "@shared/schema";
-import { format } from "date-fns";
+import { format, differenceInDays, isPast } from "date-fns";
 
 interface ActionCardProps {
   action: ActionWithRelations;
@@ -39,18 +39,38 @@ export default function ActionCard({ action, onEdit, onComplete }: ActionCardPro
     return discipline.charAt(0).toUpperCase() + discipline.slice(1);
   };
 
+  const getDaysRemaining = (dueDate: string | null) => {
+    if (!dueDate) return null;
+    const days = differenceInDays(new Date(dueDate), new Date());
+    if (days === 0) return "Due today";
+    if (days === 1) return "1 day remaining";
+    if (days > 1) return `${days} days remaining`;
+    if (days === -1) return "1 day overdue";
+    return `${Math.abs(days)} days overdue`;
+  };
+
+  const getDueDateColor = (dueDate: string | null) => {
+    if (!dueDate) return "";
+    const days = differenceInDays(new Date(dueDate), new Date());
+    if (days < 0) return "text-red-600"; // overdue
+    if (days <= 3) return "text-orange-600"; // due soon
+    return "text-gray-600"; // normal
+  };
+
   return (
-    <div className="action-card border-b border-gray-100 last:border-b-0">
+    <div className="action-card border-b border-gray-100 last:border-b-0 p-4">
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <div className="flex items-center space-x-3 mb-2">
-            <h3 className="text-sm font-medium text-action-text-primary">{action.title}</h3>
-            <Badge className={`status-badge ${getStatusColor(action.status)}`}>
-              {formatStatus(action.status)}
-            </Badge>
-            <Badge className={`discipline-badge ${getDisciplineColor(action.discipline)}`}>
-              {formatDiscipline(action.discipline)}
-            </Badge>
+          <div className="flex items-start justify-between mb-2">
+            <h3 className="text-sm font-medium text-action-text-primary flex-1">{action.title}</h3>
+            <div className="flex items-center space-x-2 ml-4">
+              <Badge className={`status-badge ${getStatusColor(action.status)}`}>
+                {formatStatus(action.status)}
+              </Badge>
+              <Badge className={`discipline-badge ${getDisciplineColor(action.discipline)}`}>
+                {formatDiscipline(action.discipline)}
+              </Badge>
+            </div>
           </div>
           
           {action.description && (
@@ -61,17 +81,24 @@ export default function ActionCard({ action, onEdit, onComplete }: ActionCardPro
             {action.assignee && (
               <span className="flex items-center">
                 <User className="w-3 h-3 mr-1" />
-                Assigned to: {action.assignee.name}
+                {action.assignee.name}
               </span>
             )}
-            <span className="flex items-center">
-              <Calendar className="w-3 h-3 mr-1" />
-              Created: {format(new Date(action.createdAt), "MMM dd, yyyy")}
-            </span>
+            {action.dueDate && (
+              <span className="flex items-center">
+                <Calendar className="w-3 h-3 mr-1" />
+                Due: {format(new Date(action.dueDate), "MMM dd, yyyy")}
+              </span>
+            )}
+            {action.dueDate && (
+              <span className={`flex items-center font-medium ${getDueDateColor(action.dueDate)}`}>
+                {getDaysRemaining(action.dueDate)}
+              </span>
+            )}
             {action.project && (
               <span className="flex items-center">
                 <Building className="w-3 h-3 mr-1" />
-                Project: {action.project.name}
+                {action.project.name}
               </span>
             )}
           </div>
