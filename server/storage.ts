@@ -36,6 +36,7 @@ export interface IStorage {
     discipline?: string;
     status?: string;
     assigneeId?: number;
+    assignee?: string;
     projectId?: number;
     search?: string;
   }): Promise<ActionWithRelations[]>;
@@ -166,6 +167,7 @@ export class DatabaseStorage implements IStorage {
     phase?: string;
     status?: string;
     assigneeId?: number;
+    assignee?: string;
     projectId?: number;
     search?: string;
   }): Promise<ActionWithRelations[]> {
@@ -185,6 +187,10 @@ export class DatabaseStorage implements IStorage {
 
     if (filters?.assigneeId) {
       conditions.push(eq(actions.assigneeId, filters.assigneeId));
+    }
+
+    if (filters?.assignee) {
+      conditions.push(ilike(users.name, `%${filters.assignee}%`));
     }
 
     if (filters?.projectId) {

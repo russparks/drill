@@ -14,6 +14,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         phase: req.query.phase as string,
         status: req.query.status as string,
         assigneeId: req.query.assigneeId ? parseInt(req.query.assigneeId as string) : undefined,
+        assignee: req.query.assignee as string,
         projectId: req.query.projectId ? parseInt(req.query.projectId as string) : undefined,
         search: req.query.search as string,
       };

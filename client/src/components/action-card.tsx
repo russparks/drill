@@ -11,10 +11,11 @@ interface ActionCardProps {
   action: ActionWithRelations;
   onEdit: (action: ActionWithRelations) => void;
   onComplete: (actionId: number) => void;
+  onAssigneeClick?: (assignee: string) => void;
   isEven: boolean;
 }
 
-export default function ActionCard({ action, onEdit, onComplete, isEven }: ActionCardProps) {
+export default function ActionCard({ action, onEdit, onComplete, onAssigneeClick, isEven }: ActionCardProps) {
   const isMobile = useIsMobile();
   const [showFullDescription, setShowFullDescription] = useState(false);
   
@@ -171,8 +172,13 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
                 </span>
               )}
               {action.assignee && (
-                <span className="flex items-center" title={action.assignee.name}>
+                <span 
+                  className="flex items-center cursor-pointer hover:text-blue-600 hover:underline" 
+                  title={`Filter by ${action.assignee.name}`}
+                  onClick={() => action.assignee && onAssigneeClick?.(action.assignee.name)}
+                >
                   <User className="w-3 h-3 mr-1" />
+                  {getFirstName(action.assignee.name)}
                 </span>
               )}
               {action.dueDate && (
@@ -273,7 +279,11 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
             {/* Assignee (24%) */}
             <div className="w-[24%] flex-shrink-0 flex items-center justify-end text-xs text-action-text-secondary pr-[5px]">
               {action.assignee && (
-                <span className="flex items-center">
+                <span 
+                  className="flex items-center cursor-pointer hover:text-blue-600 hover:underline"
+                  title={`Filter by ${action.assignee.name}`}
+                  onClick={() => action.assignee && onAssigneeClick?.(action.assignee.name)}
+                >
                   <User className="w-3 h-3 mr-1" />
                   {getInitialsAndSurname(action.assignee.name)}
                 </span>

@@ -20,6 +20,7 @@ export default function Dashboard() {
   const [projectFilter, setProjectFilter] = useState<number | null>(null);
   const [disciplineFilter, setDisciplineFilter] = useState<string>("");
   const [phaseFilter, setPhaseFilter] = useState<string>("");
+  const [assigneeFilter, setAssigneeFilter] = useState<string>("");
   const [pageSize, setPageSize] = useState<string>("25");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [confirmDialog, setConfirmDialog] = useState<{
@@ -32,7 +33,7 @@ export default function Dashboard() {
   });
 
   const { data: currentActions = [], isLoading: actionsLoading } = useQuery({
-    queryKey: ["/api/actions", { status: statusFilter, projectId: projectFilter, discipline: disciplineFilter, phase: phaseFilter }],
+    queryKey: ["/api/actions", { status: statusFilter, projectId: projectFilter, discipline: disciplineFilter, phase: phaseFilter, assignee: assigneeFilter }],
     queryFn: ({ queryKey }) => {
       const [url, params] = queryKey as [string, any];
       const searchParams = new URLSearchParams();
@@ -47,6 +48,7 @@ export default function Dashboard() {
       if (params.projectId) searchParams.append("projectId", params.projectId.toString());
       if (params.discipline) searchParams.append("discipline", params.discipline);
       if (params.phase) searchParams.append("phase", params.phase);
+      if (params.assignee) searchParams.append("assignee", params.assignee);
       
       const queryString = searchParams.toString();
       return fetch(`${url}${queryString ? `?${queryString}` : ""}`).then(res => res.json()).then((actions: any[]) => {
@@ -67,7 +69,7 @@ export default function Dashboard() {
     queryKey: ["/api/actions"],
   });
 
-  const { data: projects } = useQuery({
+  const { data: projects } = useQuery<Project[]>({
     queryKey: ["/api/projects"],
   });
 
@@ -122,6 +124,11 @@ export default function Dashboard() {
   const handleProjectSelect = (project: Project) => {
     console.log("Selected project:", project.name);
     setProjectFilter(projectFilter === project.id ? null : project.id);
+    setCurrentPage(1);
+  };
+
+  const handleAssigneeFilter = (assignee: string) => {
+    setAssigneeFilter(assigneeFilter === assignee ? "" : assignee);
     setCurrentPage(1);
   };
 
@@ -383,7 +390,7 @@ export default function Dashboard() {
         <div className="pl-4 pr-6 py-4 border-b border-gray-200 flex justify-between items-center">
           <h2 className="text-lg font-medium text-action-text-primary">
             Current Actions ({totalActions})
-            {(statusFilter || disciplineFilter || phaseFilter || projectFilter) && (
+            {(statusFilter || disciplineFilter || phaseFilter || projectFilter || assigneeFilter) && (
               <span className="text-gray-500">
                 {' - '}
                 <span className="inline-flex items-center gap-2">
@@ -439,6 +446,15 @@ export default function Dashboard() {
                       </span>
                     </>
                   )}
+                  {assigneeFilter && (
+                    <>
+                      {(statusFilter || disciplineFilter || phaseFilter || projectFilter) && <span>,</span>}
+                      <span className="relative">
+                        {assigneeFilter}
+                        <div className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-green-500" />
+                      </span>
+                    </>
+                  )}
                 </span>
               </span>
             )}
@@ -477,6 +493,7 @@ export default function Dashboard() {
                     action={action}
                     onEdit={handleEditAction}
                     onComplete={handleCompleteAction}
+                    onAssigneeClick={handleAssigneeFilter}
                     isEven={index % 2 === 0}
                   />
                 ))}
