@@ -194,19 +194,19 @@ export default function Dashboard() {
                   ? "bg-gray-500 text-white" 
                   : statusFilter && statusFilter !== "closed"
                     ? "bg-gray-100 text-gray-400 cursor-default"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    : "bg-gray-500 text-white hover:bg-gray-600"
               }`}
             >
               CLOSED
             </button>
             <button
               onClick={() => handleStatusFilter("overdue")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
                 statusFilter === "overdue" 
-                  ? "bg-red-600 text-white" 
+                  ? "bg-red-600 text-white border-red-600" 
                   : statusFilter && statusFilter !== "overdue"
-                    ? "bg-gray-100 text-gray-400 cursor-default"
-                    : "bg-red-100 text-red-800 hover:bg-red-200"
+                    ? "bg-gray-100 text-gray-400 border-gray-300 cursor-default"
+                    : "bg-gray-200 text-black border-red-500 hover:bg-gray-300"
               }`}
             >
               OVERDUE
