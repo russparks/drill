@@ -43,10 +43,7 @@ export default function Dashboard() {
 
   const completeActionMutation = useMutation({
     mutationFn: (actionId: number) => 
-      apiRequest(`/api/actions/${actionId}`, {
-        method: "PATCH",
-        body: JSON.stringify({ status: "closed" }),
-      }),
+      apiRequest("PATCH", `/api/actions/${actionId}`, { status: "closed" }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/actions"] });
       queryClient.invalidateQueries({ queryKey: ["/api/stats"] });
