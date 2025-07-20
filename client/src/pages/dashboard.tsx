@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { Plus, AlertCircle, Clock, CheckCircle, Users, HardHat, Hammer, Palette, DollarSign, MoreHorizontal } from "lucide-react";
+import { Plus, AlertCircle, Clock, CheckCircle, Users, HardHat, Hammer, Palette, DollarSign, MoreHorizontal, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -20,6 +20,7 @@ export default function Dashboard() {
   const [projectFilter, setProjectFilter] = useState<number | null>(null);
   const [disciplineFilter, setDisciplineFilter] = useState<string>("");
   const [pageSize, setPageSize] = useState<string>("25");
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [confirmDialog, setConfirmDialog] = useState<{
     open: boolean;
     actionId: number | null;
@@ -81,15 +82,39 @@ export default function Dashboard() {
 
   const handleStatusFilter = (status: string) => {
     setStatusFilter(statusFilter === status ? "" : status);
+    setCurrentPage(1);
   };
 
   const handleDisciplineFilter = (discipline: string) => {
     setDisciplineFilter(disciplineFilter === discipline ? "" : discipline);
+    setCurrentPage(1);
   };
 
   const handleProjectSelect = (project: Project) => {
     console.log("Selected project:", project.name);
     setProjectFilter(projectFilter === project.id ? null : project.id);
+    setCurrentPage(1);
+  };
+
+  const handlePageSizeChange = (newPageSize: string) => {
+    setPageSize(newPageSize);
+    setCurrentPage(1);
+  };
+
+  // Calculate pagination
+  const totalActions = currentActions.length;
+  const actionsPerPage = pageSize === "All" ? totalActions : parseInt(pageSize);
+  const totalPages = pageSize === "All" ? 1 : Math.ceil(totalActions / actionsPerPage);
+  const startIndex = (currentPage - 1) * actionsPerPage;
+  const endIndex = pageSize === "All" ? totalActions : startIndex + actionsPerPage;
+  const paginatedActions = currentActions.slice(startIndex, endIndex);
+
+  const goToPreviousPage = () => {
+    setCurrentPage(prev => Math.max(1, prev - 1));
+  };
+
+  const goToNextPage = () => {
+    setCurrentPage(prev => Math.min(totalPages, prev + 1));
   };
 
   if (statsLoading) {
@@ -312,39 +337,74 @@ export default function Dashboard() {
             <div>
               {/* Actions List */}
               <div>
-                {(currentActions as ActionWithRelations[])
-                  .slice(0, pageSize === "All" ? undefined : parseInt(pageSize))
-                  .map((action, index) => (
-                    <ActionCard
-                      key={action.id}
-                      action={action}
-                      onEdit={handleEditAction}
-                      onComplete={handleCompleteAction}
-                      index={index}
-                    />
-                  ))}
+                {(paginatedActions as ActionWithRelations[]).map((action, index) => (
+                  <ActionCard
+                    key={action.id}
+                    action={action}
+                    onEdit={handleEditAction}
+                    onComplete={handleCompleteAction}
+                    index={startIndex + index}
+                  />
+                ))}
               </div>
               
-              {/* Page Size Selector */}
-              <div className="p-4 border-t bg-gray-50 flex justify-center">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-600">Show:</span>
-                  <Select value={pageSize} onValueChange={setPageSize}>
-                    <SelectTrigger className="w-20">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="All">All</SelectItem>
-                      <SelectItem value="25">25</SelectItem>
-                      <SelectItem value="50">50</SelectItem>
-                      <SelectItem value="75">75</SelectItem>
-                      <SelectItem value="100">100</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <span className="text-sm text-gray-600">
-                    of {currentActions.length} actions
-                  </span>
+              {/* Pagination Controls */}
+              <div className="p-4 border-t bg-gray-50">
+                <div className="flex items-center justify-between">
+                  {/* Left side - Navigation */}
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={goToPreviousPage}
+                      disabled={currentPage <= 1}
+                      className={`${currentPage <= 1 ? 'text-gray-400 cursor-not-allowed' : ''}`}
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                    
+                    <span className="text-sm text-gray-600">
+                      Page {currentPage} of {totalPages}
+                    </span>
+                    
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={goToNextPage}
+                      disabled={currentPage >= totalPages}
+                      className={`${currentPage >= totalPages ? 'text-gray-400 cursor-not-allowed' : ''}`}
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  
+                  {/* Right side - Page size selector */}
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-600">Show:</span>
+                    <Select value={pageSize} onValueChange={handlePageSizeChange}>
+                      <SelectTrigger className="w-20">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="All">All</SelectItem>
+                        <SelectItem value="25">25</SelectItem>
+                        <SelectItem value="50">50</SelectItem>
+                        <SelectItem value="75">75</SelectItem>
+                        <SelectItem value="100">100</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <span className="text-sm text-gray-600">
+                      of {totalActions} actions
+                    </span>
+                  </div>
                 </div>
+                
+                {/* Show range info */}
+                {pageSize !== "All" && totalActions > 0 && (
+                  <div className="text-center mt-2 text-xs text-gray-500">
+                    Showing {startIndex + 1}-{Math.min(endIndex, totalActions)} of {totalActions}
+                  </div>
+                )}
               </div>
             </div>
           )}
