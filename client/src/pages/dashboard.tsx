@@ -167,9 +167,9 @@ export default function Dashboard() {
         {/* Filter Buttons in Three Rows */}
         <div className="space-y-3 mb-4">
           {/* Row 1: Status */}
-          <div className="border border-dotted border-gray-300 rounded p-3">
-            <div className="text-sm text-gray-500 mb-2 font-medium">Status:</div>
-            <div className="flex flex-wrap items-center gap-2">
+          <div className="border border-dotted border-gray-300 rounded p-3" style={{"borderWidth": "3px", "borderStyle": "dotted"}}>
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="text-sm text-gray-500 font-medium">Status:</div>
             <button
               onClick={() => handleStatusFilter("open")}
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
@@ -207,9 +207,9 @@ export default function Dashboard() {
           </div>
 
           {/* Row 2: Discipline */}
-          <div className="border border-dotted border-gray-300 rounded p-3">
-            <div className="text-sm text-gray-500 mb-2 font-medium">Discipline:</div>
-            <div className="flex flex-wrap items-center gap-2">
+          <div className="border border-dotted border-gray-300 rounded p-3" style={{"borderWidth": "3px", "borderStyle": "dotted"}}>
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="text-sm text-gray-500 font-medium">Discipline:</div>
             <button
               onClick={() => handleDisciplineFilter("operations")}
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
@@ -280,9 +280,9 @@ export default function Dashboard() {
           </div>
 
           {/* Row 3: Phase */}
-          <div className="border border-dotted border-gray-300 rounded p-3">
-            <div className="text-sm text-gray-500 mb-2 font-medium">Process:</div>
-            <div className="flex flex-wrap items-center gap-2">
+          <div className="border border-dotted border-gray-300 rounded p-3" style={{"borderWidth": "3px", "borderStyle": "dotted"}}>
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="text-sm text-gray-500 font-medium">Process:</div>
             <button
               onClick={() => handlePhaseFilter("tender")}
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
