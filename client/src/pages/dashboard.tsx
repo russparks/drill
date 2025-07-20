@@ -180,54 +180,33 @@ export default function Dashboard() {
           <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => handleStatusFilter("open")}
-              className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium transition-colors ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 statusFilter === "open" 
                   ? "bg-red-500 text-white" 
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
               }`}
             >
-              <span>OPEN</span>
-              <span className={`px-1.5 py-0.5 rounded-full text-xs ${
-                statusFilter === "open"
-                  ? "bg-red-400 text-white"
-                  : "bg-gray-200 text-gray-700"
-              }`}>
-                {stats?.open || 0}
-              </span>
+              OPEN
             </button>
             <button
               onClick={() => handleStatusFilter("closed")}
-              className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium transition-colors ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 statusFilter === "closed" 
                   ? "bg-gray-500 text-white" 
                   : "bg-gray-200 text-gray-700 hover:bg-gray-300"
               }`}
             >
-              <span>CLOSED</span>
-              <span className={`px-1.5 py-0.5 rounded-full text-xs ${
-                statusFilter === "closed"
-                  ? "bg-gray-400 text-white"
-                  : "bg-gray-300 text-gray-700"
-              }`}>
-                {stats?.closed || 0}
-              </span>
+              CLOSED
             </button>
             <button
               onClick={() => handleStatusFilter("overdue")}
-              className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium transition-colors ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 statusFilter === "overdue" 
                   ? "bg-red-600 text-white" 
                   : "bg-red-100 text-red-800 hover:bg-red-200"
               }`}
             >
-              <span>OVERDUE</span>
-              <span className={`px-2 py-0.5 rounded-full text-xs ${
-                statusFilter === "overdue"
-                  ? "bg-red-500 text-white"
-                  : "bg-red-200 text-red-800"
-              }`}>
-                {allActions.filter((a: any) => a.status === "open" && a.dueDate && new Date(a.dueDate) < new Date()).length}
-              </span>
+              OVERDUE
             </button>
           </div>
 
@@ -235,88 +214,53 @@ export default function Dashboard() {
           <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => handleDisciplineFilter("operations")}
-              className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
                 disciplineFilter === "operations" 
                   ? "bg-blue-600 text-white border-blue-800" 
                   : "bg-blue-100 text-blue-800 border-blue-600 hover:bg-blue-200"
               }`}
             >
-              <span>OPERATIONS</span>
-              <span className={`px-1.5 py-0.5 rounded-full text-xs ${
-                disciplineFilter === "operations"
-                  ? "bg-blue-500 text-white"
-                  : "bg-blue-200 text-blue-800"
-              }`}>
-                {allActions.filter((a: any) => a.discipline === "operations").length}
-              </span>
+              OPERATIONS
             </button>
             <button
               onClick={() => handleDisciplineFilter("commercial")}
-              className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium transition-colors ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 disciplineFilter === "commercial" 
                   ? "bg-cyan-500 text-white" 
                   : "bg-cyan-100 text-cyan-800 hover:bg-cyan-200"
               }`}
             >
-              <span>COMMERCIAL</span>
-              <span className={`px-1.5 py-0.5 rounded-full text-xs ${
-                disciplineFilter === "commercial"
-                  ? "bg-cyan-400 text-white"
-                  : "bg-cyan-200 text-cyan-800"
-              }`}>
-                {allActions.filter((a: any) => a.discipline === "commercial").length}
-              </span>
+              COMMERCIAL
             </button>
             <button
               onClick={() => handleDisciplineFilter("design")}
-              className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium transition-colors ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 disciplineFilter === "design" 
                   ? "bg-purple-500 text-white" 
                   : "bg-purple-100 text-purple-800 hover:bg-purple-200"
               }`}
             >
-              <span>DESIGN</span>
-              <span className={`px-1.5 py-0.5 rounded-full text-xs ${
-                disciplineFilter === "design"
-                  ? "bg-purple-400 text-white"
-                  : "bg-purple-200 text-purple-800"
-              }`}>
-                {allActions.filter((a: any) => a.discipline === "design").length}
-              </span>
+              DESIGN
             </button>
             <button
               onClick={() => handleDisciplineFilter("she")}
-              className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium transition-colors ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 disciplineFilter === "she" 
                   ? "bg-orange-500 text-white" 
                   : "bg-orange-100 text-orange-800 hover:bg-orange-200"
               }`}
             >
-              <span>SHE</span>
-              <span className={`px-1.5 py-0.5 rounded-full text-xs ${
-                disciplineFilter === "she"
-                  ? "bg-orange-400 text-white"
-                  : "bg-orange-200 text-orange-800"
-              }`}>
-                {allActions.filter((a: any) => a.discipline === "she").length}
-              </span>
+              SHE
             </button>
             <button
               onClick={() => handleDisciplineFilter("qa")}
-              className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium transition-colors ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 disciplineFilter === "qa" 
                   ? "bg-indigo-500 text-white" 
                   : "bg-indigo-100 text-indigo-800 hover:bg-indigo-200"
               }`}
             >
-              <span>QA</span>
-              <span className={`px-1.5 py-0.5 rounded-full text-xs ${
-                disciplineFilter === "qa"
-                  ? "bg-indigo-400 text-white"
-                  : "bg-indigo-200 text-indigo-800"
-              }`}>
-                {allActions.filter((a: any) => a.discipline === "qa").length}
-              </span>
+              QA
             </button>
           </div>
 
@@ -324,71 +268,43 @@ export default function Dashboard() {
           <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => handlePhaseFilter("tender")}
-              className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
                 phaseFilter === "tender" 
                   ? "bg-blue-400 text-white border-blue-600" 
                   : "bg-blue-50 text-blue-700 border-blue-300 hover:bg-blue-100"
               }`}
             >
-              <span>TENDER</span>
-              <span className={`px-1.5 py-0.5 rounded-full text-xs ${
-                phaseFilter === "tender"
-                  ? "bg-blue-300 text-white"
-                  : "bg-blue-100 text-blue-700"
-              }`}>
-                {allActions.filter((a: any) => a.phase === "tender").length}
-              </span>
+              TENDER
             </button>
             <button
               onClick={() => handlePhaseFilter("precon")}
-              className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
                 phaseFilter === "precon" 
                   ? "bg-green-400 text-white border-green-600" 
                   : "bg-green-50 text-green-700 border-green-300 hover:bg-green-100"
               }`}
             >
-              <span>PRECON</span>
-              <span className={`px-1.5 py-0.5 rounded-full text-xs ${
-                phaseFilter === "precon"
-                  ? "bg-green-300 text-white"
-                  : "bg-green-100 text-green-700"
-              }`}>
-                {allActions.filter((a: any) => a.phase === "precon").length}
-              </span>
+              PRECON
             </button>
             <button
               onClick={() => handlePhaseFilter("construction")}
-              className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
                 phaseFilter === "construction" 
                   ? "bg-yellow-500 text-white border-yellow-700" 
                   : "bg-yellow-50 text-yellow-800 border-yellow-400 hover:bg-yellow-100"
               }`}
             >
-              <span>CONSTRUCTION</span>
-              <span className={`px-1.5 py-0.5 rounded-full text-xs ${
-                phaseFilter === "construction"
-                  ? "bg-yellow-400 text-white"
-                  : "bg-yellow-100 text-yellow-800"
-              }`}>
-                {allActions.filter((a: any) => a.phase === "construction").length}
-              </span>
+              CONSTRUCTION
             </button>
             <button
               onClick={() => handlePhaseFilter("aftercare")}
-              className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
                 phaseFilter === "aftercare" 
                   ? "bg-gray-500 text-white border-gray-700" 
                   : "bg-gray-50 text-gray-700 border-gray-300 hover:bg-gray-100"
               }`}
             >
-              <span>AFTERCARE</span>
-              <span className={`px-1.5 py-0.5 rounded-full text-xs ${
-                phaseFilter === "aftercare"
-                  ? "bg-gray-400 text-white"
-                  : "bg-gray-100 text-gray-700"
-              }`}>
-                {allActions.filter((a: any) => a.phase === "aftercare").length}
-              </span>
+              AFTERCARE
             </button>
           </div>
         </div>
