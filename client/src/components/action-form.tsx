@@ -188,6 +188,9 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
         });
         const newProject = await response.json();
         finalData.projectId = newProject.id;
+        
+        // Invalidate projects cache to refresh dropdowns
+        queryClient.invalidateQueries({ queryKey: ["/api/projects"] });
       }
       
       // Create new person if needed
@@ -200,6 +203,9 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
         });
         const newUser = await response.json();
         finalData.assigneeId = newUser.id;
+        
+        // Invalidate users cache to refresh dropdowns
+        queryClient.invalidateQueries({ queryKey: ["/api/users"] });
       }
       
       // Remove the temporary fields and convert dueDate to proper format
