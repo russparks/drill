@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { Plus, AlertCircle, Clock, CheckCircle, Users, HardHat, Hammer, Palette, DollarSign, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -9,6 +9,7 @@ import ActionForm from "@/components/action-form";
 import ProjectsDropdown from "@/components/projects-dropdown";
 import { ActionWithRelations, Project } from "@shared/schema";
 import { Skeleton } from "@/components/ui/skeleton";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 
 export default function Dashboard() {
   const [isActionFormOpen, setIsActionFormOpen] = useState(false);
@@ -24,7 +25,7 @@ export default function Dashboard() {
   const { data: currentActions = [], isLoading: actionsLoading } = useQuery({
     queryKey: ["/api/actions", { status: statusFilter, projectId: projectFilter, discipline: disciplineFilter }],
     queryFn: ({ queryKey }) => {
-      const [url, params] = queryKey;
+      const [url, params] = queryKey as [string, any];
       const searchParams = new URLSearchParams();
       
       if (params.status) searchParams.append("status", params.status);
@@ -33,6 +34,22 @@ export default function Dashboard() {
       
       const queryString = searchParams.toString();
       return fetch(`${url}${queryString ? `?${queryString}` : ""}`).then(res => res.json());
+    },
+  });
+
+  const { data: projects } = useQuery({
+    queryKey: ["/api/projects"],
+  });
+
+  const completeActionMutation = useMutation({
+    mutationFn: (actionId: number) => 
+      apiRequest(`/api/actions/${actionId}`, {
+        method: "PATCH",
+        body: JSON.stringify({ status: "closed" }),
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/actions"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/stats"] });
     },
   });
 
@@ -47,8 +64,8 @@ export default function Dashboard() {
   };
 
   const handleCompleteAction = async (actionId: number) => {
-    // This would be handled by a mutation
     console.log("Complete action", actionId);
+    completeActionMutation.mutate(actionId);
   };
 
   const handleStatusFilter = (status: string) => {
