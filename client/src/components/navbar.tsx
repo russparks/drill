@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { Plus, Settings, Menu } from "lucide-react";
+import { Plus, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@assets/Screenshot 2025-07-20 at 22.33.31_1753047315191.png";
 
@@ -28,15 +28,21 @@ export default function Navbar({ onCreateAction }: NavbarProps) {
                   Home
                 </span>
               </Link>
+              <Link href="/setup">
+                <span className={`px-3 py-2 text-sm font-medium cursor-pointer ${
+                  location === "/setup" 
+                    ? "text-primary border-b-2 border-primary" 
+                    : "text-action-text-secondary hover:text-action-text-primary"
+                }`}>
+                  Setup
+                </span>
+              </Link>
             </nav>
           </div>
           <div className="hidden md:flex items-center space-x-4">
             <Button size="sm" onClick={onCreateAction}>
               <Plus className="h-4 w-4 mr-1" />
               Action
-            </Button>
-            <Button variant="ghost" size="icon">
-              <Settings className="h-5 w-5" />
             </Button>
           </div>
           <Button variant="ghost" size="icon" className="md:hidden">

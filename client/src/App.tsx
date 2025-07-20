@@ -7,8 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Navbar from "@/components/navbar";
 import MobileNav from "@/components/mobile-nav";
 import Dashboard from "@/pages/dashboard";
-import Actions from "@/pages/actions";
-import Manage from "@/pages/manage";
+import Setup from "@/pages/setup";
 import NotFound from "@/pages/not-found";
 import ActionForm from "@/components/action-form";
 
@@ -21,6 +20,7 @@ function Router() {
       
       <Switch>
         <Route path="/" component={Dashboard} />
+        <Route path="/setup" component={Setup} />
         <Route component={NotFound} />
       </Switch>
 
