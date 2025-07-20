@@ -207,6 +207,8 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
       // Remove the temporary fields
       const { newProjectName, newPersonName, newPersonEmail, ...actionData } = finalData;
       
+      console.log('Submitting action data:', actionData);
+      
       if (action) {
         updateActionMutation.mutate(actionData);
       } else {
