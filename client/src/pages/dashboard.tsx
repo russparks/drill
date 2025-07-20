@@ -210,10 +210,9 @@ export default function Dashboard() {
                 onClick={() => setStatusFilter("")}
               >
                 <Filter className="w-4 h-4 text-gray-500" />
-                <span className="text-xs text-gray-500 italic">
+                <span className="text-xs text-gray-500 italic group-hover:line-through transition-all">
                   {statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1)}
                 </span>
-                <X className="w-3 h-3 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             )}
           </div>
@@ -295,10 +294,9 @@ export default function Dashboard() {
                 onClick={() => setDisciplineFilter("")}
               >
                 <Filter className="w-4 h-4 text-gray-500" />
-                <span className="text-xs text-gray-500 italic">
+                <span className="text-xs text-gray-500 italic group-hover:line-through transition-all">
                   {disciplineFilter.charAt(0).toUpperCase() + disciplineFilter.slice(1)}
                 </span>
-                <X className="w-3 h-3 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             )}
           </div>
@@ -369,10 +367,9 @@ export default function Dashboard() {
                 onClick={() => setPhaseFilter("")}
               >
                 <Filter className="w-4 h-4 text-gray-500" />
-                <span className="text-xs text-gray-500 italic">
+                <span className="text-xs text-gray-500 italic group-hover:line-through transition-all">
                   {phaseFilter.charAt(0).toUpperCase() + phaseFilter.slice(1)}
                 </span>
-                <X className="w-3 h-3 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             )}
           </div>
