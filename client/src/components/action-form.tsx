@@ -43,7 +43,7 @@ const actionFormSchema = insertActionSchema.extend({
   ...data,
   assigneeId: data.assigneeId || null,
   projectId: data.projectId || null,
-  dueDate: data.dueDate || null,
+  dueDate: data.dueDate ? new Date(data.dueDate) : null,
 }));
 
 type ActionFormData = z.infer<typeof actionFormSchema>;
@@ -204,8 +204,13 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
         finalData.assigneeId = newUser.id;
       }
       
-      // Remove the temporary fields
+      // Remove the temporary fields and convert dueDate to proper format
       const { newProjectName, newPersonName, newPersonEmail, ...actionData } = finalData;
+      
+      // Convert dueDate string to Date object if it exists
+      if (actionData.dueDate) {
+        actionData.dueDate = new Date(actionData.dueDate);
+      }
       
       console.log('Submitting action data:', actionData);
       
