@@ -96,8 +96,9 @@ export default function Dashboard() {
   };
 
   const confirmCompleteAction = () => {
+    console.log("confirmCompleteAction called, dialog state:", confirmDialog);
     if (confirmDialog.actionId) {
-      console.log("Complete action", confirmDialog.actionId);
+      console.log("Completing action", confirmDialog.actionId);
       completeActionMutation.mutate(confirmDialog.actionId);
       setConfirmDialog({ open: false, actionId: null });
     }
@@ -471,11 +472,11 @@ export default function Dashboard() {
 
       {/* Confirm Dialog */}
       <ConfirmDialog
-        isOpen={confirmDialog.open}
-        onClose={() => setConfirmDialog({ open: false, actionId: null })}
+        open={confirmDialog.open}
+        onOpenChange={() => setConfirmDialog({ open: false, actionId: null })}
         onConfirm={confirmCompleteAction}
         title="Mark Action Complete"
-        message="Are you sure you want to mark this action as complete? This action cannot be undone."
+        description="Are you sure you want to mark this action as complete? This action cannot be undone."
       />
     </div>
   );
