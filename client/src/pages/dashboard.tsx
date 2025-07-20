@@ -180,7 +180,7 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 statusFilter === "open" 
                   ? "bg-red-500 text-white" 
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  : "bg-[#cc3333] text-white hover:bg-red-700"
               }`}
             >
               OPEN
