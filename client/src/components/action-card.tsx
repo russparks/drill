@@ -296,10 +296,7 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
       {/* Full Description Modal */}
       <Dialog open={showFullDescription} onOpenChange={setShowFullDescription}>
         <DialogContent className="sm:max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>Action Description</DialogTitle>
-          </DialogHeader>
-          <div className="mt-4">
+          <div className="mt-2">
             <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
               {action.description}
             </p>
