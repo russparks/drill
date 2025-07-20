@@ -167,7 +167,9 @@ export default function Dashboard() {
         {/* Filter Buttons in Three Rows */}
         <div className="space-y-3 mb-4">
           {/* Row 1: Status */}
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="border border-dotted border-gray-300 rounded p-3">
+            <div className="text-sm text-gray-500 mb-2 font-medium">Status:</div>
+            <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => handleStatusFilter("open")}
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
@@ -201,10 +203,13 @@ export default function Dashboard() {
               OVERDUE
               {statusFilter === "overdue" && <span className="text-xs">×</span>}
             </button>
+            </div>
           </div>
 
           {/* Row 2: Discipline */}
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="border border-dotted border-gray-300 rounded p-3">
+            <div className="text-sm text-gray-500 mb-2 font-medium">Discipline:</div>
+            <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => handleDisciplineFilter("operations")}
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
@@ -271,10 +276,13 @@ export default function Dashboard() {
               GENERAL
               {disciplineFilter === "general" && <span className="text-xs">×</span>}
             </button>
+            </div>
           </div>
 
           {/* Row 3: Phase */}
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="border border-dotted border-gray-300 rounded p-3">
+            <div className="text-sm text-gray-500 mb-2 font-medium">Process:</div>
+            <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => handlePhaseFilter("tender")}
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
@@ -330,6 +338,7 @@ export default function Dashboard() {
               STRATEGY
               {phaseFilter === "strategy" && <span className="text-xs">×</span>}
             </button>
+            </div>
           </div>
         </div>
 
