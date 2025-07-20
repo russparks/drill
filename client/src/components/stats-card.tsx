@@ -7,22 +7,25 @@ interface StatsCardProps {
   icon: LucideIcon;
   iconColor: string;
   iconBgColor: string;
+  onClick?: () => void;
+  isActive?: boolean;
 }
 
-export default function StatsCard({ title, value, icon: Icon, iconColor, iconBgColor }: StatsCardProps) {
+export default function StatsCard({ title, value, icon: Icon, iconColor, iconBgColor, onClick, isActive }: StatsCardProps) {
   return (
-    <Card className="material-shadow">
-      <CardContent className="p-4">
-        <div className="flex items-center">
-          <div className="flex-shrink-0">
-            <div className={`w-6 h-6 ${iconBgColor} rounded-full flex items-center justify-center`}>
-              <Icon className={`h-4 w-4 ${iconColor}`} />
-            </div>
+    <Card 
+      className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
+        isActive ? 'ring-2 ring-primary bg-blue-50' : 'hover:bg-gray-50'
+      }`}
+      onClick={onClick}
+    >
+      <CardContent className="p-3">
+        <div className="text-center">
+          <div className={`w-8 h-8 ${iconBgColor} rounded-full flex items-center justify-center mx-auto mb-2`}>
+            <Icon className={`h-4 w-4 ${iconColor}`} />
           </div>
-          <div className="ml-3">
-            <p className="text-xs font-medium text-action-text-secondary">{title}</p>
-            <p className="text-lg font-bold text-action-text-primary">{value}</p>
-          </div>
+          <p className="text-xl font-bold text-action-text-primary mb-1">{value}</p>
+          <p className="text-xs font-medium text-action-text-secondary leading-tight">{title}</p>
         </div>
       </CardContent>
     </Card>

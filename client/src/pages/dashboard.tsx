@@ -1,24 +1,35 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Plus, AlertCircle, Clock, CheckCircle, Building, Users } from "lucide-react";
+import { Plus, AlertCircle, Clock, CheckCircle, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import StatsCard from "@/components/stats-card";
 import ActionCard from "@/components/action-card";
 import ActionForm from "@/components/action-form";
-import { ActionWithRelations } from "@shared/schema";
+import ProjectsDropdown from "@/components/projects-dropdown";
+import { ActionWithRelations, Project } from "@shared/schema";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Dashboard() {
   const [isActionFormOpen, setIsActionFormOpen] = useState(false);
   const [selectedAction, setSelectedAction] = useState<ActionWithRelations | null>(null);
+  const [statusFilter, setStatusFilter] = useState<string>("");
 
   const { data: stats, isLoading: statsLoading } = useQuery({
     queryKey: ["/api/stats"],
   });
 
   const { data: recentActions = [], isLoading: actionsLoading } = useQuery({
-    queryKey: ["/api/actions"],
+    queryKey: ["/api/actions", { status: statusFilter }],
+    queryFn: ({ queryKey }) => {
+      const [url, params] = queryKey;
+      const searchParams = new URLSearchParams();
+      
+      if (params.status) searchParams.append("status", params.status);
+      
+      const queryString = searchParams.toString();
+      return fetch(`${url}${queryString ? `?${queryString}` : ""}`).then(res => res.json());
+    },
   });
 
   const handleCreateAction = () => {
@@ -36,12 +47,20 @@ export default function Dashboard() {
     console.log("Complete action", actionId);
   };
 
+  const handleStatusFilter = (status: string) => {
+    setStatusFilter(statusFilter === status ? "" : status);
+  };
+
+  const handleProjectSelect = (project: Project) => {
+    console.log("Selected project:", project.name);
+  };
+
   if (statsLoading) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Skeleton key={i} className="h-32" />
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mb-8">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Skeleton key={i} className="h-24" />
           ))}
         </div>
       </div>
@@ -66,14 +85,16 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-8">
+        {/* Stats Cards and Projects */}
+        <div className="flex flex-wrap items-center gap-3 mb-8">
           <StatsCard
-            title="Open Actions"
+            title="Open"
             value={stats?.open || 0}
             icon={AlertCircle}
             iconColor="text-red-600"
             iconBgColor="bg-red-100"
+            onClick={() => handleStatusFilter("open")}
+            isActive={statusFilter === "open"}
           />
           <StatsCard
             title="In Progress"
@@ -81,6 +102,8 @@ export default function Dashboard() {
             icon={Clock}
             iconColor="text-yellow-600"
             iconBgColor="bg-yellow-100"
+            onClick={() => handleStatusFilter("in-progress")}
+            isActive={statusFilter === "in-progress"}
           />
           <StatsCard
             title="Closed"
@@ -88,13 +111,8 @@ export default function Dashboard() {
             icon={CheckCircle}
             iconColor="text-green-600"
             iconBgColor="bg-green-100"
-          />
-          <StatsCard
-            title="Active Projects"
-            value={stats?.projects || 0}
-            icon={Building}
-            iconColor="text-blue-600"
-            iconBgColor="bg-blue-100"
+            onClick={() => handleStatusFilter("closed")}
+            isActive={statusFilter === "closed"}
           />
           <StatsCard
             title="Team Members"
@@ -103,6 +121,9 @@ export default function Dashboard() {
             iconColor="text-purple-600"
             iconBgColor="bg-purple-100"
           />
+          <div className="ml-auto">
+            <ProjectsDropdown onProjectSelect={handleProjectSelect} />
+          </div>
         </div>
       </div>
 
