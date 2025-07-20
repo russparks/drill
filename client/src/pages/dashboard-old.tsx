@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { Plus, AlertCircle, ChevronLeft, ChevronRight } from "lucide-react";
+import { Plus, AlertCircle, Clock, CheckCircle, Users, HardHat, Hammer, Palette, DollarSign, MoreHorizontal, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -159,23 +159,96 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Filter Buttons in Three Rows */}
+        {/* Filter Buttons in Two Rows */}
         <div className="space-y-3 mb-8">
-          {/* Row 1: Status */}
+          {/* Row 1: precon - production - design - commercial */}
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              onClick={() => handleDisciplineFilter("precon")}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
+                disciplineFilter === "precon" 
+                  ? "bg-blue-600 text-white border-blue-800" 
+                  : "bg-blue-100 text-blue-800 border-blue-600 hover:bg-blue-200"
+              }`}
+            >
+              <span>Precon</span>
+              <span className={`px-2 py-0.5 rounded-full text-xs ${
+                disciplineFilter === "precon"
+                  ? "bg-blue-500 text-white"
+                  : "bg-blue-200 text-blue-800"
+              }`}>
+{allActions.filter((a: any) => a.discipline === "precon").length}
+              </span>
+            </button>
+            <button
+              onClick={() => handleDisciplineFilter("production")}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
+                disciplineFilter === "production" 
+                  ? "bg-green-600 text-white border-green-800" 
+                  : "bg-green-100 text-green-800 border-green-600 hover:bg-green-200"
+              }`}
+            >
+              <span>Production</span>
+              <span className={`px-2 py-0.5 rounded-full text-xs ${
+                disciplineFilter === "production"
+                  ? "bg-green-500 text-white"
+                  : "bg-green-200 text-green-800"
+              }`}>
+{allActions.filter((a: any) => a.discipline === "production").length}
+              </span>
+            </button>
+            <button
+              onClick={() => handleDisciplineFilter("design")}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                disciplineFilter === "design" 
+                  ? "bg-purple-500 text-white" 
+                  : "bg-purple-100 text-purple-800 hover:bg-purple-200"
+              }`}
+            >
+              <span>Design</span>
+              <span className={`px-2 py-0.5 rounded-full text-xs ${
+                disciplineFilter === "design"
+                  ? "bg-purple-400 text-white"
+                  : "bg-purple-200 text-purple-800"
+              }`}>
+{allActions.filter((a: any) => a.discipline === "design").length}
+              </span>
+            </button>
+            <button
+              onClick={() => handleDisciplineFilter("commercial")}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                disciplineFilter === "commercial" 
+                  ? "bg-cyan-500 text-white" 
+                  : "bg-cyan-100 text-cyan-800 hover:bg-cyan-200"
+              }`}
+            >
+              <span>Commercial</span>
+              <span className={`px-2 py-0.5 rounded-full text-xs ${
+                disciplineFilter === "commercial"
+                  ? "bg-cyan-400 text-white"
+                  : "bg-cyan-200 text-cyan-800"
+              }`}>
+{allActions.filter((a: any) => a.discipline === "commercial").length}
+              </span>
+            </button>
+
+          </div>
+
+          {/* Row 2: open - closed - tender - aftercare */}
           <div className="flex flex-wrap items-center gap-3">
             <button
               onClick={() => handleStatusFilter("open")}
               className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
                 statusFilter === "open" 
                   ? "bg-red-500 text-white" 
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  : "bg-red-100 text-red-800 hover:bg-red-200"
               }`}
             >
               <span>Open</span>
               <span className={`px-2 py-0.5 rounded-full text-xs ${
                 statusFilter === "open"
                   ? "bg-red-400 text-white"
-                  : "bg-gray-200 text-gray-700"
+                  : "bg-red-200 text-red-800"
               }`}>
                 {stats?.open || 0}
               </span>
@@ -198,181 +271,37 @@ export default function Dashboard() {
               </span>
             </button>
             <button
-              onClick={() => handleStatusFilter("overdue")}
+              onClick={() => handleDisciplineFilter("tender")}
               className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                statusFilter === "overdue" 
-                  ? "bg-red-600 text-white" 
-                  : "bg-red-100 text-red-800 hover:bg-red-200"
-              }`}
-            >
-              <span>Overdue</span>
-              <span className={`px-2 py-0.5 rounded-full text-xs ${
-                statusFilter === "overdue"
-                  ? "bg-red-500 text-white"
-                  : "bg-red-200 text-red-800"
-              }`}>
-                {allActions.filter((a: any) => a.status === "overdue").length}
-              </span>
-            </button>
-          </div>
-
-          {/* Row 2: Discipline */}
-          <div className="flex flex-wrap items-center gap-3">
-            <button
-              onClick={() => handleDisciplineFilter("operations")}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
-                disciplineFilter === "operations" 
-                  ? "bg-blue-600 text-white border-blue-800" 
-                  : "bg-blue-100 text-blue-800 border-blue-600 hover:bg-blue-200"
-              }`}
-            >
-              <span>Operations</span>
-              <span className={`px-2 py-0.5 rounded-full text-xs ${
-                disciplineFilter === "operations"
-                  ? "bg-blue-500 text-white"
-                  : "bg-blue-200 text-blue-800"
-              }`}>
-                {allActions.filter((a: any) => a.discipline === "operations").length}
-              </span>
-            </button>
-            <button
-              onClick={() => handleDisciplineFilter("commercial")}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                disciplineFilter === "commercial" 
-                  ? "bg-cyan-500 text-white" 
-                  : "bg-cyan-100 text-cyan-800 hover:bg-cyan-200"
-              }`}
-            >
-              <span>Commercial</span>
-              <span className={`px-2 py-0.5 rounded-full text-xs ${
-                disciplineFilter === "commercial"
-                  ? "bg-cyan-400 text-white"
-                  : "bg-cyan-200 text-cyan-800"
-              }`}>
-                {allActions.filter((a: any) => a.discipline === "commercial").length}
-              </span>
-            </button>
-            <button
-              onClick={() => handleDisciplineFilter("design")}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                disciplineFilter === "design" 
-                  ? "bg-purple-500 text-white" 
-                  : "bg-purple-100 text-purple-800 hover:bg-purple-200"
-              }`}
-            >
-              <span>Design</span>
-              <span className={`px-2 py-0.5 rounded-full text-xs ${
-                disciplineFilter === "design"
-                  ? "bg-purple-400 text-white"
-                  : "bg-purple-200 text-purple-800"
-              }`}>
-                {allActions.filter((a: any) => a.discipline === "design").length}
-              </span>
-            </button>
-            <button
-              onClick={() => handleDisciplineFilter("she")}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                disciplineFilter === "she" 
-                  ? "bg-orange-500 text-white" 
-                  : "bg-orange-100 text-orange-800 hover:bg-orange-200"
-              }`}
-            >
-              <span>SHE</span>
-              <span className={`px-2 py-0.5 rounded-full text-xs ${
-                disciplineFilter === "she"
-                  ? "bg-orange-400 text-white"
-                  : "bg-orange-200 text-orange-800"
-              }`}>
-                {allActions.filter((a: any) => a.discipline === "she").length}
-              </span>
-            </button>
-            <button
-              onClick={() => handleDisciplineFilter("qa")}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                disciplineFilter === "qa" 
-                  ? "bg-indigo-500 text-white" 
-                  : "bg-indigo-100 text-indigo-800 hover:bg-indigo-200"
-              }`}
-            >
-              <span>QA</span>
-              <span className={`px-2 py-0.5 rounded-full text-xs ${
-                disciplineFilter === "qa"
-                  ? "bg-indigo-400 text-white"
-                  : "bg-indigo-200 text-indigo-800"
-              }`}>
-                {allActions.filter((a: any) => a.discipline === "qa").length}
-              </span>
-            </button>
-          </div>
-
-          {/* Row 3: Phase */}
-          <div className="flex flex-wrap items-center gap-3">
-            <button
-              onClick={() => handlePhaseFilter("tender")}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
-                phaseFilter === "tender" 
-                  ? "bg-blue-400 text-white border-blue-600" 
-                  : "bg-blue-50 text-blue-700 border-blue-300 hover:bg-blue-100"
+                disciplineFilter === "tender" 
+                  ? "bg-blue-400 text-white" 
+                  : "bg-blue-100 text-blue-800 hover:bg-blue-200"
               }`}
             >
               <span>Tender</span>
               <span className={`px-2 py-0.5 rounded-full text-xs ${
-                phaseFilter === "tender"
+                disciplineFilter === "tender"
                   ? "bg-blue-300 text-white"
-                  : "bg-blue-100 text-blue-700"
+                  : "bg-blue-200 text-blue-800"
               }`}>
-                {allActions.filter((a: any) => a.phase === "tender").length}
+{allActions.filter((a: any) => a.discipline === "tender").length}
               </span>
             </button>
             <button
-              onClick={() => handlePhaseFilter("precon")}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
-                phaseFilter === "precon" 
-                  ? "bg-green-400 text-white border-green-600" 
-                  : "bg-green-50 text-green-700 border-green-300 hover:bg-green-100"
-              }`}
-            >
-              <span>Precon</span>
-              <span className={`px-2 py-0.5 rounded-full text-xs ${
-                phaseFilter === "precon"
-                  ? "bg-green-300 text-white"
-                  : "bg-green-100 text-green-700"
-              }`}>
-                {allActions.filter((a: any) => a.phase === "precon").length}
-              </span>
-            </button>
-            <button
-              onClick={() => handlePhaseFilter("construction")}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
-                phaseFilter === "construction" 
-                  ? "bg-yellow-500 text-white border-yellow-700" 
-                  : "bg-yellow-50 text-yellow-800 border-yellow-400 hover:bg-yellow-100"
-              }`}
-            >
-              <span>Construction</span>
-              <span className={`px-2 py-0.5 rounded-full text-xs ${
-                phaseFilter === "construction"
-                  ? "bg-yellow-400 text-white"
-                  : "bg-yellow-100 text-yellow-800"
-              }`}>
-                {allActions.filter((a: any) => a.phase === "construction").length}
-              </span>
-            </button>
-            <button
-              onClick={() => handlePhaseFilter("aftercare")}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
-                phaseFilter === "aftercare" 
-                  ? "bg-gray-500 text-white border-gray-700" 
-                  : "bg-gray-50 text-gray-700 border-gray-300 hover:bg-gray-100"
+              onClick={() => handleDisciplineFilter("aftercare")}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                disciplineFilter === "aftercare" 
+                  ? "bg-green-500 text-white" 
+                  : "bg-green-100 text-green-800 hover:bg-green-200"
               }`}
             >
               <span>Aftercare</span>
               <span className={`px-2 py-0.5 rounded-full text-xs ${
-                phaseFilter === "aftercare"
-                  ? "bg-gray-400 text-white"
-                  : "bg-gray-100 text-gray-700"
+                disciplineFilter === "aftercare"
+                  ? "bg-green-400 text-white"
+                  : "bg-green-200 text-green-800"
               }`}>
-                {allActions.filter((a: any) => a.phase === "aftercare").length}
+{allActions.filter((a: any) => a.discipline === "aftercare").length}
               </span>
             </button>
           </div>
@@ -409,13 +338,12 @@ export default function Dashboard() {
         <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
           <h2 className="text-lg font-medium text-action-text-primary">
             Current Actions
-            {(statusFilter || disciplineFilter || phaseFilter || projectFilter) && (
+            {(statusFilter || disciplineFilter || projectFilter) && (
               <span className="text-gray-500">
                 {' - '}
                 {[
                   statusFilter && statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1),
                   disciplineFilter && disciplineFilter.charAt(0).toUpperCase() + disciplineFilter.slice(1),
-                  phaseFilter && phaseFilter.charAt(0).toUpperCase() + phaseFilter.slice(1),
                   projectFilter && projects?.find(p => p.id === projectFilter)?.name
                 ].filter(Boolean).join(', ')}
               </span>
@@ -448,14 +376,14 @@ export default function Dashboard() {
           ) : (
             <div>
               {/* Actions List */}
-              <div className="divide-y divide-gray-200">
-                {paginatedActions.map((action: ActionWithRelations, index: number) => (
+              <div>
+                {(paginatedActions as ActionWithRelations[]).map((action, index) => (
                   <ActionCard
                     key={action.id}
                     action={action}
                     onEdit={handleEditAction}
                     onComplete={handleCompleteAction}
-                    isEven={index % 2 === 0}
+                    index={startIndex + index}
                   />
                 ))}
               </div>
@@ -530,27 +458,30 @@ export default function Dashboard() {
         </CardContent>
       </Card>
 
-      {/* Action Form Modal */}
-      {isActionFormOpen && (
-        <ActionForm
-          action={selectedAction}
-          onClose={() => setIsActionFormOpen(false)}
-          onSave={() => {
-            setIsActionFormOpen(false);
-            queryClient.invalidateQueries({ queryKey: ["/api/actions"] });
-            queryClient.invalidateQueries({ queryKey: ["/api/stats"] });
-          }}
-        />
-      )}
-
-      {/* Confirm Dialog */}
-      <ConfirmDialog
-        isOpen={confirmDialog.open}
-        onClose={() => setConfirmDialog({ open: false, actionId: null })}
-        onConfirm={confirmCompleteAction}
-        title="Mark Action Complete"
-        message="Are you sure you want to mark this action as complete? This action cannot be undone."
+      <ActionForm
+        isOpen={isActionFormOpen}
+        onClose={() => setIsActionFormOpen(false)}
+        action={selectedAction}
       />
+
+      <ConfirmDialog
+        open={confirmDialog.open}
+        onOpenChange={(open) => setConfirmDialog({ open, actionId: null })}
+        title="Mark Action Complete"
+        description="Are you sure you want to mark this action as complete? This action cannot be undone."
+        onConfirm={confirmCompleteAction}
+        confirmText="Mark Complete"
+        cancelText="Cancel"
+      />
+
+      {/* Desktop FAB */}
+      <Button
+        onClick={handleCreateAction}
+        className="hidden md:flex fixed bottom-6 right-6 w-14 h-14 rounded-full material-shadow-lg"
+        size="icon"
+      >
+        <Plus className="h-6 w-6" />
+      </Button>
     </div>
   );
 }

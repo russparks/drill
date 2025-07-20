@@ -37,7 +37,10 @@ Preferred communication style: Simple, everyday language.
 ### Data Models
 - **Users**: Authentication and user management (id, username, password, name, email)
 - **Projects**: Project organization (id, name, description, status, timestamps)
-- **Actions**: Core task management (id, title, description, discipline, status, priority, assignee, project, due date, timestamps)
+- **Actions**: Core task management (id, title, description, discipline, phase, status, priority, assignee, project, due date, timestamps)
+  - **Disciplines**: Operations, Commercial, Design, SHE, QA
+  - **Phases**: Tender, Precon, Construction, Aftercare
+  - **Status**: Open, Closed, Overdue
 
 ### Frontend Components
 - **Navigation**: Responsive navbar and mobile bottom navigation

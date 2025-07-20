@@ -163,6 +163,7 @@ export class DatabaseStorage implements IStorage {
 
   async getAllActions(filters?: {
     discipline?: string;
+    phase?: string;
     status?: string;
     assigneeId?: number;
     projectId?: number;
@@ -172,6 +173,10 @@ export class DatabaseStorage implements IStorage {
 
     if (filters?.discipline) {
       conditions.push(eq(actions.discipline, filters.discipline));
+    }
+
+    if (filters?.phase) {
+      conditions.push(eq(actions.phase, filters.phase));
     }
 
     if (filters?.status) {
