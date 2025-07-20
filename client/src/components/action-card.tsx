@@ -220,7 +220,7 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
             </div>
             
             {/* Mark Complete (minimal width) */}
-            <div className="flex items-center justify-center ml-4">
+            <div className="flex items-center justify-end ml-4 w-6">
               {action.status !== "closed" && (
                 <Button
                   variant="ghost"
@@ -267,7 +267,7 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
             </div>
             
             {/* Due Date (takes remaining space before buttons) */}
-            <div className="flex-1 flex items-center justify-end text-xs text-action-text-secondary pr-4">
+            <div className="flex-1 flex items-center justify-end text-xs text-action-text-secondary">
               {action.dueDate && (
                 <span className="flex items-center">
                   <Calendar className="w-3 h-3 mr-1" />
