@@ -357,6 +357,12 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                           inactive: "bg-green-100 text-green-800 hover:bg-green-200"
                         },
                         { 
+                          value: "aftercare", 
+                          label: "Aftercare", 
+                          active: "bg-teal-600 text-white",
+                          inactive: "bg-teal-100 text-teal-800 hover:bg-teal-200"
+                        },
+                        { 
                           value: "misc", 
                           label: "Misc", 
                           active: "bg-gray-600 text-white",

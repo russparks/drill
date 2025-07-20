@@ -199,6 +199,23 @@ export default function Dashboard() {
             </span>
           </button>
           <button
+            onClick={() => handleDisciplineFilter("aftercare")}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+              disciplineFilter === "aftercare" 
+                ? "bg-teal-600 text-white" 
+                : "bg-teal-100 text-teal-800 hover:bg-teal-200"
+            }`}
+          >
+            <span>Aftercare</span>
+            <span className={`px-2 py-0.5 rounded-full text-xs ${
+              disciplineFilter === "aftercare"
+                ? "bg-teal-500 text-white"
+                : "bg-teal-200 text-teal-800"
+            }`}>
+              {currentActions.filter((a: any) => a.discipline === "aftercare").length}
+            </span>
+          </button>
+          <button
             onClick={() => handleDisciplineFilter("misc")}
             className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
               disciplineFilter === "misc" 

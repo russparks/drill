@@ -435,7 +435,6 @@ export default function ManagePage() {
                     <TableHead>Project</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Start Date</TableHead>
-                    <TableHead>Description</TableHead>
                     <TableHead className="w-20">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -466,9 +465,6 @@ export default function ManagePage() {
                           new Date(project.startOnSiteDate).toLocaleDateString() : 
                           "-"
                         }
-                      </TableCell>
-                      <TableCell className="max-w-xs truncate">
-                        {project.description || "-"}
                       </TableCell>
                       <TableCell>
                         <div className="flex gap-1">
