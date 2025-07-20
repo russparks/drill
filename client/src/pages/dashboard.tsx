@@ -163,7 +163,7 @@ export default function Dashboard() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 pb-20 md:pb-8">
-      <div className="mb-8">
+      <div className="mb-4">
         {/* Filter Buttons in Three Rows */}
         <div className="space-y-3 mb-4">
           {/* Row 1: Status */}
