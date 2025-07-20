@@ -111,7 +111,7 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
       if (days < 0) {
         return { text: `(${Math.abs(days)}d early)`, color: "text-green-600" };
       } else if (days === 0) {
-        return { text: `(On Time)`, color: "text-black" };
+        return { text: `(On Time)`, color: "text-green-600" };
       } else {
         return { text: `(${days}d late)`, color: "text-red-600" };
       }
