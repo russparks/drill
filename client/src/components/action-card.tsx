@@ -108,10 +108,10 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
     // For closed actions, calculate based on completion date vs due date
     if (status === 'closed' && completedDate) {
       const days = differenceInBusinessDays(new Date(completedDate), new Date(dueDate));
-      if (days <= 0) {
+      if (days < 0) {
         return { text: `(${Math.abs(days)}d early)`, color: "text-green-600" };
       } else if (days === 0) {
-        return { text: `(on time)`, color: "text-black" };
+        return { text: `(On Time)`, color: "text-black" };
       } else {
         return { text: `(${days}d late)`, color: "text-red-600" };
       }
