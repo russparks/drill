@@ -404,7 +404,7 @@ export default function Dashboard() {
       {/* Current Actions */}
       <Card className="material-shadow">
         <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-          <h2 className="text-lg font-medium text-action-text-primary pl-4">
+          <h2 className="text-lg font-medium text-action-text-primary">
             Current Actions ({totalActions})
             {(statusFilter || disciplineFilter || phaseFilter || projectFilter) && (
               <span className="text-gray-500">
