@@ -165,14 +165,14 @@ export default function Dashboard() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 pb-20 md:pb-8">
       <div className="mb-4">
         {/* Filter Buttons in Three Rows */}
-        <div className="space-y-3 mb-4">
+        <div className="space-y-0.5 mb-4">
           {/* Row 1: Status */}
-          <div className="border border-dotted border-gray-200 rounded p-3" style={{"borderWidth": "1px", "borderStyle": "dotted"}}>
+          <div className="border border-dotted border-gray-200 rounded px-3 py-2" style={{"borderWidth": "1px", "borderStyle": "dotted"}}>
             <div className="flex flex-wrap items-center gap-4">
               <div className="text-sm text-gray-500 font-medium w-20">Status:</div>
             <button
               onClick={() => handleStatusFilter("open")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
+              className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
                 statusFilter === "open" 
                   ? "bg-red-500 text-white" 
                   : "bg-[#cc3333] text-white hover:bg-red-700"
@@ -183,7 +183,7 @@ export default function Dashboard() {
             </button>
             <button
               onClick={() => handleStatusFilter("closed")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
+              className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
                 statusFilter === "closed" 
                   ? "bg-gray-500 text-white" 
                   : "bg-gray-200 text-gray-700 hover:bg-gray-300"
@@ -194,7 +194,7 @@ export default function Dashboard() {
             </button>
             <button
               onClick={() => handleStatusFilter("overdue")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
+              className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
                 statusFilter === "overdue" 
                   ? "bg-[#cc3333]/75 text-white" 
                   : "bg-red-100 text-red-800 hover:bg-red-200"
@@ -207,12 +207,12 @@ export default function Dashboard() {
           </div>
 
           {/* Row 2: Discipline */}
-          <div className="border border-dotted border-gray-200 rounded p-3" style={{"borderWidth": "1px", "borderStyle": "dotted"}}>
+          <div className="border border-dotted border-gray-200 rounded px-3 py-2" style={{"borderWidth": "1px", "borderStyle": "dotted"}}>
             <div className="flex flex-wrap items-center gap-4">
               <div className="text-sm text-gray-500 font-medium w-20">Discipline:</div>
             <button
               onClick={() => handleDisciplineFilter("operations")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
+              className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
                 disciplineFilter === "operations" 
                   ? "bg-blue-600 text-white border-blue-800" 
                   : "bg-blue-100 text-blue-800 border-blue-600 hover:bg-blue-200"
@@ -223,7 +223,7 @@ export default function Dashboard() {
             </button>
             <button
               onClick={() => handleDisciplineFilter("commercial")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
+              className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
                 disciplineFilter === "commercial" 
                   ? "bg-cyan-500 text-white" 
                   : "bg-cyan-100 text-cyan-800 hover:bg-cyan-200"
@@ -234,7 +234,7 @@ export default function Dashboard() {
             </button>
             <button
               onClick={() => handleDisciplineFilter("design")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
+              className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
                 disciplineFilter === "design" 
                   ? "bg-purple-500 text-white" 
                   : "bg-purple-100 text-purple-800 hover:bg-purple-200"
@@ -245,7 +245,7 @@ export default function Dashboard() {
             </button>
             <button
               onClick={() => handleDisciplineFilter("she")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
+              className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
                 disciplineFilter === "she" 
                   ? "bg-orange-500 text-white" 
                   : "bg-orange-100 text-orange-800 hover:bg-orange-200"
@@ -256,7 +256,7 @@ export default function Dashboard() {
             </button>
             <button
               onClick={() => handleDisciplineFilter("qa")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
+              className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
                 disciplineFilter === "qa" 
                   ? "bg-indigo-500 text-white" 
                   : "bg-indigo-100 text-indigo-800 hover:bg-indigo-200"
@@ -267,7 +267,7 @@ export default function Dashboard() {
             </button>
             <button
               onClick={() => handleDisciplineFilter("general")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
+              className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
                 disciplineFilter === "general" 
                   ? "bg-gray-600 text-white" 
                   : "bg-gray-100 text-gray-800 hover:bg-gray-200"
@@ -280,12 +280,12 @@ export default function Dashboard() {
           </div>
 
           {/* Row 3: Phase */}
-          <div className="border border-dotted border-gray-200 rounded p-3" style={{"borderWidth": "1px", "borderStyle": "dotted"}}>
+          <div className="border border-dotted border-gray-200 rounded px-3 py-2" style={{"borderWidth": "1px", "borderStyle": "dotted"}}>
             <div className="flex flex-wrap items-center gap-4">
               <div className="text-sm text-gray-500 font-medium w-20">Process:</div>
             <button
               onClick={() => handlePhaseFilter("tender")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
+              className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
                 phaseFilter === "tender" 
                   ? "bg-blue-400 text-white border-blue-600" 
                   : "bg-blue-50 text-blue-700 border-blue-300 hover:bg-blue-100"
@@ -296,7 +296,7 @@ export default function Dashboard() {
             </button>
             <button
               onClick={() => handlePhaseFilter("precon")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
+              className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
                 phaseFilter === "precon" 
                   ? "bg-green-400 text-white border-green-600" 
                   : "bg-green-50 text-green-700 border-green-300 hover:bg-green-100"
@@ -307,7 +307,7 @@ export default function Dashboard() {
             </button>
             <button
               onClick={() => handlePhaseFilter("construction")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
+              className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
                 phaseFilter === "construction" 
                   ? "bg-yellow-500 text-white border-yellow-700" 
                   : "bg-yellow-50 text-yellow-800 border-yellow-400 hover:bg-yellow-100"
@@ -318,7 +318,7 @@ export default function Dashboard() {
             </button>
             <button
               onClick={() => handlePhaseFilter("aftercare")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
+              className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
                 phaseFilter === "aftercare" 
                   ? "bg-gray-500 text-white border-gray-700" 
                   : "bg-gray-50 text-gray-700 border-gray-300 hover:bg-gray-100"
@@ -329,7 +329,7 @@ export default function Dashboard() {
             </button>
             <button
               onClick={() => handlePhaseFilter("strategy")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
+              className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
                 phaseFilter === "strategy" 
                   ? "bg-black text-white" 
                   : "bg-black text-white hover:bg-gray-800"
