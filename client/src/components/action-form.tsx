@@ -333,16 +333,22 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                     <div className="flex gap-2">
                       {[
                         { 
+                          value: "tender", 
+                          label: "Tender", 
+                          active: "bg-blue-300 text-white",
+                          inactive: "bg-blue-50 text-blue-800 hover:bg-blue-100"
+                        },
+                        { 
                           value: "precon", 
                           label: "Precon", 
-                          active: "bg-blue-600 text-white",
+                          active: "bg-blue-500 text-white",
                           inactive: "bg-blue-100 text-blue-800 hover:bg-blue-200"
                         },
                         { 
                           value: "production", 
                           label: "Production", 
-                          active: "bg-orange-600 text-white",
-                          inactive: "bg-orange-100 text-orange-800 hover:bg-orange-200"
+                          active: "bg-green-500 text-white",
+                          inactive: "bg-green-100 text-green-800 hover:bg-green-200"
                         },
                         { 
                           value: "design", 
@@ -359,14 +365,8 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                         { 
                           value: "aftercare", 
                           label: "Aftercare", 
-                          active: "bg-teal-600 text-white",
-                          inactive: "bg-teal-100 text-teal-800 hover:bg-teal-200"
-                        },
-                        { 
-                          value: "misc", 
-                          label: "Misc", 
-                          active: "bg-gray-600 text-white",
-                          inactive: "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                          active: "bg-purple-500 text-white",
+                          inactive: "bg-purple-100 text-purple-800 hover:bg-purple-200"
                         }
                       ].map((discipline) => (
                         <button

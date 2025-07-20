@@ -21,12 +21,12 @@ export default function ActionCard({ action, onEdit, onComplete }: ActionCardPro
 
   const getDisciplineColor = (discipline: string) => {
     switch (discipline) {
+      case "tender": return "bg-blue-50 text-blue-800";
       case "precon": return "bg-blue-100 text-blue-800";
-      case "production": return "bg-orange-100 text-orange-800";
+      case "production": return "bg-green-100 text-green-800";
       case "design": return "bg-purple-100 text-purple-800";
       case "commercial": return "bg-green-100 text-green-800";
-      case "aftercare": return "bg-teal-100 text-teal-800";
-      case "misc": return "bg-gray-100 text-gray-800";
+      case "aftercare": return "bg-purple-100 text-purple-800";
       default: return "bg-gray-100 text-gray-800";
     }
   };

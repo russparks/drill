@@ -131,17 +131,34 @@ export default function Dashboard() {
           
           {/* Discipline Filter Buttons */}
           <button
+            onClick={() => handleDisciplineFilter("tender")}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+              disciplineFilter === "tender" 
+                ? "bg-blue-300 text-white" 
+                : "bg-blue-50 text-blue-800 hover:bg-blue-100"
+            }`}
+          >
+            <span>Tender</span>
+            <span className={`px-2 py-0.5 rounded-full text-xs ${
+              disciplineFilter === "tender"
+                ? "bg-blue-200 text-white"
+                : "bg-blue-100 text-blue-800"
+            }`}>
+              {currentActions.filter((a: any) => a.discipline === "tender").length}
+            </span>
+          </button>
+          <button
             onClick={() => handleDisciplineFilter("precon")}
             className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
               disciplineFilter === "precon" 
-                ? "bg-blue-600 text-white" 
+                ? "bg-blue-500 text-white" 
                 : "bg-blue-100 text-blue-800 hover:bg-blue-200"
             }`}
           >
             <span>Precon</span>
             <span className={`px-2 py-0.5 rounded-full text-xs ${
               disciplineFilter === "precon"
-                ? "bg-blue-500 text-white"
+                ? "bg-blue-400 text-white"
                 : "bg-blue-200 text-blue-800"
             }`}>
               {currentActions.filter((a: any) => a.discipline === "precon").length}
@@ -151,15 +168,15 @@ export default function Dashboard() {
             onClick={() => handleDisciplineFilter("production")}
             className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
               disciplineFilter === "production" 
-                ? "bg-orange-600 text-white" 
-                : "bg-orange-100 text-orange-800 hover:bg-orange-200"
+                ? "bg-green-500 text-white" 
+                : "bg-green-100 text-green-800 hover:bg-green-200"
             }`}
           >
             <span>Production</span>
             <span className={`px-2 py-0.5 rounded-full text-xs ${
               disciplineFilter === "production"
-                ? "bg-orange-500 text-white"
-                : "bg-orange-200 text-orange-800"
+                ? "bg-green-400 text-white"
+                : "bg-green-200 text-green-800"
             }`}>
               {currentActions.filter((a: any) => a.discipline === "production").length}
             </span>
@@ -202,34 +219,17 @@ export default function Dashboard() {
             onClick={() => handleDisciplineFilter("aftercare")}
             className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
               disciplineFilter === "aftercare" 
-                ? "bg-teal-600 text-white" 
-                : "bg-teal-100 text-teal-800 hover:bg-teal-200"
+                ? "bg-purple-500 text-white" 
+                : "bg-purple-100 text-purple-800 hover:bg-purple-200"
             }`}
           >
             <span>Aftercare</span>
             <span className={`px-2 py-0.5 rounded-full text-xs ${
               disciplineFilter === "aftercare"
-                ? "bg-teal-500 text-white"
-                : "bg-teal-200 text-teal-800"
+                ? "bg-purple-400 text-white"
+                : "bg-purple-200 text-purple-800"
             }`}>
               {currentActions.filter((a: any) => a.discipline === "aftercare").length}
-            </span>
-          </button>
-          <button
-            onClick={() => handleDisciplineFilter("misc")}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-              disciplineFilter === "misc" 
-                ? "bg-gray-600 text-white" 
-                : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-            }`}
-          >
-            <span>Misc</span>
-            <span className={`px-2 py-0.5 rounded-full text-xs ${
-              disciplineFilter === "misc"
-                ? "bg-gray-500 text-white"
-                : "bg-gray-200 text-gray-800"
-            }`}>
-              {currentActions.filter((a: any) => a.discipline === "misc").length}
             </span>
           </button>
           

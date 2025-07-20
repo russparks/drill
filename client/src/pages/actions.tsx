@@ -123,12 +123,12 @@ export default function Actions() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Disciplines</SelectItem>
+                  <SelectItem value="tender">Tender</SelectItem>
                   <SelectItem value="precon">Precon</SelectItem>
                   <SelectItem value="production">Production</SelectItem>
                   <SelectItem value="design">Design</SelectItem>
                   <SelectItem value="commercial">Commercial</SelectItem>
                   <SelectItem value="aftercare">Aftercare</SelectItem>
-                  <SelectItem value="misc">Misc</SelectItem>
                 </SelectContent>
               </Select>
 
