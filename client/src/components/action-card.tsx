@@ -219,11 +219,8 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
               )}
             </div>
             
-            {/* Discipline + Mark Complete (minimal width, centered together) */}
-            <div className="flex items-center justify-center gap-4 ml-4">
-              <Badge className={`discipline-badge ${getDisciplineColor(action.discipline)} text-xs px-2 py-0.5`}>
-                {abbreviateDiscipline(action.discipline).toUpperCase()}
-              </Badge>
+            {/* Mark Complete (minimal width) */}
+            <div className="flex items-center justify-center ml-4">
               {action.status !== "closed" && (
                 <Button
                   variant="ghost"
@@ -240,8 +237,18 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
 
           {/* Row 2 */}
           <div className="flex items-center">
-            {/* Project (40%) */}
-            <div className="w-[40%] flex-shrink-0 flex items-center text-xs text-action-text-secondary">
+            {/* Phase + Discipline (minimal width) */}
+            <div className="flex items-center gap-2">
+              <Badge className={`phase-badge ${getPhaseColor(action.phase)} text-xs px-2 py-0.5`}>
+                {abbreviatePhase(action.phase).toUpperCase()}
+              </Badge>
+              <Badge className={`discipline-badge ${getDisciplineColor(action.discipline)} text-xs px-2 py-0.5`}>
+                {abbreviateDiscipline(action.discipline).toUpperCase()}
+              </Badge>
+            </div>
+            
+            {/* Project (flexible width) */}
+            <div className="flex-1 flex items-center text-xs text-action-text-secondary ml-4">
               {action.project && (
                 <span className="flex items-center">
                   {action.project.name}
@@ -274,11 +281,8 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
               )}
             </div>
             
-            {/* Phase + Edit Action (minimal width, centered together) */}
-            <div className="flex items-center justify-center gap-4 ml-4">
-              <Badge className={`phase-badge ${getPhaseColor(action.phase)} text-xs px-2 py-0.5`}>
-                {abbreviatePhase(action.phase).toUpperCase()}
-              </Badge>
+            {/* Edit Action (minimal width) */}
+            <div className="flex items-center justify-center ml-4">
               <Button
                 variant="ghost"
                 size="icon"
