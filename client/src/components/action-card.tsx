@@ -102,7 +102,7 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
     }
   };
 
-  const getWorkingDaysRemaining = (dueDate: string | null) => {
+  const getWorkingDaysRemaining = (dueDate: string | Date | null) => {
     if (!dueDate) return null;
     const days = differenceInBusinessDays(new Date(dueDate), new Date());
     if (days >= 0) {
