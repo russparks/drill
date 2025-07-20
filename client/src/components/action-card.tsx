@@ -187,26 +187,22 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
         <>
           {/* Row 1 */}
           <div className="flex items-center gap-2 mb-3">
-            {/* Col 1: Status Indicator (5%) */}
-            <div className="w-[5%] flex-shrink-0 flex justify-center items-center">
+            {/* Col 1: Status Indicator + Action Description (80%) */}
+            <div className="w-[80%] flex-shrink-0 flex items-center gap-3">
               {getStatusIndicator(action.status)}
-            </div>
-            
-            {/* Col 2: Action Description (75%) */}
-            <div className="w-[75%] flex-shrink-0 flex items-center">
               {action.description && (
                 <p className="text-sm text-action-text-primary font-medium">{action.description}</p>
               )}
             </div>
             
-            {/* Col 3: Discipline (10%) */}
+            {/* Col 2: Discipline (10%) */}
             <div className="w-[10%] flex-shrink-0 flex justify-center items-center">
               <Badge className={`discipline-badge ${getDisciplineColor(action.discipline)} text-xs px-2 py-0.5`}>
                 {abbreviateDiscipline(action.discipline).toUpperCase()}
               </Badge>
             </div>
             
-            {/* Col 4: Mark Complete (10%) */}
+            {/* Col 3: Mark Complete (10%) */}
             <div className="w-[10%] flex-shrink-0 flex justify-center items-center">
               {action.status !== "closed" && (
                 <Button
@@ -235,7 +231,7 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
             </div>
             
             {/* Col 2: Assignee (25%) */}
-            <div className="w-[25%] flex-shrink-0 flex items-center text-xs text-action-text-secondary">
+            <div className="w-[25%] flex-shrink-0 flex items-center justify-end text-xs text-action-text-secondary pr-[5px]">
               {action.assignee && (
                 <span className="flex items-center">
                   <User className="w-3 h-3 mr-1" />
