@@ -102,17 +102,31 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
     }
   };
 
-  const getWorkingDaysRemaining = (dueDate: string | Date | null) => {
+  const getWorkingDaysRemaining = (dueDate: string | Date | null, status: string, completedDate?: string | Date | null) => {
     if (!dueDate) return null;
+    
+    // For closed actions, calculate based on completion date vs due date
+    if (status === 'closed' && completedDate) {
+      const days = differenceInBusinessDays(new Date(completedDate), new Date(dueDate));
+      if (days <= 0) {
+        return { text: `(${Math.abs(days)}d early)`, color: "text-green-600" };
+      } else if (days === 0) {
+        return { text: `(on time)`, color: "text-black" };
+      } else {
+        return { text: `(${days}d late)`, color: "text-red-600" };
+      }
+    }
+    
+    // For open actions, calculate remaining days from current date
     const days = differenceInBusinessDays(new Date(dueDate), new Date());
     if (days >= 0) {
       return { text: `(${days}d)`, color: "text-black" };
     } else {
-      return { text: `(${days})`, color: "text-red-600" };
+      return { text: `(${Math.abs(days)}d overdue)`, color: "text-red-600" };
     }
   };
 
-  const workingDays = getWorkingDaysRemaining(action.dueDate);
+  const workingDays = getWorkingDaysRemaining(action.dueDate, action.status, action.updatedAt);
 
   const truncateText = (text: string, maxLength: number) => {
     return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
