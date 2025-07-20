@@ -183,22 +183,24 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
       
       // Create new project if needed
       if (showNewProjectInput && data.newProjectName) {
-        const newProject = await apiRequest("/api/projects", "POST", { 
+        const response = await apiRequest("POST", "/api/projects", { 
           name: data.newProjectName,
           description: "",
           status: "active" 
         });
+        const newProject = await response.json();
         finalData.projectId = newProject.id;
       }
       
       // Create new person if needed
       if (showNewPersonInput && data.newPersonName && data.newPersonEmail) {
-        const newUser = await apiRequest("/api/users", "POST", {
+        const response = await apiRequest("POST", "/api/users", {
           name: data.newPersonName,
           email: data.newPersonEmail,
           username: data.newPersonEmail.split('@')[0],
           password: "defaultpassword"
         });
+        const newUser = await response.json();
         finalData.assigneeId = newUser.id;
       }
       
