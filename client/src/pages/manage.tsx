@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -427,59 +428,71 @@ export default function ManagePage() {
           {projectsLoading ? (
             <div>Loading projects...</div>
           ) : (
-            <div className="grid gap-4">
-              {projects.map((project: Project) => (
-                <Card key={project.id}>
-                  <CardHeader className="pb-3">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <CardTitle className="text-lg">{project.name}</CardTitle>
-                        {project.projectNumber && (
-                          <p className="text-sm font-medium text-muted-foreground">
-                            #{project.projectNumber}
-                          </p>
-                        )}
-                        <p className="text-sm text-muted-foreground mt-1">
-                          {project.description || "No description"}
-                        </p>
-                        <div className="flex flex-wrap gap-2 mt-2">
-                          <span className={`text-xs px-2 py-1 rounded text-white ${
-                            project.status === "tender" ? "bg-blue-500" :
-                            project.status === "precon" ? "bg-yellow-500" :
-                            project.status === "production" ? "bg-green-500" :
-                            project.status === "aftercare" ? "bg-purple-500" :
-                            "bg-gray-500"
-                          }`}>
-                            {project.status}
-                          </span>
-                          {project.startOnSiteDate && (
-                            <span className="text-xs text-muted-foreground">
-                              Start: {new Date(project.startOnSiteDate).toLocaleDateString()}
-                            </span>
+            <div className="border rounded-lg">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Project</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Start Date</TableHead>
+                    <TableHead>Description</TableHead>
+                    <TableHead className="w-20">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {projects.map((project: Project) => (
+                    <TableRow key={project.id}>
+                      <TableCell>
+                        <div>
+                          <div className="font-medium">{project.name}</div>
+                          {project.projectNumber && (
+                            <div className="text-sm text-muted-foreground">#{project.projectNumber}</div>
                           )}
                         </div>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleEditProject(project)}
-                        >
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => deleteProjectMutation.mutate(project.id)}
-                          disabled={deleteProjectMutation.isPending}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </CardHeader>
-                </Card>
-              ))}
+                      </TableCell>
+                      <TableCell>
+                        <span className={`text-xs px-2 py-1 rounded text-white ${
+                          project.status === "tender" ? "bg-blue-500" :
+                          project.status === "precon" ? "bg-yellow-500" :
+                          project.status === "production" ? "bg-green-500" :
+                          project.status === "aftercare" ? "bg-purple-500" :
+                          "bg-gray-500"
+                        }`}>
+                          {project.status}
+                        </span>
+                      </TableCell>
+                      <TableCell>
+                        {project.startOnSiteDate ? 
+                          new Date(project.startOnSiteDate).toLocaleDateString() : 
+                          "-"
+                        }
+                      </TableCell>
+                      <TableCell className="max-w-xs truncate">
+                        {project.description || "-"}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex gap-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleEditProject(project)}
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => deleteProjectMutation.mutate(project.id)}
+                            disabled={deleteProjectMutation.isPending}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </div>
           )}
         </TabsContent>
@@ -508,41 +521,45 @@ export default function ManagePage() {
           {usersLoading ? (
             <div>Loading people...</div>
           ) : (
-            <div className="grid gap-4">
-              {users.map((user: User) => (
-                <Card key={user.id}>
-                  <CardHeader className="pb-3">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <CardTitle className="text-lg">{user.name}</CardTitle>
-                        <p className="text-sm text-muted-foreground mt-1">
-                          {user.email}
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-2">
-                          Username: {user.username}
-                        </p>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleEditUser(user)}
-                        >
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => deleteUserMutation.mutate(user.id)}
-                          disabled={deleteUserMutation.isPending}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </CardHeader>
-                </Card>
-              ))}
+            <div className="border rounded-lg">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Username</TableHead>
+                    <TableHead className="w-20">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {users.map((user: User) => (
+                    <TableRow key={user.id}>
+                      <TableCell className="font-medium">{user.name}</TableCell>
+                      <TableCell>{user.email}</TableCell>
+                      <TableCell className="text-muted-foreground">{user.username}</TableCell>
+                      <TableCell>
+                        <div className="flex gap-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleEditUser(user)}
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => deleteUserMutation.mutate(user.id)}
+                            disabled={deleteUserMutation.isPending}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </div>
           )}
         </TabsContent>
