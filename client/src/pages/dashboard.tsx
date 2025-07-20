@@ -375,30 +375,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Active Filters Breadcrumb */}
-        {(statusFilter !== "open" || disciplineFilter || phaseFilter || projectFilter) && (
-          <div className="flex items-center justify-between py-2 px-3 bg-gray-50 border-l-4 border-blue-400 mb-2">
-            <div className="flex items-center gap-2 text-xs text-gray-600">
-              <span>Filters:</span>
-              {statusFilter !== "open" && <span className="font-medium">{statusFilter}</span>}
-              {disciplineFilter && <span className="font-medium">{disciplineFilter}</span>}
-              {phaseFilter && <span className="font-medium">{phaseFilter}</span>}
-              {projectFilter && <span className="font-medium">{projects?.find(p => p.id === projectFilter)?.name}</span>}
-            </div>
-            <button
-              onClick={() => {
-                setStatusFilter("open");
-                setDisciplineFilter("");
-                setPhaseFilter("");
-                setProjectFilter(null);
-                setCurrentPage(1);
-              }}
-              className="text-xs text-blue-600 hover:text-blue-800 font-medium"
-            >
-              Clear
-            </button>
-          </div>
-        )}
+
       </div>
 
       {/* Current Actions */}
