@@ -205,7 +205,10 @@ export default function Dashboard() {
             </button>
             </div>
             {statusFilter && (
-              <div className="ml-2 group">
+              <div 
+                className="ml-2 group cursor-pointer"
+                onClick={() => setStatusFilter("")}
+              >
                 <Filter className="w-4 h-4 text-gray-500 group-hover:hidden" />
                 <FilterX className="w-4 h-4 text-gray-500 hidden group-hover:block" />
               </div>
@@ -284,7 +287,10 @@ export default function Dashboard() {
             </button>
             </div>
             {disciplineFilter && (
-              <div className="ml-2 group">
+              <div 
+                className="ml-2 group cursor-pointer"
+                onClick={() => setDisciplineFilter("")}
+              >
                 <Filter className="w-4 h-4 text-gray-500 group-hover:hidden" />
                 <FilterX className="w-4 h-4 text-gray-500 hidden group-hover:block" />
               </div>
@@ -352,7 +358,10 @@ export default function Dashboard() {
             </button>
             </div>
             {phaseFilter && (
-              <div className="ml-2 group">
+              <div 
+                className="ml-2 group cursor-pointer"
+                onClick={() => setPhaseFilter("")}
+              >
                 <Filter className="w-4 h-4 text-gray-500 group-hover:hidden" />
                 <FilterX className="w-4 h-4 text-gray-500 hidden group-hover:block" />
               </div>
