@@ -93,71 +93,128 @@ export default function Dashboard() {
 
         {/* Stats Cards and Projects */}
         <div className="flex flex-wrap items-center gap-3 mb-8">
-          <StatsCard
-            title=""
-            value={stats?.open || 0}
-            icon={AlertCircle}
-            iconColor="text-red-600"
-            iconBgColor="bg-red-100"
+          {/* Status Filter Buttons */}
+          <button
             onClick={() => handleStatusFilter("open")}
-            isActive={statusFilter === "open"}
-          />
-          <StatsCard
-            title=""
-            value={stats?.closed || 0}
-            icon={CheckCircle}
-            iconColor="text-green-600"
-            iconBgColor="bg-green-100"
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+              statusFilter === "open" 
+                ? "bg-red-600 text-white" 
+                : "bg-red-100 text-red-800 hover:bg-red-200"
+            }`}
+          >
+            <span>Open</span>
+            <span className={`px-2 py-0.5 rounded-full text-xs ${
+              statusFilter === "open"
+                ? "bg-red-500 text-white"
+                : "bg-red-200 text-red-800"
+            }`}>
+              {stats?.open || 0}
+            </span>
+          </button>
+          <button
             onClick={() => handleStatusFilter("closed")}
-            isActive={statusFilter === "closed"}
-          />
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+              statusFilter === "closed" 
+                ? "bg-green-600 text-white" 
+                : "bg-green-100 text-green-800 hover:bg-green-200"
+            }`}
+          >
+            <span>Closed</span>
+            <span className={`px-2 py-0.5 rounded-full text-xs ${
+              statusFilter === "closed"
+                ? "bg-green-500 text-white"
+                : "bg-green-200 text-green-800"
+            }`}>
+              {stats?.closed || 0}
+            </span>
+          </button>
           
-          {/* Discipline Filter Cards */}
-          <StatsCard
-            title=""
-            value={currentActions.filter((a: any) => a.discipline === "precon").length}
-            icon={HardHat}
-            iconColor="text-blue-600"
-            iconBgColor="bg-blue-100"
+          {/* Discipline Filter Buttons */}
+          <button
             onClick={() => handleDisciplineFilter("precon")}
-            isActive={disciplineFilter === "precon"}
-          />
-          <StatsCard
-            title=""
-            value={currentActions.filter((a: any) => a.discipline === "production").length}
-            icon={Hammer}
-            iconColor="text-orange-600"
-            iconBgColor="bg-orange-100"
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+              disciplineFilter === "precon" 
+                ? "bg-blue-600 text-white" 
+                : "bg-blue-100 text-blue-800 hover:bg-blue-200"
+            }`}
+          >
+            <span>Precon</span>
+            <span className={`px-2 py-0.5 rounded-full text-xs ${
+              disciplineFilter === "precon"
+                ? "bg-blue-500 text-white"
+                : "bg-blue-200 text-blue-800"
+            }`}>
+              {currentActions.filter((a: any) => a.discipline === "precon").length}
+            </span>
+          </button>
+          <button
             onClick={() => handleDisciplineFilter("production")}
-            isActive={disciplineFilter === "production"}
-          />
-          <StatsCard
-            title=""
-            value={currentActions.filter((a: any) => a.discipline === "design").length}
-            icon={Palette}
-            iconColor="text-purple-600"
-            iconBgColor="bg-purple-100"
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+              disciplineFilter === "production" 
+                ? "bg-orange-600 text-white" 
+                : "bg-orange-100 text-orange-800 hover:bg-orange-200"
+            }`}
+          >
+            <span>Production</span>
+            <span className={`px-2 py-0.5 rounded-full text-xs ${
+              disciplineFilter === "production"
+                ? "bg-orange-500 text-white"
+                : "bg-orange-200 text-orange-800"
+            }`}>
+              {currentActions.filter((a: any) => a.discipline === "production").length}
+            </span>
+          </button>
+          <button
             onClick={() => handleDisciplineFilter("design")}
-            isActive={disciplineFilter === "design"}
-          />
-          <StatsCard
-            title=""
-            value={currentActions.filter((a: any) => a.discipline === "commercial").length}
-            icon={DollarSign}
-            iconColor="text-green-600"
-            iconBgColor="bg-green-100"
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+              disciplineFilter === "design" 
+                ? "bg-purple-600 text-white" 
+                : "bg-purple-100 text-purple-800 hover:bg-purple-200"
+            }`}
+          >
+            <span>Design</span>
+            <span className={`px-2 py-0.5 rounded-full text-xs ${
+              disciplineFilter === "design"
+                ? "bg-purple-500 text-white"
+                : "bg-purple-200 text-purple-800"
+            }`}>
+              {currentActions.filter((a: any) => a.discipline === "design").length}
+            </span>
+          </button>
+          <button
             onClick={() => handleDisciplineFilter("commercial")}
-            isActive={disciplineFilter === "commercial"}
-          />
-          <StatsCard
-            title=""
-            value={currentActions.filter((a: any) => a.discipline === "misc").length}
-            icon={MoreHorizontal}
-            iconColor="text-gray-600"
-            iconBgColor="bg-gray-100"
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+              disciplineFilter === "commercial" 
+                ? "bg-green-600 text-white" 
+                : "bg-green-100 text-green-800 hover:bg-green-200"
+            }`}
+          >
+            <span>Commercial</span>
+            <span className={`px-2 py-0.5 rounded-full text-xs ${
+              disciplineFilter === "commercial"
+                ? "bg-green-500 text-white"
+                : "bg-green-200 text-green-800"
+            }`}>
+              {currentActions.filter((a: any) => a.discipline === "commercial").length}
+            </span>
+          </button>
+          <button
             onClick={() => handleDisciplineFilter("misc")}
-            isActive={disciplineFilter === "misc"}
-          />
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+              disciplineFilter === "misc" 
+                ? "bg-gray-600 text-white" 
+                : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+            }`}
+          >
+            <span>Misc</span>
+            <span className={`px-2 py-0.5 rounded-full text-xs ${
+              disciplineFilter === "misc"
+                ? "bg-gray-500 text-white"
+                : "bg-gray-200 text-gray-800"
+            }`}>
+              {currentActions.filter((a: any) => a.discipline === "misc").length}
+            </span>
+          </button>
           
           <div className="ml-auto">
             <ProjectsDropdown onProjectSelect={handleProjectSelect} selectedProjectId={projectFilter} />

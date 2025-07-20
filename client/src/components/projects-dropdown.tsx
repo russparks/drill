@@ -41,7 +41,6 @@ export default function ProjectsDropdown({ onProjectSelect, selectedProjectId }:
         >
           <Building className="h-4 w-4" />
           <span>{selectedProject ? selectedProject.name : "All Projects"}</span>
-          <Badge variant="secondary" className="ml-2">{activeProjects.length}</Badge>
           <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>

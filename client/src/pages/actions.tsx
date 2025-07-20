@@ -22,8 +22,8 @@ export default function Actions() {
   const [isActionFormOpen, setIsActionFormOpen] = useState(false);
   const [selectedAction, setSelectedAction] = useState<ActionWithRelations | null>(null);
   const [search, setSearch] = useState("");
-  const [disciplineFilter, setDisciplineFilter] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
+  const [disciplineFilter, setDisciplineFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -35,8 +35,8 @@ export default function Actions() {
       const searchParams = new URLSearchParams();
       
       if (params.search) searchParams.append("search", params.search);
-      if (params.discipline) searchParams.append("discipline", params.discipline);
-      if (params.status) searchParams.append("status", params.status);
+      if (params.discipline && params.discipline !== "all") searchParams.append("discipline", params.discipline);
+      if (params.status && params.status !== "all") searchParams.append("status", params.status);
       
       const queryString = searchParams.toString();
       return fetch(`${url}${queryString ? `?${queryString}` : ""}`).then(res => res.json());
@@ -122,7 +122,7 @@ export default function Actions() {
                   <SelectValue placeholder="All Disciplines" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Disciplines</SelectItem>
+                  <SelectItem value="all">All Disciplines</SelectItem>
                   <SelectItem value="precon">Precon</SelectItem>
                   <SelectItem value="production">Production</SelectItem>
                   <SelectItem value="design">Design</SelectItem>
@@ -136,7 +136,7 @@ export default function Actions() {
                   <SelectValue placeholder="All Status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Status</SelectItem>
+                  <SelectItem value="all">All Status</SelectItem>
                   <SelectItem value="open">Open</SelectItem>
                   <SelectItem value="closed">Closed</SelectItem>
                 </SelectContent>
