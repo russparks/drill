@@ -108,6 +108,9 @@ export default function Dashboard() {
   const startIndex = (currentPage - 1) * actionsPerPage;
   const endIndex = pageSize === "All" ? totalActions : startIndex + actionsPerPage;
   const paginatedActions = currentActions.slice(startIndex, endIndex);
+  
+  // Check if pagination is needed
+  const showAllRecords = totalActions <= actionsPerPage;
 
   const goToPreviousPage = () => {
     setCurrentPage(prev => Math.max(1, prev - 1));
@@ -350,57 +353,64 @@ export default function Dashboard() {
               
               {/* Pagination Controls */}
               <div className="p-4 border-t bg-gray-50">
-                <div className="flex items-center justify-between">
-                  {/* Left side - Navigation */}
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={goToPreviousPage}
-                      disabled={currentPage <= 1}
-                      className={`${currentPage <= 1 ? 'text-gray-400 cursor-not-allowed' : ''}`}
-                    >
-                      <ChevronLeft className="h-4 w-4" />
-                    </Button>
-                    
-                    <span className="text-sm text-gray-600">
-                      Page {currentPage} of {totalPages}
-                    </span>
-                    
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={goToNextPage}
-                      disabled={currentPage >= totalPages}
-                      className={`${currentPage >= totalPages ? 'text-gray-400 cursor-not-allowed' : ''}`}
-                    >
-                      <ChevronRight className="h-4 w-4" />
-                    </Button>
+                {showAllRecords ? (
+                  /* Show simple message when all records are displayed */
+                  <div className="text-center text-sm text-gray-600">
+                    Showing all {totalActions} action{totalActions !== 1 ? 's' : ''}
                   </div>
-                  
-                  {/* Right side - Page size selector */}
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-600">Show:</span>
-                    <Select value={pageSize} onValueChange={handlePageSizeChange}>
-                      <SelectTrigger className="w-20">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="All">All</SelectItem>
-                        <SelectItem value="25">25</SelectItem>
-                        <SelectItem value="50">50</SelectItem>
-                        <SelectItem value="75">75</SelectItem>
-                        <SelectItem value="100">100</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <span className="text-sm text-gray-600">
-                      of {totalActions} actions
-                    </span>
+                ) : (
+                  <div className="flex items-center justify-between">
+                    {/* Left side - Navigation */}
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={goToPreviousPage}
+                        disabled={currentPage <= 1}
+                        className={`${currentPage <= 1 ? 'text-gray-400 cursor-not-allowed' : ''}`}
+                      >
+                        <ChevronLeft className="h-4 w-4" />
+                      </Button>
+                      
+                      <span className="text-sm text-gray-600">
+                        Page {currentPage} of {totalPages}
+                      </span>
+                      
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={goToNextPage}
+                        disabled={currentPage >= totalPages}
+                        className={`${currentPage >= totalPages ? 'text-gray-400 cursor-not-allowed' : ''}`}
+                      >
+                        <ChevronRight className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    
+                    {/* Right side - Page size selector */}
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-gray-600">Show:</span>
+                      <Select value={pageSize} onValueChange={handlePageSizeChange}>
+                        <SelectTrigger className="w-20">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="All">All</SelectItem>
+                          <SelectItem value="25">25</SelectItem>
+                          <SelectItem value="50">50</SelectItem>
+                          <SelectItem value="75">75</SelectItem>
+                          <SelectItem value="100">100</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <span className="text-sm text-gray-600">
+                        of {totalActions} actions
+                      </span>
+                    </div>
                   </div>
-                </div>
+                )}
                 
-                {/* Show range info */}
-                {pageSize !== "All" && totalActions > 0 && (
+                {/* Show range info only when paginated */}
+                {!showAllRecords && pageSize !== "All" && totalActions > 0 && (
                   <div className="text-center mt-2 text-xs text-gray-500">
                     Showing {startIndex + 1}-{Math.min(endIndex, totalActions)} of {totalActions}
                   </div>
