@@ -25,7 +25,7 @@ export default function StatsCard({ title, value, icon: Icon, iconColor, iconBgC
             <Icon className={`h-4 w-4 ${iconColor}`} />
           </div>
           <p className="text-xl font-bold text-action-text-primary mb-1">{value}</p>
-          <p className="text-xs font-medium text-action-text-secondary leading-tight">{title}</p>
+          {title && <p className="text-xs font-medium text-action-text-secondary leading-tight">{title}</p>}
         </div>
       </CardContent>
     </Card>

@@ -12,14 +12,16 @@ import { Project } from "@shared/schema";
 
 interface ProjectsDropdownProps {
   onProjectSelect?: (project: Project) => void;
+  selectedProjectId?: number | null;
 }
 
-export default function ProjectsDropdown({ onProjectSelect }: ProjectsDropdownProps) {
+export default function ProjectsDropdown({ onProjectSelect, selectedProjectId }: ProjectsDropdownProps) {
   const { data: projects = [], isLoading } = useQuery({
     queryKey: ["/api/projects"],
   });
 
   const activeProjects = (projects as Project[]).filter(p => p.status === 'active');
+  const selectedProject = selectedProjectId ? activeProjects.find(p => p.id === selectedProjectId) : null;
 
   if (isLoading) {
     return (
@@ -33,14 +35,27 @@ export default function ProjectsDropdown({ onProjectSelect }: ProjectsDropdownPr
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="flex items-center space-x-2">
+        <Button 
+          variant={selectedProject ? "default" : "outline"} 
+          className="flex items-center space-x-2"
+        >
           <Building className="h-4 w-4" />
-          <span>Active Projects</span>
+          <span>{selectedProject ? selectedProject.name : "All Projects"}</span>
           <Badge variant="secondary" className="ml-2">{activeProjects.length}</Badge>
           <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-80">
+        {selectedProject && (
+          <DropdownMenuItem
+            onClick={() => onProjectSelect?.(selectedProject)}
+            className="flex flex-col items-start p-4 cursor-pointer border-b"
+          >
+            <div className="font-medium text-action-text-primary mb-1">
+              Clear Filter - Show All Projects
+            </div>
+          </DropdownMenuItem>
+        )}
         {activeProjects.length === 0 ? (
           <div className="p-4 text-center text-action-text-secondary">
             No active projects
@@ -50,7 +65,9 @@ export default function ProjectsDropdown({ onProjectSelect }: ProjectsDropdownPr
             <DropdownMenuItem
               key={project.id}
               onClick={() => onProjectSelect?.(project)}
-              className="flex flex-col items-start p-4 cursor-pointer"
+              className={`flex flex-col items-start p-4 cursor-pointer ${
+                selectedProjectId === project.id ? 'bg-blue-50' : ''
+              }`}
             >
               <div className="font-medium text-action-text-primary mb-1">
                 {project.name}

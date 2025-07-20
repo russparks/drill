@@ -339,7 +339,6 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                       </FormControl>
                       <SelectContent>
                         <SelectItem value="open">Open</SelectItem>
-                        <SelectItem value="in-progress">In Progress</SelectItem>
                         <SelectItem value="closed">Closed</SelectItem>
                       </SelectContent>
                     </Select>

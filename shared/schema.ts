@@ -24,7 +24,7 @@ export const actions = pgTable("actions", {
   title: text("title").notNull(),
   description: text("description"),
   discipline: text("discipline").notNull(), // precon, production, design, commercial, misc
-  status: text("status").notNull().default("open"), // open, in-progress, closed
+  status: text("status").notNull().default("open"), // open, closed
   priority: text("priority").notNull().default("medium"), // low, medium, high, urgent
   assigneeId: integer("assignee_id").references(() => users.id),
   projectId: integer("project_id").references(() => projects.id),

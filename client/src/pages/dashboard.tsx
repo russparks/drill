@@ -13,19 +13,21 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function Dashboard() {
   const [isActionFormOpen, setIsActionFormOpen] = useState(false);
   const [selectedAction, setSelectedAction] = useState<ActionWithRelations | null>(null);
-  const [statusFilter, setStatusFilter] = useState<string>("");
+  const [statusFilter, setStatusFilter] = useState<string>("open");
+  const [projectFilter, setProjectFilter] = useState<number | null>(null);
 
   const { data: stats, isLoading: statsLoading } = useQuery({
     queryKey: ["/api/stats"],
   });
 
-  const { data: recentActions = [], isLoading: actionsLoading } = useQuery({
-    queryKey: ["/api/actions", { status: statusFilter }],
+  const { data: currentActions = [], isLoading: actionsLoading } = useQuery({
+    queryKey: ["/api/actions", { status: statusFilter, projectId: projectFilter }],
     queryFn: ({ queryKey }) => {
       const [url, params] = queryKey;
       const searchParams = new URLSearchParams();
       
       if (params.status) searchParams.append("status", params.status);
+      if (params.projectId) searchParams.append("projectId", params.projectId.toString());
       
       const queryString = searchParams.toString();
       return fetch(`${url}${queryString ? `?${queryString}` : ""}`).then(res => res.json());
@@ -53,6 +55,7 @@ export default function Dashboard() {
 
   const handleProjectSelect = (project: Project) => {
     console.log("Selected project:", project.name);
+    setProjectFilter(projectFilter === project.id ? null : project.id);
   };
 
   if (statsLoading) {
@@ -72,10 +75,7 @@ export default function Dashboard() {
       <div className="mb-8">
         <div className="md:flex md:items-center md:justify-between mb-6">
           <div className="flex-1 min-w-0">
-            <h1 className="text-2xl font-bold text-action-text-primary">Dashboard</h1>
-            <p className="mt-1 text-sm text-action-text-secondary">
-              Track and manage construction actions across all projects
-            </p>
+            {/* Removed dashboard title and subtitle */}
           </div>
           <div className="mt-4 md:mt-0 md:ml-4">
             <Button onClick={handleCreateAction} className="material-shadow">
@@ -88,7 +88,7 @@ export default function Dashboard() {
         {/* Stats Cards and Projects */}
         <div className="flex flex-wrap items-center gap-3 mb-8">
           <StatsCard
-            title="Open"
+            title=""
             value={stats?.open || 0}
             icon={AlertCircle}
             iconColor="text-red-600"
@@ -96,41 +96,16 @@ export default function Dashboard() {
             onClick={() => handleStatusFilter("open")}
             isActive={statusFilter === "open"}
           />
-          <StatsCard
-            title="In Progress"
-            value={stats?.inProgress || 0}
-            icon={Clock}
-            iconColor="text-yellow-600"
-            iconBgColor="bg-yellow-100"
-            onClick={() => handleStatusFilter("in-progress")}
-            isActive={statusFilter === "in-progress"}
-          />
-          <StatsCard
-            title="Closed"
-            value={stats?.closed || 0}
-            icon={CheckCircle}
-            iconColor="text-green-600"
-            iconBgColor="bg-green-100"
-            onClick={() => handleStatusFilter("closed")}
-            isActive={statusFilter === "closed"}
-          />
-          <StatsCard
-            title="Team Members"
-            value={stats?.teamMembers || 0}
-            icon={Users}
-            iconColor="text-purple-600"
-            iconBgColor="bg-purple-100"
-          />
           <div className="ml-auto">
-            <ProjectsDropdown onProjectSelect={handleProjectSelect} />
+            <ProjectsDropdown onProjectSelect={handleProjectSelect} selectedProjectId={projectFilter} />
           </div>
         </div>
       </div>
 
-      {/* Recent Actions */}
+      {/* Current Actions */}
       <Card className="material-shadow">
         <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="text-lg font-medium text-action-text-primary">Recent Actions</h2>
+          <h2 className="text-lg font-medium text-action-text-primary">Current Actions</h2>
         </div>
 
         <CardContent className="p-0">
@@ -144,7 +119,7 @@ export default function Dashboard() {
                 </div>
               ))}
             </div>
-          ) : recentActions.length === 0 ? (
+          ) : currentActions.length === 0 ? (
             <div className="p-6 text-center">
               <AlertCircle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">No actions yet</h3>
@@ -156,7 +131,7 @@ export default function Dashboard() {
             </div>
           ) : (
             <div>
-              {(recentActions as ActionWithRelations[]).slice(0, 10).map((action) => (
+              {(currentActions as ActionWithRelations[]).slice(0, 10).map((action) => (
                 <ActionCard
                   key={action.id}
                   action={action}

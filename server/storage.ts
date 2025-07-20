@@ -40,7 +40,6 @@ export interface IStorage {
   deleteAction(id: number): Promise<boolean>;
   getActionStats(): Promise<{
     open: number;
-    inProgress: number;
     closed: number;
     total: number;
   }>;
@@ -191,7 +190,6 @@ export class DatabaseStorage implements IStorage {
 
   async getActionStats(): Promise<{
     open: number;
-    inProgress: number;
     closed: number;
     total: number;
   }> {
@@ -199,7 +197,6 @@ export class DatabaseStorage implements IStorage {
     
     const stats = {
       open: allActions.filter(a => a.status === 'open').length,
-      inProgress: allActions.filter(a => a.status === 'in-progress').length,
       closed: allActions.filter(a => a.status === 'closed').length,
       total: allActions.length,
     };
