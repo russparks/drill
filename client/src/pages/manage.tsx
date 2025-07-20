@@ -87,10 +87,10 @@ function ProjectForm({ project, onClose }: { project?: Project; onClose: () => v
   };
 
   const statusButtons = [
-    { value: "tender", label: "Tender", color: "bg-blue-500" },
-    { value: "precon", label: "Precon", color: "bg-yellow-500" },
-    { value: "production", label: "Production", color: "bg-green-500" },
-    { value: "aftercare", label: "Aftercare", color: "bg-purple-500" },
+    { value: "tender", label: "Tender", color: "bg-blue-500 text-white" },
+    { value: "precon", label: "Precon", color: "bg-yellow-500 text-white" },
+    { value: "production", label: "Production", color: "bg-green-500 text-white" },
+    { value: "aftercare", label: "Aftercare", color: "bg-purple-500 text-white" },
   ];
 
   return (
