@@ -243,7 +243,19 @@ export default function Dashboard() {
       {/* Current Actions */}
       <Card className="material-shadow">
         <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-          <h2 className="text-lg font-medium text-action-text-primary">Current Actions</h2>
+          <h2 className="text-lg font-medium text-action-text-primary">
+            Current Actions
+            {(statusFilter || disciplineFilter || projectFilter) && (
+              <span className="text-gray-500">
+                {' - '}
+                {[
+                  statusFilter && statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1),
+                  disciplineFilter && disciplineFilter.charAt(0).toUpperCase() + disciplineFilter.slice(1),
+                  projectFilter && projects?.find(p => p.id === projectFilter)?.name
+                ].filter(Boolean).join(', ')}
+              </span>
+            )}
+          </h2>
           <ProjectsDropdown onProjectSelect={handleProjectSelect} selectedProjectId={projectFilter} />
         </div>
 
