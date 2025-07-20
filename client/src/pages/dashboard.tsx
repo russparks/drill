@@ -45,6 +45,11 @@ export default function Dashboard() {
     },
   });
 
+  // Get all actions for accurate filter counts
+  const { data: allActions = [] } = useQuery({
+    queryKey: ["/api/actions"],
+  });
+
   const { data: projects } = useQuery({
     queryKey: ["/api/projects"],
   });
@@ -165,7 +170,7 @@ export default function Dashboard() {
                   ? "bg-blue-500 text-white"
                   : "bg-blue-200 text-blue-800"
               }`}>
-                {currentActions.filter((a: any) => a.discipline === "precon").length}
+{allActions.filter((a: any) => a.discipline === "precon").length}
               </span>
             </button>
             <button
@@ -182,7 +187,7 @@ export default function Dashboard() {
                   ? "bg-green-500 text-white"
                   : "bg-green-200 text-green-800"
               }`}>
-                {currentActions.filter((a: any) => a.discipline === "production").length}
+{allActions.filter((a: any) => a.discipline === "production").length}
               </span>
             </button>
             <button
@@ -199,7 +204,7 @@ export default function Dashboard() {
                   ? "bg-purple-400 text-white"
                   : "bg-purple-200 text-purple-800"
               }`}>
-                {currentActions.filter((a: any) => a.discipline === "design").length}
+{allActions.filter((a: any) => a.discipline === "design").length}
               </span>
             </button>
             <button
@@ -216,7 +221,7 @@ export default function Dashboard() {
                   ? "bg-cyan-400 text-white"
                   : "bg-cyan-200 text-cyan-800"
               }`}>
-                {currentActions.filter((a: any) => a.discipline === "commercial").length}
+{allActions.filter((a: any) => a.discipline === "commercial").length}
               </span>
             </button>
 
@@ -272,7 +277,7 @@ export default function Dashboard() {
                   ? "bg-blue-300 text-white"
                   : "bg-blue-200 text-blue-800"
               }`}>
-                {currentActions.filter((a: any) => a.discipline === "tender").length}
+{allActions.filter((a: any) => a.discipline === "tender").length}
               </span>
             </button>
             <button
@@ -289,7 +294,7 @@ export default function Dashboard() {
                   ? "bg-green-400 text-white"
                   : "bg-green-200 text-green-800"
               }`}>
-                {currentActions.filter((a: any) => a.discipline === "aftercare").length}
+{allActions.filter((a: any) => a.discipline === "aftercare").length}
               </span>
             </button>
           </div>
