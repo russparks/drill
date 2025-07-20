@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { Plus, AlertCircle, ChevronLeft, ChevronRight, Filter } from "lucide-react";
+import { Plus, AlertCircle, ChevronLeft, ChevronRight, Filter, FilterX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -205,7 +205,10 @@ export default function Dashboard() {
             </button>
             </div>
             {statusFilter && (
-              <Filter className="w-4 h-4 text-gray-500 ml-2" />
+              <div className="ml-2 group">
+                <Filter className="w-4 h-4 text-gray-500 group-hover:hidden" />
+                <FilterX className="w-4 h-4 text-gray-500 hidden group-hover:block" />
+              </div>
             )}
           </div>
 
@@ -281,7 +284,10 @@ export default function Dashboard() {
             </button>
             </div>
             {disciplineFilter && (
-              <Filter className="w-4 h-4 text-gray-500 ml-2" />
+              <div className="ml-2 group">
+                <Filter className="w-4 h-4 text-gray-500 group-hover:hidden" />
+                <FilterX className="w-4 h-4 text-gray-500 hidden group-hover:block" />
+              </div>
             )}
           </div>
 
@@ -346,7 +352,10 @@ export default function Dashboard() {
             </button>
             </div>
             {phaseFilter && (
-              <Filter className="w-4 h-4 text-gray-500 ml-2" />
+              <div className="ml-2 group">
+                <Filter className="w-4 h-4 text-gray-500 group-hover:hidden" />
+                <FilterX className="w-4 h-4 text-gray-500 hidden group-hover:block" />
+              </div>
             )}
           </div>
         </div>
