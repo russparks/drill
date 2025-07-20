@@ -220,7 +220,9 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
                 disciplineFilter === "operations" 
                   ? "bg-blue-600 text-white border-blue-800" 
-                  : "bg-blue-100 text-blue-800 border-blue-600 hover:bg-blue-200"
+                  : disciplineFilter && disciplineFilter !== "operations"
+                    ? "bg-gray-100 text-gray-400 border-gray-300 cursor-default"
+                    : "bg-blue-100 text-blue-800 border-blue-600 hover:bg-blue-200"
               }`}
             >
               OPERATIONS
@@ -230,7 +232,9 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 disciplineFilter === "commercial" 
                   ? "bg-cyan-500 text-white" 
-                  : "bg-cyan-100 text-cyan-800 hover:bg-cyan-200"
+                  : disciplineFilter && disciplineFilter !== "commercial"
+                    ? "bg-gray-100 text-gray-400 cursor-default"
+                    : "bg-cyan-100 text-cyan-800 hover:bg-cyan-200"
               }`}
             >
               COMMERCIAL
@@ -240,7 +244,9 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 disciplineFilter === "design" 
                   ? "bg-purple-500 text-white" 
-                  : "bg-purple-100 text-purple-800 hover:bg-purple-200"
+                  : disciplineFilter && disciplineFilter !== "design"
+                    ? "bg-gray-100 text-gray-400 cursor-default"
+                    : "bg-purple-100 text-purple-800 hover:bg-purple-200"
               }`}
             >
               DESIGN
@@ -250,7 +256,9 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 disciplineFilter === "she" 
                   ? "bg-orange-500 text-white" 
-                  : "bg-orange-100 text-orange-800 hover:bg-orange-200"
+                  : disciplineFilter && disciplineFilter !== "she"
+                    ? "bg-gray-100 text-gray-400 cursor-default"
+                    : "bg-orange-100 text-orange-800 hover:bg-orange-200"
               }`}
             >
               SHE
@@ -260,7 +268,9 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 disciplineFilter === "qa" 
                   ? "bg-indigo-500 text-white" 
-                  : "bg-indigo-100 text-indigo-800 hover:bg-indigo-200"
+                  : disciplineFilter && disciplineFilter !== "qa"
+                    ? "bg-gray-100 text-gray-400 cursor-default"
+                    : "bg-indigo-100 text-indigo-800 hover:bg-indigo-200"
               }`}
             >
               QA
@@ -270,7 +280,9 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 disciplineFilter === "general" 
                   ? "bg-gray-600 text-white" 
-                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                  : disciplineFilter && disciplineFilter !== "general"
+                    ? "bg-gray-100 text-gray-400 cursor-default"
+                    : "bg-gray-100 text-gray-800 hover:bg-gray-200"
               }`}
             >
               GENERAL
