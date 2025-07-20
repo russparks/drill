@@ -10,6 +10,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -32,10 +33,15 @@ import {
 import { z } from "zod";
 
 const actionFormSchema = insertActionSchema.extend({
-  assigneeId: z.number().optional(),
-  projectId: z.number().optional(),
-  dueDate: z.string().optional(),
-});
+  assigneeId: z.number().optional().nullable(),
+  projectId: z.number().optional().nullable(),
+  dueDate: z.string().optional().nullable(),
+}).transform((data) => ({
+  ...data,
+  assigneeId: data.assigneeId || null,
+  projectId: data.projectId || null,
+  dueDate: data.dueDate || null,
+}));
 
 type ActionFormData = z.infer<typeof actionFormSchema>;
 
@@ -170,6 +176,9 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
           <DialogTitle>
             {action ? "Edit Action" : "Create New Action"}
           </DialogTitle>
+          <DialogDescription>
+            {action ? "Update the action details below." : "Fill in the details to create a new action."}
+          </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
