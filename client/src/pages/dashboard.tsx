@@ -409,12 +409,60 @@ export default function Dashboard() {
             {(statusFilter || disciplineFilter || phaseFilter || projectFilter) && (
               <span className="text-gray-500">
                 {' - '}
-                {[
-                  statusFilter && statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1),
-                  disciplineFilter && disciplineFilter.charAt(0).toUpperCase() + disciplineFilter.slice(1),
-                  phaseFilter && phaseFilter.charAt(0).toUpperCase() + phaseFilter.slice(1),
-                  projectFilter && projects?.find(p => p.id === projectFilter)?.name
-                ].filter(Boolean).join(', ')}
+                <span className="inline-flex items-center gap-2">
+                  {statusFilter && (
+                    <span className="relative">
+                      {statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1)}
+                      <div className={`absolute -bottom-0.5 left-0 right-0 h-0.5 ${
+                        statusFilter === 'open' ? 'bg-[#cc3333]' : 
+                        statusFilter === 'closed' ? 'bg-gray-500' : 
+                        'bg-[#cc3333]/75'
+                      }`} />
+                    </span>
+                  )}
+                  {disciplineFilter && (
+                    <>
+                      {statusFilter && <span>,</span>}
+                      <span className="relative">
+                        {disciplineFilter.charAt(0).toUpperCase() + disciplineFilter.slice(1)}
+                        <div className={`absolute -bottom-0.5 left-0 right-0 h-0.5 ${
+                          disciplineFilter === 'operations' ? 'bg-blue-600' :
+                          disciplineFilter === 'commercial' ? 'bg-cyan-500' :
+                          disciplineFilter === 'design' ? 'bg-purple-500' :
+                          disciplineFilter === 'she' ? 'bg-orange-500' :
+                          disciplineFilter === 'qa' ? 'bg-indigo-500' :
+                          disciplineFilter === 'general' ? 'bg-gray-600' :
+                          'bg-gray-500'
+                        }`} />
+                      </span>
+                    </>
+                  )}
+                  {phaseFilter && (
+                    <>
+                      {(statusFilter || disciplineFilter) && <span>,</span>}
+                      <span className="relative">
+                        {phaseFilter.charAt(0).toUpperCase() + phaseFilter.slice(1)}
+                        <div className={`absolute -bottom-0.5 left-0 right-0 h-0.5 ${
+                          phaseFilter === 'tender' ? 'bg-blue-400' :
+                          phaseFilter === 'precon' ? 'bg-green-400' :
+                          phaseFilter === 'construction' ? 'bg-yellow-500' :
+                          phaseFilter === 'aftercare' ? 'bg-gray-500' :
+                          phaseFilter === 'strategy' ? 'bg-black' :
+                          'bg-gray-500'
+                        }`} />
+                      </span>
+                    </>
+                  )}
+                  {projectFilter && (
+                    <>
+                      {(statusFilter || disciplineFilter || phaseFilter) && <span>,</span>}
+                      <span className="relative">
+                        {projects?.find(p => p.id === projectFilter)?.name}
+                        <div className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-gray-500" />
+                      </span>
+                    </>
+                  )}
+                </span>
               </span>
             )}
           </h2>
