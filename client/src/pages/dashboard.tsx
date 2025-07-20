@@ -282,12 +282,13 @@ export default function Dashboard() {
             </div>
           ) : (
             <div>
-              {(currentActions as ActionWithRelations[]).slice(0, 10).map((action) => (
+              {(currentActions as ActionWithRelations[]).slice(0, 10).map((action, index) => (
                 <ActionCard
                   key={action.id}
                   action={action}
                   onEdit={handleEditAction}
                   onComplete={handleCompleteAction}
+                  index={index}
                 />
               ))}
             </div>
