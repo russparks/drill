@@ -231,15 +231,18 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
             {action ? "Edit Action" : "New Action"}
           </DialogTitle>
+          <DialogDescription>
+            {action ? "Update the details of this action." : "Create a new action for your project."}
+          </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
               name="projectId"
@@ -329,8 +332,9 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
               name="discipline"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>Discipline</FormLabel>
                   <FormControl>
-                    <div className="flex gap-2">
+                    <div className="grid grid-cols-3 gap-2">
                       {[
                         { 
                           value: "tender", 
@@ -373,7 +377,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                           key={discipline.value}
                           type="button"
                           onClick={() => field.onChange(discipline.value)}
-                          className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                          className={`px-4 py-3 rounded-md text-sm font-medium transition-colors ${
                             field.value === discipline.value
                               ? discipline.active
                               : discipline.inactive
@@ -455,61 +459,64 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="priority"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <div className="flex gap-2">
-                      {[
-                        { value: "low", label: "Low", activeColor: "bg-green-600" },
-                        { value: "medium", label: "Med", activeColor: "bg-amber-600" },
-                        { value: "high", label: "High", activeColor: "bg-red-600" }
-                      ].map((priority) => (
-                        <button
-                          key={priority.value}
-                          type="button"
-                          onClick={() => field.onChange(priority.value)}
-                          className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                            field.value === priority.value
-                              ? `${priority.activeColor} text-white`
-                              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                          }`}
-                        >
-                          {priority.label}
-                        </button>
-                      ))}
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {action && (
+            <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name="status"
+                name="priority"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Status</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="open">Open</SelectItem>
-                        <SelectItem value="closed">Closed</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <FormLabel>Priority</FormLabel>
+                    <FormControl>
+                      <div className="flex gap-1">
+                        {[
+                          { value: "low", label: "Low", activeColor: "bg-green-600" },
+                          { value: "medium", label: "Med", activeColor: "bg-amber-600" },
+                          { value: "high", label: "High", activeColor: "bg-red-600" }
+                        ].map((priority) => (
+                          <button
+                            key={priority.value}
+                            type="button"
+                            onClick={() => field.onChange(priority.value)}
+                            className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                              field.value === priority.value
+                                ? `${priority.activeColor} text-white`
+                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                            }`}
+                          >
+                            {priority.label}
+                          </button>
+                        ))}
+                      </div>
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-            )}
+
+              {action && (
+                <FormField
+                  control={form.control}
+                  name="status"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Status</FormLabel>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="open">Open</SelectItem>
+                          <SelectItem value="closed">Closed</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+            </div>
 
             <FormField
               control={form.control}
@@ -518,36 +525,38 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                 <FormItem>
                   <FormLabel>Due Date</FormLabel>
                   <FormControl>
-                    <div className="flex gap-2">
-                      {[
-                        { label: "2d", days: 2 },
-                        { label: "4d", days: 4 },
-                        { label: "1w", days: 7 },
-                        { label: "2w", days: 14 },
-                        { label: "1m", days: 30 }
-                      ].map((option) => {
-                        const date = new Date();
-                        date.setDate(date.getDate() + option.days);
-                        const dateString = date.toISOString().split('T')[0];
-                        
-                        return (
-                          <button
-                            key={option.label}
-                            type="button"
-                            onClick={() => field.onChange(dateString)}
-                            className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                              field.value === dateString
-                                ? "bg-blue-600 text-white"
-                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                            }`}
-                          >
-                            {option.label}
-                          </button>
-                        );
-                      })}
+                    <div className="space-y-3">
+                      <div className="grid grid-cols-5 gap-2">
+                        {[
+                          { label: "2d", days: 2 },
+                          { label: "4d", days: 4 },
+                          { label: "1w", days: 7 },
+                          { label: "2w", days: 14 },
+                          { label: "1m", days: 30 }
+                        ].map((option) => {
+                          const date = new Date();
+                          date.setDate(date.getDate() + option.days);
+                          const dateString = date.toISOString().split('T')[0];
+                          
+                          return (
+                            <button
+                              key={option.label}
+                              type="button"
+                              onClick={() => field.onChange(dateString)}
+                              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                                field.value === dateString
+                                  ? "bg-blue-600 text-white"
+                                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                              }`}
+                            >
+                              {option.label}
+                            </button>
+                          );
+                        })}
+                      </div>
                       <Input 
                         type="date" 
-                        className="w-32"
+                        placeholder="Or select custom date"
                         {...field} 
                       />
                     </div>
@@ -557,8 +566,8 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
               )}
             />
 
-            <div className="flex justify-end space-x-3 pt-4">
-              <Button type="button" variant="outline" onClick={onClose}>
+            <div className="flex justify-end space-x-3 pt-6 border-t">
+              <Button type="button" variant="outline" onClick={onClose} disabled={isLoading}>
                 Cancel
               </Button>
               <Button type="submit" disabled={isLoading}>
