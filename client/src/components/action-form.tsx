@@ -383,6 +383,12 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                           label: "QA", 
                           active: "bg-indigo-500 text-white",
                           inactive: "bg-indigo-100 text-indigo-800 hover:bg-indigo-200"
+                        },
+                        { 
+                          value: "general", 
+                          label: "General", 
+                          active: "bg-gray-600 text-white",
+                          inactive: "bg-gray-100 text-gray-800 hover:bg-gray-200"
                         }
                       ].map((discipline) => (
                         <button
@@ -437,6 +443,12 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                           label: "Aftercare", 
                           active: "bg-gray-500 text-white border border-gray-700",
                           inactive: "bg-gray-50 text-gray-700 border border-gray-300 hover:bg-gray-100"
+                        },
+                        { 
+                          value: "strategy", 
+                          label: "Strategy", 
+                          active: "bg-black text-white",
+                          inactive: "bg-gray-100 text-gray-800 hover:bg-gray-200"
                         }
                       ].map((phase) => (
                         <button

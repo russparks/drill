@@ -33,6 +33,7 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
       case "design": return "Des";
       case "she": return "SHE";
       case "qa": return "QA";
+      case "general": return "Gen";
       default: return discipline;
     }
   };
@@ -43,6 +44,7 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
       case "precon": return "Pre";
       case "construction": return "Con";
       case "aftercare": return "Aft";
+      case "strategy": return "Str";
       default: return phase;
     }
   };
@@ -84,6 +86,7 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
       case "design": return "bg-purple-100 text-purple-800";
       case "she": return "bg-orange-100 text-orange-800";
       case "qa": return "bg-indigo-100 text-indigo-800";
+      case "general": return "bg-gray-600 text-white";
       default: return "bg-gray-100 text-gray-800";
     }
   };
@@ -94,6 +97,7 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
       case "precon": return "bg-green-50 text-green-700 border border-green-300";
       case "construction": return "bg-yellow-50 text-yellow-800 border border-yellow-400";
       case "aftercare": return "bg-gray-50 text-gray-700 border border-gray-300";
+      case "strategy": return "bg-black text-white";
       default: return "bg-gray-100 text-gray-800";
     }
   };

@@ -27,8 +27,8 @@ export const actions = pgTable("actions", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
   description: text("description"),
-  discipline: text("discipline").notNull(), // operations, commercial, design, she, qa
-  phase: text("phase").notNull().default("construction"), // tender, precon, construction, aftercare  
+  discipline: text("discipline").notNull(), // operations, commercial, design, she, qa, general
+  phase: text("phase").notNull().default("construction"), // tender, precon, construction, aftercare, strategy  
   status: text("status").notNull().default("open"), // open, closed, overdue
   priority: text("priority").notNull().default("medium"), // low, medium, high, urgent
   assigneeId: integer("assignee_id").references(() => users.id),
