@@ -205,12 +205,17 @@ export default function Dashboard() {
             </button>
             </div>
             {statusFilter && (
-              <div 
-                className="ml-2 group cursor-pointer"
-                onClick={() => setStatusFilter("")}
-              >
-                <Filter className="w-4 h-4 text-gray-500 group-hover:hidden" />
-                <FilterX className="w-4 h-4 text-gray-500 hidden group-hover:block" />
+              <div className="ml-2 flex items-center gap-2">
+                <div 
+                  className="group cursor-pointer"
+                  onClick={() => setStatusFilter("")}
+                >
+                  <Filter className="w-4 h-4 text-gray-500 group-hover:hidden" />
+                  <FilterX className="w-4 h-4 text-gray-500 hidden group-hover:block" />
+                </div>
+                <span className="text-xs text-gray-500 italic">
+                  {statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1)}
+                </span>
               </div>
             )}
           </div>
@@ -287,12 +292,17 @@ export default function Dashboard() {
             </button>
             </div>
             {disciplineFilter && (
-              <div 
-                className="ml-2 group cursor-pointer"
-                onClick={() => setDisciplineFilter("")}
-              >
-                <Filter className="w-4 h-4 text-gray-500 group-hover:hidden" />
-                <FilterX className="w-4 h-4 text-gray-500 hidden group-hover:block" />
+              <div className="ml-2 flex items-center gap-2">
+                <div 
+                  className="group cursor-pointer"
+                  onClick={() => setDisciplineFilter("")}
+                >
+                  <Filter className="w-4 h-4 text-gray-500 group-hover:hidden" />
+                  <FilterX className="w-4 h-4 text-gray-500 hidden group-hover:block" />
+                </div>
+                <span className="text-xs text-gray-500 italic">
+                  {disciplineFilter.charAt(0).toUpperCase() + disciplineFilter.slice(1)}
+                </span>
               </div>
             )}
           </div>
@@ -358,12 +368,17 @@ export default function Dashboard() {
             </button>
             </div>
             {phaseFilter && (
-              <div 
-                className="ml-2 group cursor-pointer"
-                onClick={() => setPhaseFilter("")}
-              >
-                <Filter className="w-4 h-4 text-gray-500 group-hover:hidden" />
-                <FilterX className="w-4 h-4 text-gray-500 hidden group-hover:block" />
+              <div className="ml-2 flex items-center gap-2">
+                <div 
+                  className="group cursor-pointer"
+                  onClick={() => setPhaseFilter("")}
+                >
+                  <Filter className="w-4 h-4 text-gray-500 group-hover:hidden" />
+                  <FilterX className="w-4 h-4 text-gray-500 hidden group-hover:block" />
+                </div>
+                <span className="text-xs text-gray-500 italic">
+                  {phaseFilter.charAt(0).toUpperCase() + phaseFilter.slice(1)}
+                </span>
               </div>
             )}
           </div>
