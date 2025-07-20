@@ -201,7 +201,7 @@ export default function Dashboard() {
               onClick={() => handleStatusFilter("overdue")}
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
                 statusFilter === "overdue" 
-                  ? "bg-red-600 text-white" 
+                  ? "bg-[#cc3333]/75 text-white" 
                   : "bg-red-100 text-red-800 hover:bg-red-200"
               }`}
             >
