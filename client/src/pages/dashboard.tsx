@@ -3,6 +3,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { Plus, AlertCircle, Clock, CheckCircle, Users, HardHat, Hammer, Palette, DollarSign, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import StatsCard from "@/components/stats-card";
 import ActionCard from "@/components/action-card";
 import ActionForm from "@/components/action-form";
@@ -18,6 +19,7 @@ export default function Dashboard() {
   const [statusFilter, setStatusFilter] = useState<string>("open");
   const [projectFilter, setProjectFilter] = useState<number | null>(null);
   const [disciplineFilter, setDisciplineFilter] = useState<string>("");
+  const [pageSize, setPageSize] = useState<string>("25");
   const [confirmDialog, setConfirmDialog] = useState<{
     open: boolean;
     actionId: number | null;
@@ -308,15 +310,42 @@ export default function Dashboard() {
             </div>
           ) : (
             <div>
-              {(currentActions as ActionWithRelations[]).slice(0, 10).map((action, index) => (
-                <ActionCard
-                  key={action.id}
-                  action={action}
-                  onEdit={handleEditAction}
-                  onComplete={handleCompleteAction}
-                  index={index}
-                />
-              ))}
+              {/* Actions List */}
+              <div>
+                {(currentActions as ActionWithRelations[])
+                  .slice(0, pageSize === "All" ? undefined : parseInt(pageSize))
+                  .map((action, index) => (
+                    <ActionCard
+                      key={action.id}
+                      action={action}
+                      onEdit={handleEditAction}
+                      onComplete={handleCompleteAction}
+                      index={index}
+                    />
+                  ))}
+              </div>
+              
+              {/* Page Size Selector */}
+              <div className="p-4 border-t bg-gray-50 flex justify-center">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-gray-600">Show:</span>
+                  <Select value={pageSize} onValueChange={setPageSize}>
+                    <SelectTrigger className="w-20">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="All">All</SelectItem>
+                      <SelectItem value="25">25</SelectItem>
+                      <SelectItem value="50">50</SelectItem>
+                      <SelectItem value="75">75</SelectItem>
+                      <SelectItem value="100">100</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <span className="text-sm text-gray-600">
+                    of {currentActions.length} actions
+                  </span>
+                </div>
+              </div>
             </div>
           )}
         </CardContent>
