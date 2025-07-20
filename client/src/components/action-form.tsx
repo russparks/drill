@@ -38,6 +38,13 @@ const actionFormSchema = insertActionSchema.extend({
   newProjectName: z.string().optional(),
   newPersonName: z.string().optional(),
   newPersonEmail: z.string().optional(),
+  description: z.string().optional().refine((val) => {
+    if (!val) return true; // Allow empty descriptions
+    const wordCount = val.trim().split(/\s+/).length;
+    return wordCount <= 50;
+  }, {
+    message: "Description must be 50 words or less",
+  }),
 }).transform((data) => ({
   ...data,
   assigneeId: data.assigneeId || null,
@@ -315,19 +322,27 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
             <FormField
               control={form.control}
               name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Describe the action details"
-                      rows={3}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              render={({ field }) => {
+                const wordCount = field.value ? field.value.trim().split(/\s+/).length : 0;
+                return (
+                  <FormItem>
+                    <div className="flex justify-between items-center">
+                      <FormLabel>Description</FormLabel>
+                      <span className={`text-xs ${wordCount > 50 ? 'text-red-600' : 'text-gray-500'}`}>
+                        {wordCount}/50 words
+                      </span>
+                    </div>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Describe the action details (max 50 words for new actions)"
+                        rows={3}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
             />
 
             <FormField
