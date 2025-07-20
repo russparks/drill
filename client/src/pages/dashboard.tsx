@@ -167,7 +167,7 @@ export default function Dashboard() {
         {/* Filter Buttons in Three Rows */}
         <div className="space-y-3 mb-4">
           {/* Row 1: Status */}
-          <div className="border border-dotted border-gray-300 rounded p-3" style={{"borderWidth": "3px", "borderStyle": "dotted"}}>
+          <div className="border border-dotted border-gray-200 rounded p-3" style={{"borderWidth": "1px", "borderStyle": "dotted"}}>
             <div className="flex flex-wrap items-center gap-4">
               <div className="text-sm text-gray-500 font-medium">Status:</div>
             <button
@@ -207,7 +207,7 @@ export default function Dashboard() {
           </div>
 
           {/* Row 2: Discipline */}
-          <div className="border border-dotted border-gray-300 rounded p-3" style={{"borderWidth": "3px", "borderStyle": "dotted"}}>
+          <div className="border border-dotted border-gray-200 rounded p-3" style={{"borderWidth": "1px", "borderStyle": "dotted"}}>
             <div className="flex flex-wrap items-center gap-4">
               <div className="text-sm text-gray-500 font-medium">Discipline:</div>
             <button
@@ -280,7 +280,7 @@ export default function Dashboard() {
           </div>
 
           {/* Row 3: Phase */}
-          <div className="border border-dotted border-gray-300 rounded p-3" style={{"borderWidth": "3px", "borderStyle": "dotted"}}>
+          <div className="border border-dotted border-gray-200 rounded p-3" style={{"borderWidth": "1px", "borderStyle": "dotted"}}>
             <div className="flex flex-wrap items-center gap-4">
               <div className="text-sm text-gray-500 font-medium">Process:</div>
             <button
