@@ -180,7 +180,9 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 statusFilter === "open" 
                   ? "bg-red-500 text-white" 
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  : statusFilter && statusFilter !== "open"
+                    ? "bg-gray-100 text-gray-400 cursor-default"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
               }`}
             >
               OPEN
@@ -190,7 +192,9 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 statusFilter === "closed" 
                   ? "bg-gray-500 text-white" 
-                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  : statusFilter && statusFilter !== "closed"
+                    ? "bg-gray-100 text-gray-400 cursor-default"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
               }`}
             >
               CLOSED
@@ -200,7 +204,9 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 statusFilter === "overdue" 
                   ? "bg-red-600 text-white" 
-                  : "bg-red-100 text-red-800 hover:bg-red-200"
+                  : statusFilter && statusFilter !== "overdue"
+                    ? "bg-gray-100 text-gray-400 cursor-default"
+                    : "bg-red-100 text-red-800 hover:bg-red-200"
               }`}
             >
               OVERDUE
