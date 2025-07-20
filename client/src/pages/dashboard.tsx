@@ -206,7 +206,7 @@ export default function Dashboard() {
                   ? "bg-red-600 text-white border-red-600" 
                   : statusFilter && statusFilter !== "overdue"
                     ? "bg-gray-100 text-gray-400 border-gray-300 cursor-default"
-                    : "bg-gray-200 text-black border-red-500 hover:bg-gray-300"
+                    : "bg-gray-100 text-black border-red-500 hover:bg-gray-200"
               }`}
             >
               OVERDUE
