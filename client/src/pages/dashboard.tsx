@@ -296,7 +296,9 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
                 phaseFilter === "tender" 
                   ? "bg-blue-400 text-white border-blue-600" 
-                  : "bg-blue-50 text-blue-700 border-blue-300 hover:bg-blue-100"
+                  : phaseFilter && phaseFilter !== "tender"
+                    ? "bg-gray-100 text-gray-400 border-gray-300 cursor-default"
+                    : "bg-blue-50 text-blue-700 border-blue-300 hover:bg-blue-100"
               }`}
             >
               TENDER
@@ -306,7 +308,9 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
                 phaseFilter === "precon" 
                   ? "bg-green-400 text-white border-green-600" 
-                  : "bg-green-50 text-green-700 border-green-300 hover:bg-green-100"
+                  : phaseFilter && phaseFilter !== "precon"
+                    ? "bg-gray-100 text-gray-400 border-gray-300 cursor-default"
+                    : "bg-green-50 text-green-700 border-green-300 hover:bg-green-100"
               }`}
             >
               PRECON
@@ -316,7 +320,9 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
                 phaseFilter === "construction" 
                   ? "bg-yellow-500 text-white border-yellow-700" 
-                  : "bg-yellow-50 text-yellow-800 border-yellow-400 hover:bg-yellow-100"
+                  : phaseFilter && phaseFilter !== "construction"
+                    ? "bg-gray-100 text-gray-400 border-gray-300 cursor-default"
+                    : "bg-yellow-50 text-yellow-800 border-yellow-400 hover:bg-yellow-100"
               }`}
             >
               CONSTRUCTION
@@ -326,7 +332,9 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
                 phaseFilter === "aftercare" 
                   ? "bg-gray-500 text-white border-gray-700" 
-                  : "bg-gray-50 text-gray-700 border-gray-300 hover:bg-gray-100"
+                  : phaseFilter && phaseFilter !== "aftercare"
+                    ? "bg-gray-100 text-gray-400 border-gray-300 cursor-default"
+                    : "bg-gray-50 text-gray-700 border-gray-300 hover:bg-gray-100"
               }`}
             >
               AFTERCARE
@@ -336,7 +344,9 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 phaseFilter === "strategy" 
                   ? "bg-black text-white" 
-                  : "bg-black text-white hover:bg-gray-800"
+                  : phaseFilter && phaseFilter !== "strategy"
+                    ? "bg-gray-100 text-gray-400 cursor-default"
+                    : "bg-black text-white hover:bg-gray-800"
               }`}
             >
               STRATEGY
