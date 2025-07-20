@@ -7,6 +7,7 @@ import StatsCard from "@/components/stats-card";
 import ActionCard from "@/components/action-card";
 import ActionForm from "@/components/action-form";
 import ProjectsDropdown from "@/components/projects-dropdown";
+import ConfirmDialog from "@/components/confirm-dialog";
 import { ActionWithRelations, Project } from "@shared/schema";
 import { Skeleton } from "@/components/ui/skeleton";
 import { apiRequest, queryClient } from "@/lib/queryClient";
@@ -17,6 +18,10 @@ export default function Dashboard() {
   const [statusFilter, setStatusFilter] = useState<string>("open");
   const [projectFilter, setProjectFilter] = useState<number | null>(null);
   const [disciplineFilter, setDisciplineFilter] = useState<string>("");
+  const [confirmDialog, setConfirmDialog] = useState<{
+    open: boolean;
+    actionId: number | null;
+  }>({ open: false, actionId: null });
 
   const { data: stats, isLoading: statsLoading } = useQuery({
     queryKey: ["/api/stats"],
@@ -61,10 +66,14 @@ export default function Dashboard() {
   };
 
   const handleCompleteAction = async (actionId: number) => {
-    const confirmed = window.confirm("Are you sure you want to mark this action as complete?");
-    if (confirmed) {
-      console.log("Complete action", actionId);
-      completeActionMutation.mutate(actionId);
+    setConfirmDialog({ open: true, actionId });
+  };
+
+  const confirmCompleteAction = () => {
+    if (confirmDialog.actionId) {
+      console.log("Complete action", confirmDialog.actionId);
+      completeActionMutation.mutate(confirmDialog.actionId);
+      setConfirmDialog({ open: false, actionId: null });
     }
   };
 
@@ -317,6 +326,16 @@ export default function Dashboard() {
         isOpen={isActionFormOpen}
         onClose={() => setIsActionFormOpen(false)}
         action={selectedAction}
+      />
+
+      <ConfirmDialog
+        open={confirmDialog.open}
+        onOpenChange={(open) => setConfirmDialog({ open, actionId: null })}
+        title="Mark Action Complete"
+        description="Are you sure you want to mark this action as complete? This action cannot be undone."
+        onConfirm={confirmCompleteAction}
+        confirmText="Mark Complete"
+        cancelText="Cancel"
       />
 
       {/* Desktop FAB */}
