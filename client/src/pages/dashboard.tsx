@@ -204,6 +204,9 @@ export default function Dashboard() {
               {statusFilter === "overdue" && <span className="text-xs">×</span>}
             </button>
             </div>
+            {statusFilter && (
+              <div className="w-2 h-2 bg-[#cc3333] rounded-full ml-2"></div>
+            )}
           </div>
 
           {/* Row 2: Discipline */}
@@ -277,6 +280,9 @@ export default function Dashboard() {
               {disciplineFilter === "general" && <span className="text-xs">×</span>}
             </button>
             </div>
+            {disciplineFilter && (
+              <div className="w-2 h-2 bg-[#cc3333] rounded-full ml-2"></div>
+            )}
           </div>
 
           {/* Row 3: Phase */}
@@ -339,6 +345,9 @@ export default function Dashboard() {
               {phaseFilter === "strategy" && <span className="text-xs">×</span>}
             </button>
             </div>
+            {phaseFilter && (
+              <div className="w-2 h-2 bg-[#cc3333] rounded-full ml-2"></div>
+            )}
           </div>
         </div>
 
