@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Plus, AlertCircle, Clock, CheckCircle, Users } from "lucide-react";
+import { Plus, AlertCircle, Clock, CheckCircle, Users, HardHat, Hammer, Palette, DollarSign, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import StatsCard from "@/components/stats-card";
@@ -15,19 +15,21 @@ export default function Dashboard() {
   const [selectedAction, setSelectedAction] = useState<ActionWithRelations | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>("open");
   const [projectFilter, setProjectFilter] = useState<number | null>(null);
+  const [disciplineFilter, setDisciplineFilter] = useState<string>("");
 
   const { data: stats, isLoading: statsLoading } = useQuery({
     queryKey: ["/api/stats"],
   });
 
   const { data: currentActions = [], isLoading: actionsLoading } = useQuery({
-    queryKey: ["/api/actions", { status: statusFilter, projectId: projectFilter }],
+    queryKey: ["/api/actions", { status: statusFilter, projectId: projectFilter, discipline: disciplineFilter }],
     queryFn: ({ queryKey }) => {
       const [url, params] = queryKey;
       const searchParams = new URLSearchParams();
       
       if (params.status) searchParams.append("status", params.status);
       if (params.projectId) searchParams.append("projectId", params.projectId.toString());
+      if (params.discipline) searchParams.append("discipline", params.discipline);
       
       const queryString = searchParams.toString();
       return fetch(`${url}${queryString ? `?${queryString}` : ""}`).then(res => res.json());
@@ -51,6 +53,10 @@ export default function Dashboard() {
 
   const handleStatusFilter = (status: string) => {
     setStatusFilter(statusFilter === status ? "" : status);
+  };
+
+  const handleDisciplineFilter = (discipline: string) => {
+    setDisciplineFilter(disciplineFilter === discipline ? "" : discipline);
   };
 
   const handleProjectSelect = (project: Project) => {
@@ -96,6 +102,63 @@ export default function Dashboard() {
             onClick={() => handleStatusFilter("open")}
             isActive={statusFilter === "open"}
           />
+          <StatsCard
+            title=""
+            value={stats?.closed || 0}
+            icon={CheckCircle}
+            iconColor="text-green-600"
+            iconBgColor="bg-green-100"
+            onClick={() => handleStatusFilter("closed")}
+            isActive={statusFilter === "closed"}
+          />
+          
+          {/* Discipline Filter Cards */}
+          <StatsCard
+            title=""
+            value={currentActions.filter((a: any) => a.discipline === "precon").length}
+            icon={HardHat}
+            iconColor="text-blue-600"
+            iconBgColor="bg-blue-100"
+            onClick={() => handleDisciplineFilter("precon")}
+            isActive={disciplineFilter === "precon"}
+          />
+          <StatsCard
+            title=""
+            value={currentActions.filter((a: any) => a.discipline === "production").length}
+            icon={Hammer}
+            iconColor="text-orange-600"
+            iconBgColor="bg-orange-100"
+            onClick={() => handleDisciplineFilter("production")}
+            isActive={disciplineFilter === "production"}
+          />
+          <StatsCard
+            title=""
+            value={currentActions.filter((a: any) => a.discipline === "design").length}
+            icon={Palette}
+            iconColor="text-purple-600"
+            iconBgColor="bg-purple-100"
+            onClick={() => handleDisciplineFilter("design")}
+            isActive={disciplineFilter === "design"}
+          />
+          <StatsCard
+            title=""
+            value={currentActions.filter((a: any) => a.discipline === "commercial").length}
+            icon={DollarSign}
+            iconColor="text-green-600"
+            iconBgColor="bg-green-100"
+            onClick={() => handleDisciplineFilter("commercial")}
+            isActive={disciplineFilter === "commercial"}
+          />
+          <StatsCard
+            title=""
+            value={currentActions.filter((a: any) => a.discipline === "misc").length}
+            icon={MoreHorizontal}
+            iconColor="text-gray-600"
+            iconBgColor="bg-gray-100"
+            onClick={() => handleDisciplineFilter("misc")}
+            isActive={disciplineFilter === "misc"}
+          />
+          
           <div className="ml-auto">
             <ProjectsDropdown onProjectSelect={handleProjectSelect} selectedProjectId={projectFilter} />
           </div>
