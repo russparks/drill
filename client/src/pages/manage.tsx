@@ -35,9 +35,18 @@ function ProjectForm({ project, onClose }: { project?: Project; onClose: () => v
     defaultValues: {
       projectNumber: project?.projectNumber || "",
       name: project?.name || "",
-      startOnSiteDate: project?.startOnSiteDate ? project.startOnSiteDate.toISOString().split('T')[0] : "",
-      contractCompletionDate: project?.contractCompletionDate ? project.contractCompletionDate.toISOString().split('T')[0] : "",
-      constructionCompletionDate: project?.constructionCompletionDate ? project.constructionCompletionDate.toISOString().split('T')[0] : "",
+      startOnSiteDate: project?.startOnSiteDate ? 
+        (project.startOnSiteDate instanceof Date ? 
+          project.startOnSiteDate.toISOString().split('T')[0] : 
+          new Date(project.startOnSiteDate).toISOString().split('T')[0]) : "",
+      contractCompletionDate: project?.contractCompletionDate ? 
+        (project.contractCompletionDate instanceof Date ? 
+          project.contractCompletionDate.toISOString().split('T')[0] : 
+          new Date(project.contractCompletionDate).toISOString().split('T')[0]) : "",
+      constructionCompletionDate: project?.constructionCompletionDate ? 
+        (project.constructionCompletionDate instanceof Date ? 
+          project.constructionCompletionDate.toISOString().split('T')[0] : 
+          new Date(project.constructionCompletionDate).toISOString().split('T')[0]) : "",
       status: project?.status || "tender",
       description: project?.description || "",
     },
