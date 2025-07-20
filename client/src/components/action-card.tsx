@@ -186,24 +186,20 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
         /* Desktop Layout */
         <>
           {/* Row 1 */}
-          <div className="flex items-center gap-2 mb-3">
-            {/* Col 1: Status Indicator + Action Description (84%) */}
-            <div className="w-[84%] flex-shrink-0 flex items-center gap-3">
+          <div className="flex items-center mb-3">
+            {/* Status Indicator + Action Description (flexible, takes remaining space) */}
+            <div className="flex-1 flex items-center gap-3">
               {getStatusIndicator(action.status)}
               {action.description && (
                 <p className="text-sm text-action-text-primary font-medium">{action.description}</p>
               )}
             </div>
             
-            {/* Col 2: Discipline (8%) */}
-            <div className="w-[8%] flex-shrink-0 flex justify-end items-center">
+            {/* Discipline + Mark Complete (minimal width, centered together) */}
+            <div className="flex items-center justify-center gap-4 ml-4">
               <Badge className={`discipline-badge ${getDisciplineColor(action.discipline)} text-xs px-2 py-0.5`}>
                 {abbreviateDiscipline(action.discipline).toUpperCase()}
               </Badge>
-            </div>
-            
-            {/* Col 3: Mark Complete (8%) */}
-            <div className="w-[8%] flex-shrink-0 flex justify-end items-center">
               {action.status !== "closed" && (
                 <Button
                   variant="ghost"
@@ -219,8 +215,8 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
           </div>
 
           {/* Row 2 */}
-          <div className="flex items-center gap-2">
-            {/* Col 1: Project (40%) */}
+          <div className="flex items-center">
+            {/* Project (40%) */}
             <div className="w-[40%] flex-shrink-0 flex items-center text-xs text-action-text-secondary">
               {action.project && (
                 <span className="flex items-center">
@@ -230,7 +226,7 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
               )}
             </div>
             
-            {/* Col 2: Assignee (24%) */}
+            {/* Assignee (24%) */}
             <div className="w-[24%] flex-shrink-0 flex items-center justify-end text-xs text-action-text-secondary pr-[5px]">
               {action.assignee && (
                 <span className="flex items-center">
@@ -240,8 +236,8 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
               )}
             </div>
             
-            {/* Col 3: Due Date (20%) */}
-            <div className="w-[20%] flex-shrink-0 flex items-center justify-end text-xs text-action-text-secondary">
+            {/* Due Date (takes remaining space before buttons) */}
+            <div className="flex-1 flex items-center justify-end text-xs text-action-text-secondary">
               {action.dueDate && (
                 <span className="flex items-center">
                   <Calendar className="w-3 h-3 mr-1" />
@@ -255,15 +251,11 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
               )}
             </div>
             
-            {/* Col 4: Phase (8%) */}
-            <div className="w-[8%] flex-shrink-0 flex justify-end items-center">
+            {/* Phase + Edit Action (minimal width, centered together) */}
+            <div className="flex items-center justify-center gap-4 ml-4">
               <Badge className={`phase-badge ${getPhaseColor(action.phase)} text-xs px-2 py-0.5`}>
                 {abbreviatePhase(action.phase).toUpperCase()}
               </Badge>
-            </div>
-            
-            {/* Col 5: Edit Action (8%) */}
-            <div className="w-[8%] flex-shrink-0 flex justify-end items-center">
               <Button
                 variant="ghost"
                 size="icon"
