@@ -12,7 +12,7 @@ export default function Navbar({ onCreateAction }: NavbarProps) {
 
   return (
     <header className="bg-white material-shadow sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto pl-4 pr-4 sm:pr-6 lg:pr-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <div className="flex-shrink-0">
