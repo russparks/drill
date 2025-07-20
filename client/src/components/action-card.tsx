@@ -186,31 +186,28 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
         /* Desktop Layout */
         <>
           {/* Row 1 */}
-          <div className="flex items-center gap-4 mb-3">
-            {/* Col 1: Status Indicator (10%) */}
-            <div className="w-[10%] flex-shrink-0 flex justify-center items-center">
+          <div className="flex items-center gap-2 mb-3">
+            {/* Col 1: Status Indicator (auto width minimal) */}
+            <div className="flex-shrink-0 flex justify-center items-center">
               {getStatusIndicator(action.status)}
             </div>
             
-            {/* Col 2: Action Description (70%) */}
-            <div className="w-[70%] flex-shrink-0 flex items-center">
+            {/* Col 2: Action Description (min 70%) */}
+            <div className="min-w-[70%] flex-1 flex items-center">
               {action.description && (
                 <p className="text-sm text-action-text-primary font-medium">{action.description}</p>
               )}
             </div>
             
-            {/* Col 3: Edit and Complete Actions (20%) */}
-            <div className="w-[20%] flex-shrink-0 flex items-center justify-center gap-1">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => onEdit(action)}
-                className="p-1 text-action-text-secondary hover:text-primary rounded hover:bg-blue-50 h-6 w-6"
-                title="Edit Action"
-              >
-                <Edit className="h-3 w-3" />
-              </Button>
-              
+            {/* Col 3: Discipline (10%) */}
+            <div className="w-[10%] flex-shrink-0 flex justify-center items-center">
+              <Badge className={`discipline-badge ${getDisciplineColor(action.discipline)} text-xs px-2 py-0.5`}>
+                {abbreviateDiscipline(action.discipline).toUpperCase()}
+              </Badge>
+            </div>
+            
+            {/* Col 4: Mark Complete (10%) */}
+            <div className="w-[10%] flex-shrink-0 flex justify-center items-center">
               {action.status !== "closed" && (
                 <Button
                   variant="ghost"
@@ -226,21 +223,29 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
           </div>
 
           {/* Row 2 */}
-          <div className="flex items-center gap-4">
-            {/* Col 1: Project, Assignee, Due Date (80%) */}
-            <div className="w-[80%] flex-shrink-0 flex items-center gap-4 text-xs text-action-text-secondary">
+          <div className="flex items-center gap-2">
+            {/* Col 1: Project (30%) */}
+            <div className="w-[30%] flex-shrink-0 flex items-center text-xs text-action-text-secondary">
               {action.project && (
                 <span className="flex items-center">
                   <Building className="w-3 h-3 mr-1" />
                   {action.project.name}
                 </span>
               )}
+            </div>
+            
+            {/* Col 2: Assignee (25%) */}
+            <div className="w-[25%] flex-shrink-0 flex items-center text-xs text-action-text-secondary">
               {action.assignee && (
                 <span className="flex items-center">
                   <User className="w-3 h-3 mr-1" />
                   {action.assignee.name}
                 </span>
               )}
+            </div>
+            
+            {/* Col 3: Due Date (25%) */}
+            <div className="w-[25%] flex-shrink-0 flex items-center justify-end text-xs text-action-text-secondary">
               {action.dueDate && (
                 <span className="flex items-center">
                   <Calendar className="w-3 h-3 mr-1" />
@@ -254,14 +259,24 @@ export default function ActionCard({ action, onEdit, onComplete, isEven }: Actio
               )}
             </div>
             
-            {/* Col 2: Discipline and Phase (20%) */}
-            <div className="w-[20%] flex-shrink-0 flex items-center justify-evenly">
-              <Badge className={`discipline-badge ${getDisciplineColor(action.discipline)} text-xs px-2 py-0.5`}>
-                {abbreviateDiscipline(action.discipline).toUpperCase()}
-              </Badge>
+            {/* Col 4: Phase (10%) */}
+            <div className="w-[10%] flex-shrink-0 flex justify-center items-center">
               <Badge className={`phase-badge ${getPhaseColor(action.phase)} text-xs px-2 py-0.5`}>
                 {abbreviatePhase(action.phase).toUpperCase()}
               </Badge>
+            </div>
+            
+            {/* Col 5: Edit Action (10%) */}
+            <div className="w-[10%] flex-shrink-0 flex justify-center items-center">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => onEdit(action)}
+                className="p-1 text-action-text-secondary hover:text-primary rounded hover:bg-blue-50 h-6 w-6"
+                title="Edit Action"
+              >
+                <Edit className="h-3 w-3" />
+              </Button>
             </div>
           </div>
         </>
