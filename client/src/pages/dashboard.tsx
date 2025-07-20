@@ -209,13 +209,11 @@ export default function Dashboard() {
                 className="ml-2 flex items-center gap-2 group cursor-pointer"
                 onClick={() => setStatusFilter("")}
               >
-                <div>
-                  <Filter className="w-4 h-4 text-gray-500 group-hover:hidden" />
-                  <FilterX className="w-4 h-4 text-gray-500 hidden group-hover:block" />
-                </div>
+                <Filter className="w-4 h-4 text-gray-500" />
                 <span className="text-xs text-gray-500 italic">
                   {statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1)}
                 </span>
+                <FilterX className="w-3 h-3 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             )}
           </div>
@@ -296,13 +294,11 @@ export default function Dashboard() {
                 className="ml-2 flex items-center gap-2 group cursor-pointer"
                 onClick={() => setDisciplineFilter("")}
               >
-                <div>
-                  <Filter className="w-4 h-4 text-gray-500 group-hover:hidden" />
-                  <FilterX className="w-4 h-4 text-gray-500 hidden group-hover:block" />
-                </div>
+                <Filter className="w-4 h-4 text-gray-500" />
                 <span className="text-xs text-gray-500 italic">
                   {disciplineFilter.charAt(0).toUpperCase() + disciplineFilter.slice(1)}
                 </span>
+                <FilterX className="w-3 h-3 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             )}
           </div>
@@ -372,13 +368,11 @@ export default function Dashboard() {
                 className="ml-2 flex items-center gap-2 group cursor-pointer"
                 onClick={() => setPhaseFilter("")}
               >
-                <div>
-                  <Filter className="w-4 h-4 text-gray-500 group-hover:hidden" />
-                  <FilterX className="w-4 h-4 text-gray-500 hidden group-hover:block" />
-                </div>
+                <Filter className="w-4 h-4 text-gray-500" />
                 <span className="text-xs text-gray-500 italic">
                   {phaseFilter.charAt(0).toUpperCase() + phaseFilter.slice(1)}
                 </span>
+                <FilterX className="w-3 h-3 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             )}
           </div>
