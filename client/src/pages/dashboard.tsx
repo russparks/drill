@@ -318,7 +318,7 @@ export default function Dashboard() {
               className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
                 phaseFilter === "strategy" 
                   ? "bg-black text-white" 
-                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                  : "bg-black text-white hover:bg-gray-800"
               }`}
             >
               STRATEGY
