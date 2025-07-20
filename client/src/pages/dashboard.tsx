@@ -168,7 +168,7 @@ export default function Dashboard() {
         <div className="space-y-0.5 mb-4">
           {/* Row 1: Status */}
           <div className="flex items-center gap-4">
-            <div className="text-sm text-gray-500 font-medium w-20">Status:</div>
+            <div className="text-sm text-gray-500 font-medium w-20 pl-4">Status:</div>
             <div className="border border-dotted border-gray-200 rounded px-3 py-2 flex flex-wrap items-center gap-3" style={{"borderWidth": "1px", "borderStyle": "dotted"}}>
             <button
               onClick={() => handleStatusFilter("open")}
@@ -219,7 +219,7 @@ export default function Dashboard() {
 
           {/* Row 2: Discipline */}
           <div className="flex items-center gap-4">
-            <div className="text-sm text-gray-500 font-medium w-20">Discipline:</div>
+            <div className="text-sm text-gray-500 font-medium w-20 pl-4">Discipline:</div>
             <div className="border border-dotted border-gray-200 rounded px-3 py-2 flex flex-wrap items-center gap-3" style={{"borderWidth": "1px", "borderStyle": "dotted"}}>
             <button
               onClick={() => handleDisciplineFilter("operations")}
@@ -303,7 +303,7 @@ export default function Dashboard() {
 
           {/* Row 3: Phase */}
           <div className="flex items-center gap-4">
-            <div className="text-sm text-gray-500 font-medium w-20">Process:</div>
+            <div className="text-sm text-gray-500 font-medium w-20 pl-4">Process:</div>
             <div className="border border-dotted border-gray-200 rounded px-3 py-2 flex flex-wrap items-center gap-3" style={{"borderWidth": "1px", "borderStyle": "dotted"}}>
             <button
               onClick={() => handlePhaseFilter("tender")}
