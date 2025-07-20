@@ -1,7 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { Plus, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logo from "@assets/Screenshot 2025-07-20 at 22.33.31_1753047315191.png";
+import logo from "@assets/Layer 2_1753047717908.png";
 
 interface NavbarProps {
   onCreateAction?: () => void;
