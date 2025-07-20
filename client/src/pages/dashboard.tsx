@@ -37,13 +37,28 @@ export default function Dashboard() {
       const [url, params] = queryKey as [string, any];
       const searchParams = new URLSearchParams();
       
-      if (params.status) searchParams.append("status", params.status);
+      // Handle overdue as a special case - filter for open actions on client side
+      if (params.status && params.status !== "overdue") {
+        searchParams.append("status", params.status);
+      } else if (params.status === "overdue") {
+        searchParams.append("status", "open"); // Get open actions first, filter overdue on client
+      }
+      
       if (params.projectId) searchParams.append("projectId", params.projectId.toString());
       if (params.discipline) searchParams.append("discipline", params.discipline);
       if (params.phase) searchParams.append("phase", params.phase);
       
       const queryString = searchParams.toString();
-      return fetch(`${url}${queryString ? `?${queryString}` : ""}`).then(res => res.json());
+      return fetch(`${url}${queryString ? `?${queryString}` : ""}`).then(res => res.json()).then((actions: any[]) => {
+        // Filter for overdue actions on client side
+        if (params.status === "overdue") {
+          const now = new Date();
+          return actions.filter((action: any) => 
+            action.status === "open" && action.dueDate && new Date(action.dueDate) < now
+          );
+        }
+        return actions;
+      });
     },
   });
 
