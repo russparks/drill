@@ -205,11 +205,11 @@ export default function Dashboard() {
             </button>
             </div>
             {statusFilter && (
-              <div className="ml-2 flex items-center gap-2">
-                <div 
-                  className="group cursor-pointer"
-                  onClick={() => setStatusFilter("")}
-                >
+              <div 
+                className="ml-2 flex items-center gap-2 group cursor-pointer"
+                onClick={() => setStatusFilter("")}
+              >
+                <div>
                   <Filter className="w-4 h-4 text-gray-500 group-hover:hidden" />
                   <FilterX className="w-4 h-4 text-gray-500 hidden group-hover:block" />
                 </div>
@@ -292,11 +292,11 @@ export default function Dashboard() {
             </button>
             </div>
             {disciplineFilter && (
-              <div className="ml-2 flex items-center gap-2">
-                <div 
-                  className="group cursor-pointer"
-                  onClick={() => setDisciplineFilter("")}
-                >
+              <div 
+                className="ml-2 flex items-center gap-2 group cursor-pointer"
+                onClick={() => setDisciplineFilter("")}
+              >
+                <div>
                   <Filter className="w-4 h-4 text-gray-500 group-hover:hidden" />
                   <FilterX className="w-4 h-4 text-gray-500 hidden group-hover:block" />
                 </div>
@@ -368,11 +368,11 @@ export default function Dashboard() {
             </button>
             </div>
             {phaseFilter && (
-              <div className="ml-2 flex items-center gap-2">
-                <div 
-                  className="group cursor-pointer"
-                  onClick={() => setPhaseFilter("")}
-                >
+              <div 
+                className="ml-2 flex items-center gap-2 group cursor-pointer"
+                onClick={() => setPhaseFilter("")}
+              >
+                <div>
                   <Filter className="w-4 h-4 text-gray-500 group-hover:hidden" />
                   <FilterX className="w-4 h-4 text-gray-500 hidden group-hover:block" />
                 </div>
