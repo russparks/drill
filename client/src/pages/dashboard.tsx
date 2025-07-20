@@ -177,33 +177,36 @@ export default function Dashboard() {
           <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => handleStatusFilter("open")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
                 statusFilter === "open" 
                   ? "bg-red-500 text-white" 
                   : "bg-[#cc3333] text-white hover:bg-red-700"
               }`}
             >
               OPEN
+              {statusFilter === "open" && <span className="text-xs">×</span>}
             </button>
             <button
               onClick={() => handleStatusFilter("closed")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
                 statusFilter === "closed" 
                   ? "bg-gray-500 text-white" 
                   : "bg-gray-200 text-gray-700 hover:bg-gray-300"
               }`}
             >
               CLOSED
+              {statusFilter === "closed" && <span className="text-xs">×</span>}
             </button>
             <button
               onClick={() => handleStatusFilter("overdue")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
                 statusFilter === "overdue" 
                   ? "bg-red-600 text-white" 
                   : "bg-red-100 text-red-800 hover:bg-red-200"
               }`}
             >
               OVERDUE
+              {statusFilter === "overdue" && <span className="text-xs">×</span>}
             </button>
           </div>
 
@@ -211,63 +214,69 @@ export default function Dashboard() {
           <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => handleDisciplineFilter("operations")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
                 disciplineFilter === "operations" 
                   ? "bg-blue-600 text-white border-blue-800" 
                   : "bg-blue-100 text-blue-800 border-blue-600 hover:bg-blue-200"
               }`}
             >
               OPERATIONS
+              {disciplineFilter === "operations" && <span className="text-xs">×</span>}
             </button>
             <button
               onClick={() => handleDisciplineFilter("commercial")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
                 disciplineFilter === "commercial" 
                   ? "bg-cyan-500 text-white" 
                   : "bg-cyan-100 text-cyan-800 hover:bg-cyan-200"
               }`}
             >
               COMMERCIAL
+              {disciplineFilter === "commercial" && <span className="text-xs">×</span>}
             </button>
             <button
               onClick={() => handleDisciplineFilter("design")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
                 disciplineFilter === "design" 
                   ? "bg-purple-500 text-white" 
                   : "bg-purple-100 text-purple-800 hover:bg-purple-200"
               }`}
             >
               DESIGN
+              {disciplineFilter === "design" && <span className="text-xs">×</span>}
             </button>
             <button
               onClick={() => handleDisciplineFilter("she")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
                 disciplineFilter === "she" 
                   ? "bg-orange-500 text-white" 
                   : "bg-orange-100 text-orange-800 hover:bg-orange-200"
               }`}
             >
               SHE
+              {disciplineFilter === "she" && <span className="text-xs">×</span>}
             </button>
             <button
               onClick={() => handleDisciplineFilter("qa")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
                 disciplineFilter === "qa" 
                   ? "bg-indigo-500 text-white" 
                   : "bg-indigo-100 text-indigo-800 hover:bg-indigo-200"
               }`}
             >
               QA
+              {disciplineFilter === "qa" && <span className="text-xs">×</span>}
             </button>
             <button
               onClick={() => handleDisciplineFilter("general")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
                 disciplineFilter === "general" 
                   ? "bg-gray-600 text-white" 
                   : "bg-gray-100 text-gray-800 hover:bg-gray-200"
               }`}
             >
               GENERAL
+              {disciplineFilter === "general" && <span className="text-xs">×</span>}
             </button>
           </div>
 
@@ -275,53 +284,58 @@ export default function Dashboard() {
           <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => handlePhaseFilter("tender")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
                 phaseFilter === "tender" 
                   ? "bg-blue-400 text-white border-blue-600" 
                   : "bg-blue-50 text-blue-700 border-blue-300 hover:bg-blue-100"
               }`}
             >
               TENDER
+              {phaseFilter === "tender" && <span className="text-xs">×</span>}
             </button>
             <button
               onClick={() => handlePhaseFilter("precon")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
                 phaseFilter === "precon" 
                   ? "bg-green-400 text-white border-green-600" 
                   : "bg-green-50 text-green-700 border-green-300 hover:bg-green-100"
               }`}
             >
               PRECON
+              {phaseFilter === "precon" && <span className="text-xs">×</span>}
             </button>
             <button
               onClick={() => handlePhaseFilter("construction")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
                 phaseFilter === "construction" 
                   ? "bg-yellow-500 text-white border-yellow-700" 
                   : "bg-yellow-50 text-yellow-800 border-yellow-400 hover:bg-yellow-100"
               }`}
             >
               CONSTRUCTION
+              {phaseFilter === "construction" && <span className="text-xs">×</span>}
             </button>
             <button
               onClick={() => handlePhaseFilter("aftercare")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
                 phaseFilter === "aftercare" 
                   ? "bg-gray-500 text-white border-gray-700" 
                   : "bg-gray-50 text-gray-700 border-gray-300 hover:bg-gray-100"
               }`}
             >
               AFTERCARE
+              {phaseFilter === "aftercare" && <span className="text-xs">×</span>}
             </button>
             <button
               onClick={() => handlePhaseFilter("strategy")}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors ${
+              className={`px-2 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1 ${
                 phaseFilter === "strategy" 
                   ? "bg-black text-white" 
                   : "bg-black text-white hover:bg-gray-800"
               }`}
             >
               STRATEGY
+              {phaseFilter === "strategy" && <span className="text-xs">×</span>}
             </button>
           </div>
         </div>
