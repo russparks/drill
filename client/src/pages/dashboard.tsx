@@ -61,8 +61,11 @@ export default function Dashboard() {
   };
 
   const handleCompleteAction = async (actionId: number) => {
-    console.log("Complete action", actionId);
-    completeActionMutation.mutate(actionId);
+    const confirmed = window.confirm("Are you sure you want to mark this action as complete?");
+    if (confirmed) {
+      console.log("Complete action", actionId);
+      completeActionMutation.mutate(actionId);
+    }
   };
 
   const handleStatusFilter = (status: string) => {
