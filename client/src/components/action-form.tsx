@@ -263,7 +263,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
   
   // Watch form values to determine if all required fields are filled
   const watchedValues = form.watch();
-  const isFormValid = !action && ( // Only validate for new actions
+  const isFormIncomplete = !action && ( // Only validate for new actions
     !watchedValues.title?.trim() ||
     !watchedValues.description?.trim() ||
     !watchedValues.discipline ||
@@ -275,6 +275,23 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
     (showNewProjectInput && !watchedValues.newProjectName?.trim()) ||
     (showNewPersonInput && !watchedValues.newPersonName?.trim())
   );
+
+  console.log('Form validation check:', {
+    action: !!action,
+    title: watchedValues.title?.trim(),
+    description: watchedValues.description?.trim(), 
+    discipline: watchedValues.discipline,
+    phase: watchedValues.phase,
+    priority: watchedValues.priority,
+    dueDate: watchedValues.dueDate,
+    projectId: watchedValues.projectId,
+    showNewProjectInput,
+    newProjectName: watchedValues.newProjectName?.trim(),
+    assigneeId: watchedValues.assigneeId,
+    showNewPersonInput,
+    newPersonName: watchedValues.newPersonName?.trim(),
+    isFormIncomplete
+  });
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -710,7 +727,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
               <Button type="button" variant="outline" onClick={onClose} disabled={isLoading} size="sm" className="rounded-full px-6">
                 Cancel
               </Button>
-              <Button type="submit" disabled={isLoading || isFormValid} size="sm" className="rounded-full px-6">
+              <Button type="submit" disabled={isLoading || isFormIncomplete} size="sm" className="rounded-full px-6">
                 {isLoading ? "Saving..." : action ? "Save" : "Create"}
               </Button>
             </div>
