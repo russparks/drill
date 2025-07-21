@@ -625,7 +625,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                         )}
                       </div>
                       <FormControl>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center justify-between">
                           <div className="flex gap-2">
                             {[
                               { label: "2d", days: 2 },
@@ -642,7 +642,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                                   key={option.label}
                                   type="button"
                                   onClick={() => field.onChange(dateString)}
-                                  className={`w-8 h-8 rounded-full text-xs font-medium transition-colors ${
+                                  className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors ${
                                     field.value === dateString
                                       ? "bg-[#cc3333] text-white"
                                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -655,7 +655,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                           </div>
                           <Input 
                             type="date" 
-                            className="flex-1 h-8"
+                            className="w-32 h-8"
                             {...field} 
                           />
                         </div>
