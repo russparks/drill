@@ -421,8 +421,8 @@ export default function Setup() {
 
                   <hr className="border-gray-200 mt-3 mb-4" />
                   <div className="flex justify-between items-end">
-                    <div className="flex flex-col items-center" style={{ fontSize: '10px' }}>
-                      <Info className="w-9 h-9 text-gray-400 mb-1" />
+                    <div className="flex items-center gap-3" style={{ fontSize: '10px' }}>
+                      <Info className="w-6 h-6 text-gray-400" />
                       {workingWeeks.startToContract > 0 && (
                         <div className="leading-tight font-mono">
                           <div className="flex">
