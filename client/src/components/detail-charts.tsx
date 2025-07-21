@@ -252,7 +252,7 @@ export default function DetailCharts() {
                 <XAxis dataKey="discipline" angle={-45} textAnchor="end" height={60} tick={{ fontSize: 11 }} />
                 <YAxis tick={{ fontSize: 11 }} />
                 <Tooltip />
-                <Bar dataKey="count" strokeWidth={2}>
+                <Bar dataKey="count" strokeWidth={1.2}>
                   {disciplineChartData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.fill} stroke={entry.stroke} />
                   ))}
