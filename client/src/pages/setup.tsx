@@ -219,8 +219,23 @@ export default function Setup({ onTabChange }: SetupProps) {
             <LayoutDashboard className="h-4 w-4" />
             Dash
           </TabsTrigger>
-          <TabsTrigger value="live" className="flex items-center justify-center opacity-50 cursor-not-allowed" disabled>
-            Item 1 - Item 2 - Item 3
+          <TabsTrigger value="live" className="flex items-center justify-center opacity-50 cursor-not-allowed text-xs" disabled>
+            {(() => {
+              const constructionProjects = projects.filter(p => p.status === 'construction');
+              const preconProjects = projects.filter(p => p.status === 'precon');
+              
+              const constructionValue = constructionProjects.reduce((sum, p) => {
+                const value = p.value?.replace(/[£,]/g, '') || '0';
+                return sum + parseFloat(value);
+              }, 0);
+              
+              const preconValue = preconProjects.reduce((sum, p) => {
+                const value = p.value?.replace(/[£,]/g, '') || '0';
+                return sum + parseFloat(value);
+              }, 0);
+
+              return `Live: ${constructionProjects.length} | Live Value: £${constructionValue.toFixed(1)}M | Precon: ${preconProjects.length} | Precon Value: £${preconValue.toFixed(1)}M`;
+            })()}
           </TabsTrigger>
           <TabsTrigger value="users" className="flex items-center gap-2">
             <FileText className="h-4 w-4" />
