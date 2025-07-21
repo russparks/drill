@@ -606,8 +606,8 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 <div className="absolute" style={{ left: `calc(${currentPercent}% - 2px)` }}>
                                   {/* Today marker extending through timeline */}
                                   <div 
-                                    className="w-1 h-7 bg-gray-800 rounded-sm"
-                                    style={{ marginTop: '-5px' }}
+                                    className="w-0.5 h-7 bg-gray-800 opacity-60 rounded-sm"
+                                    style={{ marginTop: '-8px' }}
                                     title="Today"
                                   />
                                   {/* Week indicator positioned to the left and vertically aligned with marker */}
