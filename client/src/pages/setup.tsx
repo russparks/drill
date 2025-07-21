@@ -29,7 +29,7 @@ export default function Setup() {
 
   const createProjectMutation = useMutation({
     mutationFn: (project: InsertProject) => 
-      apiRequest("/api/projects", { method: "POST", body: JSON.stringify(project) }),
+      apiRequest("POST", "/api/projects", project),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/projects"] });
       setIsProjectDialogOpen(false);
@@ -42,7 +42,7 @@ export default function Setup() {
 
   const updateProjectMutation = useMutation({
     mutationFn: ({ id, ...project }: Project) => 
-      apiRequest(`/api/projects/${id}`, { method: "PATCH", body: JSON.stringify(project) }),
+      apiRequest("PATCH", `/api/projects/${id}`, project),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/projects"] });
       setIsProjectDialogOpen(false);
@@ -56,7 +56,7 @@ export default function Setup() {
 
   const deleteProjectMutation = useMutation({
     mutationFn: (id: number) => 
-      apiRequest(`/api/projects/${id}`, { method: "DELETE" }),
+      apiRequest("DELETE", `/api/projects/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/projects"] });
       toast({ title: "Project deleted successfully" });
@@ -68,7 +68,7 @@ export default function Setup() {
 
   const createUserMutation = useMutation({
     mutationFn: (user: InsertUser) => 
-      apiRequest("/api/users", { method: "POST", body: JSON.stringify(user) }),
+      apiRequest("POST", "/api/users", user),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/users"] });
       setIsUserDialogOpen(false);
@@ -81,7 +81,7 @@ export default function Setup() {
 
   const updateUserMutation = useMutation({
     mutationFn: ({ id, ...user }: User) => 
-      apiRequest(`/api/users/${id}`, { method: "PATCH", body: JSON.stringify(user) }),
+      apiRequest("PATCH", `/api/users/${id}`, user),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/users"] });
       setIsUserDialogOpen(false);
@@ -95,7 +95,7 @@ export default function Setup() {
 
   const deleteUserMutation = useMutation({
     mutationFn: (id: number) => 
-      apiRequest(`/api/users/${id}`, { method: "DELETE" }),
+      apiRequest("DELETE", `/api/users/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/users"] });
       toast({ title: "User deleted successfully" });
