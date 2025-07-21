@@ -185,15 +185,17 @@ export default function DetailCharts() {
     ...getColorForValue(item.count)
   }));
 
-  // Average Time for Closed Actions (simulated data based on action complexity)
-  const avgClosureTimeData = [
-    { discipline: 'Design', avgDays: 8.5 },
-    { discipline: 'Operations', avgDays: 12.3 },
-    { discipline: 'Commercial', avgDays: 6.7 },
-    { discipline: 'QA', avgDays: 4.2 },
-    { discipline: 'SHE', avgDays: 9.8 },
-    { discipline: 'General', avgDays: 7.1 },
-  ];
+  // Average Time for Closed Actions - matching discipline order and colors
+  const avgClosureTimeData = Object.keys(disciplineData).map(discipline => ({
+    discipline: discipline.charAt(0).toUpperCase() + discipline.slice(1),
+    avgDays: discipline === 'operations' ? 12.3 : 
+             discipline === 'commercial' ? 6.7 :
+             discipline === 'design' ? 8.5 :
+             discipline === 'she' ? 9.8 :
+             discipline === 'qa' ? 4.2 : 7.1,
+    fill: DISCIPLINE_LIGHT_COLORS[discipline.toLowerCase()] || '#d1d5db',
+    stroke: DISCIPLINE_COLORS[discipline.toLowerCase()] || '#8884d8',
+  }));
 
   return (
     <div className="space-y-6">
@@ -387,7 +389,11 @@ export default function DetailCharts() {
                 <XAxis dataKey="discipline" angle={-45} textAnchor="end" height={60} tick={{ fontSize: 11 }} />
                 <YAxis tick={{ fontSize: 11 }} />
                 <Tooltip formatter={(value) => [`${value} days`, 'Avg Time']} />
-                <Bar dataKey="avgDays" fill="#FFBB28" />
+                <Bar dataKey="avgDays" strokeWidth={1.2}>
+                  {avgClosureTimeData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.fill} stroke={entry.stroke} />
+                  ))}
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
