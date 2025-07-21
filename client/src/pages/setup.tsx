@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { Project, User, InsertProject, InsertUser } from "@shared/schema";
+import ConfirmDialog from "@/components/confirm-dialog";
 
 interface SetupProps {
   onTabChange?: (tab: string) => void;
@@ -22,6 +23,8 @@ export default function Setup({ onTabChange }: SetupProps) {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [selectedPhase, setSelectedPhase] = useState<"tender" | "precon" | "construction" | "aftercare">("tender");
   const [workingWeeks, setWorkingWeeks] = useState({ startToContract: 0, startToAnticipated: 0, anticipatedToContract: 0 });
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<{ type: 'project' | 'user', id: number, name: string } | null>(null);
   const { toast } = useToast();
 
   // Listen for modal open events from navbar
@@ -567,9 +570,8 @@ export default function Setup({ onTabChange }: SetupProps) {
                           size="icon"
                           className="h-7 w-7"
                           onClick={() => {
-                            if (window.confirm(`Are you sure you want to delete "${project.name}"? This action cannot be undone.`)) {
-                              deleteProjectMutation.mutate(project.id);
-                            }
+                            setItemToDelete({ type: 'project', id: project.id, name: project.name });
+                            setIsConfirmDialogOpen(true);
                           }}
                         >
                           <Trash2 className="h-3 w-3" />
@@ -678,7 +680,10 @@ export default function Setup({ onTabChange }: SetupProps) {
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => deleteUserMutation.mutate(user.id)}
+                          onClick={() => {
+                            setItemToDelete({ type: 'user', id: user.id, name: user.name });
+                            setIsConfirmDialogOpen(true);
+                          }}
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
@@ -691,6 +696,23 @@ export default function Setup({ onTabChange }: SetupProps) {
           </div>
         </TabsContent>
       </Tabs>
+
+      <ConfirmDialog
+        open={isConfirmDialogOpen}
+        onOpenChange={setIsConfirmDialogOpen}
+        title={`Delete ${itemToDelete?.type === 'project' ? 'Project' : 'Person'}`}
+        description={`Are you sure you want to delete "${itemToDelete?.name}"? This action cannot be undone.`}
+        onConfirm={() => {
+          if (itemToDelete?.type === 'project') {
+            deleteProjectMutation.mutate(itemToDelete.id);
+          } else if (itemToDelete?.type === 'user') {
+            deleteUserMutation.mutate(itemToDelete.id);
+          }
+          setItemToDelete(null);
+        }}
+        confirmText="Delete"
+        cancelText="Cancel"
+      />
     </div>
   );
 }
