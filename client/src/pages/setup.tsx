@@ -207,7 +207,7 @@ export default function Setup({ onTabChange }: SetupProps) {
 
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-8">
 
 
       <Tabs value={activeTab} className="space-y-5" onValueChange={(value) => {
