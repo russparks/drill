@@ -253,19 +253,19 @@ export default function Setup() {
                     <Label>Process:</Label>
                     <div className="flex gap-2 mt-2">
                       {[
-                        { value: "tender", label: "TENDER", color: "bg-blue-500" },
-                        { value: "precon", label: "PRECON", color: "bg-green-500" },
-                        { value: "construction", label: "CONSTRUCTION", color: "bg-yellow-500" },
-                        { value: "aftercare", label: "AFTERCARE", color: "bg-gray-500" }
+                        { value: "tender", label: "TENDER", activeColor: "bg-blue-500 border-blue-600 text-white", inactiveColor: "bg-blue-50 border-blue-200 text-blue-700" },
+                        { value: "precon", label: "PRECON", activeColor: "bg-green-500 border-green-600 text-white", inactiveColor: "bg-green-50 border-green-200 text-green-700" },
+                        { value: "construction", label: "CONSTRUCTION", activeColor: "bg-yellow-500 border-yellow-600 text-white", inactiveColor: "bg-yellow-50 border-yellow-200 text-yellow-700" },
+                        { value: "aftercare", label: "AFTERCARE", activeColor: "bg-gray-500 border-gray-600 text-white", inactiveColor: "bg-gray-50 border-gray-200 text-gray-700" }
                       ].map((phase) => (
                         <button
                           key={phase.value}
                           type="button"
                           onClick={() => setSelectedPhase(phase.value)}
-                          className={`px-3 py-1 text-xs font-medium uppercase rounded transition-colors ${
+                          className={`px-3 py-1.5 text-xs font-medium uppercase rounded-full border transition-colors ${
                             selectedPhase === phase.value
-                              ? `${phase.color} text-white`
-                              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                              ? phase.activeColor
+                              : phase.inactiveColor
                           }`}
                         >
                           {phase.label}
