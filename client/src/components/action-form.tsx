@@ -344,7 +344,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                     )}
                   </div>
                   <FormControl>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="grid grid-cols-3 gap-2">
                       {[
                         { 
                           value: "operations", 
@@ -415,7 +415,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                     )}
                   </div>
                   <FormControl>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="grid grid-cols-3 gap-2">
                       {[
                         { 
                           value: "tender", 
@@ -437,7 +437,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                           value: "strategy", 
                           label: "STRATEGY"
                         }
-                      ].map((phase) => (
+                      ].slice(0, 6).map((phase) => (
                         <button
                           key={phase.value}
                           type="button"
@@ -543,7 +543,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                     <FormItem>
                       <FormLabel>Priority</FormLabel>
                       <FormControl>
-                        <div className="flex gap-1">
+                        <div className="grid grid-cols-3 gap-1">
                           {[
                             { value: "low", label: "LOW", hex: "#4ce40c" },
                             { value: "medium", label: "MED", hex: "#ffbd4e" },
@@ -553,12 +553,12 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                               key={priority.value}
                               type="button"
                               onClick={() => field.onChange(priority.value)}
-                              className={`px-4 py-1 rounded-full text-xs font-medium transition-colors flex-1 ${
+                              className={`px-3 py-1 rounded-full text-xs font-medium transition-colors border-2 ${
                                 field.value === priority.value
-                                  ? `bg-gray-200 border border-gray-300`
-                                  : `bg-gray-100 text-gray-600 hover:bg-gray-150 border border-gray-200`
+                                  ? `bg-gray-100 text-gray-800`
+                                  : `bg-gray-100 text-gray-600 hover:bg-gray-150 border-gray-200`
                               }`}
-                              style={field.value === priority.value ? { color: priority.hex } : {}}
+                              style={field.value === priority.value ? { borderColor: priority.hex, color: priority.hex } : {}}
                             >
                               {priority.label}
                             </button>
@@ -572,102 +572,108 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
               </div>
             </div>
 
-            {action && (
-              <FormField
-                control={form.control}
-                name="status"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Status</FormLabel>
-                    <FormControl>
-                      <div className="flex gap-2">
-                        {[
-                          { value: "open", label: "OPEN" },
-                          { value: "closed", label: "CLOSED" }
-                        ].map((status) => (
-                          <button
-                            key={status.value}
-                            type="button"
-                            onClick={() => field.onChange(status.value)}
-                            className={`px-4 py-1 rounded-full text-xs font-medium transition-colors ${
-                              field.value === status.value
-                                ? "bg-[#cc3333] text-white"
-                                : "bg-gray-100 text-gray-600 hover:bg-gray-150 border border-gray-200"
-                            }`}
-                          >
-                            {status.label}
-                          </button>
-                        ))}
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
-
-            <FormField
-              control={form.control}
-              name="dueDate"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex items-center gap-4 mb-2">
-                    <FormLabel className="min-w-[80px]">Due Date</FormLabel>
-                    {field.value && (
-                      <span className="text-sm text-gray-500">
-                        {new Date(field.value).toLocaleDateString()}
-                      </span>
+            <div className="flex gap-4">
+              {action && (
+                <div className="w-[40%]">
+                  <FormField
+                    control={form.control}
+                    name="status"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Status</FormLabel>
+                        <FormControl>
+                          <div className="flex gap-2">
+                            {[
+                              { value: "open", label: "OPEN" },
+                              { value: "closed", label: "CLOSED" }
+                            ].map((status) => (
+                              <button
+                                key={status.value}
+                                type="button"
+                                onClick={() => field.onChange(status.value)}
+                                className={`px-3 py-1 rounded-full text-xs font-medium transition-colors flex-1 ${
+                                  field.value === status.value
+                                    ? "bg-[#cc3333] text-white"
+                                    : "bg-gray-100 text-gray-600 hover:bg-gray-150 border border-gray-200"
+                                }`}
+                              >
+                                {status.label}
+                              </button>
+                            ))}
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
                     )}
-                  </div>
-                  <FormControl>
-                    <div className="flex items-center gap-2">
-                      <div className="flex gap-1">
-                        {[
-                          { label: "2d", days: 2 },
-                          { label: "4d", days: 4 },
-                          { label: "1w", days: 7 },
-                          { label: "2w", days: 14 },
-                          { label: "1m", days: 30 }
-                        ].map((option) => {
-                          const date = new Date();
-                          date.setDate(date.getDate() + option.days);
-                          const dateString = date.toISOString().split('T')[0];
-                          
-                          return (
-                            <button
-                              key={option.label}
-                              type="button"
-                              onClick={() => field.onChange(dateString)}
-                              className={`w-8 h-8 rounded-full text-xs font-medium transition-colors ${
-                                field.value === dateString
-                                  ? "bg-[#cc3333] text-white"
-                                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                              }`}
-                            >
-                              {option.label}
-                            </button>
-                          );
-                        })}
-                      </div>
-                      <div className="relative">
-                        <Input 
-                          type="date" 
-                          className="w-8 h-8 opacity-0 absolute"
-                          {...field} 
-                        />
-                        <button
-                          type="button"
-                          className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600"
-                        >
-                          📅
-                        </button>
-                      </div>
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+                  />
+                </div>
               )}
-            />
+              
+              <div className={action ? "w-[60%]" : "w-full"}>
+                <FormField
+                  control={form.control}
+                  name="dueDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex items-center gap-4 mb-2">
+                        <FormLabel className="min-w-[80px]">Due Date</FormLabel>
+                        {field.value && (
+                          <span className="text-sm text-gray-500">
+                            {new Date(field.value).toLocaleDateString()}
+                          </span>
+                        )}
+                      </div>
+                      <FormControl>
+                        <div className="flex items-center gap-2">
+                          <div className="flex gap-1">
+                            {[
+                              { label: "2d", days: 2 },
+                              { label: "4d", days: 4 },
+                              { label: "1w", days: 7 },
+                              { label: "2w", days: 14 },
+                              { label: "1m", days: 30 }
+                            ].map((option) => {
+                              const date = new Date();
+                              date.setDate(date.getDate() + option.days);
+                              const dateString = date.toISOString().split('T')[0];
+                              
+                              return (
+                                <button
+                                  key={option.label}
+                                  type="button"
+                                  onClick={() => field.onChange(dateString)}
+                                  className={`w-8 h-8 rounded-full text-xs font-medium transition-colors ${
+                                    field.value === dateString
+                                      ? "bg-[#cc3333] text-white"
+                                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                  }`}
+                                >
+                                  {option.label}
+                                </button>
+                              );
+                            })}
+                          </div>
+                          <div className="relative">
+                            <Input 
+                              type="date" 
+                              className="w-8 h-8 opacity-0 absolute"
+                              {...field} 
+                            />
+                            <button
+                              type="button"
+                              className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 text-sm"
+                            >
+                              ⌚
+                            </button>
+                          </div>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
 
             <div className="flex justify-end space-x-3 pt-6 border-t">
               <Button type="button" variant="outline" onClick={onClose} disabled={isLoading}>
