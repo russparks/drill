@@ -164,7 +164,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
       queryClient.invalidateQueries({ queryKey: ["/api/stats"] });
       toast({
         title: "Action Created",
-        className: "bg-[#b9f6b6] text-[#079800] border-[#079800] !p-2 !px-4 !pr-4 w-auto max-w-none min-w-fit",
+        className: "bg-[#b9f6b6] text-[#079800] border-[#079800] !p-2 !px-4 !pr-4 w-auto max-w-none min-w-fit text-center justify-center",
         duration: 5000,
       });
       onClose();
@@ -192,7 +192,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
       queryClient.invalidateQueries({ queryKey: ["/api/stats"] });
       toast({
         title: "Action Updated",
-        className: "bg-[#b9f6b6] text-[#079800] border-[#079800] !p-2 !px-4 !pr-4 w-auto max-w-none min-w-fit",
+        className: "bg-[#b9f6b6] text-[#079800] border-[#079800] !p-2 !px-4 !pr-4 w-auto max-w-none min-w-fit text-center justify-center",
         duration: 5000,
       });
       onClose();
