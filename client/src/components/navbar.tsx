@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { Plus, Menu } from "lucide-react";
+import { Plus, Menu, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@assets/Layer 2_1753047717908.png";
 
@@ -66,13 +66,21 @@ export default function Navbar({ onCreateAction, onCreateProject, onCreatePerson
                     ? "text-primary border-b-2 border-primary" 
                     : "text-action-text-secondary hover:text-action-text-primary"
                 }`}>
-                  Setup
+                  Projects
                 </span>
               </Link>
             </nav>
           </div>
           <div className="hidden md:flex items-center space-x-4">
             {getCreateButton()}
+            <Button variant="ghost" size="icon" onClick={() => {
+              window.location.href = "/setup";
+              setTimeout(() => {
+                window.dispatchEvent(new CustomEvent('switchToUsersTab'));
+              }, 100);
+            }}>
+              <Settings className="h-4 w-4" />
+            </Button>
           </div>
           <Button variant="ghost" size="icon" className="md:hidden">
             <Menu className="h-6 w-6" />

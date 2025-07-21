@@ -27,6 +27,9 @@ export default function Setup({ onTabChange }: SetupProps) {
   const [itemToDelete, setItemToDelete] = useState<{ type: 'project' | 'user', id: number, name: string } | null>(null);
   const { toast } = useToast();
 
+  // State for active tab
+  const [activeTab, setActiveTab] = useState("projects");
+
   // Listen for modal open events from navbar
   useEffect(() => {
     const handleOpenProjectModal = () => {
@@ -40,14 +43,21 @@ export default function Setup({ onTabChange }: SetupProps) {
       setIsUserDialogOpen(true);
     };
 
+    const handleSwitchToUsersTab = () => {
+      setActiveTab("users");
+      onTabChange?.("users");
+    };
+
     window.addEventListener('openProjectModal', handleOpenProjectModal);
     window.addEventListener('openPersonModal', handleOpenPersonModal);
+    window.addEventListener('switchToUsersTab', handleSwitchToUsersTab);
     
     return () => {
       window.removeEventListener('openProjectModal', handleOpenProjectModal);
       window.removeEventListener('openPersonModal', handleOpenPersonModal);
+      window.removeEventListener('switchToUsersTab', handleSwitchToUsersTab);
     };
-  }, []);
+  }, [onTabChange]);
 
   const calculateWorkingWeeks = () => {
     setTimeout(() => {
@@ -274,7 +284,10 @@ export default function Setup({ onTabChange }: SetupProps) {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
 
-      <Tabs defaultValue="projects" className="space-y-6" onValueChange={onTabChange}>
+      <Tabs value={activeTab} className="space-y-6" onValueChange={(value) => {
+        setActiveTab(value);
+        onTabChange?.(value);
+      }}>
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="projects" className="flex items-center gap-2">
             <Building className="h-4 w-4" />
