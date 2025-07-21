@@ -792,21 +792,6 @@ export default function Setup({ onTabChange }: SetupProps) {
         </TabsContent>
 
         <TabsContent value="users" className="space-y-6">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold">Dashboard</h2>
-            <Button 
-              onClick={() => {
-                setSelectedProject(null);
-                setSelectedPhase("tender");
-                setIsProjectDialogOpen(true);
-              }}
-              style={{ backgroundColor: '#333333', borderColor: '#333333' }}
-              className="rounded-full"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Project
-            </Button>
-          </div>
           <DetailCharts />
         </TabsContent>
       </Tabs>
