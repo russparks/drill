@@ -211,7 +211,11 @@ export default function DetailCharts() {
                 <XAxis dataKey="status" tick={{ fontSize: 11 }} />
                 <YAxis tick={{ fontSize: 11 }} />
                 <Tooltip formatter={(value) => [`£${value}M`, 'Value']} />
-                <Bar dataKey="value" fill="#cc3333" />
+                <Bar dataKey="value">
+                  {valueChartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={STATUS_COLORS[entry.status.toLowerCase()] || CHART_COLORS[index % CHART_COLORS.length]} />
+                  ))}
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
