@@ -21,6 +21,7 @@ export const projects = pgTable("projects", {
   status: text("status", { enum: ["tender", "precon", "construction", "aftercare"] }).notNull().default("tender"),
   description: text("description"),
   value: text("value"),
+  retention: text("retention"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

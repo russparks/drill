@@ -186,6 +186,10 @@ export default function Setup({ onTabChange }: SetupProps) {
     // Capitalize first word of description
     const capitalizedDescription = description.charAt(0).toUpperCase() + description.slice(1);
 
+    // Calculate retention as 5% of project value
+    const retentionValue = Number(value) * 0.05;
+    const formattedRetention = `£${retentionValue.toFixed(2)}`;
+
     const projectData = {
       projectNumber: projectNumber.toUpperCase(),
       name: capitalizedName,
@@ -195,6 +199,7 @@ export default function Setup({ onTabChange }: SetupProps) {
       contractCompletionDate: contractDate ? new Date(contractDate) : null,
       constructionCompletionDate: constructionDate ? new Date(constructionDate) : null,
       value: `£${value}`,
+      retention: formattedRetention,
     };
 
     if (selectedProject) {
