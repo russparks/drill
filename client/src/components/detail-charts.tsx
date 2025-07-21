@@ -136,11 +136,13 @@ export default function DetailCharts() {
     .sort((a, b) => a.planned - b.planned);
 
   // Actions by Person
-  const actionsByPerson = (actions as any[]).reduce((acc: Record<string, number>, action) => {
-    const assignee = action.assignee || 'Unassigned';
-    acc[assignee] = (acc[assignee] || 0) + 1;
-    return acc;
-  }, {});
+  const actionsByPerson = (actions as any[])
+    .filter(action => action.assignee && action.assignee.trim() !== '') // Only include actions with valid assignees
+    .reduce((acc: Record<string, number>, action) => {
+      const assignee = action.assignee.trim();
+      acc[assignee] = (acc[assignee] || 0) + 1;
+      return acc;
+    }, {});
 
   const actionsByPersonData = Object.entries(actionsByPerson)
     .map(([person, count]) => ({
