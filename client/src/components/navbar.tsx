@@ -42,7 +42,7 @@ export default function Navbar({ onCreateAction }: NavbarProps) {
           <div className="hidden md:flex items-center space-x-4">
             <Button size="sm" onClick={onCreateAction}>
               <Plus className="h-4 w-4 mr-1" />
-              Action
+              Project
             </Button>
           </div>
           <Button variant="ghost" size="icon" className="md:hidden">

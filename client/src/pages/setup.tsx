@@ -243,12 +243,7 @@ export default function Setup() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-action-text-primary">Setup</h1>
-        <p className="mt-1 text-sm text-action-text-secondary">
-          Manage projects and team members
-        </p>
-      </div>
+
 
       <Tabs defaultValue="projects" className="space-y-6">
         <TabsList className="grid w-full grid-cols-2">
@@ -263,8 +258,7 @@ export default function Setup() {
         </TabsList>
 
         <TabsContent value="projects" className="space-y-6">
-          <div className="flex justify-between items-center">
-            <h2 className="text-lg font-medium text-action-text-primary">Projects</h2>
+          <div className="flex justify-end items-center">
             <Dialog open={isProjectDialogOpen} onOpenChange={setIsProjectDialogOpen}>
               <DialogTrigger asChild>
                 <Button onClick={() => {
@@ -272,7 +266,7 @@ export default function Setup() {
                   setSelectedPhase("tender");
                 }}>
                   <Plus className="h-4 w-4 mr-2" />
-                  Add Project
+                  Project
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-lg">
