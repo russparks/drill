@@ -11,14 +11,14 @@ const STATUS_COLORS: Record<string, string> = {
   'aftercare': '#6b7280', // gray-500 - medium gray
 };
 
-// Discipline colors matching the button scheme
+// Discipline colors matching the action page button scheme
 const DISCIPLINE_COLORS: Record<string, string> = {
-  'operations': '#cc3333',
-  'commercial': '#0088FE', 
-  'design': '#00C49F',
-  'she': '#FFBB28',
-  'qa': '#FF8042',
-  'general': '#8884d8'
+  'operations': '#1d4ed8',  // blue-700 (from blue-800 text)
+  'commercial': '#0891b2',  // cyan-600 (from cyan-800 text)
+  'design': '#7c3aed',      // violet-600 (from purple-800 text)
+  'she': '#ea580c',         // orange-600 (from orange-800 text)
+  'qa': '#4338ca',          // indigo-600 (from indigo-800 text)
+  'general': '#4b5563'      // gray-600 (matching button bg)
 };
 
 const CHART_COLORS = ['#E8E4F3', '#E8F5E8', '#FFF4E6', '#F0F0F0', '#cc3333', '#8884d8'];
