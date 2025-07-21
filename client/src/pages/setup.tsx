@@ -235,16 +235,20 @@ export default function Setup({ onTabChange }: SetupProps) {
               }, 0);
 
               return (
-                <span className="flex items-center gap-2 text-xs">
-                  <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">
-                    PRECON
-                  </span>
-                  <span className="text-base font-bold">{preconProjects.length} <span className="text-sm font-normal italic">(£{Math.floor(preconValue)}m)</span></span>
-                  <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs font-medium">
-                    CONSTRUCTION
-                  </span>
-                  <span className="text-base font-bold">{constructionProjects.length} <span className="text-sm font-normal italic">(£{Math.floor(constructionValue)}m)</span></span>
-                </span>
+                <div className="flex flex-col gap-1 text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">
+                      PRECON
+                    </span>
+                    <span className="text-base font-bold">{preconProjects.length} <span className="text-sm font-normal italic">(£{Math.floor(preconValue)}m)</span></span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs font-medium">
+                      CONSTRUCTION
+                    </span>
+                    <span className="text-base font-bold">{constructionProjects.length} <span className="text-sm font-normal italic">(£{Math.floor(constructionValue)}m)</span></span>
+                  </div>
+                </div>
               );
             })()}
           </TabsTrigger>
