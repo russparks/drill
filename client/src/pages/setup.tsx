@@ -535,20 +535,22 @@ export default function Setup({ onTabChange }: SetupProps) {
                           </div>
                         </div>
                         {weekInfo && (
-                          <div className="flex items-center gap-3" style={{ fontSize: '10px' }}>
-                            <div className="flex items-center">
-                              <span className="bg-black text-white border border-black px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>SOS</span>
-                              <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.startDate.toUpperCase()}</span>
+                          <div className="flex items-center justify-between" style={{ fontSize: '10px' }}>
+                            <div className="flex items-center gap-3">
+                              <div className="flex items-center">
+                                <span className="bg-black text-white border border-black px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>SOS</span>
+                                <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.startDate.toUpperCase()}</span>
+                              </div>
+                              <div className="flex items-center">
+                                <span className="bg-black text-white border border-black px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>CONST</span>
+                                <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.anticipatedDate.toUpperCase()}</span>
+                              </div>
+                              <div className="flex items-center">
+                                <span className="bg-black text-white border border-black px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>CONTR</span>
+                                <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.contractDate.toUpperCase()}</span>
+                              </div>
                             </div>
-                            <div className="flex items-center">
-                              <span className="bg-black text-white border border-black px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>CONST</span>
-                              <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.anticipatedDate.toUpperCase()}</span>
-                            </div>
-                            <div className="flex items-center">
-                              <span className="bg-black text-white border border-black px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>CONTR</span>
-                              <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.contractDate.toUpperCase()}</span>
-                            </div>
-                            <span className="bg-gray-200 text-black border border-gray-300 px-1 py-0.5 rounded-sm ml-2" style={{ fontSize: '10px' }}>W{weekInfo.currentWeek} OF {weekInfo.totalWeeksToAnticipated}({weekInfo.totalWeeksToContract})</span>
+                            <span className="bg-gray-200 text-black border border-gray-300 px-1 py-0.5 rounded-sm" style={{ fontSize: '10px' }}>W{weekInfo.currentWeek} OF {weekInfo.totalWeeksToAnticipated}({weekInfo.totalWeeksToContract})</span>
                           </div>
                         )}
                       </div>
