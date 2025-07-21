@@ -355,7 +355,7 @@ export default function DetailCharts() {
                   tickLine={false}
                 />
                 <Tooltip />
-                <Bar dataKey="count" strokeWidth={0.7} barSize={30}>
+                <Bar dataKey="count" strokeWidth={0.7} barSize={15}>
                   {coloredAssigneeData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.fill} stroke={entry.stroke} />
                   ))}
