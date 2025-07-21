@@ -25,8 +25,7 @@ export const projects = pgTable("projects", {
 
 export const actions = pgTable("actions", {
   id: serial("id").primaryKey(),
-  title: text("title").notNull(),
-  description: text("description"),
+  description: text("description").notNull(),
   discipline: text("discipline").notNull(), // operations, commercial, design, she, qa, general
   phase: text("phase").notNull().default("construction"), // tender, precon, construction, aftercare, strategy  
   status: text("status").notNull().default("open"), // open, closed, overdue

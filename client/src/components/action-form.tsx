@@ -44,7 +44,7 @@ const actionFormSchema = insertActionSchema.extend({
   }, {
     message: "Description must be 50 words or less",
   }),
-  title: z.string().min(1, "Title is required"),
+
   discipline: z.string().min(1, "Discipline is required"),
   phase: z.string().min(1, "Phase is required"),
   priority: z.string().min(1, "Priority is required"),
@@ -100,7 +100,6 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
   const form = useForm<ActionFormData>({
     resolver: zodResolver(actionFormSchema),
     defaultValues: {
-      title: action?.title || "",
       description: action?.description || "",
       discipline: action?.discipline || "",
       phase: action?.phase || "",
@@ -119,7 +118,6 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
   React.useEffect(() => {
     if (action) {
       form.reset({
-        title: action.title,
         description: action.description || "",
         discipline: action.discipline,
         phase: action.phase,
@@ -136,7 +134,6 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
       setShowNewPersonInput(false);
     } else {
       form.reset({
-        title: "",
         description: "",
         discipline: "",
         phase: "",
@@ -264,7 +261,6 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
   // Watch form values to determine if all required fields are filled
   const watchedValues = form.watch();
   const isFormIncomplete = !action && ( // Only validate for new actions
-    !watchedValues.title?.trim() ||
     !watchedValues.description?.trim() ||
     !watchedValues.discipline ||
     !watchedValues.phase ||
@@ -276,22 +272,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
     (showNewPersonInput && !watchedValues.newPersonName?.trim())
   );
 
-  console.log('Form validation check:', {
-    action: !!action,
-    title: watchedValues.title?.trim(),
-    description: watchedValues.description?.trim(), 
-    discipline: watchedValues.discipline,
-    phase: watchedValues.phase,
-    priority: watchedValues.priority,
-    dueDate: watchedValues.dueDate,
-    projectId: watchedValues.projectId,
-    showNewProjectInput,
-    newProjectName: watchedValues.newProjectName?.trim(),
-    assigneeId: watchedValues.assigneeId,
-    showNewPersonInput,
-    newPersonName: watchedValues.newPersonName?.trim(),
-    isFormIncomplete
-  });
+
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
