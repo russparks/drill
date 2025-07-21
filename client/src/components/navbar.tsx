@@ -18,7 +18,7 @@ export default function Navbar({ onCreateAction, onCreateProject, onCreatePerson
     if (location === "/") {
       return (
         <Button size="sm" onClick={onCreateAction} style={{ backgroundColor: '#333333', borderColor: '#333333', borderRadius: '9999px' }}>
-          <Plus className="h-4 w-4 mr-1" />
+          <Plus className="h-4 w-4 mr-0.5" />
           Action
         </Button>
       );
