@@ -421,20 +421,22 @@ export default function DetailCharts() {
                 <LabelList 
                   dataKey="constructionWeeks" 
                   position="center" 
-                  style={{ fontSize: '11px', fill: '#1f2937', fontWeight: '500' }} 
+                  style={{ fontSize: '10px', fill: '#1f2937', fontWeight: '500' }} 
+                  formatter={(value) => `${value}w`}
                 />
               </Bar>
               <Bar dataKey="buffer" stackId="a" fill="#9ca3af" name="Buffer/Float">
                 <LabelList 
                   dataKey="buffer" 
                   position="center" 
-                  style={{ fontSize: '11px', fill: '#1f2937', fontWeight: '500' }} 
+                  style={{ fontSize: '10px', fill: '#1f2937', fontWeight: '500' }} 
+                  formatter={(value) => `${value}w`}
                 />
                 <LabelList 
                   dataKey="bufferPercentage" 
                   position="top" 
                   style={{ fontSize: '12px', fill: '#6b7280', fontWeight: '600' }} 
-                  offset={5}
+                  offset={10}
                 />
               </Bar>
             </BarChart>
