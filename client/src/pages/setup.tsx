@@ -219,7 +219,7 @@ export default function Setup({ onTabChange }: SetupProps) {
             <LayoutDashboard className="h-4 w-4" />
             Dash
           </TabsTrigger>
-          <TabsTrigger value="live" className="flex items-center justify-center cursor-not-allowed text-xs" disabled>
+          <TabsTrigger value="live" className="flex items-center justify-center cursor-not-allowed text-xs !opacity-100" disabled>
             {(() => {
               const constructionProjects = projects.filter(p => p.status === 'construction');
               const preconProjects = projects.filter(p => p.status === 'precon');
