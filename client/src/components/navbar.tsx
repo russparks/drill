@@ -4,11 +4,43 @@ import { Button } from "@/components/ui/button";
 import logo from "@assets/Layer 2_1753047717908.png";
 
 interface NavbarProps {
+  onCreateAction?: () => void;
   onCreateProject?: () => void;
+  onCreatePerson?: () => void;
+  activeTab?: string;
 }
 
-export default function Navbar({ onCreateProject }: NavbarProps) {
+export default function Navbar({ onCreateAction, onCreateProject, onCreatePerson, activeTab }: NavbarProps) {
   const [location] = useLocation();
+
+  // Determine which button to show based on current location and active tab
+  const getCreateButton = () => {
+    if (location === "/") {
+      return (
+        <Button size="sm" onClick={onCreateAction}>
+          <Plus className="h-4 w-4 mr-1" />
+          Action
+        </Button>
+      );
+    } else if (location === "/setup") {
+      if (activeTab === "users") {
+        return (
+          <Button size="sm" onClick={onCreatePerson}>
+            <Plus className="h-4 w-4 mr-1" />
+            Person
+          </Button>
+        );
+      } else {
+        return (
+          <Button size="sm" onClick={onCreateProject}>
+            <Plus className="h-4 w-4 mr-1" />
+            Project
+          </Button>
+        );
+      }
+    }
+    return null;
+  };
 
   return (
     <header className="bg-white material-shadow sticky top-0 z-50">
@@ -40,10 +72,7 @@ export default function Navbar({ onCreateProject }: NavbarProps) {
             </nav>
           </div>
           <div className="hidden md:flex items-center space-x-4">
-            <Button size="sm" onClick={onCreateProject}>
-              <Plus className="h-4 w-4 mr-1" />
-              Project
-            </Button>
+            {getCreateButton()}
           </div>
           <Button variant="ghost" size="icon" className="md:hidden">
             <Menu className="h-6 w-6" />

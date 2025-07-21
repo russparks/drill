@@ -14,21 +14,45 @@ import ActionForm from "@/components/action-form";
 
 function Router() {
   const [isActionFormOpen, setIsActionFormOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("projects");
   const [, navigate] = useLocation();
 
   const handleCreateProject = () => {
     navigate("/setup");
-    // We'll need to trigger the project modal from the setup page
-    window.dispatchEvent(new CustomEvent('openProjectModal'));
+    setActiveTab("projects");
+    // Trigger the project modal from the setup page
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('openProjectModal'));
+    }, 100);
+  };
+
+  const handleCreatePerson = () => {
+    navigate("/setup");
+    setActiveTab("users");
+    // Trigger the person modal from the setup page
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('openPersonModal'));
+    }, 100);
+  };
+
+  const handleCreateAction = () => {
+    setIsActionFormOpen(true);
   };
 
   return (
     <div className="min-h-screen bg-action-surface">
-      <Navbar onCreateProject={handleCreateProject} />
+      <Navbar 
+        onCreateAction={handleCreateAction}
+        onCreateProject={handleCreateProject} 
+        onCreatePerson={handleCreatePerson}
+        activeTab={activeTab}
+      />
       
       <Switch>
         <Route path="/" component={Dashboard} />
-        <Route path="/setup" component={Setup} />
+        <Route path="/setup">
+          <Setup onTabChange={setActiveTab} />
+        </Route>
         <Route component={NotFound} />
       </Switch>
 

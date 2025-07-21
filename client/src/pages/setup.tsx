@@ -11,7 +11,11 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { Project, User, InsertProject, InsertUser } from "@shared/schema";
 
-export default function Setup() {
+interface SetupProps {
+  onTabChange?: (tab: string) => void;
+}
+
+export default function Setup({ onTabChange }: SetupProps) {
   const [isProjectDialogOpen, setIsProjectDialogOpen] = useState(false);
   const [isUserDialogOpen, setIsUserDialogOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -20,7 +24,7 @@ export default function Setup() {
   const [workingWeeks, setWorkingWeeks] = useState({ startToContract: 0, startToAnticipated: 0, anticipatedToContract: 0 });
   const { toast } = useToast();
 
-  // Listen for project modal open event from navbar
+  // Listen for modal open events from navbar
   useEffect(() => {
     const handleOpenProjectModal = () => {
       setSelectedProject(null);
@@ -28,8 +32,18 @@ export default function Setup() {
       setIsProjectDialogOpen(true);
     };
 
+    const handleOpenPersonModal = () => {
+      setSelectedUser(null);
+      setIsUserDialogOpen(true);
+    };
+
     window.addEventListener('openProjectModal', handleOpenProjectModal);
-    return () => window.removeEventListener('openProjectModal', handleOpenProjectModal);
+    window.addEventListener('openPersonModal', handleOpenPersonModal);
+    
+    return () => {
+      window.removeEventListener('openProjectModal', handleOpenProjectModal);
+      window.removeEventListener('openPersonModal', handleOpenPersonModal);
+    };
   }, []);
 
   const calculateWorkingWeeks = () => {
@@ -257,7 +271,7 @@ export default function Setup() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
 
-      <Tabs defaultValue="projects" className="space-y-6">
+      <Tabs defaultValue="projects" className="space-y-6" onValueChange={onTabChange}>
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="projects" className="flex items-center gap-2">
             <Building className="h-4 w-4" />
