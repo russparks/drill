@@ -52,18 +52,18 @@ export default function Navbar({ onCreateAction, onCreateProject, onCreatePerson
               <Link href="/">
                 <span className={`px-3 py-2 text-sm font-medium cursor-pointer ${
                   location === "/" 
-                    ? "border-b-2 border-primary" 
+                    ? "border-b-2" 
                     : "text-action-text-secondary hover:text-action-text-primary"
-                }`} style={location === "/" ? { color: '#333333' } : {}}>
+                }`} style={location === "/" ? { color: '#333333', borderColor: '#333333' } : {}}>
                   Home
                 </span>
               </Link>
               <Link href="/setup">
                 <span className={`px-3 py-2 text-sm font-medium cursor-pointer ${
                   location === "/setup" 
-                    ? "border-b-2 border-primary" 
+                    ? "border-b-2" 
                     : "text-action-text-secondary hover:text-action-text-primary"
-                }`} style={location === "/setup" ? { color: '#333333' } : {}}>
+                }`} style={location === "/setup" ? { color: '#333333', borderColor: '#333333' } : {}}>
                   Projects
                 </span>
               </Link>
