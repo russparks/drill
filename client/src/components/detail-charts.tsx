@@ -105,12 +105,15 @@ export default function DetailCharts() {
       
       const totalWeeks = Math.ceil((contractDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
       const constructionWeeks = Math.ceil((constructionDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
+      const buffer = totalWeeks - constructionWeeks;
+      const bufferPercentage = totalWeeks > 0 ? Math.round((buffer / totalWeeks) * 100) : 0;
       
       return {
         name: project.projectNumber || project.name?.substring(0, 10),
         totalWeeks,
         constructionWeeks,
-        buffer: totalWeeks - constructionWeeks,
+        buffer,
+        bufferPercentage: `${bufferPercentage}%`,
       };
     })
     .sort((a, b) => a.totalWeeks - b.totalWeeks);
@@ -411,7 +414,7 @@ export default function DetailCharts() {
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={timelineData} margin={{ left: 20, right: 30 }}>
+            <BarChart data={timelineData} margin={{ left: 20, right: 30, top: 30 }}>
               <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} tick={{ fontSize: 11 }} />
               <Tooltip />
               <Bar dataKey="constructionWeeks" stackId="a" fill="#93c5fd" name="Construction">
@@ -426,6 +429,12 @@ export default function DetailCharts() {
                   dataKey="buffer" 
                   position="center" 
                   style={{ fontSize: '11px', fill: '#1f2937', fontWeight: '500' }} 
+                />
+                <LabelList 
+                  dataKey="bufferPercentage" 
+                  position="top" 
+                  style={{ fontSize: '12px', fill: '#6b7280', fontWeight: '600' }} 
+                  offset={5}
                 />
               </Bar>
             </BarChart>
