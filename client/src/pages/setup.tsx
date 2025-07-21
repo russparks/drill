@@ -617,7 +617,8 @@ export default function Setup({ onTabChange }: SetupProps) {
                                       fontSize: '10.2px', 
                                       top: '-4px', 
                                       right: '4px',
-                                      lineHeight: '28px'
+                                      lineHeight: '28px',
+                                      color: 'rgb(75, 85, 99)'
                                     }}
                                   >
                                     w{currentWeek} of {totalWeeksToAnticipated} ({totalWeeksToContract})
