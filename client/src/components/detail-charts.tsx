@@ -21,6 +21,16 @@ const DISCIPLINE_COLORS: Record<string, string> = {
   'general': '#4b5563'      // gray-600 (matching button bg)
 };
 
+// Light discipline colors for bar fills (300 level)
+const DISCIPLINE_LIGHT_COLORS: Record<string, string> = {
+  'operations': '#93c5fd',  // blue-300
+  'commercial': '#67e8f9',  // cyan-300
+  'design': '#c4b5fd',      // violet-300
+  'she': '#fdba74',         // orange-300
+  'qa': '#a5b4fc',          // indigo-300
+  'general': '#d1d5db'      // gray-300
+};
+
 const CHART_COLORS = ['#E8E4F3', '#E8F5E8', '#FFF4E6', '#F0F0F0', '#cc3333', '#8884d8'];
 
 export default function DetailCharts() {
@@ -71,7 +81,8 @@ export default function DetailCharts() {
   const disciplineChartData = Object.entries(disciplineData).map(([discipline, count]) => ({
     discipline: discipline.charAt(0).toUpperCase() + discipline.slice(1),
     count,
-    color: DISCIPLINE_COLORS[discipline.toLowerCase()] || '#8884d8',
+    fill: DISCIPLINE_LIGHT_COLORS[discipline.toLowerCase()] || '#d1d5db',
+    stroke: DISCIPLINE_COLORS[discipline.toLowerCase()] || '#8884d8',
   }));
 
   // Project Timeline Data
@@ -241,9 +252,9 @@ export default function DetailCharts() {
                 <XAxis dataKey="discipline" angle={-45} textAnchor="end" height={60} tick={{ fontSize: 11 }} />
                 <YAxis tick={{ fontSize: 11 }} />
                 <Tooltip />
-                <Bar dataKey="count">
+                <Bar dataKey="count" strokeWidth={2}>
                   {disciplineChartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
+                    <Cell key={`cell-${index}`} fill={entry.fill} stroke={entry.stroke} />
                   ))}
                 </Bar>
               </BarChart>
