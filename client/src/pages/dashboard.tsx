@@ -471,7 +471,7 @@ export default function Dashboard() {
                         title="Click to remove assignee filter"
                       >
                         {assigneeFilter}
-                        <div className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-green-500" />
+                        <div className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-gray-500" />
                       </span>
                     </>
                   )}
