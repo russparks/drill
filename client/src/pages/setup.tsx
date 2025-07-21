@@ -514,6 +514,11 @@ export default function Setup({ onTabChange }: SetupProps) {
                           {project.projectNumber && (
                             <span className="text-sm text-action-text-secondary">({project.projectNumber})</span>
                           )}
+                          {weekInfo && (
+                            <span className="text-gray-600 ml-4" style={{ fontSize: '10.2px' }}>
+                              Construction Rem: <span className="font-bold text-blue-300">{Math.max(0, weekInfo.totalWeeksToAnticipated - weekInfo.currentWeek)}</span> | Contract Rem: <span className="font-bold text-gray-800">{Math.max(0, weekInfo.totalWeeksToContract - weekInfo.currentWeek)}</span>
+                            </span>
+                          )}
                           {/* Process indicator */}
                           <div className="ml-auto">
                             <button
@@ -626,19 +631,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 </div>
                               );
                             })()}
-                            
-                            {/* Construction and Contract weeks remaining - outside marker container */}
-                            {(() => {
-                              const currentWeek = weekInfo.currentWeek;
-                              const totalWeeksToAnticipated = weekInfo.totalWeeksToAnticipated;
-                              const totalWeeksToContract = weekInfo.totalWeeksToContract;
-                              
-                              return (
-                                <div className="absolute top-4 left-44 text-gray-600" style={{ fontSize: '10.2px' }}>
-                                  Construction Rem: <span className="font-bold text-blue-300">{Math.max(0, totalWeeksToAnticipated - currentWeek)}</span> | Contract Rem: <span className="font-bold text-gray-800">{Math.max(0, totalWeeksToContract - currentWeek)}</span>
-                                </div>
-                              );
-                            })()}
+
                           </div>
                         )}
                       </div>
