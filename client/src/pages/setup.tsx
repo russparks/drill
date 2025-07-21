@@ -544,6 +544,8 @@ export default function Setup({ onTabChange }: SetupProps) {
 
                           </div>
                         )}
+                        {/* Add 8px vertical space below indicators */}
+                        <div style={{ height: '8px' }}></div>
                       </div>
                       <div className="flex space-x-1 ml-2">
                         <Button
@@ -575,11 +577,24 @@ export default function Setup({ onTabChange }: SetupProps) {
                     {/* Timeline bar chart - full width */}
                     {weekInfo && (
                           <div className="mt-2 relative">
-                            <div className="w-full h-1 bg-gray-100 rounded-sm overflow-hidden flex">
+                            <div className={`w-full h-1 rounded-sm overflow-hidden flex ${
+                              project.status === 'aftercare' ? 'bg-gray-200' : 'bg-gray-100'
+                            }`}>
                               {(() => {
                                 const currentWeek = weekInfo.currentWeek;
                                 const totalWeeksToAnticipated = weekInfo.totalWeeksToAnticipated;
                                 const totalWeeksToContract = weekInfo.totalWeeksToContract;
+                                
+                                // If project is in aftercare, grey out the entire timeline
+                                if (project.status === 'aftercare') {
+                                  return (
+                                    <div 
+                                      className="bg-gray-400 h-full opacity-40" 
+                                      style={{ width: '100%' }}
+                                      title="Project completed"
+                                    />
+                                  );
+                                }
                                 
                                 // Calculate percentages based on contract completion (total timeline)
                                 const greyPercent = Math.min((currentWeek / totalWeeksToContract) * 100, 100);
@@ -613,8 +628,8 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 );
                               })()}
                             </div>
-                            {/* Today marker and week indicator */}
-                            {(() => {
+                            {/* Today marker and week indicator - hidden for aftercare */}
+                            {project.status !== 'aftercare' && (() => {
                               const currentWeek = weekInfo.currentWeek;
                               const totalWeeksToContract = weekInfo.totalWeeksToContract;
                               const totalWeeksToAnticipated = weekInfo.totalWeeksToAnticipated;
