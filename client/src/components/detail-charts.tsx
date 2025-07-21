@@ -182,7 +182,7 @@ export default function DetailCharts() {
                   outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"
-                  fillOpacity={0.5}
+                  fillOpacity={1.0}
                 >
                   {statusChartData.map((entry, index) => {
                     const statusColor = STATUS_COLORS[entry.name.toLowerCase()] || CHART_COLORS[index % CHART_COLORS.length];
