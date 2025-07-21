@@ -453,7 +453,32 @@ export default function Setup({ onTabChange }: SetupProps) {
             {projectsLoading ? (
               <div>Loading projects...</div>
             ) : (
-              projects.map((project: Project) => {
+              projects
+                .sort((a, b) => {
+                  // Define status order priority
+                  const statusOrder = { precon: 1, construction: 2, aftercare: 3 };
+                  const aOrder = statusOrder[a.status as keyof typeof statusOrder] || 4;
+                  const bOrder = statusOrder[b.status as keyof typeof statusOrder] || 4;
+                  
+                  // First sort by status
+                  if (aOrder !== bOrder) {
+                    return aOrder - bOrder;
+                  }
+                  
+                  // Then sort by completion date within same status
+                  // Use contract completion date, fallback to construction completion date
+                  const aDate = a.contractCompletionDate || a.constructionCompletionDate;
+                  const bDate = b.contractCompletionDate || b.constructionCompletionDate;
+                  
+                  // If no dates, maintain current order
+                  if (!aDate && !bDate) return 0;
+                  if (!aDate) return 1; // Projects without dates go to bottom
+                  if (!bDate) return -1;
+                  
+                  // Sort by date ascending (earliest completion first, furthest away last)
+                  return new Date(aDate).getTime() - new Date(bDate).getTime();
+                })
+                .map((project: Project) => {
                 // Calculate current project week and totals
                 const getCurrentWeekInfo = () => {
                   if (!project.startOnSiteDate || !project.constructionCompletionDate || !project.contractCompletionDate) {
