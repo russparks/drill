@@ -163,8 +163,9 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
       queryClient.invalidateQueries({ queryKey: ["/api/actions"] });
       queryClient.invalidateQueries({ queryKey: ["/api/stats"] });
       toast({
-        title: "Success",
-        description: "Action created successfully",
+        title: "Action Created",
+        className: "bg-[#b9f6b6] text-[#079800] border-[#079800]",
+        duration: 5000,
       });
       onClose();
     },
