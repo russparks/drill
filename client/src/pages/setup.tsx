@@ -259,7 +259,8 @@ export default function Setup() {
                         id="projectNumber"
                         name="projectNumber"
                         placeholder="X0000"
-                        className="h-8 text-xs"
+                        className="h-8"
+                        style={{ fontSize: '11px' }}
                         defaultValue={selectedProject?.projectNumber || ""}
                         required
                       />
@@ -270,7 +271,8 @@ export default function Setup() {
                         id="value"
                         name="value"
                         placeholder="23.5"
-                        className="h-8 text-xs"
+                        className="h-8"
+                        style={{ fontSize: '11px' }}
                         defaultValue={selectedProject?.value?.replace('£', '') || ""}
                         required
                       />
@@ -280,7 +282,8 @@ export default function Setup() {
                       <Input
                         id="name"
                         name="name"
-                        className="h-8 text-xs"
+                        className="h-8"
+                        style={{ fontSize: '11px' }}
                         defaultValue={selectedProject?.name}
                         required
                       />
@@ -328,36 +331,36 @@ export default function Setup() {
                   {/* Row 4: Start Date (33%) | Contract PC (33%) | Anticipated PC (33%) */}
                   <div className="flex gap-4">
                     <div className="flex-1">
-                      <Label htmlFor="startOnSiteDate" className="text-xs text-center block">Start Date</Label>
+                      <Label htmlFor="startOnSiteDate" className="text-xs text-center block mb-1.5">Start Date</Label>
                       <Input
                         id="startOnSiteDate"
                         name="startOnSiteDate"
                         type="date"
-                        className="h-7 w-full text-center"
+                        className="h-7 w-full text-right"
                         style={{ fontSize: '10px' }}
                         defaultValue={selectedProject?.startOnSiteDate ? new Date(selectedProject.startOnSiteDate).toISOString().split('T')[0] : ""}
                         required
                       />
                     </div>
                     <div className="flex-1">
-                      <Label htmlFor="contractCompletionDate" className="text-xs text-center block">Contract PC</Label>
+                      <Label htmlFor="contractCompletionDate" className="text-xs text-center block mb-1.5">Contract PC</Label>
                       <Input
                         id="contractCompletionDate"
                         name="contractCompletionDate"
                         type="date"
-                        className="h-7 w-full text-center"
+                        className="h-7 w-full text-right"
                         style={{ fontSize: '10px' }}
                         defaultValue={selectedProject?.contractCompletionDate ? new Date(selectedProject.contractCompletionDate).toISOString().split('T')[0] : ""}
                         required
                       />
                     </div>
                     <div className="flex-1">
-                      <Label htmlFor="constructionCompletionDate" className="text-xs text-center block">Anticipated PC</Label>
+                      <Label htmlFor="constructionCompletionDate" className="text-xs text-center block mb-1.5">Anticipated PC</Label>
                       <Input
                         id="constructionCompletionDate"
                         name="constructionCompletionDate"
                         type="date"
-                        className="h-7 w-full text-center"
+                        className="h-7 w-full text-right"
                         style={{ fontSize: '10px' }}
                         defaultValue={selectedProject?.constructionCompletionDate ? new Date(selectedProject.constructionCompletionDate).toISOString().split('T')[0] : ""}
                         required
@@ -365,14 +368,15 @@ export default function Setup() {
                     </div>
                   </div>
 
+                  <hr className="border-gray-200 my-4" />
                   <div className="flex justify-end space-x-2">
-                    <Button type="button" variant="outline" onClick={() => {
+                    <Button type="button" variant="outline" className="rounded-full" onClick={() => {
                       setIsProjectDialogOpen(false);
                       setSelectedPhase("tender");
                     }}>
                       Cancel
                     </Button>
-                    <Button type="submit">
+                    <Button type="submit" className="rounded-full">
                       {selectedProject ? "Update" : "Create"}
                     </Button>
                   </div>
