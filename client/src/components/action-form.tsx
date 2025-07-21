@@ -345,7 +345,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                     )}
                   </div>
                   <FormControl>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap justify-between gap-2">
                       {[
                         { 
                           value: "operations", 
@@ -416,7 +416,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                     )}
                   </div>
                   <FormControl>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap justify-between gap-2">
                       {[
                         { 
                           value: "tender", 
