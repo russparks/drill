@@ -573,9 +573,9 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
               </div>
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex gap-2">
               {action && (
-                <div className="w-[40%]">
+                <div className="w-[35%]">
                   <FormField
                     control={form.control}
                     name="status"
@@ -610,7 +610,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                 </div>
               )}
               
-              <div className={action ? "w-[60%]" : "w-full"}>
+              <div className={action ? "w-[65%]" : "w-full"}>
                 <FormField
                   control={form.control}
                   name="dueDate"
@@ -655,7 +655,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                           </div>
                           <Input 
                             type="date" 
-                            className="w-32 h-8"
+                            className="w-28 h-8 text-xs"
                             {...field} 
                           />
                         </div>
