@@ -421,24 +421,21 @@ export default function Setup() {
 
                   <hr className="border-gray-200 mt-3 mb-4" />
                   <div className="flex justify-between items-end">
-                    <div className="flex items-center gap-5" style={{ fontSize: '10px' }}>
-                      <Info className="w-3 h-3 text-gray-400" />
+                    <div className="flex flex-col items-center" style={{ fontSize: '10px' }}>
+                      <Info className="w-9 h-9 text-gray-400 mb-1" />
                       {workingWeeks.startToContract > 0 && (
                         <div className="leading-tight font-mono">
                           <div className="flex">
                             <div className="w-8 text-center text-black">{workingWeeks.startToContract}w</div>
-                            <div className="w-4 text-center text-black" style={{ transform: 'scaleY(0.85)' }}>|</div>
-                            <div className="flex-1 text-gray-500">Start → Contract</div>
+                            <div className="flex-1 text-gray-500 italic ml-2">Start → Contract</div>
                           </div>
                           <div className="flex">
                             <div className="w-8 text-center text-black">{workingWeeks.startToAnticipated}w</div>
-                            <div className="w-4 text-center text-black" style={{ transform: 'scaleY(0.85)' }}>|</div>
-                            <div className="flex-1 text-gray-500">Start → Anticipated</div>
+                            <div className="flex-1 text-gray-500 italic ml-2">Start → Anticipated</div>
                           </div>
                           <div className="flex">
                             <div className="w-8 text-center text-black">{workingWeeks.anticipatedToContract}w</div>
-                            <div className="w-4 text-center text-black" style={{ transform: 'scaleY(0.85)' }}>|</div>
-                            <div className="flex-1 text-gray-500">Anticipated → Contract</div>
+                            <div className="flex-1 text-gray-500 italic ml-2">Anticipated → Contract</div>
                           </div>
                         </div>
                       )}
