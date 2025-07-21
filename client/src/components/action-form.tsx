@@ -339,7 +339,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                   <div className="flex items-center gap-4">
                     <FormLabel className="min-w-[80px]">Discipline</FormLabel>
                     {field.value && (
-                      <span className="text-sm text-gray-500 capitalize">
+                      <span className="text-gray-500 capitalize italic" style={{ fontSize: '11px' }}>
                         {field.value === 'she' ? 'SHE' : field.value === 'qa' ? 'QA' : field.value}
                       </span>
                     )}
@@ -410,7 +410,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                   <div className="flex items-center gap-4">
                     <FormLabel className="min-w-[80px]">Phase</FormLabel>
                     {field.value && (
-                      <span className="text-sm text-gray-500 capitalize">
+                      <span className="text-gray-500 capitalize italic" style={{ fontSize: '11px' }}>
                         {field.value}
                       </span>
                     )}
@@ -619,7 +619,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                       <div className="flex items-center gap-4 mb-2">
                         <FormLabel className="min-w-[80px]">Due Date</FormLabel>
                         {field.value && (
-                          <span className="text-sm text-gray-500">
+                          <span className="text-gray-500 italic" style={{ fontSize: '11px' }}>
                             {new Date(field.value).toLocaleDateString()}
                           </span>
                         )}
