@@ -132,15 +132,60 @@ export default function Setup() {
   const handleProjectSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    
+    // Validation
+    const projectNumber = formData.get("projectNumber") as string;
+    const name = formData.get("name") as string;
+    const description = formData.get("description") as string;
+    const value = formData.get("value") as string;
+    const startDate = formData.get("startOnSiteDate") as string;
+    const contractDate = formData.get("contractCompletionDate") as string;
+    const constructionDate = formData.get("constructionCompletionDate") as string;
+
+    // Validate project number format (X0000)
+    if (!projectNumber.match(/^[A-Za-z]\d{4}$/)) {
+      toast({ title: "Error", description: "Project number must be in format X0000 (e.g. A1234)", variant: "destructive" });
+      return;
+    }
+
+    // Validate value is a number
+    if (!value || isNaN(Number(value))) {
+      toast({ title: "Error", description: "Value must be a number", variant: "destructive" });
+      return;
+    }
+
+    // Validate description has at least 25 words
+    const wordCount = description.trim().split(/\s+/).length;
+    if (wordCount < 25) {
+      toast({ title: "Error", description: `Description must be at least 25 words (currently ${wordCount})`, variant: "destructive" });
+      return;
+    }
+
+    // Validate date order
+    if (startDate && contractDate && new Date(startDate) >= new Date(contractDate)) {
+      toast({ title: "Error", description: "Start date must be before contract completion date", variant: "destructive" });
+      return;
+    }
+    if (startDate && constructionDate && new Date(startDate) >= new Date(constructionDate)) {
+      toast({ title: "Error", description: "Start date must be before construction completion date", variant: "destructive" });
+      return;
+    }
+
+    // Capitalize first letter of each word in name
+    const capitalizedName = name.replace(/\b\w/g, l => l.toUpperCase());
+    
+    // Capitalize first word of description
+    const capitalizedDescription = description.charAt(0).toUpperCase() + description.slice(1);
+
     const projectData = {
-      name: formData.get("name") as string,
-      description: formData.get("description") as string,
+      projectNumber: projectNumber.toUpperCase(),
+      name: capitalizedName,
+      description: capitalizedDescription,
       status: selectedPhase,
-      projectNumber: formData.get("projectNumber") as string || null,
-      startOnSiteDate: formData.get("startOnSiteDate") as string || null,
-      contractCompletionDate: formData.get("contractCompletionDate") as string || null,
-      constructionCompletionDate: formData.get("constructionCompletionDate") as string || null,
-      value: formData.get("value") as string || null,
+      startOnSiteDate: startDate || null,
+      contractCompletionDate: contractDate || null,
+      constructionCompletionDate: constructionDate || null,
+      value: `£${value}`,
     };
 
     if (selectedProject) {
@@ -201,11 +246,11 @@ export default function Setup() {
                   Add Project
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-2xl">
+              <DialogContent className="max-w-xl">
                 <DialogHeader>
                   <DialogTitle>{selectedProject ? "Edit Project" : "Add New Project"}</DialogTitle>
                 </DialogHeader>
-                <form onSubmit={handleProjectSubmit} className="space-y-6">
+                <form onSubmit={handleProjectSubmit} className="space-y-3">
                   {/* Row 1: Project Number (15%) | Value (15%) | Project Name (70%) */}
                   <div className="grid grid-cols-12 gap-4">
                     <div className="col-span-2">
@@ -213,7 +258,10 @@ export default function Setup() {
                       <Input
                         id="projectNumber"
                         name="projectNumber"
+                        placeholder="X0000"
+                        className="h-8"
                         defaultValue={selectedProject?.projectNumber || ""}
+                        required
                       />
                     </div>
                     <div className="col-span-2">
@@ -221,8 +269,10 @@ export default function Setup() {
                       <Input
                         id="value"
                         name="value"
-                        placeholder="e.g. £23.5m"
-                        defaultValue={selectedProject?.value || ""}
+                        placeholder="23.5"
+                        className="h-8"
+                        defaultValue={selectedProject?.value?.replace('£', '') || ""}
+                        required
                       />
                     </div>
                     <div className="col-span-8">
@@ -230,6 +280,7 @@ export default function Setup() {
                       <Input
                         id="name"
                         name="name"
+                        className="h-8"
                         defaultValue={selectedProject?.name}
                         required
                       />
@@ -242,9 +293,10 @@ export default function Setup() {
                     <textarea
                       id="description"
                       name="description"
-                      className="w-full min-h-[80px] px-3 py-2 text-sm bg-white border border-gray-300 rounded-md resize-y focus:outline-none focus:ring-2 focus:ring-[#cc3333] focus:border-transparent"
+                      className="w-full min-h-[68px] px-3 py-1.5 text-sm bg-white border border-gray-300 rounded-md resize-y focus:outline-none focus:ring-2 focus:ring-[#cc3333] focus:border-transparent"
                       defaultValue={selectedProject?.description || ""}
-                      placeholder="Enter project description..."
+                      placeholder="Enter project description (minimum 25 words)..."
+                      required
                     />
                   </div>
 
@@ -282,9 +334,10 @@ export default function Setup() {
                         id="startOnSiteDate"
                         name="startOnSiteDate"
                         type="date"
-                        className="h-8 w-auto"
-                        style={{ fontSize: '11px' }}
+                        className="h-7 w-auto"
+                        style={{ fontSize: '10px' }}
                         defaultValue={selectedProject?.startOnSiteDate ? new Date(selectedProject.startOnSiteDate).toISOString().split('T')[0] : ""}
+                        required
                       />
                     </div>
                     <div className="col-span-3">
@@ -293,9 +346,10 @@ export default function Setup() {
                         id="contractCompletionDate"
                         name="contractCompletionDate"
                         type="date"
-                        className="h-8 w-auto"
-                        style={{ fontSize: '11px' }}
+                        className="h-7 w-auto"
+                        style={{ fontSize: '10px' }}
                         defaultValue={selectedProject?.contractCompletionDate ? new Date(selectedProject.contractCompletionDate).toISOString().split('T')[0] : ""}
+                        required
                       />
                     </div>
                     <div className="col-span-3">
@@ -304,9 +358,10 @@ export default function Setup() {
                         id="constructionCompletionDate"
                         name="constructionCompletionDate"
                         type="date"
-                        className="h-8 w-auto"
-                        style={{ fontSize: '11px' }}
+                        className="h-7 w-auto"
+                        style={{ fontSize: '10px' }}
                         defaultValue={selectedProject?.constructionCompletionDate ? new Date(selectedProject.constructionCompletionDate).toISOString().split('T')[0] : ""}
+                        required
                       />
                     </div>
                   </div>
