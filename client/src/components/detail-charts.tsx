@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, AreaChart, Area, Legend, Sector } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, AreaChart, Area, Legend, Sector, RadialBarChart, RadialBar } from "recharts";
 import { Project } from "@shared/schema";
 
 // Status colors using darker shades for better visibility while maintaining theme
@@ -165,43 +165,35 @@ export default function DetailCharts() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Project Status Distribution - Pie Chart */}
+        {/* Project Status Distribution - Radial Bar Chart */}
         <Card>
           <CardHeader>
             <CardTitle className="text-sm text-center">Project Status Distribution</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
-              <PieChart>
-                <Pie
-                  data={statusChartData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={false}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
+              <RadialBarChart 
+                cx="50%" 
+                cy="50%" 
+                innerRadius="20%" 
+                outerRadius="80%" 
+                data={statusChartData.map((entry, index) => ({
+                  ...entry,
+                  fill: STATUS_COLORS[entry.name.toLowerCase()] || CHART_COLORS[index % CHART_COLORS.length]
+                }))}
+              >
+                <RadialBar 
+                  dataKey="value" 
+                  cornerRadius={3}
                   stroke="#000000"
                   strokeWidth={1}
-                  paddingAngle={5}
-                  activeShape={(props) => {
-                    return <Sector {...props} outerRadius={props.outerRadius + 5} />;
-                  }}
-                >
-                  {statusChartData.map((entry, index) => {
-                    const statusColor = STATUS_COLORS[entry.name.toLowerCase()] || CHART_COLORS[index % CHART_COLORS.length];
-                    return (
-                      <Cell key={`cell-${index}`} fill={statusColor} />
-                    );
-                  })}
-                </Pie>
+                />
                 <Tooltip />
                 <Legend 
                   wrapperStyle={{ fontSize: '12px' }}
                   iconType="circle"
                 />
-              </PieChart>
+              </RadialBarChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
