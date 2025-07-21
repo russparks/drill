@@ -492,9 +492,9 @@ export default function Setup({ onTabChange }: SetupProps) {
                             <button
                               className={`
                                 rounded-full px-2 py-0.5 text-xs font-medium border transition-colors
-                                ${project.status === "tender" ? "bg-orange-100 text-orange-800 border-orange-200" : ""}
-                                ${project.status === "precon" ? "bg-blue-100 text-blue-800 border-blue-200" : ""}
-                                ${project.status === "construction" ? "bg-green-100 text-green-800 border-green-200" : ""}
+                                ${project.status === "tender" ? "bg-blue-100 text-blue-800 border-blue-200" : ""}
+                                ${project.status === "precon" ? "bg-green-100 text-green-800 border-green-200" : ""}
+                                ${project.status === "construction" ? "bg-yellow-100 text-yellow-800 border-yellow-200" : ""}
                                 ${project.status === "aftercare" ? "bg-gray-100 text-gray-800 border-gray-200" : ""}
                                 ${!project.status ? "bg-gray-100 text-gray-800 border-gray-200" : ""}
                               `}
