@@ -3,12 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, AreaChart, Area, Legend } from "recharts";
 import { Project } from "@shared/schema";
 
-// Status colors based on the provided scheme - made more vibrant
+// Status colors based on the provided scheme
 const STATUS_COLORS: Record<string, string> = {
-  'tender': '#0284c7', // Sky 600
-  'precon': '#7DB87D', // Darker green  
-  'construction': '#E6B366', // Darker orange
-  'aftercare': '#B8B8B8', // Darker gray
+  'tender': '#22d3ee', // Cyan 400
+  'precon': '#34d399', // Emerald 400
+  'construction': '#fde68a', // Amber 200
+  'aftercare': '#9ca3af', // Gray 400
 };
 
 // Discipline colors matching the button scheme
