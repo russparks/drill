@@ -38,13 +38,34 @@ const actionFormSchema = insertActionSchema.extend({
   newProjectName: z.string().optional(),
   newPersonName: z.string().optional(),
   newPersonEmail: z.string().optional(),
-  description: z.string().optional().refine((val) => {
-    if (!val) return true; // Allow empty descriptions
+  description: z.string().min(1, "Description is required").refine((val) => {
     const wordCount = val.trim().split(/\s+/).length;
     return wordCount <= 50;
   }, {
     message: "Description must be 50 words or less",
   }),
+  title: z.string().min(1, "Title is required"),
+  discipline: z.string().min(1, "Discipline is required"),
+  phase: z.string().min(1, "Phase is required"),
+  priority: z.string().min(1, "Priority is required"),
+  dueDate: z.string().min(1, "Due date is required"),
+}).superRefine((data, ctx) => {
+  // Require either existing project or new project
+  if (!data.projectId && !data.newProjectName?.trim()) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Project is required",
+      path: ["projectId"],
+    });
+  }
+  // Require either existing assignee or new person
+  if (!data.assigneeId && !data.newPersonName?.trim()) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Assignee is required",
+      path: ["assigneeId"],
+    });
+  }
 }).transform((data) => ({
   ...data,
   assigneeId: data.assigneeId || null,
@@ -239,6 +260,21 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
   };
 
   const isLoading = createActionMutation.isPending || updateActionMutation.isPending;
+  
+  // Watch form values to determine if all required fields are filled
+  const watchedValues = form.watch();
+  const isFormValid = !action && ( // Only validate for new actions
+    !watchedValues.title?.trim() ||
+    !watchedValues.description?.trim() ||
+    !watchedValues.discipline ||
+    !watchedValues.phase ||
+    !watchedValues.priority ||
+    !watchedValues.dueDate ||
+    (!watchedValues.projectId && !showNewProjectInput) ||
+    (!watchedValues.assigneeId && !showNewPersonInput) ||
+    (showNewProjectInput && !watchedValues.newProjectName?.trim()) ||
+    (showNewPersonInput && !watchedValues.newPersonName?.trim())
+  );
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -674,7 +710,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
               <Button type="button" variant="outline" onClick={onClose} disabled={isLoading} size="sm" className="rounded-full px-6">
                 Cancel
               </Button>
-              <Button type="submit" disabled={isLoading} size="sm" className="rounded-full px-6">
+              <Button type="submit" disabled={isLoading || isFormValid} size="sm" className="rounded-full px-6">
                 {isLoading ? "Saving..." : action ? "Save" : "Create"}
               </Button>
             </div>
