@@ -5,7 +5,7 @@ import { Project } from "@shared/schema";
 
 // Status colors based on the provided scheme - made more vibrant
 const STATUS_COLORS: Record<string, string> = {
-  'tender': '#9B8DB5', // Darker purple/blue 
+  'tender': '#87CEEB', // Light blue
   'precon': '#7DB87D', // Darker green  
   'construction': '#E6B366', // Darker orange
   'aftercare': '#B8B8B8', // Darker gray
@@ -179,6 +179,7 @@ export default function DetailCharts() {
                   cy="50%"
                   labelLine={false}
                   label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  labelStyle={{ fontSize: '8px' }}
                   outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"
