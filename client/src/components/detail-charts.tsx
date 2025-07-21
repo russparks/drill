@@ -344,13 +344,13 @@ export default function DetailCharts() {
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={coloredAssigneeData}>
+              <BarChart data={coloredAssigneeData} barCategoryGap="25%">
                 <XAxis 
                   dataKey="assignee" 
                   angle={-90} 
-                  textAnchor="middle" 
+                  textAnchor="end" 
                   height={80} 
-                  tick={{ fontSize: 11 }}
+                  tick={{ fontSize: 11, dx: -5 }}
                   axisLine={false}
                   tickLine={false}
                 />
@@ -361,8 +361,9 @@ export default function DetailCharts() {
                   ))}
                   <LabelList 
                     dataKey="count" 
-                    position="insideRight" 
-                    style={{ fontSize: '12px', fill: '#ffffff', fontWeight: '500' }} 
+                    position="bottom" 
+                    style={{ fontSize: '12px', fill: '#374151', fontWeight: '500' }} 
+                    offset={5}
                   />
                 </Bar>
               </BarChart>
