@@ -493,7 +493,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                   const totalWeeksToContract = Math.ceil((contractDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
                   
                   return {
-                    currentWeek: Math.max(1, Math.min(currentWeek, totalWeeksToAnticipated)),
+                    currentWeek: Math.max(1, currentWeek),
                     totalWeeksToAnticipated: Math.max(1, totalWeeksToAnticipated),
                     totalWeeksToContract: Math.max(1, totalWeeksToContract),
                     startDate: startDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }),
