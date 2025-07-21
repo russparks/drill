@@ -606,7 +606,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 <div className="absolute" style={{ left: `calc(${currentPercent}% - 2px)` }}>
                                   {/* Today marker extending through timeline */}
                                   <div 
-                                    className="w-0.5 h-7 bg-gray-800 opacity-60 rounded-sm"
+                                    className="w-0.5 h-7 bg-gray-600 rounded-sm"
                                     style={{ marginTop: '-8px' }}
                                     title="Today"
                                   />
@@ -615,8 +615,8 @@ export default function Setup({ onTabChange }: SetupProps) {
                                     className="absolute whitespace-nowrap text-gray-600"
                                     style={{ 
                                       fontSize: '10.2px', 
-                                      top: '1px', 
-                                      right: '8px',
+                                      top: '-4px', 
+                                      right: '4px',
                                       lineHeight: '28px'
                                     }}
                                   >
