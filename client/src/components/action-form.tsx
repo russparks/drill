@@ -245,7 +245,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
       <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
-            {action ? "Edit Action" : "New Action"}
+            {action ? "Edit Action" : "Create"}
           </DialogTitle>
         </DialogHeader>
 
@@ -653,10 +653,10 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                               );
                             })}
                           </div>
-                          <div className="flex-1">
+                          <div className="ml-auto">
                             <Input 
                               type="date" 
-                              className="h-8"
+                              className="h-8 w-auto"
                               style={{ fontSize: '11px' }}
                               {...field} 
                             />
