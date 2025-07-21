@@ -206,27 +206,7 @@ export default function DetailCharts() {
 
   return (
     <div className="space-y-6">
-      {/* Compact Stats Row */}
-      <div className="flex justify-center space-x-8">
-        <div className="flex flex-col items-center">
-          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-            <span className="text-xl font-bold text-blue-700">{projects.length}</span>
-          </div>
-          <span className="text-sm text-gray-600 mt-2">Projects</span>
-        </div>
-        <div className="flex flex-col items-center">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-            <span className="text-xl font-bold text-green-700">{stats?.total || 0}</span>
-          </div>
-          <span className="text-sm text-gray-600 mt-2">Total Actions</span>
-        </div>
-        <div className="flex flex-col items-center">
-          <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center">
-            <span className="text-xl font-bold text-orange-700">{stats?.open || 0}</span>
-          </div>
-          <span className="text-sm text-gray-600 mt-2">Open Actions</span>
-        </div>
-      </div>
+
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Project Status Distribution - Radial Bar Chart */}
