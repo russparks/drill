@@ -540,20 +540,20 @@ export default function Setup({ onTabChange }: SetupProps) {
                         {weekInfo && (
                           <div className="flex items-center justify-between" style={{ fontSize: '10px' }}>
                             <div className="flex items-center" style={{ gap: '10px' }}>
-                              <div className="flex items-center">
+                              <div className="flex items-center" title="Start on Site Date">
                                 <span className="bg-gray-400 text-white border border-gray-400 px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>SOS</span>
                                 <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.startDate.toUpperCase()}</span>
                               </div>
-                              <div className="flex items-center">
+                              <div className="flex items-center" title="Construction Practical Completion Date">
                                 <span className="bg-blue-300 text-white border border-blue-300 px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>CONST</span>
                                 <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.anticipatedDate.toUpperCase()}</span>
                               </div>
-                              <div className="flex items-center">
+                              <div className="flex items-center" title="Contract Practical Completion Date">
                                 <span className="text-white border border-gray-800 px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px', backgroundColor: 'rgba(31, 41, 55, 0.7)' }}>CONTR</span>
                                 <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.contractDate.toUpperCase()}</span>
                               </div>
                               {/* Project value or retention display */}
-                              <div className="flex items-center">
+                              <div className="flex items-center" title={project.status === 'aftercare' ? 'Project Retention Value' : 'Project Value'}>
                                 <span className={`text-white px-1 py-0.5 rounded-l-sm border ${
                                   project.status === 'aftercare' 
                                     ? 'bg-amber-500 border-amber-500' 
@@ -567,16 +567,17 @@ export default function Setup({ onTabChange }: SetupProps) {
                               </div>
                               {/* EVA indicator for non-aftercare projects */}
                               {project.status !== 'aftercare' && weekInfo && (
-                                <div className="flex items-center">
+                                <div className="flex items-center" title="Estimated Earned Value - calculated as (Project Value ÷ Total Weeks) × Weeks Completed">
                                   <span className="bg-purple-600 border border-purple-600 text-white px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>
-                                    EST. EVA
+                                    EEV
                                   </span>
                                   <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>
                                     {(() => {
                                       const projectValueNum = parseFloat(project.value?.replace(/[£,]/g, '') || '0');
                                       const weeklyValue = projectValueNum / weekInfo.totalWeeksToContract;
                                       const evaValue = weeklyValue * weekInfo.currentWeek;
-                                      return `£${evaValue.toFixed(1)}`;
+                                      const percentComplete = Math.min((weekInfo.currentWeek / weekInfo.totalWeeksToContract) * 100, 100);
+                                      return `£${evaValue.toFixed(1)} (${percentComplete.toFixed(0)}%)`;
                                     })()}
                                   </span>
                                 </div>
