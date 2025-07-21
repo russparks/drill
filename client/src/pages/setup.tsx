@@ -604,16 +604,21 @@ export default function Setup({ onTabChange }: SetupProps) {
                               
                               return (
                                 <div className="absolute" style={{ left: `calc(${currentPercent}% - 2px)` }}>
-                                  {/* Today marker */}
+                                  {/* Today marker extending through timeline */}
                                   <div 
-                                    className="w-1 h-2 bg-gray-400 rounded-sm"
-                                    style={{ marginTop: '6px' }}
+                                    className="w-1 h-7 bg-gray-400 rounded-sm"
+                                    style={{ marginTop: '1px' }}
                                     title="Today"
                                   />
-                                  {/* Week indicator positioned underneath and aligned left */}
+                                  {/* Week indicator positioned to the left and vertically aligned with marker */}
                                   <div 
-                                    className="absolute text-xs text-gray-600 whitespace-nowrap"
-                                    style={{ top: '20px', left: '0' }}
+                                    className="absolute whitespace-nowrap text-gray-600"
+                                    style={{ 
+                                      fontSize: '10.2px', 
+                                      top: '1px', 
+                                      right: '8px',
+                                      lineHeight: '28px'
+                                    }}
                                   >
                                     w{currentWeek} of {totalWeeksToAnticipated} ({totalWeeksToContract})
                                   </div>
