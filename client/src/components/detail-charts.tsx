@@ -416,8 +416,8 @@ export default function DetailCharts() {
               <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} tick={{ fontSize: 11 }} />
               <YAxis tick={{ fontSize: 11 }} />
               <Tooltip />
-              <Bar dataKey="constructionWeeks" stackId="a" fill="#FFBB28" name="Construction" />
-              <Bar dataKey="buffer" stackId="a" fill="#FF8042" name="Buffer/Float" />
+              <Bar dataKey="constructionWeeks" stackId="a" fill="#E8E4F3" name="Construction" />
+              <Bar dataKey="buffer" stackId="a" fill="#F0F0F0" name="Buffer/Float" />
             </BarChart>
           </ResponsiveContainer>
         </CardContent>
