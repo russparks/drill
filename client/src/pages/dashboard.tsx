@@ -53,13 +53,25 @@ export default function Dashboard() {
       const queryString = searchParams.toString();
       return fetch(`${url}${queryString ? `?${queryString}` : ""}`).then(res => res.json()).then((actions: any[]) => {
         // Filter for overdue actions on client side
+        let filteredActions = actions;
         if (params.status === "overdue") {
           const now = new Date();
-          return actions.filter((action: any) => 
+          filteredActions = actions.filter((action: any) => 
             action.status === "open" && action.dueDate && new Date(action.dueDate) < now
           );
         }
-        return actions;
+        
+        // Sort by nearest due date (earliest first)
+        return filteredActions.sort((a: any, b: any) => {
+          // Actions without due dates go to the end
+          if (!a.dueDate && !b.dueDate) return 0;
+          if (!a.dueDate) return 1;
+          if (!b.dueDate) return -1;
+          
+          const dateA = new Date(a.dueDate);
+          const dateB = new Date(b.dueDate);
+          return dateA.getTime() - dateB.getTime();
+        });
       });
     },
   });
