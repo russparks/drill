@@ -344,7 +344,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                     )}
                   </div>
                   <FormControl>
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="flex flex-wrap gap-2">
                       {[
                         { 
                           value: "operations", 
@@ -415,7 +415,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                     )}
                   </div>
                   <FormControl>
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="flex flex-wrap gap-2">
                       {[
                         { 
                           value: "tender", 
@@ -437,7 +437,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                           value: "strategy", 
                           label: "STRATEGY"
                         }
-                      ].slice(0, 6).map((phase) => (
+                      ].map((phase) => (
                         <button
                           key={phase.value}
                           type="button"
@@ -593,7 +593,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                                 onClick={() => field.onChange(status.value)}
                                 className={`px-3 py-1 rounded-full text-xs font-medium transition-colors flex-1 ${
                                   field.value === status.value
-                                    ? "bg-[#cc3333] text-white"
+                                    ? status.value === "open" ? "bg-[#cc3333] text-white" : "bg-gray-400 text-white"
                                     : "bg-gray-100 text-gray-600 hover:bg-gray-150 border border-gray-200"
                                 }`}
                               >
@@ -624,8 +624,8 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                         )}
                       </div>
                       <FormControl>
-                        <div className="flex items-center gap-2">
-                          <div className="flex gap-1">
+                        <div className="flex items-center justify-between">
+                          <div className="flex gap-2 flex-1">
                             {[
                               { label: "2d", days: 2 },
                               { label: "4d", days: 4 },
@@ -653,18 +653,20 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                               );
                             })}
                           </div>
-                          <div className="relative">
+                          <div className="relative ml-2">
                             <Input 
                               type="date" 
-                              className="w-8 h-8 opacity-0 absolute"
+                              className="w-8 h-8 opacity-0 absolute z-10 cursor-pointer"
                               {...field} 
                             />
-                            <button
-                              type="button"
-                              className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 text-sm"
-                            >
-                              ⌚
-                            </button>
+                            <div className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 pointer-events-none">
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" strokeWidth="2"/>
+                                <line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" strokeWidth="2"/>
+                                <line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" strokeWidth="2"/>
+                                <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth="2"/>
+                              </svg>
+                            </div>
                           </div>
                         </div>
                       </FormControl>
@@ -676,11 +678,11 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
             </div>
 
             <div className="flex justify-end space-x-3 pt-6 border-t">
-              <Button type="button" variant="outline" onClick={onClose} disabled={isLoading}>
+              <Button type="button" variant="outline" onClick={onClose} disabled={isLoading} size="sm" className="rounded-full px-6">
                 Cancel
               </Button>
-              <Button type="submit" disabled={isLoading}>
-                {isLoading ? "Saving..." : action ? "Update Action" : "Create Action"}
+              <Button type="submit" disabled={isLoading} size="sm" className="rounded-full px-6">
+                {isLoading ? "Saving..." : action ? "Save" : "Create Action"}
               </Button>
             </div>
           </form>
