@@ -165,13 +165,19 @@ export default function DetailCharts() {
     if (maxCount === minCount) return { fill: '#d1d5db', stroke: '#6b7280' }; // Default grey if all same
     
     const ratio = (value - minCount) / (maxCount - minCount);
-    // Green to Red gradient
-    const red = Math.round(255 * ratio);
-    const green = Math.round(255 * (1 - ratio));
-    const fillColor = `rgb(${red}, ${green}, 100)`; // Light version
-    const strokeColor = `rgb(${Math.round(red * 0.7)}, ${Math.round(green * 0.7)}, 70)`; // Darker version
     
-    return { fill: fillColor, stroke: strokeColor };
+    // Define the color stops: green-600, green-400, orange-400, red-500, red-700
+    const colors = [
+      { fill: '#16a34a', stroke: '#15803d' }, // green-500, green-600
+      { fill: '#4ade80', stroke: '#22c55e' }, // green-400, green-500  
+      { fill: '#fb923c', stroke: '#f97316' }, // orange-400, orange-500
+      { fill: '#ef4444', stroke: '#dc2626' }, // red-500, red-600
+      { fill: '#b91c1c', stroke: '#991b1b' }, // red-700, red-800
+    ];
+    
+    // Map ratio to color index
+    const colorIndex = Math.min(Math.floor(ratio * colors.length), colors.length - 1);
+    return colors[colorIndex];
   };
 
   const coloredAssigneeData = actionsByPersonData.map(item => ({
