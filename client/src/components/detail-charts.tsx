@@ -347,9 +347,9 @@ export default function DetailCharts() {
               <BarChart data={coloredAssigneeData}>
                 <XAxis 
                   dataKey="assignee" 
-                  angle={-45} 
-                  textAnchor="end" 
-                  height={60} 
+                  angle={-90} 
+                  textAnchor="middle" 
+                  height={80} 
                   tick={{ fontSize: 11 }}
                   axisLine={false}
                   tickLine={false}
