@@ -214,7 +214,7 @@ export default function Setup({ onTabChange }: SetupProps) {
         setActiveTab(value);
         onTabChange?.(value);
       }}>
-        <TabsList className="grid w-full" style={{ gridTemplateColumns: '20% 60% 20%' }}>
+        <TabsList className="grid w-full bg-transparent" style={{ gridTemplateColumns: '20% 60% 20%' }}>
           <TabsTrigger value="projects" className="flex items-center gap-2">
             <LayoutDashboard className="h-4 w-4" />
             Dash
