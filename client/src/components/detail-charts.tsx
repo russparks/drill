@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, AreaChart, Area, Legend, Sector, RadialBarChart, RadialBar, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, AreaChart, Area, Legend, Sector, RadialBarChart, RadialBar, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, LabelList } from "recharts";
 import { Project } from "@shared/schema";
 
 // Status colors using darker shades for better visibility while maintaining theme
@@ -319,14 +319,17 @@ export default function DetailCharts() {
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={actionsByPersonData}>
-                <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="assignee" angle={-45} textAnchor="end" height={60} tick={{ fontSize: 11 }} />
-                <YAxis tick={{ fontSize: 11 }} />
                 <Tooltip />
                 <Bar dataKey="count" strokeWidth={0.7} barSize={30}>
                   {actionsByPersonData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.fill} stroke={entry.stroke} />
                   ))}
+                  <LabelList 
+                    dataKey="count" 
+                    position="top" 
+                    style={{ fontSize: '12px', fill: '#374151' }} 
+                  />
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
