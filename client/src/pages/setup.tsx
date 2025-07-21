@@ -17,7 +17,32 @@ export default function Setup() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [selectedPhase, setSelectedPhase] = useState("tender");
+  const [workingWeeks, setWorkingWeeks] = useState({ startToContract: 0, startToAnticipated: 0, anticipatedToContract: 0 });
   const { toast } = useToast();
+
+  const calculateWorkingWeeks = () => {
+    setTimeout(() => {
+      const startDate = (document.getElementById('startOnSiteDate') as HTMLInputElement)?.value;
+      const contractDate = (document.getElementById('contractCompletionDate') as HTMLInputElement)?.value;
+      const constructionDate = (document.getElementById('constructionCompletionDate') as HTMLInputElement)?.value;
+
+      if (startDate && contractDate && constructionDate) {
+        const start = new Date(startDate);
+        const contract = new Date(contractDate);
+        const construction = new Date(constructionDate);
+
+        const startToContract = Math.ceil((contract.getTime() - start.getTime()) / (1000 * 60 * 60 * 24 * 7));
+        const startToAnticipated = Math.ceil((construction.getTime() - start.getTime()) / (1000 * 60 * 60 * 24 * 7));
+        const anticipatedToContract = Math.ceil((contract.getTime() - construction.getTime()) / (1000 * 60 * 60 * 24 * 7));
+
+        setWorkingWeeks({
+          startToContract: Math.max(0, startToContract),
+          startToAnticipated: Math.max(0, startToAnticipated),
+          anticipatedToContract: Math.max(0, anticipatedToContract)
+        });
+      }
+    }, 0);
+  };
 
   const { data: projects = [], isLoading: projectsLoading } = useQuery({
     queryKey: ["/api/projects"],
@@ -154,10 +179,14 @@ export default function Setup() {
       return;
     }
 
-    // Validate description has at least 25 words
-    const wordCount = description.trim().split(/\s+/).length;
+    // Validate description has 25-100 words
+    const wordCount = description.trim().split(/\s+/).filter(word => word.length > 0).length;
     if (wordCount < 25) {
       toast({ title: "Error", description: `Description must be at least 25 words (currently ${wordCount})`, variant: "destructive" });
+      return;
+    }
+    if (wordCount > 100) {
+      toast({ title: "Error", description: `Description must be no more than 100 words (currently ${wordCount})`, variant: "destructive" });
       return;
     }
 
@@ -259,7 +288,7 @@ export default function Setup() {
                         id="projectNumber"
                         name="projectNumber"
                         placeholder="X0000"
-                        className="h-8"
+                        className="h-7 px-1.5 py-1"
                         style={{ fontSize: '11px' }}
                         defaultValue={selectedProject?.projectNumber || ""}
                         required
@@ -271,7 +300,7 @@ export default function Setup() {
                         id="value"
                         name="value"
                         placeholder="23.5"
-                        className="h-8"
+                        className="h-7 px-1.5 py-1"
                         style={{ fontSize: '11px' }}
                         defaultValue={selectedProject?.value?.replace('£', '') || ""}
                         required
@@ -282,7 +311,7 @@ export default function Setup() {
                       <Input
                         id="name"
                         name="name"
-                        className="h-8"
+                        className="h-7 px-1.5 py-1"
                         style={{ fontSize: '11px' }}
                         defaultValue={selectedProject?.name}
                         required
@@ -292,14 +321,31 @@ export default function Setup() {
                   
                   {/* Row 2: Project Description (100%) - multiline */}
                   <div>
-                    <Label htmlFor="description" className="text-xs">Description</Label>
+                    <div className="flex items-center justify-between mb-1">
+                      <Label htmlFor="description" className="text-xs">Description</Label>
+                      <span className="text-xs text-gray-500" id="description-counter">0/25-100 words</span>
+                    </div>
                     <textarea
                       id="description"
                       name="description"
-                      className="w-full min-h-[68px] px-3 py-1.5 text-xs bg-white border border-gray-300 rounded-md resize-y focus:outline-none focus:ring-2 focus:ring-[#cc3333] focus:border-transparent"
+                      className="w-full min-h-[68px] px-1.5 py-1 text-xs bg-white border border-gray-300 rounded-md resize-y focus:outline-none focus:ring-2 focus:ring-[#cc3333] focus:border-transparent"
                       defaultValue={selectedProject?.description || ""}
                       placeholder="Enter project description (minimum 25 words)..."
                       required
+                      onChange={(e) => {
+                        const wordCount = e.target.value.trim().split(/\s+/).filter(word => word.length > 0).length;
+                        const counter = document.getElementById('description-counter');
+                        if (counter) {
+                          counter.textContent = `${wordCount}/25-100 words`;
+                          if (wordCount < 25) {
+                            counter.className = "text-xs text-red-500";
+                          } else if (wordCount > 100) {
+                            counter.className = "text-xs text-red-500";
+                          } else {
+                            counter.className = "text-xs text-green-600";
+                          }
+                        }
+                      }}
                     />
                   </div>
 
@@ -328,6 +374,8 @@ export default function Setup() {
                     </div>
                   </div>
 
+                  <hr className="border-gray-200" />
+
                   {/* Row 4: Start Date (33%) | Contract PC (33%) | Anticipated PC (33%) */}
                   <div className="flex gap-4">
                     <div className="flex-1">
@@ -336,9 +384,10 @@ export default function Setup() {
                         id="startOnSiteDate"
                         name="startOnSiteDate"
                         type="date"
-                        className="h-7 w-full text-right"
-                        style={{ fontSize: '10px' }}
+                        className="h-6 w-full"
+                        style={{ fontSize: '10px', textAlign: 'right', paddingRight: '8px' }}
                         defaultValue={selectedProject?.startOnSiteDate ? new Date(selectedProject.startOnSiteDate).toISOString().split('T')[0] : ""}
+                        onChange={(e) => calculateWorkingWeeks()}
                         required
                       />
                     </div>
@@ -348,9 +397,10 @@ export default function Setup() {
                         id="contractCompletionDate"
                         name="contractCompletionDate"
                         type="date"
-                        className="h-7 w-full text-right"
-                        style={{ fontSize: '10px' }}
+                        className="h-6 w-full"
+                        style={{ fontSize: '10px', textAlign: 'right', paddingRight: '8px' }}
                         defaultValue={selectedProject?.contractCompletionDate ? new Date(selectedProject.contractCompletionDate).toISOString().split('T')[0] : ""}
+                        onChange={(e) => calculateWorkingWeeks()}
                         required
                       />
                     </div>
@@ -360,25 +410,38 @@ export default function Setup() {
                         id="constructionCompletionDate"
                         name="constructionCompletionDate"
                         type="date"
-                        className="h-7 w-full text-right"
-                        style={{ fontSize: '10px' }}
+                        className="h-6 w-full"
+                        style={{ fontSize: '10px', textAlign: 'right', paddingRight: '8px' }}
                         defaultValue={selectedProject?.constructionCompletionDate ? new Date(selectedProject.constructionCompletionDate).toISOString().split('T')[0] : ""}
+                        onChange={(e) => calculateWorkingWeeks()}
                         required
                       />
                     </div>
                   </div>
 
                   <hr className="border-gray-200 my-4" />
-                  <div className="flex justify-end space-x-2">
-                    <Button type="button" variant="outline" className="rounded-full" onClick={() => {
-                      setIsProjectDialogOpen(false);
-                      setSelectedPhase("tender");
-                    }}>
-                      Cancel
-                    </Button>
-                    <Button type="submit" className="rounded-full">
-                      {selectedProject ? "Update" : "Create"}
-                    </Button>
+                  <div className="flex justify-between items-end">
+                    <div className="text-xs text-gray-500">
+                      {workingWeeks.startToContract > 0 && (
+                        <div className="space-y-0.5">
+                          <div>Start → Contract: {workingWeeks.startToContract}w</div>
+                          <div>Start → Anticipated: {workingWeeks.startToAnticipated}w</div>
+                          <div>Anticipated → Contract: {workingWeeks.anticipatedToContract}w</div>
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex space-x-2">
+                      <Button type="button" variant="outline" className="rounded-full" onClick={() => {
+                        setIsProjectDialogOpen(false);
+                        setSelectedPhase("tender");
+                        setWorkingWeeks({ startToContract: 0, startToAnticipated: 0, anticipatedToContract: 0 });
+                      }}>
+                        Cancel
+                      </Button>
+                      <Button type="submit" className="rounded-full">
+                        {selectedProject ? "Update" : "Create"}
+                      </Button>
+                    </div>
                   </div>
                 </form>
               </DialogContent>
