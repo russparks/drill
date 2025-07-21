@@ -214,10 +214,14 @@ export default function Setup({ onTabChange }: SetupProps) {
         setActiveTab(value);
         onTabChange?.(value);
       }}>
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="projects" className="flex items-center gap-2">
             <LayoutDashboard className="h-4 w-4" />
             Dash
+          </TabsTrigger>
+          <TabsTrigger value="live" className="flex items-center gap-2">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            Live
           </TabsTrigger>
           <TabsTrigger value="users" className="flex items-center gap-2">
             <FileText className="h-4 w-4" />
@@ -612,6 +616,75 @@ export default function Setup({ onTabChange }: SetupProps) {
             })
             )}
           </div>
+        </TabsContent>
+
+        <TabsContent value="live" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+            <Card className="bg-gradient-to-r from-blue-50 to-blue-100 border-blue-200">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg text-blue-800 flex items-center gap-2">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                  Real-time Updates
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-blue-600 text-sm">Live project status and action tracking</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="bg-gradient-to-r from-green-50 to-green-100 border-green-200">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg text-green-800 flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                  Active Projects
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-green-600 text-sm">Currently in-progress initiatives</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="bg-gradient-to-r from-orange-50 to-orange-100 border-orange-200">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg text-orange-800 flex items-center gap-2">
+                  <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
+                  Team Activity
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-orange-600 text-sm">Live collaboration and notifications</p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl flex items-center gap-2">
+                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                Live Activity Feed
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                  <span className="text-sm text-gray-600">Live monitoring capabilities will be implemented here</span>
+                </div>
+                <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                  <span className="text-sm text-gray-600">Real-time project updates and notifications</span>
+                </div>
+                <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                  <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
+                  <span className="text-sm text-gray-600">Team collaboration and status changes</span>
+                </div>
+                <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                  <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
+                  <span className="text-sm text-gray-600">System health and performance monitoring</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
 
         <TabsContent value="users" className="space-y-6">
