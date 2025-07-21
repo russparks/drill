@@ -421,23 +421,25 @@ export default function Setup() {
 
                   <hr className="border-gray-200 mt-3 mb-4" />
                   <div className="flex justify-between items-end">
-                    <div className="flex items-center gap-3" style={{ fontSize: '10px' }}>
-                      <Info className="w-6 h-6 text-gray-400" />
+                    <div className="flex items-center gap-1" style={{ fontSize: '10px' }}>
                       {workingWeeks.startToContract > 0 && (
-                        <div className="leading-tight font-mono">
-                          <div className="flex">
-                            <div className="w-8 text-center text-black">{workingWeeks.startToContract}w</div>
-                            <div className="flex-1 text-gray-500 italic ml-2">Start → Contract</div>
+                        <>
+                          <Info className="w-6 h-6 text-gray-400" />
+                          <div className="leading-tight font-mono">
+                            <div className="flex">
+                              <div className="w-8 text-center text-black">{workingWeeks.startToContract}w</div>
+                              <div className="flex-1 text-gray-500 italic ml-2">Start → Contract</div>
+                            </div>
+                            <div className="flex">
+                              <div className="w-8 text-center text-black">{workingWeeks.startToAnticipated}w</div>
+                              <div className="flex-1 text-gray-500 italic ml-2">Start → Anticipated</div>
+                            </div>
+                            <div className="flex">
+                              <div className="w-8 text-center text-black">{workingWeeks.anticipatedToContract}w</div>
+                              <div className={`flex-1 italic ml-2 ${workingWeeks.anticipatedToContract < (workingWeeks.startToContract * 0.1) ? 'text-amber-500' : 'text-gray-500'}`}>Float / Buffer</div>
+                            </div>
                           </div>
-                          <div className="flex">
-                            <div className="w-8 text-center text-black">{workingWeeks.startToAnticipated}w</div>
-                            <div className="flex-1 text-gray-500 italic ml-2">Start → Anticipated</div>
-                          </div>
-                          <div className="flex">
-                            <div className="w-8 text-center text-black">{workingWeeks.anticipatedToContract}w</div>
-                            <div className="flex-1 text-gray-500 italic ml-2">Anticipated → Contract</div>
-                          </div>
-                        </div>
+                        </>
                       )}
                     </div>
                     <div className="flex space-x-2">
