@@ -185,8 +185,6 @@ export default function DetailCharts() {
                 <RadialBar 
                   dataKey="value" 
                   cornerRadius={3}
-                  stroke="#000000"
-                  strokeWidth={1}
                 />
                 <Tooltip />
                 <Legend 
