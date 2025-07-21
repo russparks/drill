@@ -270,18 +270,8 @@ export default function Setup() {
         </TabsList>
 
         <TabsContent value="projects" className="space-y-6">
-          <div className="flex justify-end items-center">
-            <Dialog open={isProjectDialogOpen} onOpenChange={setIsProjectDialogOpen}>
-              <DialogTrigger asChild>
-                <Button onClick={() => {
-                  setSelectedProject(null);
-                  setSelectedPhase("tender");
-                }}>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Project
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-lg">
+          <Dialog open={isProjectDialogOpen} onOpenChange={setIsProjectDialogOpen}>
+            <DialogContent className="max-w-lg">
                 <DialogHeader>
                   <DialogTitle>{selectedProject ? "Edit Project" : "Add New Project"}</DialogTitle>
                 </DialogHeader>
