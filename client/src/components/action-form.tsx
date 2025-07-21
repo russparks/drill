@@ -245,7 +245,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
       <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
-            {action ? "Edit Action" : "Create"}
+            {action ? "Edit Action" : "Create New Action"}
           </DialogTitle>
         </DialogHeader>
 
@@ -675,7 +675,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                 Cancel
               </Button>
               <Button type="submit" disabled={isLoading} size="sm" className="rounded-full px-6">
-                {isLoading ? "Saving..." : action ? "Save" : "Create Action"}
+                {isLoading ? "Saving..." : action ? "Save" : "Create"}
               </Button>
             </div>
           </form>
