@@ -527,6 +527,15 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 <span className="text-white border border-gray-800 px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px', backgroundColor: 'rgba(31, 41, 55, 0.7)' }}>CONTR</span>
                                 <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.contractDate.toUpperCase()}</span>
                               </div>
+                              {/* Project value or retention display */}
+                              <div className="flex items-center ml-2">
+                                <span className="bg-emerald-500 text-white border border-emerald-500 px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>
+                                  {project.status === 'aftercare' ? 'RET' : 'VAL'}
+                                </span>
+                                <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>
+                                  {project.status === 'aftercare' ? project.retention || '£0.00' : project.value || '£0.00'}
+                                </span>
+                              </div>
                             </div>
 
                           </div>
