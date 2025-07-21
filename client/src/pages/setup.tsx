@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Plus, Edit, Trash2, Users, Building, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -19,6 +19,18 @@ export default function Setup() {
   const [selectedPhase, setSelectedPhase] = useState("tender");
   const [workingWeeks, setWorkingWeeks] = useState({ startToContract: 0, startToAnticipated: 0, anticipatedToContract: 0 });
   const { toast } = useToast();
+
+  // Listen for project modal open event from navbar
+  useEffect(() => {
+    const handleOpenProjectModal = () => {
+      setSelectedProject(null);
+      setSelectedPhase("tender");
+      setIsProjectDialogOpen(true);
+    };
+
+    window.addEventListener('openProjectModal', handleOpenProjectModal);
+    return () => window.removeEventListener('openProjectModal', handleOpenProjectModal);
+  }, []);
 
   const calculateWorkingWeeks = () => {
     setTimeout(() => {

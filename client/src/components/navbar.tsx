@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button";
 import logo from "@assets/Layer 2_1753047717908.png";
 
 interface NavbarProps {
-  onCreateAction?: () => void;
+  onCreateProject?: () => void;
 }
 
-export default function Navbar({ onCreateAction }: NavbarProps) {
+export default function Navbar({ onCreateProject }: NavbarProps) {
   const [location] = useLocation();
 
   return (
@@ -40,7 +40,7 @@ export default function Navbar({ onCreateAction }: NavbarProps) {
             </nav>
           </div>
           <div className="hidden md:flex items-center space-x-4">
-            <Button size="sm" onClick={onCreateAction}>
+            <Button size="sm" onClick={onCreateProject}>
               <Plus className="h-4 w-4 mr-1" />
               Project
             </Button>

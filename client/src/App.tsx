@@ -1,5 +1,6 @@
 import { Switch, Route } from "wouter";
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -13,10 +14,17 @@ import ActionForm from "@/components/action-form";
 
 function Router() {
   const [isActionFormOpen, setIsActionFormOpen] = useState(false);
+  const [, navigate] = useLocation();
+
+  const handleCreateProject = () => {
+    navigate("/setup");
+    // We'll need to trigger the project modal from the setup page
+    window.dispatchEvent(new CustomEvent('openProjectModal'));
+  };
 
   return (
     <div className="min-h-screen bg-action-surface">
-      <Navbar onCreateAction={() => setIsActionFormOpen(true)} />
+      <Navbar onCreateProject={handleCreateProject} />
       
       <Switch>
         <Route path="/" component={Dashboard} />
