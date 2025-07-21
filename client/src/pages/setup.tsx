@@ -460,7 +460,7 @@ export default function Setup() {
             </Dialog>
           </div>
 
-          <div className="grid gap-4">
+          <div className="grid gap-2">
             {projectsLoading ? (
               <div>Loading projects...</div>
             ) : (
@@ -484,9 +484,9 @@ export default function Setup() {
                     currentWeek: Math.max(1, currentWeek),
                     totalWeeksToAnticipated: Math.max(1, totalWeeksToAnticipated),
                     totalWeeksToContract: Math.max(1, totalWeeksToContract),
-                    startDate: startDate.toLocaleDateString(),
-                    anticipatedDate: anticipatedDate.toLocaleDateString(),
-                    contractDate: contractDate.toLocaleDateString()
+                    startDate: startDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }),
+                    anticipatedDate: anticipatedDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }),
+                    contractDate: contractDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' })
                   };
                 };
 
@@ -500,7 +500,7 @@ export default function Setup() {
                         <div className="flex items-center gap-2 mb-1">
                           <CardTitle className="text-lg">{project.name}</CardTitle>
                           {project.projectNumber && (
-                            <span className="text-sm text-action-text-secondary">#{project.projectNumber}</span>
+                            <span className="text-sm text-action-text-secondary">({project.projectNumber})</span>
                           )}
                           {/* Process indicator */}
                           <div className="ml-auto">
@@ -514,17 +514,17 @@ export default function Setup() {
                                 ${!project.status ? "bg-gray-100 text-gray-800 border-gray-200" : ""}
                               `}
                             >
-                              {project.status === "tender" && "Tender"}
-                              {project.status === "precon" && "Precon"}
-                              {project.status === "construction" && "Construction"}
-                              {project.status === "aftercare" && "Aftercare"}
-                              {!project.status && "Unknown"}
+                              {project.status === "tender" && "TEN"}
+                              {project.status === "precon" && "PRE"}
+                              {project.status === "construction" && "CON"}
+                              {project.status === "aftercare" && "AFT"}
+                              {!project.status && "UNK"}
                             </button>
                           </div>
                         </div>
                         {weekInfo && (
                           <p className="text-xs text-action-text-secondary">
-                            Start: {weekInfo.startDate} - Anticipated PC: {weekInfo.anticipatedDate} - Contract PC: {weekInfo.contractDate} - Week {weekInfo.currentWeek} of {weekInfo.totalWeeksToAnticipated} / {weekInfo.totalWeeksToContract}
+                            Start: {weekInfo.startDate} - Anticipated PC: {weekInfo.anticipatedDate} - Contract PC: {weekInfo.contractDate} - w{weekInfo.currentWeek} of {weekInfo.totalWeeksToAnticipated}({weekInfo.totalWeeksToContract})
                           </p>
                         )}
                       </div>
@@ -545,7 +545,11 @@ export default function Setup() {
                           variant="ghost"
                           size="icon"
                           className="h-7 w-7"
-                          onClick={() => deleteProjectMutation.mutate(project.id)}
+                          onClick={() => {
+                            if (window.confirm(`Are you sure you want to delete "${project.name}"? This action cannot be undone.`)) {
+                              deleteProjectMutation.mutate(project.id);
+                            }
+                          }}
                         >
                           <Trash2 className="h-3 w-3" />
                         </Button>
