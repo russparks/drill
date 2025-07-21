@@ -464,41 +464,97 @@ export default function Setup() {
             {projectsLoading ? (
               <div>Loading projects...</div>
             ) : (
-              projects.map((project: Project) => (
+              projects.map((project: Project) => {
+                // Calculate current project week and totals
+                const getCurrentWeekInfo = () => {
+                  if (!project.startOnSiteDate || !project.constructionCompletionDate || !project.contractCompletionDate) {
+                    return null;
+                  }
+                  
+                  const startDate = new Date(project.startOnSiteDate);
+                  const anticipatedDate = new Date(project.constructionCompletionDate);
+                  const contractDate = new Date(project.contractCompletionDate);
+                  const currentDate = new Date();
+                  
+                  const currentWeek = Math.ceil((currentDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
+                  const totalWeeksToAnticipated = Math.ceil((anticipatedDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
+                  const totalWeeksToContract = Math.ceil((contractDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
+                  
+                  return {
+                    currentWeek: Math.max(1, currentWeek),
+                    totalWeeksToAnticipated: Math.max(1, totalWeeksToAnticipated),
+                    totalWeeksToContract: Math.max(1, totalWeeksToContract),
+                    startDate: startDate.toLocaleDateString(),
+                    anticipatedDate: anticipatedDate.toLocaleDateString(),
+                    contractDate: contractDate.toLocaleDateString()
+                  };
+                };
+
+                const weekInfo = getCurrentWeekInfo();
+                
+                return (
                 <Card key={project.id} className="material-shadow">
-                  <CardHeader>
+                  <CardContent className="p-3">
                     <div className="flex justify-between items-start">
-                      <div>
-                        <CardTitle className="text-lg">{project.name}</CardTitle>
-                        {project.projectNumber && (
-                          <p className="text-sm text-action-text-secondary">#{project.projectNumber}</p>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <CardTitle className="text-lg">{project.name}</CardTitle>
+                          {project.projectNumber && (
+                            <span className="text-sm text-action-text-secondary">#{project.projectNumber}</span>
+                          )}
+                          {/* Process indicator */}
+                          <div className="ml-auto">
+                            <button
+                              className={`
+                                rounded-full px-2 py-0.5 text-xs font-medium border transition-colors
+                                ${project.status === "tender" ? "bg-orange-100 text-orange-800 border-orange-200" : ""}
+                                ${project.status === "precon" ? "bg-blue-100 text-blue-800 border-blue-200" : ""}
+                                ${project.status === "construction" ? "bg-green-100 text-green-800 border-green-200" : ""}
+                                ${project.status === "aftercare" ? "bg-gray-100 text-gray-800 border-gray-200" : ""}
+                                ${!project.status ? "bg-gray-100 text-gray-800 border-gray-200" : ""}
+                              `}
+                            >
+                              {project.status === "tender" && "Tender"}
+                              {project.status === "precon" && "Precon"}
+                              {project.status === "construction" && "Construction"}
+                              {project.status === "aftercare" && "Aftercare"}
+                              {!project.status && "Unknown"}
+                            </button>
+                          </div>
+                        </div>
+                        {weekInfo && (
+                          <p className="text-xs text-action-text-secondary">
+                            Start: {weekInfo.startDate} - Anticipated PC: {weekInfo.anticipatedDate} - Contract PC: {weekInfo.contractDate} - Week {weekInfo.currentWeek} of {weekInfo.totalWeeksToAnticipated} / {weekInfo.totalWeeksToContract}
+                          </p>
                         )}
-                        <p className="text-sm text-action-text-secondary mt-1">{project.description}</p>
                       </div>
-                      <div className="flex space-x-2">
+                      <div className="flex space-x-1 ml-2">
                         <Button
                           variant="ghost"
                           size="icon"
+                          className="h-7 w-7"
                           onClick={() => {
                             setSelectedProject(project);
                             setSelectedPhase(project.status || "tender");
                             setIsProjectDialogOpen(true);
                           }}
                         >
-                          <Edit className="h-4 w-4" />
+                          <Edit className="h-3 w-3" />
                         </Button>
                         <Button
                           variant="ghost"
                           size="icon"
+                          className="h-7 w-7"
                           onClick={() => deleteProjectMutation.mutate(project.id)}
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="h-3 w-3" />
                         </Button>
                       </div>
                     </div>
-                  </CardHeader>
+                  </CardContent>
                 </Card>
-              ))
+                );
+              })
             )}
           </div>
         </TabsContent>
