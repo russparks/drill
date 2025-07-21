@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, AreaChart, Area } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, AreaChart, Area, Legend } from "recharts";
 import { Project } from "@shared/schema";
 
 // Status colors based on the provided scheme - made more vibrant
@@ -178,8 +178,7 @@ export default function DetailCharts() {
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  labelStyle={{ fontSize: '6px' }}
+                  label={false}
                   outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"
@@ -192,6 +191,10 @@ export default function DetailCharts() {
                   })}
                 </Pie>
                 <Tooltip />
+                <Legend 
+                  wrapperStyle={{ fontSize: '12px' }}
+                  iconType="circle"
+                />
               </PieChart>
             </ResponsiveContainer>
           </CardContent>
