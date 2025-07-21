@@ -506,7 +506,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                 
                 return (
                 <Card key={project.id} className="material-shadow">
-                  <CardContent className="p-2.5">
+                  <CardContent className="p-2.5 pb-8">
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-0.5">
