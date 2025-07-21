@@ -87,7 +87,9 @@ export default function DetailCharts() {
   }, {});
 
   const disciplineChartData = Object.entries(disciplineData).map(([discipline, count]) => ({
-    discipline: discipline.charAt(0).toUpperCase() + discipline.slice(1),
+    discipline: discipline.toLowerCase() === 'qa' ? 'QA' : 
+                discipline.toLowerCase() === 'she' ? 'SHE' :
+                discipline.charAt(0).toUpperCase() + discipline.slice(1),
     count,
     fill: DISCIPLINE_LIGHT_COLORS[discipline.toLowerCase()] || '#d1d5db',
     stroke: DISCIPLINE_COLORS[discipline.toLowerCase()] || '#8884d8',
@@ -187,7 +189,9 @@ export default function DetailCharts() {
 
   // Average Time for Closed Actions - matching discipline order and colors
   const avgClosureTimeData = Object.keys(disciplineData).map(discipline => ({
-    discipline: discipline.charAt(0).toUpperCase() + discipline.slice(1),
+    discipline: discipline.toLowerCase() === 'qa' ? 'QA' : 
+                discipline.toLowerCase() === 'she' ? 'SHE' :
+                discipline.charAt(0).toUpperCase() + discipline.slice(1),
     avgDays: discipline === 'operations' ? 12.3 : 
              discipline === 'commercial' ? 6.7 :
              discipline === 'design' ? 8.5 :
