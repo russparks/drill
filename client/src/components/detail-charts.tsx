@@ -144,12 +144,20 @@ export default function DetailCharts() {
       return acc;
     }, {});
 
-  const actionsByPersonData = Object.entries(assigneeData).map(([name, count], index) => ({
-    assignee: name.length > 12 ? name.substring(0, 12) + '...' : name,
-    count,
-    fill: '#93c5fd', // Light blue fill
-    stroke: '#1d4ed8', // Dark blue stroke
-  })).sort((a, b) => b.count - a.count);
+  const actionsByPersonData = Object.entries(assigneeData).map(([name, count], index) => {
+    // Format name as initial + surname
+    const nameParts = name.split(' ');
+    const formattedName = nameParts.length > 1 
+      ? `${nameParts[0][0]}. ${nameParts[nameParts.length - 1]}`
+      : name;
+    
+    return {
+      assignee: formattedName,
+      count,
+      fill: '#d1d5db', // Light grey fill
+      stroke: '#6b7280', // Dark grey stroke
+    };
+  }).sort((a, b) => b.count - a.count);
 
   // Average Time for Closed Actions (simulated data based on action complexity)
   const avgClosureTimeData = [
@@ -315,7 +323,7 @@ export default function DetailCharts() {
                 <XAxis dataKey="assignee" angle={-45} textAnchor="end" height={60} tick={{ fontSize: 11 }} />
                 <YAxis tick={{ fontSize: 11 }} />
                 <Tooltip />
-                <Bar dataKey="count" strokeWidth={1.2}>
+                <Bar dataKey="count" strokeWidth={0.7} barSize={30}>
                   {actionsByPersonData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.fill} stroke={entry.stroke} />
                   ))}
