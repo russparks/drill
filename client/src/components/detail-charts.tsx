@@ -417,7 +417,7 @@ export default function DetailCharts() {
             <BarChart data={timelineData} margin={{ left: 20, right: 30, top: 30 }}>
               <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} tick={{ fontSize: 11 }} />
               <Tooltip />
-              <Bar dataKey="constructionWeeks" stackId="a" fill="#93c5fd" name="Construction">
+              <Bar dataKey="constructionWeeks" stackId="a" fill="#93c5fd" name="Construction" radius={[0, 0, 0, 0]}>
                 <LabelList 
                   dataKey="constructionWeeks" 
                   position="center" 
@@ -425,7 +425,7 @@ export default function DetailCharts() {
                   formatter={(value) => `${value}w`}
                 />
               </Bar>
-              <Bar dataKey="buffer" stackId="a" fill="#9ca3af" name="Buffer/Float">
+              <Bar dataKey="buffer" stackId="a" fill="#9ca3af" name="Buffer/Float" radius={[4, 4, 0, 0]}>
                 <LabelList 
                   dataKey="buffer" 
                   position="center" 
