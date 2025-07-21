@@ -292,8 +292,8 @@ export default function DetailCharts() {
                 <XAxis dataKey="name" angle={-45} textAnchor="end" height={60} tick={{ fontSize: 11 }} />
                 <YAxis tick={{ fontSize: 11 }} />
                 <Tooltip />
-                <Bar dataKey="planned" fill="#00C49F" name="Planned" />
-                <Bar dataKey="actual" fill="#FF8042" name="Actual" />
+                <Bar dataKey="planned" fill="#93c5fd" name="Planned" />
+                <Bar dataKey="actual" fill="#fca5a5" name="Actual" />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
