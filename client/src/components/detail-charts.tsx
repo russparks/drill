@@ -346,7 +346,7 @@ export default function DetailCharts() {
             <ResponsiveContainer width="100%" height={250}>
               <BarChart 
                 data={coloredAssigneeData} 
-                margin={{ top: 20, right: 20, left: 20, bottom: 80 }}
+                margin={{ top: 2, right: 2, left: 2, bottom: 10 }}
                 barCategoryGap="1%"
               >
                 <XAxis 
