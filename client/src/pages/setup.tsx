@@ -246,7 +246,7 @@ export default function Setup() {
                   Add Project
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-xl">
+              <DialogContent className="max-w-lg">
                 <DialogHeader>
                   <DialogTitle>{selectedProject ? "Edit Project" : "Add New Project"}</DialogTitle>
                 </DialogHeader>
@@ -254,33 +254,33 @@ export default function Setup() {
                   {/* Row 1: Project Number (15%) | Value (15%) | Project Name (70%) */}
                   <div className="grid grid-cols-12 gap-4">
                     <div className="col-span-2">
-                      <Label htmlFor="projectNumber">Number</Label>
+                      <Label htmlFor="projectNumber" className="text-xs">Number</Label>
                       <Input
                         id="projectNumber"
                         name="projectNumber"
                         placeholder="X0000"
-                        className="h-8"
+                        className="h-8 text-xs"
                         defaultValue={selectedProject?.projectNumber || ""}
                         required
                       />
                     </div>
                     <div className="col-span-2">
-                      <Label htmlFor="value">Value</Label>
+                      <Label htmlFor="value" className="text-xs">Value</Label>
                       <Input
                         id="value"
                         name="value"
                         placeholder="23.5"
-                        className="h-8"
+                        className="h-8 text-xs"
                         defaultValue={selectedProject?.value?.replace('£', '') || ""}
                         required
                       />
                     </div>
                     <div className="col-span-8">
-                      <Label htmlFor="name">Name</Label>
+                      <Label htmlFor="name" className="text-xs">Name</Label>
                       <Input
                         id="name"
                         name="name"
-                        className="h-8"
+                        className="h-8 text-xs"
                         defaultValue={selectedProject?.name}
                         required
                       />
@@ -289,11 +289,11 @@ export default function Setup() {
                   
                   {/* Row 2: Project Description (100%) - multiline */}
                   <div>
-                    <Label htmlFor="description">Description</Label>
+                    <Label htmlFor="description" className="text-xs">Description</Label>
                     <textarea
                       id="description"
                       name="description"
-                      className="w-full min-h-[68px] px-3 py-1.5 text-sm bg-white border border-gray-300 rounded-md resize-y focus:outline-none focus:ring-2 focus:ring-[#cc3333] focus:border-transparent"
+                      className="w-full min-h-[68px] px-3 py-1.5 text-xs bg-white border border-gray-300 rounded-md resize-y focus:outline-none focus:ring-2 focus:ring-[#cc3333] focus:border-transparent"
                       defaultValue={selectedProject?.description || ""}
                       placeholder="Enter project description (minimum 25 words)..."
                       required
@@ -302,8 +302,7 @@ export default function Setup() {
 
                   {/* Row 3: Process buttons (100%) - styled exactly like action form */}
                   <div>
-                    <Label>Process:</Label>
-                    <div className="flex justify-between gap-2 mt-2">
+                    <div className="flex justify-between gap-2">
                       {[
                         { value: "tender", label: "TENDER", activeColor: "bg-blue-500 border-blue-600 text-white", inactiveColor: "bg-blue-50 border-blue-200 text-blue-700" },
                         { value: "precon", label: "PRECON", activeColor: "bg-green-500 border-green-600 text-white", inactiveColor: "bg-green-50 border-green-200 text-green-700" },
@@ -326,40 +325,40 @@ export default function Setup() {
                     </div>
                   </div>
 
-                  {/* Row 4: Start Date (30%) | Contract PC (30%) | Anticipated PC (30%) */}
-                  <div className="grid grid-cols-10 gap-4">
-                    <div className="col-span-3">
-                      <Label htmlFor="startOnSiteDate">Start Date</Label>
+                  {/* Row 4: Start Date (33%) | Contract PC (33%) | Anticipated PC (33%) */}
+                  <div className="flex gap-4">
+                    <div className="flex-1">
+                      <Label htmlFor="startOnSiteDate" className="text-xs">Start Date</Label>
                       <Input
                         id="startOnSiteDate"
                         name="startOnSiteDate"
                         type="date"
-                        className="h-7 w-auto"
-                        style={{ fontSize: '10px' }}
+                        className="h-7 w-full"
+                        style={{ fontSize: '9px' }}
                         defaultValue={selectedProject?.startOnSiteDate ? new Date(selectedProject.startOnSiteDate).toISOString().split('T')[0] : ""}
                         required
                       />
                     </div>
-                    <div className="col-span-3">
-                      <Label htmlFor="contractCompletionDate">Contract PC</Label>
+                    <div className="flex-1">
+                      <Label htmlFor="contractCompletionDate" className="text-xs">Contract PC</Label>
                       <Input
                         id="contractCompletionDate"
                         name="contractCompletionDate"
                         type="date"
-                        className="h-7 w-auto"
-                        style={{ fontSize: '10px' }}
+                        className="h-7 w-full"
+                        style={{ fontSize: '9px' }}
                         defaultValue={selectedProject?.contractCompletionDate ? new Date(selectedProject.contractCompletionDate).toISOString().split('T')[0] : ""}
                         required
                       />
                     </div>
-                    <div className="col-span-3">
-                      <Label htmlFor="constructionCompletionDate">Anticipated PC</Label>
+                    <div className="flex-1">
+                      <Label htmlFor="constructionCompletionDate" className="text-xs">Anticipated PC</Label>
                       <Input
                         id="constructionCompletionDate"
                         name="constructionCompletionDate"
                         type="date"
-                        className="h-7 w-auto"
-                        style={{ fontSize: '10px' }}
+                        className="h-7 w-full"
+                        style={{ fontSize: '9px' }}
                         defaultValue={selectedProject?.constructionCompletionDate ? new Date(selectedProject.constructionCompletionDate).toISOString().split('T')[0] : ""}
                         required
                       />
