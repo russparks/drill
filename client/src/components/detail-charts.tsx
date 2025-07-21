@@ -177,8 +177,11 @@ export default function DetailCharts() {
                 cy="50%" 
                 innerRadius="32%" 
                 outerRadius="80%" 
+                startAngle={90}
+                endAngle={-180}
                 data={statusChartData.map((entry, index) => ({
                   ...entry,
+                  value: Math.round((entry.value / Math.max(...statusChartData.map(d => d.value))) * 100),
                   fill: STATUS_COLORS[entry.name.toLowerCase()] || CHART_COLORS[index % CHART_COLORS.length]
                 }))}
               >
