@@ -39,10 +39,10 @@ const actionFormSchema = insertActionSchema.extend({
   newPersonName: z.string().optional(),
   newPersonEmail: z.string().optional(),
   description: z.string().min(1, "Description is required").refine((val) => {
-    const wordCount = val.trim().split(/\s+/).length;
-    return wordCount <= 50;
+    const wordCount = val.trim().split(/\s+/).filter(word => word.length > 0).length;
+    return wordCount >= 10 && wordCount <= 50;
   }, {
-    message: "Description must be 50 words or less",
+    message: "Description must be between 10 and 50 words",
   }),
 
   discipline: z.string().min(1, "Discipline is required"),
@@ -262,6 +262,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
   const watchedValues = form.watch();
   const isFormIncomplete = !action && ( // Only validate for new actions
     !watchedValues.description?.trim() ||
+    (watchedValues.description?.trim().split(/\s+/).filter(word => word.length > 0).length < 10) ||
     !watchedValues.discipline ||
     !watchedValues.phase ||
     !watchedValues.priority ||
@@ -348,13 +349,13 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                   <FormItem>
                     <div className="flex justify-between items-center">
                       <FormLabel>Description</FormLabel>
-                      <span className={`text-xs ${wordCount > 50 ? 'text-red-600' : 'text-gray-500'}`}>
-                        {wordCount}/50 words
+                      <span className={`text-xs ${wordCount < 10 ? 'text-red-600' : wordCount > 50 ? 'text-red-600' : 'text-gray-500'}`}>
+                        {wordCount}/50 words {wordCount < 10 ? '(min 10)' : ''}
                       </span>
                     </div>
                     <FormControl>
                       <Textarea
-                        placeholder="Describe the action details (max 50 words for new actions)"
+                        placeholder="Describe the action details (minimum 10 words, max 50 words)"
                         rows={3}
                         {...field}
                       />
