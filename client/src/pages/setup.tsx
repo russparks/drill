@@ -553,6 +553,50 @@ export default function Setup({ onTabChange }: SetupProps) {
                             <span className="bg-gray-100 text-black border border-gray-200 px-1 py-0 rounded-md" style={{ fontSize: '10.5px', lineHeight: '1.2' }}>w{weekInfo.currentWeek} of {weekInfo.totalWeeksToAnticipated} ({weekInfo.totalWeeksToContract})</span>
                           </div>
                         )}
+                        
+                        {/* Timeline bar chart */}
+                        {weekInfo && (
+                          <div className="mt-2">
+                            <div className="w-full h-3 bg-gray-100 rounded-sm overflow-hidden flex">
+                              {(() => {
+                                const currentWeek = weekInfo.currentWeek;
+                                const totalWeeksToAnticipated = weekInfo.totalWeeksToAnticipated;
+                                const totalWeeksToContract = weekInfo.totalWeeksToContract;
+                                
+                                // Calculate percentages based on contract completion (total timeline)
+                                const greyPercent = Math.min((currentWeek / totalWeeksToContract) * 100, 100);
+                                const lightBluePercent = Math.max(0, Math.min(((totalWeeksToAnticipated - currentWeek) / totalWeeksToContract) * 100, 100 - greyPercent));
+                                const amberPercent = Math.max(0, ((totalWeeksToContract - totalWeeksToAnticipated) / totalWeeksToContract) * 100);
+                                
+                                return (
+                                  <>
+                                    {greyPercent > 0 && (
+                                      <div 
+                                        className="bg-gray-400 h-full" 
+                                        style={{ width: `${greyPercent}%` }}
+                                        title={`Elapsed: ${currentWeek} weeks`}
+                                      />
+                                    )}
+                                    {lightBluePercent > 0 && (
+                                      <div 
+                                        className="bg-blue-300 h-full" 
+                                        style={{ width: `${lightBluePercent}%` }}
+                                        title={`Remaining to anticipated: ${Math.max(0, totalWeeksToAnticipated - currentWeek)} weeks`}
+                                      />
+                                    )}
+                                    {amberPercent > 0 && (
+                                      <div 
+                                        className="bg-amber-400 h-full" 
+                                        style={{ width: `${amberPercent}%` }}
+                                        title={`Buffer to contract: ${totalWeeksToContract - totalWeeksToAnticipated} weeks`}
+                                      />
+                                    )}
+                                  </>
+                                );
+                              })()}
+                            </div>
+                          </div>
+                        )}
                       </div>
                       <div className="flex space-x-1 ml-2">
                         <Button
