@@ -625,11 +625,11 @@ export default function Setup({ onTabChange }: SetupProps) {
                                   </div>
                                   {/* Construction and Contract weeks remaining */}
                                   <div 
-                                    className="absolute whitespace-nowrap text-gray-600 text-xs"
+                                    className="absolute text-gray-600 text-xs"
                                     style={{ 
                                       top: '12px', 
-                                      left: '-200px',
-                                      width: '200px'
+                                      left: `calc(-${currentPercent}%)`,
+                                      width: '400px'
                                     }}
                                   >
                                     <div>Construction Weeks Remaining: {Math.max(0, totalWeeksToAnticipated - currentWeek)}</div>
