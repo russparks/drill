@@ -206,8 +206,26 @@ export default function Setup() {
                   <DialogTitle>{selectedProject ? "Edit Project" : "Add New Project"}</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleProjectSubmit} className="space-y-6">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
+                  {/* Row 1: Project Number (15%) | Value (15%) | Project Name (70%) */}
+                  <div className="grid grid-cols-12 gap-4">
+                    <div className="col-span-2">
+                      <Label htmlFor="projectNumber">Project Number</Label>
+                      <Input
+                        id="projectNumber"
+                        name="projectNumber"
+                        defaultValue={selectedProject?.projectNumber || ""}
+                      />
+                    </div>
+                    <div className="col-span-2">
+                      <Label htmlFor="value">Value</Label>
+                      <Input
+                        id="value"
+                        name="value"
+                        placeholder="e.g. £23.5m"
+                        defaultValue={selectedProject?.value || ""}
+                      />
+                    </div>
+                    <div className="col-span-8">
                       <Label htmlFor="name">Project Name</Label>
                       <Input
                         id="name"
@@ -216,88 +234,78 @@ export default function Setup() {
                         required
                       />
                     </div>
-                    <div>
-                      <Label htmlFor="projectNumber">Project Number</Label>
-                      <Input
-                        id="projectNumber"
-                        name="projectNumber"
-                        defaultValue={selectedProject?.projectNumber || ""}
-                      />
-                    </div>
                   </div>
                   
+                  {/* Row 2: Project Description (100%) - multiline */}
                   <div>
-                    <Label htmlFor="description">Description</Label>
-                    <Input
+                    <Label htmlFor="description">Project Description</Label>
+                    <textarea
                       id="description"
                       name="description"
+                      className="w-full min-h-[80px] px-3 py-2 text-sm bg-white border border-gray-300 rounded-md resize-y focus:outline-none focus:ring-2 focus:ring-[#cc3333] focus:border-transparent"
                       defaultValue={selectedProject?.description || ""}
+                      placeholder="Enter project description..."
                     />
                   </div>
 
+                  {/* Row 3: Process buttons (100%) - styled exactly like action form */}
                   <div>
-                    <Label>Process</Label>
+                    <Label>Process:</Label>
                     <div className="flex gap-2 mt-2">
                       {[
-                        { value: "tender", label: "Tender", color: "bg-blue-400" },
-                        { value: "precon", label: "Precon", color: "bg-green-400" },
-                        { value: "construction", label: "Construction", color: "bg-yellow-500" },
-                        { value: "aftercare", label: "Aftercare", color: "bg-gray-500" }
+                        { value: "tender", label: "TENDER", color: "bg-blue-500" },
+                        { value: "precon", label: "PRECON", color: "bg-green-500" },
+                        { value: "construction", label: "CONSTRUCTION", color: "bg-yellow-500" },
+                        { value: "aftercare", label: "AFTERCARE", color: "bg-gray-500" }
                       ].map((phase) => (
                         <button
                           key={phase.value}
                           type="button"
                           onClick={() => setSelectedPhase(phase.value)}
-                          className={`flex-1 px-3 py-2 text-sm font-medium rounded-md border transition-colors ${
+                          className={`px-3 py-1 text-xs font-medium uppercase rounded transition-colors ${
                             selectedPhase === phase.value
-                              ? `${phase.color} text-white border-transparent`
-                              : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                              ? `${phase.color} text-white`
+                              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                           }`}
                         >
                           {phase.label}
                         </button>
                       ))}
                     </div>
-                    <span className="text-xs text-gray-500 italic mt-1 block">
-                      Select project process stage
-                    </span>
                   </div>
 
-                  <div>
-                    <Label htmlFor="value">Value</Label>
-                    <Input
-                      id="value"
-                      name="value"
-                      placeholder="e.g. £23.5m"
-                      defaultValue={selectedProject?.value || ""}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-3 gap-4">
-                    <div>
+                  {/* Row 4: Start Date (30%) | Contract PC (30%) | Anticipated PC (30%) */}
+                  <div className="grid grid-cols-10 gap-4">
+                    <div className="col-span-3">
                       <Label htmlFor="startOnSiteDate">Start Date</Label>
                       <Input
                         id="startOnSiteDate"
                         name="startOnSiteDate"
                         type="date"
+                        className="h-8 w-auto"
+                        style={{ fontSize: '11px' }}
                         defaultValue={selectedProject?.startOnSiteDate ? new Date(selectedProject.startOnSiteDate).toISOString().split('T')[0] : ""}
                       />
                     </div>
-                    <div>
-                      <Label htmlFor="contractCompletionDate">Contract Completion Date</Label>
+                    <div className="col-span-3">
+                      <Label htmlFor="contractCompletionDate">Contract PC</Label>
                       <Input
                         id="contractCompletionDate"
                         name="contractCompletionDate"
                         type="date"
+                        className="h-8 w-auto"
+                        style={{ fontSize: '11px' }}
                         defaultValue={selectedProject?.contractCompletionDate ? new Date(selectedProject.contractCompletionDate).toISOString().split('T')[0] : ""}
                       />
                     </div>
-                    <div>
-                      <Label htmlFor="constructionCompletionDate">Construction Completion Date</Label>
+                    <div className="col-span-3">
+                      <Label htmlFor="constructionCompletionDate">Anticipated PC</Label>
                       <Input
                         id="constructionCompletionDate"
                         name="constructionCompletionDate"
                         type="date"
+                        className="h-8 w-auto"
+                        style={{ fontSize: '11px' }}
                         defaultValue={selectedProject?.constructionCompletionDate ? new Date(selectedProject.constructionCompletionDate).toISOString().split('T')[0] : ""}
                       />
                     </div>
