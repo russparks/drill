@@ -359,7 +359,7 @@ export default function DetailCharts() {
                 innerRadius="20%" 
                 outerRadius="80%" 
                 startAngle={90}
-                endAngle={45}
+                endAngle={-240}
                 data={coloredAssigneeData.map((entry, index) => ({
                   ...entry,
                   value: entry.count,
