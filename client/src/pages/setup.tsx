@@ -210,11 +210,11 @@ export default function Setup({ onTabChange }: SetupProps) {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-8">
 
 
-      <Tabs value={activeTab} className="space-y-5" onValueChange={(value) => {
+      <Tabs value={activeTab} className="space-y-9" onValueChange={(value) => {
         setActiveTab(value);
         onTabChange?.(value);
       }}>
-        <TabsList className="grid w-full bg-transparent mb-4" style={{ gridTemplateColumns: '20% 60% 20%' }}>
+        <TabsList className="grid w-full bg-transparent" style={{ gridTemplateColumns: '20% 60% 20%' }}>
           <TabsTrigger value="projects" className="flex flex-col items-center gap-1 data-[state=active]:bg-transparent data-[state=active]:shadow-none text-gray-400 data-[state=active]:text-gray-700 group">
             <FileText className="h-6 w-6 text-gray-400 group-data-[state=active]:text-[#333333]" />
             <span className="text-base">Projects</span>
