@@ -209,7 +209,7 @@ export default function Setup() {
                   {/* Row 1: Project Number (15%) | Value (15%) | Project Name (70%) */}
                   <div className="grid grid-cols-12 gap-4">
                     <div className="col-span-2">
-                      <Label htmlFor="projectNumber">Project Number</Label>
+                      <Label htmlFor="projectNumber">Number</Label>
                       <Input
                         id="projectNumber"
                         name="projectNumber"
@@ -226,7 +226,7 @@ export default function Setup() {
                       />
                     </div>
                     <div className="col-span-8">
-                      <Label htmlFor="name">Project Name</Label>
+                      <Label htmlFor="name">Name</Label>
                       <Input
                         id="name"
                         name="name"
@@ -238,7 +238,7 @@ export default function Setup() {
                   
                   {/* Row 2: Project Description (100%) - multiline */}
                   <div>
-                    <Label htmlFor="description">Project Description</Label>
+                    <Label htmlFor="description">Description</Label>
                     <textarea
                       id="description"
                       name="description"
