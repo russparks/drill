@@ -21,7 +21,7 @@ export default function Dashboard() {
   const [disciplineFilter, setDisciplineFilter] = useState<string>("");
   const [phaseFilter, setPhaseFilter] = useState<string>("");
   const [assigneeFilter, setAssigneeFilter] = useState<string>("");
-  const [pageSize, setPageSize] = useState<string>("25");
+  const [pageSize, setPageSize] = useState<string>("20");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [confirmDialog, setConfirmDialog] = useState<{
     open: boolean;
@@ -564,10 +564,8 @@ export default function Dashboard() {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="All">All</SelectItem>
-                          <SelectItem value="25">25</SelectItem>
-                          <SelectItem value="50">50</SelectItem>
-                          <SelectItem value="75">75</SelectItem>
-                          <SelectItem value="100">100</SelectItem>
+                          <SelectItem value="10">10</SelectItem>
+                          <SelectItem value="20">20</SelectItem>
                         </SelectContent>
                       </Select>
                       <span className="text-sm text-gray-600">
