@@ -412,12 +412,22 @@ export default function DetailCharts() {
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={timelineData} margin={{ left: 20, right: 30 }}>
-              <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} tick={{ fontSize: 11 }} />
-              <YAxis tick={{ fontSize: 11 }} />
               <Tooltip />
-              <Bar dataKey="constructionWeeks" stackId="a" fill="#93c5fd" name="Construction" />
-              <Bar dataKey="buffer" stackId="a" fill="#9ca3af" name="Buffer/Float" />
+              <Bar dataKey="constructionWeeks" stackId="a" fill="#93c5fd" name="Construction">
+                <LabelList 
+                  dataKey="constructionWeeks" 
+                  position="center" 
+                  style={{ fontSize: '11px', fill: '#1f2937', fontWeight: '500' }} 
+                />
+              </Bar>
+              <Bar dataKey="buffer" stackId="a" fill="#9ca3af" name="Buffer/Float">
+                <LabelList 
+                  dataKey="buffer" 
+                  position="center" 
+                  style={{ fontSize: '11px', fill: '#1f2937', fontWeight: '500' }} 
+                />
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </CardContent>
