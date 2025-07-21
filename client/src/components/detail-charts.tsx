@@ -135,9 +135,14 @@ export default function DetailCharts() {
     })
     .sort((a, b) => a.planned - b.planned);
 
-  // Actions by Person
+  // Actions by Person (Open Actions Only)
   const actionsByPerson = (actions as any[])
-    .filter(action => action.assignee && typeof action.assignee === 'string' && action.assignee.trim() !== '') // Only include actions with valid assignees
+    .filter(action => 
+      action.assignee && 
+      typeof action.assignee === 'string' && 
+      action.assignee.trim() !== '' &&
+      action.status === 'open'  // Only count open actions
+    )
     .reduce((acc: Record<string, number>, action) => {
       const assignee = action.assignee.trim();
       acc[assignee] = (acc[assignee] || 0) + 1;
@@ -146,10 +151,11 @@ export default function DetailCharts() {
 
   const actionsByPersonData = Object.entries(actionsByPerson)
     .map(([person, count]) => ({
-      person: person.length > 10 ? person.substring(0, 10) + '...' : person,
+      person: person.length > 12 ? person.substring(0, 12) + '...' : person,
       count,
     }))
-    .sort((a, b) => b.count - a.count);
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 10); // Show top 10 people with most open actions
 
   // Average Time for Closed Actions (simulated data based on action complexity)
   const avgClosureTimeData = [
