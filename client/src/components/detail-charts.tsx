@@ -413,7 +413,7 @@ export default function DetailCharts() {
           <CardTitle className="text-lg text-center text-gray-600">Project Duration Analysis (Weeks)</CardTitle>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={400}>
             <BarChart data={timelineData} margin={{ left: 20, right: 30, top: 30 }}>
               <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} tick={{ fontSize: 11 }} />
               <Tooltip />
