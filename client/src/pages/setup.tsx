@@ -717,7 +717,6 @@ export default function Setup({ onTabChange }: SetupProps) {
         </TabsContent>
 
         <TabsContent value="users" className="space-y-6">
-          <DetailCharts />
         </TabsContent>
       </Tabs>
 
