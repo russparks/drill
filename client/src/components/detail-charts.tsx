@@ -362,7 +362,7 @@ export default function DetailCharts() {
                 endAngle={-270}
                 data={coloredAssigneeData.map((entry, index) => ({
                   ...entry,
-                  value: Math.round((entry.count / Math.max(...coloredAssigneeData.map(d => d.count))) * 100),
+                  value: entry.count,
                 }))}
               >
                 <RadialBar 
