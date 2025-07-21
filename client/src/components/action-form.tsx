@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -64,6 +64,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
   const queryClient = useQueryClient();
   const [showNewProjectInput, setShowNewProjectInput] = useState(false);
   const [showNewPersonInput, setShowNewPersonInput] = useState(false);
+  const dateInputRef = useRef<HTMLInputElement>(null);
 
   const { data: users = [] } = useQuery({
     queryKey: ["/api/users"],
@@ -655,6 +656,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                           </div>
                           <div className="relative ml-2">
                             <Input 
+                              ref={dateInputRef}
                               type="date" 
                               className="w-8 h-8 opacity-0 absolute top-0 left-0 z-10 cursor-pointer"
                               {...field} 
@@ -663,8 +665,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                               type="button"
                               className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600"
                               onClick={() => {
-                                const input = document.querySelector('input[type="date"]') as HTMLInputElement;
-                                if (input) input.showPicker?.();
+                                dateInputRef.current?.click();
                               }}
                             >
                               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
