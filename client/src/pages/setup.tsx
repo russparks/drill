@@ -219,9 +219,7 @@ export default function Setup({ onTabChange }: SetupProps) {
             <LayoutDashboard className="h-4 w-4" />
             Dash
           </TabsTrigger>
-          <TabsTrigger value="live" className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            Live
+          <TabsTrigger value="live" className="flex items-center gap-2 opacity-50 cursor-not-allowed" disabled>
           </TabsTrigger>
           <TabsTrigger value="users" className="flex items-center gap-2">
             <FileText className="h-4 w-4" />
