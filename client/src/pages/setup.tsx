@@ -33,7 +33,11 @@ export default function Setup() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/projects"] });
       setIsProjectDialogOpen(false);
-      toast({ title: "Project created successfully" });
+      toast({ 
+        title: "Project Created",
+        className: "bg-[#b9f6b6] text-[#079800] border-[#079800] !p-2 !px-4 !pr-4 w-auto max-w-none min-w-fit text-center justify-center",
+        duration: 5000,
+      });
     },
     onError: () => {
       toast({ title: "Error", description: "Failed to create project", variant: "destructive" });
@@ -47,7 +51,11 @@ export default function Setup() {
       queryClient.invalidateQueries({ queryKey: ["/api/projects"] });
       setIsProjectDialogOpen(false);
       setSelectedProject(null);
-      toast({ title: "Project updated successfully" });
+      toast({ 
+        title: "Project Updated",
+        className: "bg-[#b9f6b6] text-[#079800] border-[#079800] !p-2 !px-4 !pr-4 w-auto max-w-none min-w-fit text-center justify-center",
+        duration: 5000,
+      });
     },
     onError: () => {
       toast({ title: "Error", description: "Failed to update project", variant: "destructive" });
@@ -59,7 +67,11 @@ export default function Setup() {
       apiRequest("DELETE", `/api/projects/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/projects"] });
-      toast({ title: "Project deleted successfully" });
+      toast({ 
+        title: "Project Deleted",
+        className: "bg-[#b9f6b6] text-[#079800] border-[#079800] !p-2 !px-4 !pr-4 w-auto max-w-none min-w-fit text-center justify-center",
+        duration: 5000,
+      });
     },
     onError: () => {
       toast({ title: "Error", description: "Failed to delete project", variant: "destructive" });
@@ -72,7 +84,11 @@ export default function Setup() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/users"] });
       setIsUserDialogOpen(false);
-      toast({ title: "User created successfully" });
+      toast({ 
+        title: "User Created",
+        className: "bg-[#b9f6b6] text-[#079800] border-[#079800] !p-2 !px-4 !pr-4 w-auto max-w-none min-w-fit text-center justify-center",
+        duration: 5000,
+      });
     },
     onError: () => {
       toast({ title: "Error", description: "Failed to create user", variant: "destructive" });
@@ -86,7 +102,11 @@ export default function Setup() {
       queryClient.invalidateQueries({ queryKey: ["/api/users"] });
       setIsUserDialogOpen(false);
       setSelectedUser(null);
-      toast({ title: "User updated successfully" });
+      toast({ 
+        title: "User Updated",
+        className: "bg-[#b9f6b6] text-[#079800] border-[#079800] !p-2 !px-4 !pr-4 w-auto max-w-none min-w-fit text-center justify-center",
+        duration: 5000,
+      });
     },
     onError: () => {
       toast({ title: "Error", description: "Failed to update user", variant: "destructive" });
@@ -98,7 +118,11 @@ export default function Setup() {
       apiRequest("DELETE", `/api/users/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/users"] });
-      toast({ title: "User deleted successfully" });
+      toast({ 
+        title: "User Deleted",
+        className: "bg-[#b9f6b6] text-[#079800] border-[#079800] !p-2 !px-4 !pr-4 w-auto max-w-none min-w-fit text-center justify-center",
+        duration: 5000,
+      });
     },
     onError: () => {
       toast({ title: "Error", description: "Failed to delete user", variant: "destructive" });
