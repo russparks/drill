@@ -348,7 +348,7 @@ export default function DetailCharts() {
                 <XAxis 
                   dataKey="assignee" 
                   angle={-90} 
-                  textAnchor="end" 
+                  textAnchor="start" 
                   height={80} 
                   tick={{ fontSize: 11, dx: -25 }}
                   axisLine={false}
