@@ -523,20 +523,20 @@ export default function Setup() {
                           </div>
                         </div>
                         {weekInfo && (
-                          <div className="flex items-center gap-3 text-xs">
+                          <div className="flex items-center gap-3" style={{ fontSize: '10px' }}>
                             <div className="flex items-center gap-1">
-                              <span className="bg-black text-white px-1.5 py-0.5 rounded-sm text-xs">Start</span>
-                              <span className="bg-white text-black border border-gray-300 px-1.5 py-0.5 rounded-sm text-xs">{weekInfo.startDate}</span>
+                              <span className="bg-black text-white px-1 py-0.5 rounded-sm" style={{ fontSize: '10px' }}>Start</span>
+                              <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-sm" style={{ fontSize: '10px' }}>{weekInfo.startDate}</span>
                             </div>
                             <div className="flex items-center gap-1">
-                              <span className="bg-black text-white px-1.5 py-0.5 rounded-sm text-xs">Ant PC</span>
-                              <span className="bg-white text-black border border-gray-300 px-1.5 py-0.5 rounded-sm text-xs">{weekInfo.anticipatedDate}</span>
+                              <span className="bg-black text-white px-1 py-0.5 rounded-sm" style={{ fontSize: '10px' }}>Ant PC</span>
+                              <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-sm" style={{ fontSize: '10px' }}>{weekInfo.anticipatedDate}</span>
                             </div>
                             <div className="flex items-center gap-1">
-                              <span className="bg-black text-white px-1.5 py-0.5 rounded-sm text-xs">Con PC</span>
-                              <span className="bg-white text-black border border-gray-300 px-1.5 py-0.5 rounded-sm text-xs">{weekInfo.contractDate}</span>
+                              <span className="bg-black text-white px-1 py-0.5 rounded-sm" style={{ fontSize: '10px' }}>Con PC</span>
+                              <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-sm" style={{ fontSize: '10px' }}>{weekInfo.contractDate}</span>
                             </div>
-                            <span className="text-action-text-secondary ml-2">w{weekInfo.currentWeek} of {weekInfo.totalWeeksToAnticipated}({weekInfo.totalWeeksToContract})</span>
+                            <span className="text-action-text-secondary ml-2" style={{ fontSize: '10px' }}>w{weekInfo.currentWeek} of {weekInfo.totalWeeksToAnticipated}({weekInfo.totalWeeksToContract})</span>
                           </div>
                         )}
                       </div>
