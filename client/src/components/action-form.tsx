@@ -453,7 +453,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                                 phase.value === "precon" ? "bg-green-50 text-green-700 border-green-300 hover:bg-green-100" :
                                 phase.value === "construction" ? "bg-yellow-50 text-yellow-800 border-yellow-400 hover:bg-yellow-100" :
                                 phase.value === "aftercare" ? "bg-gray-50 text-gray-700 border-gray-300 hover:bg-gray-100" :
-                                "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                                "bg-black text-white hover:bg-gray-800"
                           }`}
                         >
                           {phase.label}
