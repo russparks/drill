@@ -18,8 +18,9 @@ export const projects = pgTable("projects", {
   startOnSiteDate: timestamp("start_on_site_date"),
   contractCompletionDate: timestamp("contract_completion_date"),
   constructionCompletionDate: timestamp("construction_completion_date"),
-  status: text("status", { enum: ["tender", "precon", "production", "aftercare"] }).notNull().default("tender"),
+  status: text("status", { enum: ["tender", "precon", "construction", "aftercare"] }).notNull().default("tender"),
   description: text("description"),
+  value: text("value"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

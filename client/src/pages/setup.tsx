@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { Project, User, InsertProject, InsertUser } from "@shared/schema";
@@ -17,6 +16,7 @@ export default function Setup() {
   const [isUserDialogOpen, setIsUserDialogOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedPhase, setSelectedPhase] = useState("tender");
   const { toast } = useToast();
 
   const { data: projects = [], isLoading: projectsLoading } = useQuery({
@@ -135,8 +135,12 @@ export default function Setup() {
     const projectData = {
       name: formData.get("name") as string,
       description: formData.get("description") as string,
-      status: formData.get("status") as string || "tender",
+      status: selectedPhase,
       projectNumber: formData.get("projectNumber") as string || null,
+      startOnSiteDate: formData.get("startOnSiteDate") as string || null,
+      contractCompletionDate: formData.get("contractCompletionDate") as string || null,
+      constructionCompletionDate: formData.get("constructionCompletionDate") as string || null,
+      value: formData.get("value") as string || null,
     };
 
     if (selectedProject) {
@@ -189,56 +193,121 @@ export default function Setup() {
             <h2 className="text-lg font-medium text-action-text-primary">Projects</h2>
             <Dialog open={isProjectDialogOpen} onOpenChange={setIsProjectDialogOpen}>
               <DialogTrigger asChild>
-                <Button onClick={() => setSelectedProject(null)}>
+                <Button onClick={() => {
+                  setSelectedProject(null);
+                  setSelectedPhase("tender");
+                }}>
                   <Plus className="h-4 w-4 mr-2" />
                   Add Project
                 </Button>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent className="max-w-2xl">
                 <DialogHeader>
                   <DialogTitle>{selectedProject ? "Edit Project" : "Add New Project"}</DialogTitle>
                 </DialogHeader>
-                <form onSubmit={handleProjectSubmit} className="space-y-4">
-                  <div>
-                    <Label htmlFor="name">Project Name</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      defaultValue={selectedProject?.name}
-                      required
-                    />
+                <form onSubmit={handleProjectSubmit} className="space-y-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="name">Project Name</Label>
+                      <Input
+                        id="name"
+                        name="name"
+                        defaultValue={selectedProject?.name}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="projectNumber">Project Number</Label>
+                      <Input
+                        id="projectNumber"
+                        name="projectNumber"
+                        defaultValue={selectedProject?.projectNumber || ""}
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <Label htmlFor="projectNumber">Project Number</Label>
-                    <Input
-                      id="projectNumber"
-                      name="projectNumber"
-                      defaultValue={selectedProject?.projectNumber || ""}
-                    />
-                  </div>
+                  
                   <div>
                     <Label htmlFor="description">Description</Label>
                     <Input
                       id="description"
                       name="description"
-                      defaultValue={selectedProject?.description}
+                      defaultValue={selectedProject?.description || ""}
                     />
                   </div>
+
                   <div>
-                    <Label htmlFor="status">Status</Label>
-                    <Select name="status" defaultValue={selectedProject?.status || "active"}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="active">Active</SelectItem>
-                        <SelectItem value="completed">Completed</SelectItem>
-                        <SelectItem value="on-hold">On Hold</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Label>Process</Label>
+                    <div className="flex gap-2 mt-2">
+                      {[
+                        { value: "tender", label: "Tender", color: "bg-blue-400" },
+                        { value: "precon", label: "Precon", color: "bg-green-400" },
+                        { value: "construction", label: "Construction", color: "bg-yellow-500" },
+                        { value: "aftercare", label: "Aftercare", color: "bg-gray-500" }
+                      ].map((phase) => (
+                        <button
+                          key={phase.value}
+                          type="button"
+                          onClick={() => setSelectedPhase(phase.value)}
+                          className={`flex-1 px-3 py-2 text-sm font-medium rounded-md border transition-colors ${
+                            selectedPhase === phase.value
+                              ? `${phase.color} text-white border-transparent`
+                              : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                          }`}
+                        >
+                          {phase.label}
+                        </button>
+                      ))}
+                    </div>
+                    <span className="text-xs text-gray-500 italic mt-1 block">
+                      Select project process stage
+                    </span>
                   </div>
+
+                  <div>
+                    <Label htmlFor="value">Value</Label>
+                    <Input
+                      id="value"
+                      name="value"
+                      placeholder="e.g. £23.5m"
+                      defaultValue={selectedProject?.value || ""}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-4">
+                    <div>
+                      <Label htmlFor="startOnSiteDate">Start Date</Label>
+                      <Input
+                        id="startOnSiteDate"
+                        name="startOnSiteDate"
+                        type="date"
+                        defaultValue={selectedProject?.startOnSiteDate ? new Date(selectedProject.startOnSiteDate).toISOString().split('T')[0] : ""}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="contractCompletionDate">Contract Completion Date</Label>
+                      <Input
+                        id="contractCompletionDate"
+                        name="contractCompletionDate"
+                        type="date"
+                        defaultValue={selectedProject?.contractCompletionDate ? new Date(selectedProject.contractCompletionDate).toISOString().split('T')[0] : ""}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="constructionCompletionDate">Construction Completion Date</Label>
+                      <Input
+                        id="constructionCompletionDate"
+                        name="constructionCompletionDate"
+                        type="date"
+                        defaultValue={selectedProject?.constructionCompletionDate ? new Date(selectedProject.constructionCompletionDate).toISOString().split('T')[0] : ""}
+                      />
+                    </div>
+                  </div>
+
                   <div className="flex justify-end space-x-2">
-                    <Button type="button" variant="outline" onClick={() => setIsProjectDialogOpen(false)}>
+                    <Button type="button" variant="outline" onClick={() => {
+                      setIsProjectDialogOpen(false);
+                      setSelectedPhase("tender");
+                    }}>
                       Cancel
                     </Button>
                     <Button type="submit">
@@ -271,6 +340,7 @@ export default function Setup() {
                           size="icon"
                           onClick={() => {
                             setSelectedProject(project);
+                            setSelectedPhase(project.status || "tender");
                             setIsProjectDialogOpen(true);
                           }}
                         >
