@@ -352,38 +352,53 @@ export default function DetailCharts() {
             <CardTitle className="text-lg text-center text-gray-600">Actions by Assignee</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <RadialBarChart 
-                cx="50%" 
-                cy="50%" 
-                innerRadius="20%" 
-                outerRadius="80%" 
-                startAngle={90}
-                endAngle={-240}
-                data={coloredAssigneeData.map((entry, index) => ({
-                  ...entry,
-                  value: entry.count,
-                }))}
-              >
-                <RadialBar 
-                  dataKey="value" 
-                  cornerRadius={3}
+            <div className="flex items-center justify-between">
+              <ResponsiveContainer width="60%" height={300}>
+                <RadialBarChart 
+                  cx="50%" 
+                  cy="50%" 
+                  innerRadius="20%" 
+                  outerRadius="80%" 
+                  startAngle={90}
+                  endAngle={-240}
+                  data={coloredAssigneeData.map((entry, index) => ({
+                    ...entry,
+                    value: entry.count,
+                  }))}
                 >
-                  {coloredAssigneeData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.fill} stroke={entry.stroke} strokeWidth={1} />
-                  ))}
-                  <LabelList 
-                    dataKey="count" 
-                    position="center" 
-                    style={{ fontSize: '10px', fill: '#1f2937', fontWeight: '600' }}
+                  <RadialBar 
+                    dataKey="value" 
+                    cornerRadius={3}
+                  >
+                    {coloredAssigneeData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.fill} stroke={entry.stroke} strokeWidth={1} />
+                    ))}
+                  </RadialBar>
+                  <Tooltip 
+                    formatter={(value, name, props) => [`${props.payload.count} actions`, props.payload.assignee]} 
+                    labelFormatter={() => ''}
                   />
-                </RadialBar>
-                <Tooltip 
-                  formatter={(value, name, props) => [`${props.payload.count} actions`, props.payload.assignee]} 
-                  labelFormatter={() => ''}
-                />
-              </RadialBarChart>
-            </ResponsiveContainer>
+                </RadialBarChart>
+              </ResponsiveContainer>
+              
+              <div className="w-40% space-y-2">
+                {coloredAssigneeData.map((entry, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <div 
+                      className="w-4 h-4 rounded-sm border"
+                      style={{ 
+                        backgroundColor: entry.fill,
+                        borderColor: entry.stroke 
+                      }}
+                    ></div>
+                    <div className="flex-1">
+                      <div className="text-sm font-medium text-gray-700">{entry.assignee}</div>
+                      <div className="text-xs text-gray-500">{entry.count} actions</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </CardContent>
         </Card>
 
