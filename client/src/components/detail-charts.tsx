@@ -344,7 +344,11 @@ export default function DetailCharts() {
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={coloredAssigneeData} categoryGap={-15}>
+              <BarChart 
+                data={coloredAssigneeData} 
+                margin={{ top: 20, right: 20, left: 20, bottom: 80 }}
+                barCategoryGap="1%"
+              >
                 <XAxis 
                   dataKey="assignee" 
                   angle={-90} 
