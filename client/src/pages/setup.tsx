@@ -550,7 +550,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.contractDate.toUpperCase()}</span>
                               </div>
                             </div>
-                            <span className="bg-gray-100 text-black border border-gray-200 px-1 py-0 rounded-md" style={{ fontSize: '10.5px', lineHeight: '1.2' }}>w{weekInfo.currentWeek} of {weekInfo.totalWeeksToAnticipated} ({weekInfo.totalWeeksToContract})</span>
+
                           </div>
                         )}
                         
@@ -586,7 +586,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                                     )}
                                     {amberPercent > 0 && (
                                       <div 
-                                        className="bg-amber-400 h-full opacity-60" 
+                                        className="bg-gray-800 h-full opacity-60" 
                                         style={{ width: `${amberPercent}%` }}
                                         title={`Buffer to contract: ${totalWeeksToContract - totalWeeksToAnticipated} weeks`}
                                       />
@@ -595,18 +595,29 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 );
                               })()}
                             </div>
-                            {/* Today marker at beginning of blue stage */}
+                            {/* Today marker and week indicator */}
                             {(() => {
                               const currentWeek = weekInfo.currentWeek;
                               const totalWeeksToContract = weekInfo.totalWeeksToContract;
+                              const totalWeeksToAnticipated = weekInfo.totalWeeksToAnticipated;
                               const currentPercent = Math.min((currentWeek / totalWeeksToContract) * 100, 100);
                               
                               return (
-                                <div 
-                                  className="absolute w-1 h-2 bg-gray-400 rounded-sm -top-0.5"
-                                  style={{ left: `calc(${currentPercent}% - 2px)` }}
-                                  title="Today"
-                                />
+                                <div className="absolute" style={{ left: `calc(${currentPercent}% - 2px)` }}>
+                                  {/* Today marker */}
+                                  <div 
+                                    className="w-1 h-2 bg-gray-400 rounded-sm"
+                                    style={{ marginTop: '6px' }}
+                                    title="Today"
+                                  />
+                                  {/* Week indicator positioned underneath and aligned left */}
+                                  <div 
+                                    className="absolute text-xs text-gray-600 whitespace-nowrap"
+                                    style={{ top: '20px', left: '0' }}
+                                  >
+                                    w{currentWeek} of {totalWeeksToAnticipated} ({totalWeeksToContract})
+                                  </div>
+                                </div>
                               );
                             })()}
                           </div>
