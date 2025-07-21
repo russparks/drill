@@ -448,7 +448,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                                 phase.value === "precon" ? "bg-green-400 text-white border-green-600" :
                                 phase.value === "construction" ? "bg-yellow-500 text-white border-yellow-700" :
                                 phase.value === "aftercare" ? "bg-gray-500 text-white border-gray-700" :
-                                "bg-black text-white"
+                                "bg-black text-white border-black"
                               : phase.value === "tender" ? "bg-blue-50 text-blue-700 border-blue-300 hover:bg-blue-100" :
                                 phase.value === "precon" ? "bg-green-50 text-green-700 border-green-300 hover:bg-green-100" :
                                 phase.value === "construction" ? "bg-yellow-50 text-yellow-800 border-yellow-400 hover:bg-yellow-100" :
