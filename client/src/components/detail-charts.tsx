@@ -350,7 +350,7 @@ export default function DetailCharts() {
                   angle={-90} 
                   textAnchor="start" 
                   height={80} 
-                  tick={{ fontSize: 11, dx: -25 }}
+                  tick={{ fontSize: 11, dx: -30, dy: -8 }}
                   axisLine={false}
                   tickLine={false}
                 />
