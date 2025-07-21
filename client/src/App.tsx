@@ -9,6 +9,7 @@ import Navbar from "@/components/navbar";
 import MobileNav from "@/components/mobile-nav";
 import Dashboard from "@/pages/dashboard";
 import Setup from "@/pages/setup";
+import People from "@/pages/people";
 import NotFound from "@/pages/not-found";
 import ActionForm from "@/components/action-form";
 
@@ -27,9 +28,8 @@ function Router() {
   };
 
   const handleCreatePerson = () => {
-    navigate("/setup");
-    setActiveTab("users");
-    // Trigger the person modal from the setup page
+    navigate("/people");
+    // Trigger the person modal from the people page
     setTimeout(() => {
       window.dispatchEvent(new CustomEvent('openPersonModal'));
     }, 100);
@@ -53,6 +53,7 @@ function Router() {
         <Route path="/setup">
           <Setup onTabChange={setActiveTab} />
         </Route>
+        <Route path="/people" component={People} />
         <Route component={NotFound} />
       </Switch>
 

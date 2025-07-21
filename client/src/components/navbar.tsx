@@ -23,21 +23,19 @@ export default function Navbar({ onCreateAction, onCreateProject, onCreatePerson
         </Button>
       );
     } else if (location === "/setup") {
-      if (activeTab === "users") {
-        return (
-          <Button size="sm" onClick={onCreatePerson}>
-            <Plus className="h-4 w-4 mr-1" />
-            Person
-          </Button>
-        );
-      } else {
-        return (
-          <Button size="sm" onClick={onCreateProject}>
-            <Plus className="h-4 w-4 mr-1" />
-            Project
-          </Button>
-        );
-      }
+      return (
+        <Button size="sm" onClick={onCreateProject}>
+          <Plus className="h-4 w-4 mr-1" />
+          Project
+        </Button>
+      );
+    } else if (location === "/people") {
+      return (
+        <Button size="sm" onClick={onCreatePerson}>
+          <Plus className="h-4 w-4 mr-1" />
+          Person
+        </Button>
+      );
     }
     return null;
   };
@@ -73,14 +71,11 @@ export default function Navbar({ onCreateAction, onCreateProject, onCreatePerson
           </div>
           <div className="hidden md:flex items-center space-x-4">
             {getCreateButton()}
-            <Button variant="ghost" size="icon" onClick={() => {
-              window.location.href = "/setup";
-              setTimeout(() => {
-                window.dispatchEvent(new CustomEvent('switchToUsersTab'));
-              }, 100);
-            }}>
-              <Settings className="h-4 w-4" />
-            </Button>
+            <Link href="/people">
+              <Button variant="ghost" size="icon">
+                <Settings className="h-4 w-4" />
+              </Button>
+            </Link>
           </div>
           <Button variant="ghost" size="icon" className="md:hidden">
             <Menu className="h-6 w-6" />
