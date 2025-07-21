@@ -554,7 +554,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                               </div>
                               {/* Project value or retention display */}
                               <div className="flex items-center">
-                                <span className={`text-white px-1 py-0.5 rounded-l-sm ${
+                                <span className={`text-white px-1 py-0.5 rounded-l-sm border ${
                                   project.status === 'aftercare' 
                                     ? 'bg-amber-500 border-amber-500' 
                                     : 'bg-black border-black'
@@ -565,6 +565,22 @@ export default function Setup({ onTabChange }: SetupProps) {
                                   {project.status === 'aftercare' ? project.retention || '£0.00' : project.value || '£0.00'}
                                 </span>
                               </div>
+                              {/* EVA indicator for non-aftercare projects */}
+                              {project.status !== 'aftercare' && weekInfo && (
+                                <div className="flex items-center">
+                                  <span className="bg-purple-600 border border-purple-600 text-white px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>
+                                    EST. EVA
+                                  </span>
+                                  <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>
+                                    {(() => {
+                                      const projectValueNum = parseFloat(project.value?.replace(/[£,]/g, '') || '0');
+                                      const weeklyValue = projectValueNum / weekInfo.totalWeeksToContract;
+                                      const evaValue = weeklyValue * weekInfo.currentWeek;
+                                      return `£${evaValue.toFixed(1)}`;
+                                    })()}
+                                  </span>
+                                </div>
+                              )}
                             </div>
 
                           </div>
