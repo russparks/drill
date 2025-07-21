@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { Plus, Edit, Trash2, Users, Building, Info } from "lucide-react";
+import { Plus, Edit, Trash2, Users, Building } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -16,7 +16,7 @@ export default function Setup() {
   const [isUserDialogOpen, setIsUserDialogOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [selectedPhase, setSelectedPhase] = useState("tender");
+  const [selectedPhase, setSelectedPhase] = useState<"tender" | "precon" | "construction" | "aftercare">("tender");
   const [workingWeeks, setWorkingWeeks] = useState({ startToContract: 0, startToAnticipated: 0, anticipatedToContract: 0 });
   const { toast } = useToast();
 
@@ -56,11 +56,11 @@ export default function Setup() {
     }, 0);
   };
 
-  const { data: projects = [], isLoading: projectsLoading } = useQuery({
+  const { data: projects = [], isLoading: projectsLoading } = useQuery<Project[]>({
     queryKey: ["/api/projects"],
   });
 
-  const { data: users = [], isLoading: usersLoading } = useQuery({
+  const { data: users = [], isLoading: usersLoading } = useQuery<User[]>({
     queryKey: ["/api/users"],
   });
 
@@ -223,9 +223,9 @@ export default function Setup() {
       name: capitalizedName,
       description: capitalizedDescription,
       status: selectedPhase,
-      startOnSiteDate: startDate || null,
-      contractCompletionDate: contractDate || null,
-      constructionCompletionDate: constructionDate || null,
+      startOnSiteDate: startDate ? new Date(startDate) : null,
+      contractCompletionDate: contractDate ? new Date(contractDate) : null,
+      constructionCompletionDate: constructionDate ? new Date(constructionDate) : null,
       value: `£${value}`,
     };
 
@@ -270,8 +270,16 @@ export default function Setup() {
         </TabsList>
 
         <TabsContent value="projects" className="space-y-6">
-          <Dialog open={isProjectDialogOpen} onOpenChange={setIsProjectDialogOpen}>
-            <DialogContent className="max-w-lg">
+          <div className="flex justify-between items-center">
+            <h2 className="text-lg font-medium text-action-text-primary">Projects</h2>
+            <Dialog open={isProjectDialogOpen} onOpenChange={setIsProjectDialogOpen}>
+              <DialogTrigger asChild>
+                <Button onClick={() => setSelectedProject(null)}>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Project
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-lg">
                 <DialogHeader>
                   <DialogTitle>{selectedProject ? "Edit Project" : "Add New Project"}</DialogTitle>
                 </DialogHeader>
@@ -357,7 +365,7 @@ export default function Setup() {
                         <button
                           key={phase.value}
                           type="button"
-                          onClick={() => setSelectedPhase(phase.value)}
+                          onClick={() => setSelectedPhase(phase.value as "tender" | "precon" | "construction" | "aftercare")}
                           className={`flex-1 px-3 py-1.5 text-xs font-medium uppercase rounded-full border transition-colors ${
                             selectedPhase === phase.value
                               ? phase.activeColor
@@ -420,7 +428,7 @@ export default function Setup() {
                     <div className="flex items-center gap-1" style={{ fontSize: '10px' }}>
                       {workingWeeks.startToContract > 0 && (
                         <>
-                          <Info className="w-6 h-6 text-gray-400" />
+                          <div className="w-6 h-6 text-gray-400 flex items-center justify-center text-xs">ℹ️</div>
                           <div className="leading-tight font-mono">
                             <div className="flex">
                               <div className="w-8 text-center text-black">{workingWeeks.startToContract}w</div>
