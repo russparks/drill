@@ -3,7 +3,25 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, AreaChart, Area } from "recharts";
 import { Project } from "@shared/schema";
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#cc3333', '#8884d8'];
+// Status colors based on the provided scheme
+const STATUS_COLORS: Record<string, string> = {
+  'tender': '#E8E4F3', // Light purple/blue from the scheme
+  'precon': '#E8F5E8', // Light green from the scheme  
+  'construction': '#FFF4E6', // Light orange from the scheme
+  'aftercare': '#F0F0F0', // Light gray from the scheme
+};
+
+// Discipline colors matching the button scheme
+const DISCIPLINE_COLORS: Record<string, string> = {
+  'operations': '#cc3333',
+  'commercial': '#0088FE', 
+  'design': '#00C49F',
+  'she': '#FFBB28',
+  'qa': '#FF8042',
+  'general': '#8884d8'
+};
+
+const CHART_COLORS = ['#E8E4F3', '#E8F5E8', '#FFF4E6', '#F0F0F0', '#cc3333', '#8884d8'];
 
 export default function DetailCharts() {
   const { data: projects = [] } = useQuery<Project[]>({
@@ -53,6 +71,7 @@ export default function DetailCharts() {
   const disciplineChartData = Object.entries(disciplineData).map(([discipline, count]) => ({
     discipline: discipline.charAt(0).toUpperCase() + discipline.slice(1),
     count,
+    color: DISCIPLINE_COLORS[discipline.toLowerCase()] || '#8884d8',
   }));
 
   // Project Timeline Data
@@ -149,7 +168,7 @@ export default function DetailCharts() {
         {/* Project Status Distribution - Pie Chart */}
         <Card>
           <CardHeader>
-            <CardTitle>Project Status Distribution</CardTitle>
+            <CardTitle className="text-sm text-center">Project Status Distribution</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
@@ -163,10 +182,14 @@ export default function DetailCharts() {
                   outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"
+                  fillOpacity={0.75}
                 >
-                  {statusChartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
+                  {statusChartData.map((entry, index) => {
+                    const statusColor = STATUS_COLORS[entry.name.toLowerCase()] || CHART_COLORS[index % CHART_COLORS.length];
+                    return (
+                      <Cell key={`cell-${index}`} fill={statusColor} />
+                    );
+                  })}
                 </Pie>
                 <Tooltip />
               </PieChart>
@@ -177,14 +200,14 @@ export default function DetailCharts() {
         {/* Project Values by Status - Bar Chart */}
         <Card>
           <CardHeader>
-            <CardTitle>Project Values by Status (£M)</CardTitle>
+            <CardTitle className="text-sm text-center">Project Values by Status (£M)</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={valueChartData}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="status" />
-                <YAxis />
+                <XAxis dataKey="status" tick={{ fontSize: 11 }} />
+                <YAxis tick={{ fontSize: 11 }} />
                 <Tooltip formatter={(value) => [`£${value}M`, 'Value']} />
                 <Bar dataKey="value" fill="#cc3333" />
               </BarChart>
@@ -197,16 +220,20 @@ export default function DetailCharts() {
         {/* Actions by Discipline - Vertical Bar Chart */}
         <Card>
           <CardHeader>
-            <CardTitle>Actions by Discipline</CardTitle>
+            <CardTitle className="text-sm text-center">Actions by Discipline</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={disciplineChartData}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="discipline" angle={-45} textAnchor="end" height={60} />
-                <YAxis />
+                <XAxis dataKey="discipline" angle={-45} textAnchor="end" height={60} tick={{ fontSize: 11 }} />
+                <YAxis tick={{ fontSize: 11 }} />
                 <Tooltip />
-                <Bar dataKey="count" fill="#0088FE" />
+                <Bar dataKey="count">
+                  {disciplineChartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
@@ -215,14 +242,14 @@ export default function DetailCharts() {
         {/* Projects On Time Analysis */}
         <Card>
           <CardHeader>
-            <CardTitle>Projects On Time (Days)</CardTitle>
+            <CardTitle className="text-sm text-center">Projects On Time (Days)</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={projectTimingData}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" angle={-45} textAnchor="end" height={60} />
-                <YAxis />
+                <XAxis dataKey="name" angle={-45} textAnchor="end" height={60} tick={{ fontSize: 11 }} />
+                <YAxis tick={{ fontSize: 11 }} />
                 <Tooltip />
                 <Bar dataKey="planned" fill="#00C49F" name="Planned" />
                 <Bar dataKey="actual" fill="#FF8042" name="Actual" />
@@ -236,14 +263,14 @@ export default function DetailCharts() {
         {/* Actions by Person */}
         <Card>
           <CardHeader>
-            <CardTitle>Actions by Person</CardTitle>
+            <CardTitle className="text-sm text-center">Actions by Person</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={actionsByPersonData}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="person" angle={-45} textAnchor="end" height={60} />
-                <YAxis />
+                <XAxis dataKey="person" angle={-45} textAnchor="end" height={60} tick={{ fontSize: 11 }} />
+                <YAxis tick={{ fontSize: 11 }} />
                 <Tooltip />
                 <Bar dataKey="count" fill="#8884d8" />
               </BarChart>
@@ -254,14 +281,14 @@ export default function DetailCharts() {
         {/* Average Action Closure Time */}
         <Card>
           <CardHeader>
-            <CardTitle>Avg. Action Closure Time (Days)</CardTitle>
+            <CardTitle className="text-sm text-center">Avg. Action Closure Time (Days)</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={avgClosureTimeData}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="discipline" angle={-45} textAnchor="end" height={60} />
-                <YAxis />
+                <XAxis dataKey="discipline" angle={-45} textAnchor="end" height={60} tick={{ fontSize: 11 }} />
+                <YAxis tick={{ fontSize: 11 }} />
                 <Tooltip formatter={(value) => [`${value} days`, 'Avg Time']} />
                 <Bar dataKey="avgDays" fill="#FFBB28" />
               </BarChart>
@@ -273,14 +300,14 @@ export default function DetailCharts() {
       {/* Project Duration Analysis - Full Width */}
       <Card>
         <CardHeader>
-          <CardTitle>Project Duration Analysis (Weeks)</CardTitle>
+          <CardTitle className="text-sm text-center">Project Duration Analysis (Weeks)</CardTitle>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={timelineData} margin={{ left: 20, right: 30 }}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} />
-              <YAxis />
+              <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} tick={{ fontSize: 11 }} />
+              <YAxis tick={{ fontSize: 11 }} />
               <Tooltip />
               <Bar dataKey="constructionWeeks" stackId="a" fill="#FFBB28" name="Construction" />
               <Bar dataKey="buffer" stackId="a" fill="#FF8042" name="Buffer/Float" />
