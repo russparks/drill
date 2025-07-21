@@ -467,7 +467,9 @@ export default function Dashboard() {
               </span>
             )}
           </h2>
-          <ProjectsDropdown onProjectSelect={handleProjectSelect} selectedProjectId={projectFilter} />
+          <div className="mr-1">
+            <ProjectsDropdown onProjectSelect={handleProjectSelect} selectedProjectId={projectFilter} />
+          </div>
         </div>
 
         <CardContent className="p-0">
