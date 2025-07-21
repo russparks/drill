@@ -237,7 +237,7 @@ export default function DetailCharts() {
             <ResponsiveContainer width="100%" height={250}>
               <RadarChart data={valueChartData}>
                 <PolarGrid />
-                <PolarAngleAxis dataKey="status" tick={{ fontSize: 11 }} />
+                <PolarAngleAxis dataKey="status" tick={{ fontSize: 12.65 }} />
                 <PolarRadiusAxis 
                   tick={{ fontSize: 10 }} 
                   tickFormatter={(value) => `£${value}M`}
@@ -248,7 +248,7 @@ export default function DetailCharts() {
                   stroke="#cc3333" 
                   fill="#cc3333" 
                   fillOpacity={0.3}
-                  strokeWidth={2}
+                  strokeWidth={1.2}
                 />
                 <Tooltip formatter={(value) => [`£${value}M`, 'Value']} />
               </RadarChart>
