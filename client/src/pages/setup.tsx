@@ -556,8 +556,8 @@ export default function Setup({ onTabChange }: SetupProps) {
                         
                         {/* Timeline bar chart */}
                         {weekInfo && (
-                          <div className="mt-2">
-                            <div className="w-full h-3 bg-gray-100 rounded-sm overflow-hidden flex">
+                          <div className="mt-2 relative">
+                            <div className="w-full h-1.5 bg-gray-100 rounded-sm overflow-hidden flex">
                               {(() => {
                                 const currentWeek = weekInfo.currentWeek;
                                 const totalWeeksToAnticipated = weekInfo.totalWeeksToAnticipated;
@@ -595,6 +595,51 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 );
                               })()}
                             </div>
+                            {/* Diamond milestones */}
+                            {(() => {
+                              const currentWeek = weekInfo.currentWeek;
+                              const totalWeeksToAnticipated = weekInfo.totalWeeksToAnticipated;
+                              const totalWeeksToContract = weekInfo.totalWeeksToContract;
+                              
+                              const currentPercent = Math.min((currentWeek / totalWeeksToContract) * 100, 100);
+                              const anticipatedPercent = (totalWeeksToAnticipated / totalWeeksToContract) * 100;
+                              
+                              return (
+                                <>
+                                  {/* Start diamond - grey */}
+                                  <div 
+                                    className="absolute w-2 h-2 bg-gray-400 transform rotate-45 -top-0.5"
+                                    style={{ left: '-4px' }}
+                                    title="Project start"
+                                  />
+                                  
+                                  {/* Current week diamond - color depends on which segment we're in */}
+                                  <div 
+                                    className={`absolute w-2 h-2 transform rotate-45 -top-0.5 ${
+                                      currentWeek <= totalWeeksToAnticipated ? 'bg-blue-300' : 'bg-amber-400'
+                                    }`}
+                                    style={{ left: `calc(${currentPercent}% - 4px)` }}
+                                    title={`Current week: ${currentWeek}`}
+                                  />
+                                  
+                                  {/* Anticipated completion diamond - blue */}
+                                  {anticipatedPercent < 100 && (
+                                    <div 
+                                      className="absolute w-2 h-2 bg-blue-300 transform rotate-45 -top-0.5"
+                                      style={{ left: `calc(${anticipatedPercent}% - 4px)` }}
+                                      title="Anticipated completion"
+                                    />
+                                  )}
+                                  
+                                  {/* Contract completion diamond - black */}
+                                  <div 
+                                    className="absolute w-2 h-2 bg-black transform rotate-45 -top-0.5"
+                                    style={{ right: '-4px' }}
+                                    title="Contract completion"
+                                  />
+                                </>
+                              );
+                            })()}
                           </div>
                         )}
                       </div>
