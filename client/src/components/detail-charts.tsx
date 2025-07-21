@@ -361,8 +361,8 @@ export default function DetailCharts() {
                   ))}
                   <LabelList 
                     dataKey="count" 
-                    position="top" 
-                    style={{ fontSize: '12px', fill: '#374151' }} 
+                    position="insideRight" 
+                    style={{ fontSize: '12px', fill: '#ffffff', fontWeight: '500' }} 
                   />
                 </Bar>
               </BarChart>
