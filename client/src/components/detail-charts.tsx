@@ -212,8 +212,16 @@ export default function DetailCharts() {
                 />
                 <Tooltip />
                 <Legend 
-                  wrapperStyle={{ fontSize: '12px' }}
+                  wrapperStyle={{ 
+                    fontSize: '12px',
+                    color: '#374151' // gray-700 for better visibility
+                  }}
                   iconType="circle"
+                  formatter={(value, entry) => {
+                    const statusKey = value.toLowerCase();
+                    const color = STATUS_COLORS[statusKey] || '#374151';
+                    return <span style={{ color }}>{value}</span>;
+                  }}
                 />
               </RadialBarChart>
             </ResponsiveContainer>
