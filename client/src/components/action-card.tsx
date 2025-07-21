@@ -134,7 +134,7 @@ export default function ActionCard({ action, onEdit, onComplete, onAssigneeClick
   };
 
   return (
-    <div className={`action-card p-4 ${isEven ? 'bg-gray-50' : 'bg-white'}`}>
+    <div className={`action-card py-2 px-4 ${isEven ? 'bg-gray-50' : 'bg-white'}`}>
       {isMobile ? (
         /* Mobile Layout */
         <>
