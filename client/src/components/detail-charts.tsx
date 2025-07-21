@@ -393,7 +393,7 @@ export default function DetailCharts() {
                     ></div>
                     <div className="flex-1">
                       <div className="text-sm font-medium text-gray-700">{entry.assignee}</div>
-                      <div className="text-xs text-gray-500">{entry.count} actions</div>
+                      <div className="text-xs font-medium" style={{ color: entry.fill }}>{entry.count} actions</div>
                     </div>
                   </div>
                 ))}
