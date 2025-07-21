@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { Project, InsertProject } from "@shared/schema";
 import ConfirmDialog from "@/components/confirm-dialog";
+import DetailCharts from "@/components/detail-charts";
 
 interface SetupProps {
   onTabChange?: (tab: string) => void;
@@ -614,7 +615,7 @@ export default function Setup({ onTabChange }: SetupProps) {
         </TabsContent>
 
         <TabsContent value="users" className="space-y-6">
-          {/* Empty page for now */}
+          <DetailCharts />
         </TabsContent>
       </Tabs>
 
