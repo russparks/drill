@@ -236,15 +236,15 @@ export default function Setup({ onTabChange }: SetupProps) {
 
               return (
                 <span className="flex items-center gap-2 text-xs">
-                  <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs font-medium">
-                    CONSTRUCTION
-                  </span>
-                  <span>{constructionProjects.length} (£{constructionValue.toFixed(1)}M)</span>
-                  <span className="text-gray-400">|</span>
                   <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">
                     PRECON
                   </span>
                   <span>{preconProjects.length} (£{preconValue.toFixed(1)}M)</span>
+                  <span className="text-gray-400">|</span>
+                  <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs font-medium">
+                    CONSTRUCTION
+                  </span>
+                  <span>{constructionProjects.length} (£{constructionValue.toFixed(1)}M)</span>
                 </span>
               );
             })()}
