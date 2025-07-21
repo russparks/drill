@@ -188,7 +188,7 @@ export default function Setup({ onTabChange }: SetupProps) {
 
     // Calculate retention as 5% of project value
     const retentionValue = Number(value) * 0.05;
-    const formattedRetention = `£${retentionValue.toFixed(2)}`;
+    const formattedRetention = `£${retentionValue.toFixed(1)}`;
 
     const projectData = {
       projectNumber: projectNumber.toUpperCase(),
