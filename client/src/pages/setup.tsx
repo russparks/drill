@@ -421,12 +421,12 @@ export default function Setup() {
 
                   <hr className="border-gray-200 my-4" />
                   <div className="flex justify-between items-end">
-                    <div className="text-xs text-gray-500">
+                    <div className="text-gray-500" style={{ fontSize: '10px' }}>
                       {workingWeeks.startToContract > 0 && (
-                        <div className="space-y-0.5">
-                          <div>Start → Contract: {workingWeeks.startToContract}w</div>
-                          <div>Start → Anticipated: {workingWeeks.startToAnticipated}w</div>
-                          <div>Anticipated → Contract: {workingWeeks.anticipatedToContract}w</div>
+                        <div className="space-y-0.5 font-mono">
+                          <div>Start → Contract:    {workingWeeks.startToContract.toString().padStart(2, ' ')}w</div>
+                          <div>Start → Anticipated: {workingWeeks.startToAnticipated.toString().padStart(2, ' ')}w</div>
+                          <div>Anticipated → Contract: {workingWeeks.anticipatedToContract.toString().padStart(2, ' ')}w</div>
                         </div>
                       )}
                     </div>
