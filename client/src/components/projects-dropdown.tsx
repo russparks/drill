@@ -46,13 +46,13 @@ export default function ProjectsDropdown({ onProjectSelect, selectedProjectId }:
           <Filter className="h-3 w-3" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-80">
+      <DropdownMenuContent align="end" className="w-56">
         {selectedProject && (
           <DropdownMenuItem
             onClick={() => onProjectSelect?.(selectedProject)}
-            className="flex flex-col items-start p-4 cursor-pointer border-b"
+            className="p-3 cursor-pointer border-b"
           >
-            <div className="font-medium text-action-text-primary mb-1">
+            <div className="font-medium text-action-text-primary">
               Clear Filter - Show All Projects
             </div>
           </DropdownMenuItem>
@@ -66,18 +66,13 @@ export default function ProjectsDropdown({ onProjectSelect, selectedProjectId }:
             <DropdownMenuItem
               key={project.id}
               onClick={() => onProjectSelect?.(project)}
-              className={`flex flex-col items-start p-4 cursor-pointer ${
+              className={`p-3 cursor-pointer ${
                 selectedProjectId === project.id ? 'bg-blue-50' : ''
               }`}
             >
-              <div className="font-medium text-action-text-primary mb-1">
+              <div className="font-medium text-action-text-primary">
                 {project.name}
               </div>
-              {project.description && (
-                <div className="text-xs text-action-text-secondary line-clamp-2">
-                  {project.description}
-                </div>
-              )}
             </DropdownMenuItem>
           ))
         )}
