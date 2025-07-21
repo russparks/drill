@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { Plus, Edit, Trash2, Users, Building } from "lucide-react";
+import { Plus, Edit, Trash2, Users, Building, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -421,23 +421,24 @@ export default function Setup() {
 
                   <hr className="border-gray-200 mt-3 mb-4" />
                   <div className="flex justify-between items-end">
-                    <div className="text-gray-500" style={{ fontSize: '10px' }}>
+                    <div className="flex items-center gap-5" style={{ fontSize: '10px' }}>
+                      <Info className="w-3 h-3 text-gray-400" />
                       {workingWeeks.startToContract > 0 && (
                         <div className="leading-tight font-mono">
                           <div className="flex">
-                            <div className="w-8 text-right">{workingWeeks.startToContract}w</div>
-                            <div className="w-4 text-center">|</div>
-                            <div className="flex-1">Start → Contract</div>
+                            <div className="w-8 text-center text-black">{workingWeeks.startToContract}w</div>
+                            <div className="w-4 text-center text-black" style={{ transform: 'scaleY(0.85)' }}>|</div>
+                            <div className="flex-1 text-gray-500">Start → Contract</div>
                           </div>
                           <div className="flex">
-                            <div className="w-8 text-right">{workingWeeks.startToAnticipated}w</div>
-                            <div className="w-4 text-center">|</div>
-                            <div className="flex-1">Start → Anticipated</div>
+                            <div className="w-8 text-center text-black">{workingWeeks.startToAnticipated}w</div>
+                            <div className="w-4 text-center text-black" style={{ transform: 'scaleY(0.85)' }}>|</div>
+                            <div className="flex-1 text-gray-500">Start → Anticipated</div>
                           </div>
                           <div className="flex">
-                            <div className="w-8 text-right">{workingWeeks.anticipatedToContract}w</div>
-                            <div className="w-4 text-center">|</div>
-                            <div className="flex-1">Anticipated → Contract</div>
+                            <div className="w-8 text-center text-black">{workingWeeks.anticipatedToContract}w</div>
+                            <div className="w-4 text-center text-black" style={{ transform: 'scaleY(0.85)' }}>|</div>
+                            <div className="flex-1 text-gray-500">Anticipated → Contract</div>
                           </div>
                         </div>
                       )}
