@@ -11,6 +11,14 @@ const STATUS_COLORS: Record<string, string> = {
   'aftercare': '#6b7280', // gray-500 - medium gray
 };
 
+// Light status colors for fills (300 level)
+const STATUS_LIGHT_COLORS: Record<string, string> = {
+  'tender': '#93c5fd', // blue-300
+  'precon': '#6ee7b7', // emerald-300
+  'construction': '#fcd34d', // amber-300
+  'aftercare': '#d1d5db', // gray-300
+};
+
 // Discipline colors matching the action page button scheme
 const DISCIPLINE_COLORS: Record<string, string> = {
   'operations': '#1d4ed8',  // blue-700 (from blue-800 text)
@@ -186,19 +194,21 @@ export default function DetailCharts() {
               <RadialBarChart 
                 cx="50%" 
                 cy="50%" 
-                innerRadius="32%" 
-                outerRadius="80%" 
+                innerRadius="25%" 
+                outerRadius="85%" 
                 startAngle={90}
                 endAngle={-180}
                 data={statusChartData.map((entry, index) => ({
                   ...entry,
                   value: Math.round((entry.value / Math.max(...statusChartData.map(d => d.value))) * 100),
-                  fill: STATUS_COLORS[entry.name.toLowerCase()] || CHART_COLORS[index % CHART_COLORS.length]
+                  fill: STATUS_LIGHT_COLORS[entry.name.toLowerCase()] || CHART_COLORS[index % CHART_COLORS.length],
+                  stroke: STATUS_COLORS[entry.name.toLowerCase()] || CHART_COLORS[index % CHART_COLORS.length]
                 }))}
               >
                 <RadialBar 
                   dataKey="value" 
                   cornerRadius={3}
+                  strokeWidth={1.2}
                 />
                 <Tooltip />
                 <Legend 
