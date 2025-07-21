@@ -440,7 +440,11 @@ export default function Dashboard() {
                   {projectFilter && (
                     <>
                       {(statusFilter || disciplineFilter || phaseFilter) && <span>,</span>}
-                      <span className="relative">
+                      <span 
+                        className="relative cursor-pointer hover:line-through transition-all"
+                        onClick={() => setProjectFilter(null)}
+                        title="Click to remove project filter"
+                      >
                         {projects?.find(p => p.id === projectFilter)?.name}
                         <div className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-gray-500" />
                       </span>

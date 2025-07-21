@@ -20,8 +20,8 @@ export default function ProjectsDropdown({ onProjectSelect, selectedProjectId }:
     queryKey: ["/api/projects"],
   });
 
-  const activeProjects = (projects as Project[]).filter(p => p.status === 'active');
-  const selectedProject = selectedProjectId ? activeProjects.find(p => p.id === selectedProjectId) : null;
+  const allProjects = projects as Project[];
+  const selectedProject = selectedProjectId ? allProjects.find(p => p.id === selectedProjectId) : null;
 
   if (isLoading) {
     return (
@@ -36,11 +36,12 @@ export default function ProjectsDropdown({ onProjectSelect, selectedProjectId }:
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button 
-          variant={selectedProject ? "default" : "outline"} 
-          className="flex items-center space-x-2"
+          variant="outline"
+          className={`flex items-center space-x-2 ${
+            selectedProject ? 'bg-[#cc3333] text-white border-[#cc3333] hover:bg-[#cc3333]/90' : ''
+          }`}
         >
-          <Building className="h-4 w-4" />
-          <span>{selectedProject ? selectedProject.name : "All Projects"}</span>
+          <span>Projects</span>
           <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
@@ -55,12 +56,12 @@ export default function ProjectsDropdown({ onProjectSelect, selectedProjectId }:
             </div>
           </DropdownMenuItem>
         )}
-        {activeProjects.length === 0 ? (
+        {allProjects.length === 0 ? (
           <div className="p-4 text-center text-action-text-secondary">
-            No active projects
+            No projects
           </div>
         ) : (
-          activeProjects.map((project) => (
+          allProjects.map((project) => (
             <DropdownMenuItem
               key={project.id}
               onClick={() => onProjectSelect?.(project)}
