@@ -523,9 +523,21 @@ export default function Setup() {
                           </div>
                         </div>
                         {weekInfo && (
-                          <p className="text-xs text-action-text-secondary">
-                            Start: {weekInfo.startDate} - Anticipated PC: {weekInfo.anticipatedDate} - Contract PC: {weekInfo.contractDate} - w{weekInfo.currentWeek} of {weekInfo.totalWeeksToAnticipated}({weekInfo.totalWeeksToContract})
-                          </p>
+                          <div className="flex items-center gap-3 text-xs">
+                            <div className="flex items-center gap-1">
+                              <span className="bg-black text-white px-1.5 py-0.5 rounded-sm text-xs">Start</span>
+                              <span className="bg-white text-black border border-gray-300 px-1.5 py-0.5 rounded-sm text-xs">{weekInfo.startDate}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <span className="bg-black text-white px-1.5 py-0.5 rounded-sm text-xs">Ant PC</span>
+                              <span className="bg-white text-black border border-gray-300 px-1.5 py-0.5 rounded-sm text-xs">{weekInfo.anticipatedDate}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <span className="bg-black text-white px-1.5 py-0.5 rounded-sm text-xs">Con PC</span>
+                              <span className="bg-white text-black border border-gray-300 px-1.5 py-0.5 rounded-sm text-xs">{weekInfo.contractDate}</span>
+                            </div>
+                            <span className="text-action-text-secondary ml-2">w{weekInfo.currentWeek} of {weekInfo.totalWeeksToAnticipated}({weekInfo.totalWeeksToContract})</span>
+                          </div>
                         )}
                       </div>
                       <div className="flex space-x-1 ml-2">
