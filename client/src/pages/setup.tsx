@@ -135,7 +135,7 @@ export default function Setup() {
     const projectData = {
       name: formData.get("name") as string,
       description: formData.get("description") as string,
-      status: formData.get("status") as string || "active",
+      status: formData.get("status") as string || "tender",
       projectNumber: formData.get("projectNumber") as string || null,
     };
 
