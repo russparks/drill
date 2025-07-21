@@ -284,16 +284,8 @@ export default function Setup({ onTabChange }: SetupProps) {
         </TabsList>
 
         <TabsContent value="projects" className="space-y-6">
-          <div className="flex justify-between items-center">
-            <h2 className="text-lg font-medium text-action-text-primary">Projects</h2>
-            <Dialog open={isProjectDialogOpen} onOpenChange={setIsProjectDialogOpen}>
-              <DialogTrigger asChild>
-                <Button onClick={() => setSelectedProject(null)}>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Project
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-lg">
+          <Dialog open={isProjectDialogOpen} onOpenChange={setIsProjectDialogOpen}>
+            <DialogContent className="max-w-lg">
                 <DialogHeader>
                   <DialogTitle>{selectedProject ? "Edit Project" : "Add New Project"}</DialogTitle>
                 </DialogHeader>
@@ -476,7 +468,6 @@ export default function Setup({ onTabChange }: SetupProps) {
                 </form>
               </DialogContent>
             </Dialog>
-          </div>
 
           <div className="grid gap-2">
             {projectsLoading ? (
@@ -512,10 +503,10 @@ export default function Setup({ onTabChange }: SetupProps) {
                 
                 return (
                 <Card key={project.id} className="material-shadow">
-                  <CardContent className="p-3">
+                  <CardContent className="p-2.5">
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
+                        <div className="flex items-center gap-2 mb-0.5">
                           <CardTitle className="text-lg">{project.name}</CardTitle>
                           {project.projectNumber && (
                             <span className="text-sm text-action-text-secondary">({project.projectNumber})</span>
