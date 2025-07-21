@@ -234,7 +234,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                 return sum + parseFloat(value);
               }, 0);
 
-              return `CONSTRUCTION: ${constructionProjects.length} (£${constructionValue.toFixed(1)}M) | PRECON: ${preconProjects.length} (£${preconValue.toFixed(1)}M)`;
+              return `CONSTRUCTION ${constructionProjects.length} (£${constructionValue.toFixed(1)}M) | PRECON ${preconProjects.length} (£${preconValue.toFixed(1)}M)`;
             })()}
           </TabsTrigger>
           <TabsTrigger value="users" className="flex items-center gap-2">
