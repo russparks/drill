@@ -412,7 +412,7 @@ export default function DetailCharts() {
               <BarChart data={avgClosureTimeData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="discipline" angle={-45} textAnchor="end" height={60} tick={{ fontSize: 11 }} />
-                <YAxis tick={{ fontSize: 11 }} />
+                <YAxis tick={{ fontSize: 11 }} domain={[0, 'dataMax']} />
                 <Tooltip formatter={(value) => [`${value} days`, 'Avg Time']} />
                 <Bar dataKey="avgDays" strokeWidth={1.2} barSize={34} radius={[4, 4, 0, 0]}>
                   {avgClosureTimeData.map((entry, index) => (
