@@ -246,9 +246,6 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
           <DialogTitle>
             {action ? "Edit Action" : "New Action"}
           </DialogTitle>
-          <DialogDescription>
-            {action ? "Update the details of this action." : "Create a new action for your project."}
-          </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
@@ -305,19 +302,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Title</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter action title" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
 
             <FormField
               control={form.control}
@@ -350,55 +335,56 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
               name="discipline"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Discipline</FormLabel>
+                  <div className="flex items-center gap-4">
+                    <FormLabel className="min-w-[80px]">Discipline</FormLabel>
+                    {field.value && (
+                      <span className="text-sm text-gray-500 capitalize">
+                        {field.value === 'she' ? 'SHE' : field.value === 'qa' ? 'QA' : field.value}
+                      </span>
+                    )}
+                  </div>
                   <FormControl>
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="flex flex-wrap gap-2">
                       {[
                         { 
                           value: "operations", 
-                          label: "Operations", 
-                          active: "bg-blue-600 text-white border border-blue-800",
-                          inactive: "bg-blue-100 text-blue-800 border border-blue-600 hover:bg-blue-200"
+                          label: "OPS", 
+                          color: "bg-blue-600"
                         },
                         { 
                           value: "commercial", 
-                          label: "Commercial", 
-                          active: "bg-cyan-500 text-white",
-                          inactive: "bg-cyan-100 text-cyan-800 hover:bg-cyan-200"
+                          label: "COMM", 
+                          color: "bg-cyan-500"
                         },
                         { 
                           value: "design", 
-                          label: "Design", 
-                          active: "bg-purple-500 text-white",
-                          inactive: "bg-purple-100 text-purple-800 hover:bg-purple-200"
+                          label: "DES", 
+                          color: "bg-purple-500"
                         },
                         { 
                           value: "she", 
                           label: "SHE", 
-                          active: "bg-orange-500 text-white",
-                          inactive: "bg-orange-100 text-orange-800 hover:bg-orange-200"
+                          color: "bg-orange-500"
                         },
                         { 
                           value: "qa", 
                           label: "QA", 
-                          active: "bg-indigo-500 text-white",
-                          inactive: "bg-indigo-100 text-indigo-800 hover:bg-indigo-200"
+                          color: "bg-indigo-500"
                         },
                         { 
                           value: "general", 
-                          label: "General", 
-                          active: "bg-gray-600 text-white",
-                          inactive: "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                          label: "GEN", 
+                          color: "bg-gray-600"
                         }
                       ].map((discipline) => (
                         <button
                           key={discipline.value}
                           type="button"
                           onClick={() => field.onChange(discipline.value)}
-                          className={`px-4 py-3 rounded-md text-sm font-medium transition-colors ${
+                          className={`px-2 py-1 rounded-full text-xs font-bold text-white transition-all ${
                             field.value === discipline.value
-                              ? discipline.active
-                              : discipline.inactive
+                              ? `${discipline.color} scale-110`
+                              : `${discipline.color} opacity-50 hover:opacity-75`
                           }`}
                         >
                           {discipline.label}
@@ -416,49 +402,51 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
               name="phase"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phase</FormLabel>
+                  <div className="flex items-center gap-4">
+                    <FormLabel className="min-w-[80px]">Phase</FormLabel>
+                    {field.value && (
+                      <span className="text-sm text-gray-500 capitalize">
+                        {field.value}
+                      </span>
+                    )}
+                  </div>
                   <FormControl>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="flex flex-wrap gap-2">
                       {[
                         { 
                           value: "tender", 
-                          label: "Tender", 
-                          active: "bg-blue-400 text-white border border-blue-600",
-                          inactive: "bg-blue-50 text-blue-700 border border-blue-300 hover:bg-blue-100"
+                          label: "TEN", 
+                          color: "bg-blue-400"
                         },
                         { 
                           value: "precon", 
-                          label: "Precon", 
-                          active: "bg-green-400 text-white border border-green-600",
-                          inactive: "bg-green-50 text-green-700 border border-green-300 hover:bg-green-100"
+                          label: "PRE", 
+                          color: "bg-green-400"
                         },
                         { 
                           value: "construction", 
-                          label: "Construction", 
-                          active: "bg-yellow-500 text-white border border-yellow-700",
-                          inactive: "bg-yellow-50 text-yellow-800 border border-yellow-400 hover:bg-yellow-100"
+                          label: "CON", 
+                          color: "bg-yellow-500"
                         },
                         { 
                           value: "aftercare", 
-                          label: "Aftercare", 
-                          active: "bg-gray-500 text-white border border-gray-700",
-                          inactive: "bg-gray-50 text-gray-700 border border-gray-300 hover:bg-gray-100"
+                          label: "AFT", 
+                          color: "bg-gray-500"
                         },
                         { 
                           value: "strategy", 
-                          label: "Strategy", 
-                          active: "bg-black text-white",
-                          inactive: "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                          label: "STR", 
+                          color: "bg-black"
                         }
                       ].map((phase) => (
                         <button
                           key={phase.value}
                           type="button"
                           onClick={() => field.onChange(phase.value)}
-                          className={`px-4 py-3 rounded-md text-sm font-medium transition-colors ${
+                          className={`px-2 py-1 rounded-full text-xs font-bold text-white transition-all ${
                             field.value === phase.value
-                              ? phase.active
-                              : phase.inactive
+                              ? `${phase.color} scale-110`
+                              : `${phase.color} opacity-50 hover:opacity-75`
                           }`}
                         >
                           {phase.label}
@@ -471,174 +459,181 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="assigneeId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Assign To</FormLabel>
-                  <Select 
-                    onValueChange={(value) => {
-                      if (value === "new") {
-                        setShowNewPersonInput(true);
-                        field.onChange(undefined);
-                      } else {
-                        setShowNewPersonInput(false);
-                        field.onChange(parseInt(value));
-                      }
-                    }}
-                    value={showNewPersonInput ? "new" : field.value?.toString() || ""}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select person" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {(users as User[]).map((user) => (
-                        <SelectItem key={user.id} value={user.id.toString()}>
-                          {user.name} ({user.email})
-                        </SelectItem>
-                      ))}
-                      <SelectItem value="new">+ New Person</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  {showNewPersonInput && (
-                    <div className="space-y-2 mt-2">
-                      <FormField
-                        control={form.control}
-                        name="newPersonName"
-                        render={({ field: nameField }) => (
-                          <FormControl>
-                            <Input 
-                              placeholder="Enter person's name" 
-                              {...nameField}
-                            />
-                          </FormControl>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="newPersonEmail"
-                        render={({ field: emailField }) => (
-                          <FormControl>
-                            <Input 
-                              placeholder="Enter person's email" 
-                              type="email"
-                              {...emailField}
-                            />
-                          </FormControl>
-                        )}
-                      />
-                    </div>
-                  )}
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="priority"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Priority</FormLabel>
-                    <FormControl>
-                      <div className="flex gap-1">
-                        {[
-                          { value: "low", label: "Low", activeColor: "bg-green-600" },
-                          { value: "medium", label: "Med", activeColor: "bg-amber-600" },
-                          { value: "high", label: "High", activeColor: "bg-red-600" }
-                        ].map((priority) => (
-                          <button
-                            key={priority.value}
-                            type="button"
-                            onClick={() => field.onChange(priority.value)}
-                            className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                              field.value === priority.value
-                                ? `${priority.activeColor} text-white`
-                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                            }`}
-                          >
-                            {priority.label}
-                          </button>
-                        ))}
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {action && (
+            <div className="flex gap-4">
+              <div className="w-[60%]">
                 <FormField
                   control={form.control}
-                  name="status"
+                  name="assigneeId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Status</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value}>
+                      <FormLabel>Assign To</FormLabel>
+                      <Select 
+                        onValueChange={(value) => {
+                          if (value === "new") {
+                            setShowNewPersonInput(true);
+                            field.onChange(undefined);
+                          } else {
+                            setShowNewPersonInput(false);
+                            field.onChange(parseInt(value));
+                          }
+                        }}
+                        value={showNewPersonInput ? "new" : field.value?.toString() || ""}
+                      >
                         <FormControl>
-                          <SelectTrigger>
-                            <SelectValue />
+                          <SelectTrigger className="h-8">
+                            <SelectValue placeholder="Select person" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="open">Open</SelectItem>
-                          <SelectItem value="closed">Closed</SelectItem>
+                          {(users as User[]).map((user) => (
+                            <SelectItem key={user.id} value={user.id.toString()}>
+                              {user.name} ({user.email})
+                            </SelectItem>
+                          ))}
+                          <SelectItem value="new">+ New Person</SelectItem>
                         </SelectContent>
                       </Select>
+                      {showNewPersonInput && (
+                        <div className="space-y-2 mt-2">
+                          <FormField
+                            control={form.control}
+                            name="newPersonName"
+                            render={({ field: nameField }) => (
+                              <FormControl>
+                                <Input 
+                                  placeholder="Enter person's name" 
+                                  {...nameField}
+                                />
+                              </FormControl>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="newPersonEmail"
+                            render={({ field: emailField }) => (
+                              <FormControl>
+                                <Input 
+                                  placeholder="Enter person's email" 
+                                  type="email"
+                                  {...emailField}
+                                />
+                              </FormControl>
+                            )}
+                          />
+                        </div>
+                      )}
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-              )}
+              </div>
+              
+              <div className="w-[40%]">
+                <FormField
+                  control={form.control}
+                  name="priority"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Priority</FormLabel>
+                      <FormControl>
+                        <div className="flex gap-1">
+                          {[
+                            { value: "low", label: "L", color: "bg-green-600" },
+                            { value: "medium", label: "M", color: "bg-amber-600" },
+                            { value: "high", label: "H", color: "bg-red-600" }
+                          ].map((priority) => (
+                            <button
+                              key={priority.value}
+                              type="button"
+                              onClick={() => field.onChange(priority.value)}
+                              className={`px-2 py-1 rounded-full text-xs font-bold text-white transition-all ${
+                                field.value === priority.value
+                                  ? `${priority.color} scale-110`
+                                  : `${priority.color} opacity-50 hover:opacity-75`
+                              }`}
+                            >
+                              {priority.label}
+                            </button>
+                          ))}
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
+
+            {action && (
+              <FormField
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Status</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger className="h-8">
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="open">Open</SelectItem>
+                        <SelectItem value="closed">Closed</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
 
             <FormField
               control={form.control}
               name="dueDate"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Due Date</FormLabel>
-                  <FormControl>
-                    <div className="space-y-3">
-                      <div className="grid grid-cols-5 gap-2">
-                        {[
-                          { label: "2d", days: 2 },
-                          { label: "4d", days: 4 },
-                          { label: "1w", days: 7 },
-                          { label: "2w", days: 14 },
-                          { label: "1m", days: 30 }
-                        ].map((option) => {
-                          const date = new Date();
-                          date.setDate(date.getDate() + option.days);
-                          const dateString = date.toISOString().split('T')[0];
-                          
-                          return (
-                            <button
-                              key={option.label}
-                              type="button"
-                              onClick={() => field.onChange(dateString)}
-                              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                                field.value === dateString
-                                  ? "bg-blue-600 text-white"
-                                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                              }`}
-                            >
-                              {option.label}
-                            </button>
-                          );
-                        })}
+                  <div className="flex items-center gap-4">
+                    <FormLabel className="min-w-[80px]">Due Date</FormLabel>
+                    <FormControl>
+                      <div className="flex items-center gap-2 flex-1">
+                        <div className="flex gap-1">
+                          {[
+                            { label: "2d", days: 2 },
+                            { label: "4d", days: 4 },
+                            { label: "1w", days: 7 },
+                            { label: "2w", days: 14 },
+                            { label: "1m", days: 30 }
+                          ].map((option) => {
+                            const date = new Date();
+                            date.setDate(date.getDate() + option.days);
+                            const dateString = date.toISOString().split('T')[0];
+                            
+                            return (
+                              <button
+                                key={option.label}
+                                type="button"
+                                onClick={() => field.onChange(dateString)}
+                                className={`w-8 h-8 rounded-full text-xs font-medium transition-colors ${
+                                  field.value === dateString
+                                    ? "bg-blue-600 text-white"
+                                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                }`}
+                              >
+                                {option.label}
+                              </button>
+                            );
+                          })}
+                        </div>
+                        <Input 
+                          type="date" 
+                          className="w-32 h-8"
+                          placeholder="Or select custom date"
+                          {...field} 
+                        />
                       </div>
-                      <Input 
-                        type="date" 
-                        placeholder="Or select custom date"
-                        {...field} 
-                      />
-                    </div>
-                  </FormControl>
+                    </FormControl>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
