@@ -549,7 +549,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.anticipatedDate.toUpperCase()}</span>
                               </div>
                               <div className="flex items-center" title="Contract Practical Completion Date">
-                                <span className="text-white px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px', backgroundColor: 'rgba(31, 41, 55, 0.7)', border: '1px solid rgba(31, 41, 55, 0.7)' }}>CONTR</span>
+                                <span className="text-white border border-gray-800 px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px', backgroundColor: 'rgba(31, 41, 55, 0.7)' }}>CONTR</span>
                                 <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.contractDate.toUpperCase()}</span>
                               </div>
                               {/* Project value or retention display */}
