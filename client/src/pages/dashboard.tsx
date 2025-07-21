@@ -391,7 +391,7 @@ export default function Dashboard() {
           <h2 className="text-lg font-medium text-action-text-primary">
             Current Actions ({totalActions})
             {(statusFilter || disciplineFilter || phaseFilter || projectFilter || assigneeFilter) && (
-              <span className="text-gray-500">
+              <span className="text-gray-500 text-xs">
                 {' - '}
                 <span className="inline-flex items-center gap-2">
                   {statusFilter && (
@@ -406,7 +406,7 @@ export default function Dashboard() {
                   )}
                   {disciplineFilter && (
                     <>
-                      {statusFilter && <span>,</span>}
+                      {statusFilter && <span>-</span>}
                       <span className="relative">
                         {disciplineFilter.charAt(0).toUpperCase() + disciplineFilter.slice(1)}
                         <div className={`absolute -bottom-0.5 left-0 right-0 h-0.5 ${
@@ -423,7 +423,7 @@ export default function Dashboard() {
                   )}
                   {phaseFilter && (
                     <>
-                      {(statusFilter || disciplineFilter) && <span>,</span>}
+                      {(statusFilter || disciplineFilter) && <span>-</span>}
                       <span className="relative">
                         {phaseFilter.charAt(0).toUpperCase() + phaseFilter.slice(1)}
                         <div className={`absolute -bottom-0.5 left-0 right-0 h-0.5 ${
@@ -439,7 +439,7 @@ export default function Dashboard() {
                   )}
                   {projectFilter && (
                     <>
-                      {(statusFilter || disciplineFilter || phaseFilter) && <span>,</span>}
+                      {(statusFilter || disciplineFilter || phaseFilter) && <span>-</span>}
                       <span 
                         className="relative cursor-pointer hover:line-through transition-all"
                         onClick={() => setProjectFilter(null)}
@@ -452,7 +452,7 @@ export default function Dashboard() {
                   )}
                   {assigneeFilter && (
                     <>
-                      {(statusFilter || disciplineFilter || phaseFilter || projectFilter) && <span>,</span>}
+                      {(statusFilter || disciplineFilter || phaseFilter || projectFilter) && <span>-</span>}
                       <span 
                         className="relative cursor-pointer hover:line-through transition-all"
                         onClick={() => setAssigneeFilter("")}
