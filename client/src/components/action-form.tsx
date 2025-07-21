@@ -592,7 +592,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                                 key={status.value}
                                 type="button"
                                 onClick={() => field.onChange(status.value)}
-                                className={`px-3 py-1 rounded-full text-xs font-medium transition-colors flex-1 ${
+                                className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors ${
                                   field.value === status.value
                                     ? status.value === "open" ? "bg-[#cc3333] text-white" : "bg-gray-400 text-white"
                                     : "bg-gray-100 text-gray-600 hover:bg-gray-150 border border-gray-200"
@@ -625,11 +625,10 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                         )}
                       </div>
                       <FormControl>
-                        <div className="flex items-center justify-between">
-                          <div className="flex gap-2 flex-1">
+                        <div className="flex items-center gap-2">
+                          <div className="flex gap-2">
                             {[
                               { label: "2d", days: 2 },
-                              { label: "4d", days: 4 },
                               { label: "1w", days: 7 },
                               { label: "2w", days: 14 },
                               { label: "1m", days: 30 }
@@ -654,25 +653,11 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                               );
                             })}
                           </div>
-                          <div className="relative ml-2">
-                            <Input 
-                              type="date" 
-                              className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 cursor-pointer border-0 text-transparent file:bg-transparent file:border-0 file:text-transparent focus:text-transparent focus:ring-0 focus:ring-offset-0"
-                              style={{
-                                WebkitAppearance: 'none',
-                                colorScheme: 'light'
-                              }}
-                              {...field} 
-                            />
-                            <div className="absolute inset-0 pointer-events-none flex items-center justify-center text-gray-600">
-                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" strokeWidth="2"/>
-                                <line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" strokeWidth="2"/>
-                                <line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" strokeWidth="2"/>
-                                <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth="2"/>
-                              </svg>
-                            </div>
-                          </div>
+                          <Input 
+                            type="date" 
+                            className="flex-1 h-8"
+                            {...field} 
+                          />
                         </div>
                       </FormControl>
                       <FormMessage />
