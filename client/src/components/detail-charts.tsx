@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, AreaChart, Area, Legend } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, AreaChart, Area, Legend, Sector } from "recharts";
 import { Project } from "@shared/schema";
 
 // Status colors using darker shades for better visibility while maintaining theme
@@ -179,13 +179,15 @@ export default function DetailCharts() {
                   cy="50%"
                   labelLine={false}
                   label={false}
-                  innerRadius={10}
                   outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"
                   stroke="#000000"
                   strokeWidth={1}
-                  paddingAngle={4}
+                  paddingAngle={5}
+                  activeShape={(props) => {
+                    return <Sector {...props} outerRadius={props.outerRadius + 5} />;
+                  }}
                 >
                   {statusChartData.map((entry, index) => {
                     const statusColor = STATUS_COLORS[entry.name.toLowerCase()] || CHART_COLORS[index % CHART_COLORS.length];
