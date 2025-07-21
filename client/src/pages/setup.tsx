@@ -216,7 +216,7 @@ export default function Setup({ onTabChange }: SetupProps) {
       }}>
         <TabsList className="grid w-full bg-transparent" style={{ gridTemplateColumns: '20% 60% 20%' }}>
           <TabsTrigger value="projects" className="flex flex-col items-center gap-1 data-[state=active]:bg-transparent data-[state=active]:shadow-none text-gray-400 data-[state=active]:text-gray-700">
-            <FileText className="h-6 w-6" />
+            <FileText className="h-6 w-6 text-gray-400 data-[state=active]:text-primary" />
             <span className="text-base">Projects</span>
           </TabsTrigger>
           <TabsTrigger value="live" className="flex items-center justify-center cursor-not-allowed text-xs !opacity-100" disabled>
@@ -253,7 +253,7 @@ export default function Setup({ onTabChange }: SetupProps) {
             })()}
           </TabsTrigger>
           <TabsTrigger value="users" className="flex flex-col items-center gap-1 data-[state=active]:bg-transparent data-[state=active]:shadow-none text-gray-400 data-[state=active]:text-gray-700">
-            <LayoutDashboard className="h-6 w-6" />
+            <LayoutDashboard className="h-6 w-6 text-gray-400 data-[state=active]:text-primary" />
             <span className="text-base">Dash</span>
           </TabsTrigger>
         </TabsList>
