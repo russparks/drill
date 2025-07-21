@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Building, ChevronDown } from "lucide-react";
+import { Building, ChevronDown, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -37,12 +37,13 @@ export default function ProjectsDropdown({ onProjectSelect, selectedProjectId }:
       <DropdownMenuTrigger asChild>
         <Button 
           variant="outline"
-          className={`flex items-center space-x-2 ${
+          size="sm"
+          className={`flex items-center space-x-1 px-3 py-2 h-8 ${
             selectedProject ? 'bg-[#cc3333] text-white border-[#cc3333] hover:bg-[#cc3333]/90' : ''
           }`}
         >
-          <span>Projects</span>
-          <ChevronDown className="h-4 w-4" />
+          <span className="text-sm">Projects</span>
+          <Filter className="h-3 w-3" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-80">
