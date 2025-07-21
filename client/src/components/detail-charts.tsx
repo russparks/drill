@@ -179,12 +179,13 @@ export default function DetailCharts() {
                   cy="50%"
                   labelLine={false}
                   label={false}
+                  innerRadius={10}
                   outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"
                   stroke="#000000"
                   strokeWidth={1}
-                  paddingAngle={2}
+                  paddingAngle={4}
                 >
                   {statusChartData.map((entry, index) => {
                     const statusColor = STATUS_COLORS[entry.name.toLowerCase()] || CHART_COLORS[index % CHART_COLORS.length];
