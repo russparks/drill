@@ -219,7 +219,8 @@ export default function Setup({ onTabChange }: SetupProps) {
             <LayoutDashboard className="h-4 w-4" />
             Dash
           </TabsTrigger>
-          <TabsTrigger value="live" className="flex items-center gap-2 opacity-50 cursor-not-allowed" disabled>
+          <TabsTrigger value="live" className="flex items-center justify-center opacity-50 cursor-not-allowed" disabled>
+            Item 1 - Item 2 - Item 3
           </TabsTrigger>
           <TabsTrigger value="users" className="flex items-center gap-2">
             <FileText className="h-4 w-4" />
