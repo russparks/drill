@@ -154,10 +154,30 @@ export default function DetailCharts() {
     return {
       assignee: formattedName,
       count,
-      fill: '#d1d5db', // Light grey fill
-      stroke: '#6b7280', // Dark grey stroke
     };
   }).sort((a, b) => b.count - a.count);
+
+  // Calculate color based on value (green low, red high)
+  const maxCount = Math.max(...actionsByPersonData.map(d => d.count));
+  const minCount = Math.min(...actionsByPersonData.map(d => d.count));
+  
+  const getColorForValue = (value: number) => {
+    if (maxCount === minCount) return { fill: '#d1d5db', stroke: '#6b7280' }; // Default grey if all same
+    
+    const ratio = (value - minCount) / (maxCount - minCount);
+    // Green to Red gradient
+    const red = Math.round(255 * ratio);
+    const green = Math.round(255 * (1 - ratio));
+    const fillColor = `rgb(${red}, ${green}, 100)`; // Light version
+    const strokeColor = `rgb(${Math.round(red * 0.7)}, ${Math.round(green * 0.7)}, 70)`; // Darker version
+    
+    return { fill: fillColor, stroke: strokeColor };
+  };
+
+  const coloredAssigneeData = actionsByPersonData.map(item => ({
+    ...item,
+    ...getColorForValue(item.count)
+  }));
 
   // Average Time for Closed Actions (simulated data based on action complexity)
   const avgClosureTimeData = [
@@ -318,7 +338,7 @@ export default function DetailCharts() {
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={actionsByPersonData}>
+              <BarChart data={coloredAssigneeData}>
                 <XAxis 
                   dataKey="assignee" 
                   angle={-45} 
@@ -330,7 +350,7 @@ export default function DetailCharts() {
                 />
                 <Tooltip />
                 <Bar dataKey="count" strokeWidth={0.7} barSize={30}>
-                  {actionsByPersonData.map((entry, index) => (
+                  {coloredAssigneeData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.fill} stroke={entry.stroke} />
                   ))}
                   <LabelList 
