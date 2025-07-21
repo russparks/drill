@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
-import { Project, User, InsertProject, InsertUser } from "@shared/schema";
+import { Project, InsertProject } from "@shared/schema";
 import ConfirmDialog from "@/components/confirm-dialog";
 
 interface SetupProps {
@@ -18,13 +18,11 @@ interface SetupProps {
 
 export default function Setup({ onTabChange }: SetupProps) {
   const [isProjectDialogOpen, setIsProjectDialogOpen] = useState(false);
-  const [isUserDialogOpen, setIsUserDialogOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [selectedPhase, setSelectedPhase] = useState<"tender" | "precon" | "construction" | "aftercare">("tender");
   const [workingWeeks, setWorkingWeeks] = useState({ startToContract: 0, startToAnticipated: 0, anticipatedToContract: 0 });
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState<{ type: 'project' | 'user', id: number, name: string } | null>(null);
+  const [itemToDelete, setItemToDelete] = useState<{ type: 'project', id: number, name: string } | null>(null);
   const { toast } = useToast();
 
   // State for active tab
@@ -38,10 +36,7 @@ export default function Setup({ onTabChange }: SetupProps) {
       setIsProjectDialogOpen(true);
     };
 
-    const handleOpenPersonModal = () => {
-      setSelectedUser(null);
-      setIsUserDialogOpen(true);
-    };
+
 
     const handleSwitchToUsersTab = () => {
       setActiveTab("users");
@@ -49,12 +44,12 @@ export default function Setup({ onTabChange }: SetupProps) {
     };
 
     window.addEventListener('openProjectModal', handleOpenProjectModal);
-    window.addEventListener('openPersonModal', handleOpenPersonModal);
+
     window.addEventListener('switchToUsersTab', handleSwitchToUsersTab);
     
     return () => {
       window.removeEventListener('openProjectModal', handleOpenProjectModal);
-      window.removeEventListener('openPersonModal', handleOpenPersonModal);
+
       window.removeEventListener('switchToUsersTab', handleSwitchToUsersTab);
     };
   }, [onTabChange]);
@@ -85,10 +80,6 @@ export default function Setup({ onTabChange }: SetupProps) {
 
   const { data: projects = [], isLoading: projectsLoading } = useQuery<Project[]>({
     queryKey: ["/api/projects"],
-  });
-
-  const { data: users = [], isLoading: usersLoading } = useQuery<User[]>({
-    queryKey: ["/api/users"],
   });
 
   const createProjectMutation = useMutation({
@@ -139,57 +130,6 @@ export default function Setup({ onTabChange }: SetupProps) {
     },
     onError: () => {
       toast({ title: "Error", description: "Failed to delete project", variant: "destructive" });
-    },
-  });
-
-  const createUserMutation = useMutation({
-    mutationFn: (user: InsertUser) => 
-      apiRequest("POST", "/api/users", user),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/users"] });
-      setIsUserDialogOpen(false);
-      toast({ 
-        title: "User Created",
-        className: "bg-[#b9f6b6] text-[#079800] border-[#079800] !p-2 !px-4 !pr-4 w-auto max-w-none min-w-fit text-center justify-center",
-        duration: 5000,
-      });
-    },
-    onError: () => {
-      toast({ title: "Error", description: "Failed to create user", variant: "destructive" });
-    },
-  });
-
-  const updateUserMutation = useMutation({
-    mutationFn: ({ id, ...user }: User) => 
-      apiRequest("PATCH", `/api/users/${id}`, user),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/users"] });
-      setIsUserDialogOpen(false);
-      setSelectedUser(null);
-      toast({ 
-        title: "User Updated",
-        className: "bg-[#b9f6b6] text-[#079800] border-[#079800] !p-2 !px-4 !pr-4 w-auto max-w-none min-w-fit text-center justify-center",
-        duration: 5000,
-      });
-    },
-    onError: () => {
-      toast({ title: "Error", description: "Failed to update user", variant: "destructive" });
-    },
-  });
-
-  const deleteUserMutation = useMutation({
-    mutationFn: (id: number) => 
-      apiRequest("DELETE", `/api/users/${id}`),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/users"] });
-      toast({ 
-        title: "User Deleted",
-        className: "bg-[#b9f6b6] text-[#079800] border-[#079800] !p-2 !px-4 !pr-4 w-auto max-w-none min-w-fit text-center justify-center",
-        duration: 5000,
-      });
-    },
-    onError: () => {
-      toast({ title: "Error", description: "Failed to delete user", variant: "destructive" });
     },
   });
 
@@ -263,22 +203,7 @@ export default function Setup({ onTabChange }: SetupProps) {
     }
   };
 
-  const handleUserSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const userData = {
-      username: formData.get("username") as string,
-      name: formData.get("name") as string,
-      email: formData.get("email") as string,
-      password: formData.get("password") as string || "password123",
-    };
 
-    if (selectedUser) {
-      updateUserMutation.mutate({ ...selectedUser, ...userData });
-    } else {
-      createUserMutation.mutate(userData);
-    }
-  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -689,128 +614,21 @@ export default function Setup({ onTabChange }: SetupProps) {
         </TabsContent>
 
         <TabsContent value="users" className="space-y-6">
-          <div className="flex justify-between items-center">
-            <h2 className="text-lg font-medium text-action-text-primary">People</h2>
-            <Dialog open={isUserDialogOpen} onOpenChange={setIsUserDialogOpen}>
-              <DialogTrigger asChild>
-                <Button onClick={() => setSelectedUser(null)}>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Person
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>{selectedUser ? "Edit Person" : "Add New Person"}</DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleUserSubmit} className="space-y-4">
-                  <div>
-                    <Label htmlFor="name">Full Name</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      defaultValue={selectedUser?.name}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="username">Username</Label>
-                    <Input
-                      id="username"
-                      name="username"
-                      defaultValue={selectedUser?.username}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      defaultValue={selectedUser?.email}
-                      required
-                    />
-                  </div>
-                  {!selectedUser && (
-                    <div>
-                      <Label htmlFor="password">Password</Label>
-                      <Input
-                        id="password"
-                        name="password"
-                        type="password"
-                        placeholder="Default: password123"
-                      />
-                    </div>
-                  )}
-                  <div className="flex justify-end space-x-2">
-                    <Button type="button" variant="outline" onClick={() => setIsUserDialogOpen(false)}>
-                      Cancel
-                    </Button>
-                    <Button type="submit">
-                      {selectedUser ? "Update" : "Create"}
-                    </Button>
-                  </div>
-                </form>
-              </DialogContent>
-            </Dialog>
-          </div>
-
-          <div className="grid gap-4">
-            {usersLoading ? (
-              <div>Loading people...</div>
-            ) : (
-              users.map((user: User) => (
-                <Card key={user.id} className="material-shadow">
-                  <CardHeader>
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <CardTitle className="text-lg">{user.name}</CardTitle>
-                        <p className="text-sm text-action-text-secondary">@{user.username}</p>
-                        <p className="text-sm text-action-text-secondary">{user.email}</p>
-                      </div>
-                      <div className="flex space-x-2">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => {
-                            setSelectedUser(user);
-                            setIsUserDialogOpen(true);
-                          }}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => {
-                            setItemToDelete({ type: 'user', id: user.id, name: user.name });
-                            setIsConfirmDialogOpen(true);
-                          }}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </CardHeader>
-                </Card>
-              ))
-            )}
-          </div>
+          {/* Empty page for now */}
         </TabsContent>
       </Tabs>
 
       <ConfirmDialog
         open={isConfirmDialogOpen}
         onOpenChange={setIsConfirmDialogOpen}
-        title={`Delete ${itemToDelete?.type === 'project' ? 'Project' : 'Person'}`}
+        title="Delete Project"
         description={`Are you sure you want to delete "${itemToDelete?.name}"? This action cannot be undone.`}
         onConfirm={() => {
-          if (itemToDelete?.type === 'project') {
+          if (itemToDelete) {
             deleteProjectMutation.mutate(itemToDelete.id);
-          } else if (itemToDelete?.type === 'user') {
-            deleteUserMutation.mutate(itemToDelete.id);
           }
           setItemToDelete(null);
+          setIsConfirmDialogOpen(false);
         }}
         confirmText="Delete"
         cancelText="Cancel"
