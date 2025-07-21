@@ -241,7 +241,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
             {action ? "Edit Action" : "New Action"}
@@ -494,7 +494,7 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                         <SelectContent>
                           {(users as User[]).map((user) => (
                             <SelectItem key={user.id} value={user.id.toString()}>
-                              {user.name} ({user.email})
+                              {user.name}
                             </SelectItem>
                           ))}
                           <SelectItem value="new">+ New Person</SelectItem>
@@ -545,19 +545,20 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                       <FormControl>
                         <div className="flex gap-1">
                           {[
-                            { value: "low", label: "L", color: "bg-green-600" },
-                            { value: "medium", label: "M", color: "bg-amber-600" },
-                            { value: "high", label: "H", color: "bg-red-600" }
+                            { value: "low", label: "LOW", hex: "#4ce40c" },
+                            { value: "medium", label: "MED", hex: "#ffbd4e" },
+                            { value: "high", label: "HIGH", hex: "#ff6a5e" }
                           ].map((priority) => (
                             <button
                               key={priority.value}
                               type="button"
                               onClick={() => field.onChange(priority.value)}
-                              className={`px-2 py-1 rounded-full text-xs font-bold text-white transition-all ${
+                              className={`px-4 py-1 rounded-full text-xs font-medium transition-colors flex-1 ${
                                 field.value === priority.value
-                                  ? `${priority.color} scale-110`
-                                  : `${priority.color} opacity-50 hover:opacity-75`
+                                  ? `bg-gray-200 border border-gray-300`
+                                  : `bg-gray-100 text-gray-600 hover:bg-gray-150 border border-gray-200`
                               }`}
+                              style={field.value === priority.value ? { color: priority.hex } : {}}
                             >
                               {priority.label}
                             </button>
@@ -578,17 +579,27 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Status</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="h-8">
-                          <SelectValue />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="open">Open</SelectItem>
-                        <SelectItem value="closed">Closed</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <div className="flex gap-2">
+                        {[
+                          { value: "open", label: "OPEN" },
+                          { value: "closed", label: "CLOSED" }
+                        ].map((status) => (
+                          <button
+                            key={status.value}
+                            type="button"
+                            onClick={() => field.onChange(status.value)}
+                            className={`px-4 py-1 rounded-full text-xs font-medium transition-colors ${
+                              field.value === status.value
+                                ? "bg-[#cc3333] text-white"
+                                : "bg-gray-100 text-gray-600 hover:bg-gray-150 border border-gray-200"
+                            }`}
+                          >
+                            {status.label}
+                          </button>
+                        ))}
+                      </div>
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -600,47 +611,59 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
               name="dueDate"
               render={({ field }) => (
                 <FormItem>
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-4 mb-2">
                     <FormLabel className="min-w-[80px]">Due Date</FormLabel>
-                    <FormControl>
-                      <div className="flex items-center gap-2 flex-1">
-                        <div className="flex gap-1">
-                          {[
-                            { label: "2d", days: 2 },
-                            { label: "4d", days: 4 },
-                            { label: "1w", days: 7 },
-                            { label: "2w", days: 14 },
-                            { label: "1m", days: 30 }
-                          ].map((option) => {
-                            const date = new Date();
-                            date.setDate(date.getDate() + option.days);
-                            const dateString = date.toISOString().split('T')[0];
-                            
-                            return (
-                              <button
-                                key={option.label}
-                                type="button"
-                                onClick={() => field.onChange(dateString)}
-                                className={`w-8 h-8 rounded-full text-xs font-medium transition-colors ${
-                                  field.value === dateString
-                                    ? "bg-blue-600 text-white"
-                                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                                }`}
-                              >
-                                {option.label}
-                              </button>
-                            );
-                          })}
-                        </div>
+                    {field.value && (
+                      <span className="text-sm text-gray-500">
+                        {new Date(field.value).toLocaleDateString()}
+                      </span>
+                    )}
+                  </div>
+                  <FormControl>
+                    <div className="flex items-center gap-2">
+                      <div className="flex gap-1">
+                        {[
+                          { label: "2d", days: 2 },
+                          { label: "4d", days: 4 },
+                          { label: "1w", days: 7 },
+                          { label: "2w", days: 14 },
+                          { label: "1m", days: 30 }
+                        ].map((option) => {
+                          const date = new Date();
+                          date.setDate(date.getDate() + option.days);
+                          const dateString = date.toISOString().split('T')[0];
+                          
+                          return (
+                            <button
+                              key={option.label}
+                              type="button"
+                              onClick={() => field.onChange(dateString)}
+                              className={`w-8 h-8 rounded-full text-xs font-medium transition-colors ${
+                                field.value === dateString
+                                  ? "bg-[#cc3333] text-white"
+                                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                              }`}
+                            >
+                              {option.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                      <div className="relative">
                         <Input 
                           type="date" 
-                          className="w-32 h-8"
-                          placeholder="Or select custom date"
+                          className="w-8 h-8 opacity-0 absolute"
                           {...field} 
                         />
+                        <button
+                          type="button"
+                          className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600"
+                        >
+                          📅
+                        </button>
                       </div>
-                    </FormControl>
-                  </div>
+                    </div>
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
