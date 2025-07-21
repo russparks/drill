@@ -315,7 +315,7 @@ export default function DetailCharts() {
                 <XAxis dataKey="discipline" angle={-45} textAnchor="end" height={60} tick={{ fontSize: 11 }} />
                 <YAxis tick={{ fontSize: 11 }} />
                 <Tooltip />
-                <Bar dataKey="count" strokeWidth={1.2}>
+                <Bar dataKey="count" strokeWidth={1.2} barSize={34} radius={[4, 4, 0, 0]}>
                   {disciplineChartData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.fill} stroke={entry.stroke} />
                   ))}
@@ -414,7 +414,7 @@ export default function DetailCharts() {
                 <XAxis dataKey="discipline" angle={-45} textAnchor="end" height={60} tick={{ fontSize: 11 }} />
                 <YAxis tick={{ fontSize: 11 }} />
                 <Tooltip formatter={(value) => [`${value} days`, 'Avg Time']} />
-                <Bar dataKey="avgDays" strokeWidth={1.2}>
+                <Bar dataKey="avgDays" strokeWidth={1.2} barSize={34} radius={[4, 4, 0, 0]}>
                   {avgClosureTimeData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.fill} stroke={entry.stroke} />
                   ))}
