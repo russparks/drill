@@ -368,17 +368,15 @@ export default function DetailCharts() {
                 <RadialBar 
                   dataKey="value" 
                   cornerRadius={3}
-                  label={{ 
-                    position: 'insideStart', 
-                    fontSize: 10, 
-                    fill: '#1f2937', 
-                    fontWeight: '600',
-                    formatter: (value, entry) => `${entry.assignee}: ${entry.count}`
-                  }}
                 >
                   {coloredAssigneeData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.fill} stroke={entry.stroke} strokeWidth={1} />
                   ))}
+                  <LabelList 
+                    dataKey="count" 
+                    position="center" 
+                    style={{ fontSize: '10px', fill: '#1f2937', fontWeight: '600' }}
+                  />
                 </RadialBar>
                 <Tooltip 
                   formatter={(value, name, props) => [`${props.payload.count} actions`, props.payload.assignee]} 
