@@ -603,7 +603,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                               
                               return (
                                 <div 
-                                  className="absolute w-1 h-3 bg-black -top-1"
+                                  className="absolute w-1 h-2 bg-gray-400 rounded-sm -top-0.5"
                                   style={{ left: `calc(${currentPercent}% - 2px)` }}
                                   title="Today"
                                 />
