@@ -554,9 +554,36 @@ export default function Setup({ onTabChange }: SetupProps) {
 
                           </div>
                         )}
-                        
-                        {/* Timeline bar chart */}
-                        {weekInfo && (
+                      </div>
+                      <div className="flex space-x-1 ml-2">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-7 w-7"
+                          onClick={() => {
+                            setSelectedProject(project);
+                            setSelectedPhase(project.status || "tender");
+                            setIsProjectDialogOpen(true);
+                          }}
+                        >
+                          <Edit className="h-3 w-3" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-7 w-7"
+                          onClick={() => {
+                            setItemToDelete({ type: 'project', id: project.id, name: project.name });
+                            setIsConfirmDialogOpen(true);
+                          }}
+                        >
+                          <Trash2 className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    {/* Timeline bar chart - full width */}
+                    {weekInfo && (
                           <div className="mt-2 relative">
                             <div className="w-full h-1 bg-gray-100 rounded-sm overflow-hidden flex">
                               {(() => {
@@ -630,33 +657,6 @@ export default function Setup({ onTabChange }: SetupProps) {
 
                           </div>
                         )}
-                      </div>
-                      <div className="flex space-x-1 ml-2">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-7 w-7"
-                          onClick={() => {
-                            setSelectedProject(project);
-                            setSelectedPhase(project.status || "tender");
-                            setIsProjectDialogOpen(true);
-                          }}
-                        >
-                          <Edit className="h-3 w-3" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-7 w-7"
-                          onClick={() => {
-                            setItemToDelete({ type: 'project', id: project.id, name: project.name });
-                            setIsConfirmDialogOpen(true);
-                          }}
-                        >
-                          <Trash2 className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    </div>
                     </CardContent>
                   </Card>
                   
