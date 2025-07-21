@@ -505,7 +505,8 @@ export default function Setup({ onTabChange }: SetupProps) {
                 const weekInfo = getCurrentWeekInfo();
                 
                 return (
-                <Card key={project.id} className="material-shadow">
+                  <div key={project.id}>
+                    <Card className="material-shadow">
                   <CardContent className="p-2.5 pb-8">
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
@@ -513,11 +514,6 @@ export default function Setup({ onTabChange }: SetupProps) {
                           <CardTitle className="text-lg">{project.name}</CardTitle>
                           {project.projectNumber && (
                             <span className="text-sm text-action-text-secondary">({project.projectNumber})</span>
-                          )}
-                          {weekInfo && (
-                            <span className="text-gray-600 ml-4" style={{ fontSize: '10.2px' }}>
-                              Construction Rem: <span className="font-bold text-blue-300">{Math.max(0, weekInfo.totalWeeksToAnticipated - weekInfo.currentWeek)}</span> | Contract Rem: <span className="font-bold text-gray-800">{Math.max(0, weekInfo.totalWeeksToContract - weekInfo.currentWeek)}</span>
-                            </span>
                           )}
                           {/* Process indicator */}
                           <div className="ml-auto">
@@ -661,10 +657,18 @@ export default function Setup({ onTabChange }: SetupProps) {
                         </Button>
                       </div>
                     </div>
-                  </CardContent>
-                </Card>
-                );
-              })
+                    </CardContent>
+                  </Card>
+                  
+                  {/* Remaining weeks display - outside project card */}
+                  {weekInfo && (
+                    <div className="mt-2 text-gray-600" style={{ fontSize: '10.2px' }}>
+                      Construction Rem: <span className="font-bold text-blue-300">{Math.max(0, weekInfo.totalWeeksToAnticipated - weekInfo.currentWeek)}</span> | Contract Rem: <span className="font-bold text-gray-800">{Math.max(0, weekInfo.totalWeeksToContract - weekInfo.currentWeek)}</span>
+                    </div>
+                  )}
+                </div>
+              );
+            })
             )}
           </div>
         </TabsContent>
