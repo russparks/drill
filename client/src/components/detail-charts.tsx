@@ -5,10 +5,10 @@ import { Project } from "@shared/schema";
 
 // Status colors based on the provided scheme
 const STATUS_COLORS: Record<string, string> = {
-  'tender': '#22d3ee', // Cyan 400
-  'precon': '#34d399', // Emerald 400
-  'construction': '#fde68a', // Amber 200
-  'aftercare': '#9ca3af', // Gray 400
+  'tender': '#0ea5e9', // Sky 400
+  'precon': '#6ee7b7', // Emerald 300
+  'construction': '#fde047', // Yellow 300
+  'aftercare': '#d1d5db', // Gray 300
 };
 
 // Discipline colors matching the button scheme
