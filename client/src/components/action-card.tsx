@@ -134,7 +134,7 @@ export default function ActionCard({ action, onEdit, onComplete, onAssigneeClick
   };
 
   return (
-    <div className={`action-card border-b border-gray-100 last:border-b-0 p-4 ${isEven ? 'bg-gray-50' : 'bg-white'}`}>
+    <div className={`action-card border-b border-gray-100 last:border-b-0 p-4 rounded-none ${isEven ? 'bg-gray-50' : 'bg-white'}`}>
       {isMobile ? (
         /* Mobile Layout */
         <>
