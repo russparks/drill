@@ -352,34 +352,39 @@ export default function DetailCharts() {
             <CardTitle className="text-lg text-center text-gray-600">Actions by Assignee</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={250}>
-              <BarChart 
-                data={coloredAssigneeData} 
-                margin={{ top: 2, right: 2, left: 2, bottom: 10 }}
-                barCategoryGap="1%"
+            <ResponsiveContainer width="100%" height={300}>
+              <RadialBarChart 
+                cx="50%" 
+                cy="50%" 
+                innerRadius="20%" 
+                outerRadius="80%" 
+                startAngle={90}
+                endAngle={-270}
+                data={coloredAssigneeData.map((entry, index) => ({
+                  ...entry,
+                  value: Math.round((entry.count / Math.max(...coloredAssigneeData.map(d => d.count))) * 100),
+                }))}
               >
-                <XAxis 
-                  dataKey="assignee" 
-                  angle={-90} 
-                  textAnchor="start" 
-                  height={80} 
-                  tick={{ fontSize: 11, dx: -30, dy: -8 }}
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <Tooltip />
-                <Bar dataKey="count" strokeWidth={0.7} barSize={15}>
+                <RadialBar 
+                  dataKey="value" 
+                  cornerRadius={3}
+                  label={{ 
+                    position: 'insideStart', 
+                    fontSize: 10, 
+                    fill: '#1f2937', 
+                    fontWeight: '600',
+                    formatter: (value, entry) => `${entry.assignee}: ${entry.count}`
+                  }}
+                >
                   {coloredAssigneeData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.fill} stroke={entry.stroke} />
+                    <Cell key={`cell-${index}`} fill={entry.fill} stroke={entry.stroke} strokeWidth={1} />
                   ))}
-                  <LabelList 
-                    dataKey="count" 
-                    position="bottom" 
-                    style={{ fontSize: '12px', fill: '#374151', fontWeight: '500' }} 
-                    offset={5}
-                  />
-                </Bar>
-              </BarChart>
+                </RadialBar>
+                <Tooltip 
+                  formatter={(value, name, props) => [`${props.payload.count} actions`, props.payload.assignee]} 
+                  labelFormatter={() => ''}
+                />
+              </RadialBarChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
