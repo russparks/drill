@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, AreaChart, Area, Legend, Sector, RadialBarChart, RadialBar } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, AreaChart, Area, Legend, Sector, RadialBarChart, RadialBar, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from "recharts";
 import { Project } from "@shared/schema";
 
 // Status colors using darker shades for better visibility while maintaining theme
@@ -199,24 +199,30 @@ export default function DetailCharts() {
           </CardContent>
         </Card>
 
-        {/* Project Values by Status - Bar Chart */}
+        {/* Project Values by Status - Radar Chart */}
         <Card>
           <CardHeader>
             <CardTitle className="text-lg text-center text-gray-600">Project Values by Status (£M)</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={valueChartData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="status" tick={{ fontSize: 11 }} />
-                <YAxis tick={{ fontSize: 11 }} />
+              <RadarChart data={valueChartData}>
+                <PolarGrid />
+                <PolarAngleAxis dataKey="status" tick={{ fontSize: 11 }} />
+                <PolarRadiusAxis 
+                  tick={{ fontSize: 10 }} 
+                  tickFormatter={(value) => `£${value}M`}
+                />
+                <Radar 
+                  name="Value" 
+                  dataKey="value" 
+                  stroke="#cc3333" 
+                  fill="#cc3333" 
+                  fillOpacity={0.3}
+                  strokeWidth={2}
+                />
                 <Tooltip formatter={(value) => [`£${value}M`, 'Value']} />
-                <Bar dataKey="value">
-                  {valueChartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={STATUS_COLORS[entry.status.toLowerCase()] || CHART_COLORS[index % CHART_COLORS.length]} />
-                  ))}
-                </Bar>
-              </BarChart>
+              </RadarChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
