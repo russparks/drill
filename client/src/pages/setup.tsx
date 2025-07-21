@@ -550,7 +550,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.contractDate.toUpperCase()}</span>
                               </div>
                             </div>
-                            <span className="bg-gray-200 text-black border border-gray-300 px-1 py-0.5 rounded-sm" style={{ fontSize: '10px' }}>W{weekInfo.currentWeek} OF {weekInfo.totalWeeksToAnticipated}({weekInfo.totalWeeksToContract})</span>
+                            <span className="bg-gray-100 text-black border border-gray-200 px-1 py-0 rounded-md" style={{ fontSize: '10px', lineHeight: '1.2' }}>w{weekInfo.currentWeek} OF {weekInfo.totalWeeksToAnticipated} ({weekInfo.totalWeeksToContract})</span>
                           </div>
                         )}
                       </div>
