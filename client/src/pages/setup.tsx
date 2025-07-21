@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { Plus, Edit, Trash2, Users, Building } from "lucide-react";
+import { Plus, Edit, Trash2, LayoutDashboard, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -215,11 +215,11 @@ export default function Setup({ onTabChange }: SetupProps) {
       }}>
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="projects" className="flex items-center gap-2">
-            <Building className="h-4 w-4" />
+            <LayoutDashboard className="h-4 w-4" />
             Dash
           </TabsTrigger>
           <TabsTrigger value="users" className="flex items-center gap-2">
-            <Users className="h-4 w-4" />
+            <FileText className="h-4 w-4" />
             Detail
           </TabsTrigger>
         </TabsList>
