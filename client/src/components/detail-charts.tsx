@@ -3,12 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, AreaChart, Area, Legend } from "recharts";
 import { Project } from "@shared/schema";
 
-// Status colors based on the provided scheme
+// Status colors matching the phase badge colors from ActionCard
 const STATUS_COLORS: Record<string, string> = {
-  'tender': '#0ea5e9', // Sky 400
-  'precon': '#6ee7b7', // Emerald 300
-  'construction': '#fde047', // Yellow 300
-  'aftercare': '#d1d5db', // Gray 300
+  'tender': '#eff6ff', // bg-blue-50
+  'precon': '#f0fdf4', // bg-green-50
+  'construction': '#fefce8', // bg-yellow-50
+  'aftercare': '#f9fafb', // bg-gray-50
 };
 
 // Discipline colors matching the button scheme
