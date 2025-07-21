@@ -348,43 +348,47 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                       {[
                         { 
                           value: "operations", 
-                          label: "OPS", 
-                          color: "bg-blue-600"
+                          label: "OPERATIONS"
                         },
                         { 
                           value: "commercial", 
-                          label: "COMM", 
-                          color: "bg-cyan-500"
+                          label: "COMMERCIAL"
                         },
                         { 
                           value: "design", 
-                          label: "DES", 
-                          color: "bg-purple-500"
+                          label: "DESIGN"
                         },
                         { 
                           value: "she", 
-                          label: "SHE", 
-                          color: "bg-orange-500"
+                          label: "SHE"
                         },
                         { 
                           value: "qa", 
-                          label: "QA", 
-                          color: "bg-indigo-500"
+                          label: "QA"
                         },
                         { 
                           value: "general", 
-                          label: "GEN", 
-                          color: "bg-gray-600"
+                          label: "GENERAL"
                         }
                       ].map((discipline) => (
                         <button
                           key={discipline.value}
                           type="button"
                           onClick={() => field.onChange(discipline.value)}
-                          className={`px-2 py-1 rounded-full text-xs font-bold text-white transition-all ${
+                          className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors border ${
                             field.value === discipline.value
-                              ? `${discipline.color} scale-110`
-                              : `${discipline.color} opacity-50 hover:opacity-75`
+                              ? discipline.value === "operations" ? "bg-blue-600 text-white border-blue-800" :
+                                discipline.value === "commercial" ? "bg-cyan-500 text-white" :
+                                discipline.value === "design" ? "bg-purple-500 text-white" :
+                                discipline.value === "she" ? "bg-orange-500 text-white" :
+                                discipline.value === "qa" ? "bg-indigo-500 text-white" :
+                                "bg-gray-600 text-white"
+                              : discipline.value === "operations" ? "bg-blue-100 text-blue-800 border-blue-600 hover:bg-blue-200" :
+                                discipline.value === "commercial" ? "bg-cyan-100 text-cyan-800 hover:bg-cyan-200" :
+                                discipline.value === "design" ? "bg-purple-100 text-purple-800 hover:bg-purple-200" :
+                                discipline.value === "she" ? "bg-orange-100 text-orange-800 hover:bg-orange-200" :
+                                discipline.value === "qa" ? "bg-indigo-100 text-indigo-800 hover:bg-indigo-200" :
+                                "bg-gray-100 text-gray-800 hover:bg-gray-200"
                           }`}
                         >
                           {discipline.label}
@@ -415,38 +419,41 @@ export default function ActionForm({ isOpen, onClose, action }: ActionFormProps)
                       {[
                         { 
                           value: "tender", 
-                          label: "TEN", 
-                          color: "bg-blue-400"
+                          label: "TENDER"
                         },
                         { 
                           value: "precon", 
-                          label: "PRE", 
-                          color: "bg-green-400"
+                          label: "PRECON"
                         },
                         { 
                           value: "construction", 
-                          label: "CON", 
-                          color: "bg-yellow-500"
+                          label: "CONSTRUCTION"
                         },
                         { 
                           value: "aftercare", 
-                          label: "AFT", 
-                          color: "bg-gray-500"
+                          label: "AFTERCARE"
                         },
                         { 
                           value: "strategy", 
-                          label: "STR", 
-                          color: "bg-black"
+                          label: "STRATEGY"
                         }
                       ].map((phase) => (
                         <button
                           key={phase.value}
                           type="button"
                           onClick={() => field.onChange(phase.value)}
-                          className={`px-2 py-1 rounded-full text-xs font-bold text-white transition-all ${
+                          className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors border ${
                             field.value === phase.value
-                              ? `${phase.color} scale-110`
-                              : `${phase.color} opacity-50 hover:opacity-75`
+                              ? phase.value === "tender" ? "bg-blue-400 text-white border-blue-600" :
+                                phase.value === "precon" ? "bg-green-400 text-white border-green-600" :
+                                phase.value === "construction" ? "bg-yellow-500 text-white border-yellow-700" :
+                                phase.value === "aftercare" ? "bg-gray-500 text-white border-gray-700" :
+                                "bg-black text-white"
+                              : phase.value === "tender" ? "bg-blue-50 text-blue-700 border-blue-300 hover:bg-blue-100" :
+                                phase.value === "precon" ? "bg-green-50 text-green-700 border-green-300 hover:bg-green-100" :
+                                phase.value === "construction" ? "bg-yellow-50 text-yellow-800 border-yellow-400 hover:bg-yellow-100" :
+                                phase.value === "aftercare" ? "bg-gray-50 text-gray-700 border-gray-300 hover:bg-gray-100" :
+                                "bg-gray-100 text-gray-800 hover:bg-gray-200"
                           }`}
                         >
                           {phase.label}
