@@ -623,6 +623,18 @@ export default function Setup({ onTabChange }: SetupProps) {
                                   >
                                     w{currentWeek} of {totalWeeksToAnticipated} ({totalWeeksToContract})
                                   </div>
+                                  {/* Construction and Contract weeks remaining */}
+                                  <div 
+                                    className="absolute whitespace-nowrap text-gray-600 text-xs"
+                                    style={{ 
+                                      top: '12px', 
+                                      left: '-200px',
+                                      width: '200px'
+                                    }}
+                                  >
+                                    <div>Construction Weeks Remaining: {Math.max(0, totalWeeksToAnticipated - currentWeek)}</div>
+                                    <div>Contract Weeks Remaining: {Math.max(0, totalWeeksToContract - currentWeek)}</div>
+                                  </div>
                                 </div>
                               );
                             })()}
