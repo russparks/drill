@@ -662,7 +662,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                   
                   {/* Remaining weeks display - outside project card */}
                   {weekInfo && (
-                    <div className="mt-2 text-gray-600" style={{ fontSize: '10.2px' }}>
+                    <div className="mt-2 text-gray-600 text-right" style={{ fontSize: '11.73px' }}>
                       Construction Rem: <span className="font-bold text-blue-300">{Math.max(0, weekInfo.totalWeeksToAnticipated - weekInfo.currentWeek)}</span> | Contract Rem: <span className="font-bold text-gray-800">{Math.max(0, weekInfo.totalWeeksToContract - weekInfo.currentWeek)}</span>
                     </div>
                   )}
