@@ -374,7 +374,7 @@ export default function Setup() {
                     </div>
                   </div>
 
-                  <hr className="border-gray-200" />
+                  <hr className="border-gray-200 mt-3" />
 
                   {/* Row 4: Start Date (33%) | Contract PC (33%) | Anticipated PC (33%) */}
                   <div className="flex gap-4">
@@ -419,14 +419,14 @@ export default function Setup() {
                     </div>
                   </div>
 
-                  <hr className="border-gray-200 my-4" />
+                  <hr className="border-gray-200 mt-3 mb-4" />
                   <div className="flex justify-between items-end">
                     <div className="text-gray-500" style={{ fontSize: '10px' }}>
                       {workingWeeks.startToContract > 0 && (
-                        <div className="space-y-0.5 font-mono">
-                          <div>Start → Contract:    {workingWeeks.startToContract.toString().padStart(2, ' ')}w</div>
-                          <div>Start → Anticipated: {workingWeeks.startToAnticipated.toString().padStart(2, ' ')}w</div>
-                          <div>Anticipated → Contract: {workingWeeks.anticipatedToContract.toString().padStart(2, ' ')}w</div>
+                        <div className="space-y-0 font-mono leading-tight">
+                          <div>{workingWeeks.startToContract.toString().padStart(2, ' ')}w - Start → Contract</div>
+                          <div>{workingWeeks.startToAnticipated.toString().padStart(2, ' ')}w - Start → Anticipated</div>
+                          <div>{workingWeeks.anticipatedToContract.toString().padStart(2, ' ')}w - Anticipated → Contract</div>
                         </div>
                       )}
                     </div>
