@@ -168,14 +168,14 @@ export default function DetailCharts() {
         {/* Project Status Distribution - Radial Bar Chart */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm text-center">Project Status Distribution</CardTitle>
+            <CardTitle className="text-lg text-center text-gray-600">Project Status</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
               <RadialBarChart 
                 cx="50%" 
                 cy="50%" 
-                innerRadius="20%" 
+                innerRadius="32%" 
                 outerRadius="80%" 
                 data={statusChartData.map((entry, index) => ({
                   ...entry,
@@ -199,7 +199,7 @@ export default function DetailCharts() {
         {/* Project Values by Status - Bar Chart */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm text-center">Project Values by Status (£M)</CardTitle>
+            <CardTitle className="text-lg text-center text-gray-600">Project Values by Status (£M)</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
@@ -219,7 +219,7 @@ export default function DetailCharts() {
         {/* Actions by Discipline - Vertical Bar Chart */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm text-center">Actions by Discipline</CardTitle>
+            <CardTitle className="text-lg text-center text-gray-600">Actions by Discipline</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
@@ -241,7 +241,7 @@ export default function DetailCharts() {
         {/* Projects On Time Analysis */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm text-center">Projects On Time (Days)</CardTitle>
+            <CardTitle className="text-lg text-center text-gray-600">Projects On Time (Days)</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
@@ -262,7 +262,7 @@ export default function DetailCharts() {
         {/* Actions by Person */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm text-center">Actions by Person</CardTitle>
+            <CardTitle className="text-lg text-center text-gray-600">Actions by Person</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
@@ -280,7 +280,7 @@ export default function DetailCharts() {
         {/* Average Action Closure Time */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm text-center">Avg. Action Closure Time (Days)</CardTitle>
+            <CardTitle className="text-lg text-center text-gray-600">Avg. Action Closure Time (Days)</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
@@ -299,7 +299,7 @@ export default function DetailCharts() {
       {/* Project Duration Analysis - Full Width */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm text-center">Project Duration Analysis (Weeks)</CardTitle>
+          <CardTitle className="text-lg text-center text-gray-600">Project Duration Analysis (Weeks)</CardTitle>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
