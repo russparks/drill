@@ -137,7 +137,7 @@ export default function DetailCharts() {
 
   // Actions by Person
   const actionsByPerson = (actions as any[])
-    .filter(action => action.assignee && action.assignee.trim() !== '') // Only include actions with valid assignees
+    .filter(action => action.assignee && typeof action.assignee === 'string' && action.assignee.trim() !== '') // Only include actions with valid assignees
     .reduce((acc: Record<string, number>, action) => {
       const assignee = action.assignee.trim();
       acc[assignee] = (acc[assignee] || 0) + 1;
