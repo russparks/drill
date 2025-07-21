@@ -303,7 +303,7 @@ export default function Setup() {
                   {/* Row 3: Process buttons (100%) - styled exactly like action form */}
                   <div>
                     <Label>Process:</Label>
-                    <div className="flex gap-2 mt-2">
+                    <div className="flex justify-between gap-2 mt-2">
                       {[
                         { value: "tender", label: "TENDER", activeColor: "bg-blue-500 border-blue-600 text-white", inactiveColor: "bg-blue-50 border-blue-200 text-blue-700" },
                         { value: "precon", label: "PRECON", activeColor: "bg-green-500 border-green-600 text-white", inactiveColor: "bg-green-50 border-green-200 text-green-700" },
@@ -314,7 +314,7 @@ export default function Setup() {
                           key={phase.value}
                           type="button"
                           onClick={() => setSelectedPhase(phase.value)}
-                          className={`px-3 py-1.5 text-xs font-medium uppercase rounded-full border transition-colors ${
+                          className={`flex-1 px-3 py-1.5 text-xs font-medium uppercase rounded-full border transition-colors ${
                             selectedPhase === phase.value
                               ? phase.activeColor
                               : phase.inactiveColor
