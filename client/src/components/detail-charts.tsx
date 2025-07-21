@@ -319,7 +319,15 @@ export default function DetailCharts() {
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={actionsByPersonData}>
-                <XAxis dataKey="assignee" angle={-45} textAnchor="end" height={60} tick={{ fontSize: 11 }} />
+                <XAxis 
+                  dataKey="assignee" 
+                  angle={-45} 
+                  textAnchor="end" 
+                  height={60} 
+                  tick={{ fontSize: 11 }}
+                  axisLine={false}
+                  tickLine={false}
+                />
                 <Tooltip />
                 <Bar dataKey="count" strokeWidth={0.7} barSize={30}>
                   {actionsByPersonData.map((entry, index) => (
