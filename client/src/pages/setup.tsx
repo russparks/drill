@@ -539,15 +539,15 @@ export default function Setup({ onTabChange }: SetupProps) {
                           <div className="flex items-center justify-between" style={{ fontSize: '10px' }}>
                             <div className="flex items-center gap-3">
                               <div className="flex items-center">
-                                <span className="bg-black text-white border border-black px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>SOS</span>
+                                <span className="bg-gray-400 text-white border border-gray-400 px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>SOS</span>
                                 <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.startDate.toUpperCase()}</span>
                               </div>
                               <div className="flex items-center">
-                                <span className="bg-black text-white border border-black px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>CONST</span>
+                                <span className="bg-blue-300 text-white border border-blue-300 px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>CONST</span>
                                 <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.anticipatedDate.toUpperCase()}</span>
                               </div>
                               <div className="flex items-center">
-                                <span className="bg-black text-white border border-black px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>CONTR</span>
+                                <span className="bg-gray-800 text-white border border-gray-800 px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>CONTR</span>
                                 <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.contractDate.toUpperCase()}</span>
                               </div>
                             </div>
