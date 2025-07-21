@@ -328,37 +328,37 @@ export default function Setup() {
                   {/* Row 4: Start Date (33%) | Contract PC (33%) | Anticipated PC (33%) */}
                   <div className="flex gap-4">
                     <div className="flex-1">
-                      <Label htmlFor="startOnSiteDate" className="text-xs">Start Date</Label>
+                      <Label htmlFor="startOnSiteDate" className="text-xs text-center block">Start Date</Label>
                       <Input
                         id="startOnSiteDate"
                         name="startOnSiteDate"
                         type="date"
-                        className="h-7 w-full"
-                        style={{ fontSize: '9px' }}
+                        className="h-7 w-full text-center"
+                        style={{ fontSize: '10px' }}
                         defaultValue={selectedProject?.startOnSiteDate ? new Date(selectedProject.startOnSiteDate).toISOString().split('T')[0] : ""}
                         required
                       />
                     </div>
                     <div className="flex-1">
-                      <Label htmlFor="contractCompletionDate" className="text-xs">Contract PC</Label>
+                      <Label htmlFor="contractCompletionDate" className="text-xs text-center block">Contract PC</Label>
                       <Input
                         id="contractCompletionDate"
                         name="contractCompletionDate"
                         type="date"
-                        className="h-7 w-full"
-                        style={{ fontSize: '9px' }}
+                        className="h-7 w-full text-center"
+                        style={{ fontSize: '10px' }}
                         defaultValue={selectedProject?.contractCompletionDate ? new Date(selectedProject.contractCompletionDate).toISOString().split('T')[0] : ""}
                         required
                       />
                     </div>
                     <div className="flex-1">
-                      <Label htmlFor="constructionCompletionDate" className="text-xs">Anticipated PC</Label>
+                      <Label htmlFor="constructionCompletionDate" className="text-xs text-center block">Anticipated PC</Label>
                       <Input
                         id="constructionCompletionDate"
                         name="constructionCompletionDate"
                         type="date"
-                        className="h-7 w-full"
-                        style={{ fontSize: '9px' }}
+                        className="h-7 w-full text-center"
+                        style={{ fontSize: '10px' }}
                         defaultValue={selectedProject?.constructionCompletionDate ? new Date(selectedProject.constructionCompletionDate).toISOString().split('T')[0] : ""}
                         required
                       />
