@@ -634,7 +634,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                               const totalWeeksToContract = weekInfo.totalWeeksToContract;
                               
                               return (
-                                <div className="absolute bottom-2 left-2.5 text-gray-600" style={{ fontSize: '10.2px' }}>
+                                <div className="absolute top-4 left-44 text-gray-600" style={{ fontSize: '10.2px' }}>
                                   Construction Rem: <span className="font-bold text-blue-300">{Math.max(0, totalWeeksToAnticipated - currentWeek)}</span> | Contract Rem: <span className="font-bold text-gray-800">{Math.max(0, totalWeeksToContract - currentWeek)}</span>
                                 </div>
                               );
