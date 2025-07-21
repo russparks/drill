@@ -291,11 +291,11 @@ export default function Setup({ onTabChange }: SetupProps) {
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="projects" className="flex items-center gap-2">
             <Building className="h-4 w-4" />
-            Projects
+            Dash
           </TabsTrigger>
           <TabsTrigger value="users" className="flex items-center gap-2">
             <Users className="h-4 w-4" />
-            People
+            Detail
           </TabsTrigger>
         </TabsList>
 
