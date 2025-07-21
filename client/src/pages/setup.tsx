@@ -493,7 +493,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                   const totalWeeksToContract = Math.ceil((contractDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
                   
                   return {
-                    currentWeek: Math.max(1, currentWeek),
+                    currentWeek: Math.max(1, Math.min(currentWeek, totalWeeksToAnticipated)),
                     totalWeeksToAnticipated: Math.max(1, totalWeeksToAnticipated),
                     totalWeeksToContract: Math.max(1, totalWeeksToContract),
                     startDate: startDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }),
@@ -550,7 +550,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.contractDate.toUpperCase()}</span>
                               </div>
                             </div>
-                            <span className="bg-gray-100 text-black border border-gray-200 px-1 py-0 rounded-md" style={{ fontSize: '10px', lineHeight: '1.2' }}>w{weekInfo.currentWeek} OF {weekInfo.totalWeeksToAnticipated} ({weekInfo.totalWeeksToContract})</span>
+                            <span className="bg-gray-100 text-black border border-gray-200 px-1 py-0 rounded-md" style={{ fontSize: '10.5px', lineHeight: '1.2' }}>w{weekInfo.currentWeek} of {weekInfo.totalWeeksToAnticipated} ({weekInfo.totalWeeksToContract})</span>
                           </div>
                         )}
                       </div>
