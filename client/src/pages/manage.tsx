@@ -408,9 +408,10 @@ export default function ManagePage() {
       </div>
 
       <Tabs defaultValue="projects" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="projects">Projects</TabsTrigger>
-          <TabsTrigger value="people">People</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="projects">Dash</TabsTrigger>
+          <TabsTrigger value="live">Live</TabsTrigger>
+          <TabsTrigger value="people">Detail</TabsTrigger>
         </TabsList>
 
         <TabsContent value="projects" className="space-y-4">
@@ -500,6 +501,47 @@ export default function ManagePage() {
               </Table>
             </div>
           )}
+        </TabsContent>
+
+        <TabsContent value="live" className="space-y-4">
+          <div className="flex justify-between items-center">
+            <h2 className="text-xl font-semibold">Live Dashboard</h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="p-6 border rounded-lg bg-gradient-to-r from-blue-50 to-blue-100">
+              <h3 className="text-lg font-medium text-blue-800">Real-time Updates</h3>
+              <p className="text-blue-600 mt-2">Live project status and action tracking</p>
+            </div>
+            
+            <div className="p-6 border rounded-lg bg-gradient-to-r from-green-50 to-green-100">
+              <h3 className="text-lg font-medium text-green-800">Active Projects</h3>
+              <p className="text-green-600 mt-2">Currently in-progress initiatives</p>
+            </div>
+            
+            <div className="p-6 border rounded-lg bg-gradient-to-r from-orange-50 to-orange-100">
+              <h3 className="text-lg font-medium text-orange-800">Team Activity</h3>
+              <p className="text-orange-600 mt-2">Live collaboration and notifications</p>
+            </div>
+          </div>
+
+          <div className="border rounded-lg p-6">
+            <h3 className="text-lg font-medium mb-4">Live Activity Feed</h3>
+            <div className="space-y-3">
+              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span className="text-sm text-gray-600">Live monitoring capabilities will be implemented here</span>
+              </div>
+              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded">
+                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <span className="text-sm text-gray-600">Real-time project updates and notifications</span>
+              </div>
+              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded">
+                <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                <span className="text-sm text-gray-600">Team collaboration and status changes</span>
+              </div>
+            </div>
+          </div>
         </TabsContent>
 
         <TabsContent value="people" className="space-y-4">
