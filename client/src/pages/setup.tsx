@@ -514,7 +514,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                         </div>
                         {weekInfo && (
                           <div className="flex items-center justify-between" style={{ fontSize: '10px' }}>
-                            <div className="flex items-center justify-between w-full">
+                            <div className="flex items-center" style={{ gap: '10px' }}>
                               <div className="flex items-center">
                                 <span className="bg-gray-400 text-white border border-gray-400 px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>SOS</span>
                                 <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.startDate.toUpperCase()}</span>
@@ -529,7 +529,11 @@ export default function Setup({ onTabChange }: SetupProps) {
                               </div>
                               {/* Project value or retention display */}
                               <div className="flex items-center">
-                                <span className="bg-emerald-500 text-white border border-emerald-500 px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>
+                                <span className={`text-white px-1 py-0.5 rounded-l-sm ${
+                                  project.status === 'aftercare' 
+                                    ? 'bg-amber-500 border-amber-500' 
+                                    : 'bg-black border-black'
+                                }`} style={{ fontSize: '10px' }}>
                                   {project.status === 'aftercare' ? 'RET' : 'VAL'}
                                 </span>
                                 <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>
