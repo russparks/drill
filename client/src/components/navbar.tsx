@@ -17,7 +17,7 @@ export default function Navbar({ onCreateAction, onCreateProject, onCreatePerson
   const getCreateButton = () => {
     if (location === "/") {
       return (
-        <Button size="sm" onClick={onCreateAction}>
+        <Button size="sm" onClick={onCreateAction} style={{ backgroundColor: '#333333', borderColor: '#333333' }}>
           <Plus className="h-4 w-4 mr-1" />
           Action
         </Button>
