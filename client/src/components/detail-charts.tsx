@@ -135,35 +135,21 @@ export default function DetailCharts() {
     })
     .sort((a, b) => a.planned - b.planned);
 
-  // Actions by Person (Open Actions Only)
-  const actionsByPerson = (actions as any[])
-    .filter(action => {
-      // Debug logging
-      if (action.assignee) {
-        console.log('Action:', { assignee: action.assignee, status: action.status, type: typeof action.assignee });
-      }
-      return action.assignee && 
-        typeof action.assignee === 'string' && 
-        action.assignee.trim() !== '' &&
-        (action.status === 'open' || !action.status); // Include actions without status or with 'open' status
-    })
+  // Actions by Assignee (Open Actions Only)
+  const assigneeData = (actions as any[])
+    .filter(action => action.assignee && action.status === 'open')
     .reduce((acc: Record<string, number>, action) => {
-      const assignee = action.assignee.trim();
-      acc[assignee] = (acc[assignee] || 0) + 1;
+      const assigneeName = action.assignee.name || action.assignee.username || 'Unknown';
+      acc[assigneeName] = (acc[assigneeName] || 0) + 1;
       return acc;
     }, {});
 
-  console.log('Actions by person data:', actionsByPerson);
-
-  const actionsByPersonData = Object.entries(actionsByPerson)
-    .map(([person, count]) => ({
-      person: person.length > 12 ? person.substring(0, 12) + '...' : person,
-      count,
-    }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 10); // Show top 10 people with most open actions
-
-  console.log('Final chart data:', actionsByPersonData);
+  const actionsByPersonData = Object.entries(assigneeData).map(([name, count], index) => ({
+    assignee: name.length > 12 ? name.substring(0, 12) + '...' : name,
+    count,
+    fill: '#93c5fd', // Light blue fill
+    stroke: '#1d4ed8', // Dark blue stroke
+  })).sort((a, b) => b.count - a.count);
 
   // Average Time for Closed Actions (simulated data based on action complexity)
   const avgClosureTimeData = [
@@ -317,19 +303,23 @@ export default function DetailCharts() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Actions by Person */}
+        {/* Actions by Assignee */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg text-center text-gray-600">Actions by Person</CardTitle>
+            <CardTitle className="text-lg text-center text-gray-600">Actions by Assignee</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={actionsByPersonData}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="person" angle={-45} textAnchor="end" height={60} tick={{ fontSize: 11 }} />
+                <XAxis dataKey="assignee" angle={-45} textAnchor="end" height={60} tick={{ fontSize: 11 }} />
                 <YAxis tick={{ fontSize: 11 }} />
                 <Tooltip />
-                <Bar dataKey="count" fill="#8884d8" />
+                <Bar dataKey="count" strokeWidth={1.2}>
+                  {actionsByPersonData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.fill} stroke={entry.stroke} />
+                  ))}
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
