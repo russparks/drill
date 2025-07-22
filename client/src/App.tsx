@@ -10,6 +10,7 @@ import MobileNav from "@/components/mobile-nav";
 import Dashboard from "@/pages/dashboard";
 import Setup from "@/pages/setup";
 import People from "@/pages/people";
+import Locations from "@/pages/locations";
 import NotFound from "@/pages/not-found";
 import ActionForm from "@/components/action-form";
 
@@ -54,6 +55,7 @@ function Router() {
           <Setup onTabChange={setActiveTab} />
         </Route>
         <Route path="/people" component={People} />
+        <Route path="/locations" component={Locations} />
         <Route component={NotFound} />
       </Switch>
 

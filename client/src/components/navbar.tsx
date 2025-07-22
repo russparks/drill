@@ -79,6 +79,15 @@ export default function Navbar({ onCreateAction, onCreateProject, onCreatePerson
                   Projects
                 </span>
               </Link>
+              <Link href="/locations">
+                <span className={`px-3 py-2 text-sm font-medium cursor-pointer ${
+                  location === "/locations" 
+                    ? "border-b-2" 
+                    : "text-action-text-secondary hover:text-action-text-primary"
+                }`} style={location === "/locations" ? { color: '#333333', borderColor: '#333333' } : {}}>
+                  Locations
+                </span>
+              </Link>
             </nav>
           </div>
           <div className="hidden md:flex items-center space-x-4">
