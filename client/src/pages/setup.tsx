@@ -80,7 +80,7 @@ export default function Setup({ onTabChange }: SetupProps) {
   };
 
   // Helper function to format values with k/m suffixes
-  const formatValue = (value: string | undefined) => {
+  const formatValue = (value: string | undefined | null) => {
     if (!value) return '£0';
     const numValue = parseFloat(value.replace(/[£,]/g, ''));
     const isNegative = numValue < 0;
@@ -98,13 +98,13 @@ export default function Setup({ onTabChange }: SetupProps) {
   };
 
   // Helper function to determine if value is negative
-  const isNegativeValue = (value: string | undefined) => {
+  const isNegativeValue = (value: string | undefined | null) => {
     if (!value) return false;
     return parseFloat(value.replace(/[£,]/g, '')) < 0;
   };
 
   // Helper function to determine if value is zero or negative
-  const isZeroOrNegativeValue = (value: string | undefined) => {
+  const isZeroOrNegativeValue = (value: string | undefined | null) => {
     if (!value) return true;
     return parseFloat(value.replace(/[£,]/g, '')) <= 0;
   };
