@@ -829,7 +829,11 @@ export default function Setup({ onTabChange }: SetupProps) {
                         ) : (
                           <>
                             {project.status === 'tender' || project.status === 'precon' ? (
-                              <>Weeks to Completion <span className="font-bold text-gray-800" style={{ marginLeft: '3px', marginRight: '3px' }}>{Math.max(0, weekInfo.totalWeeksToContract - weekInfo.currentWeek)}</span></>
+                              <>Weeks to Completion <span className="font-bold" style={{ 
+                                marginLeft: '3px', 
+                                marginRight: '3px',
+                                color: project.status === 'tender' ? 'rgb(59, 130, 246)' : 'rgb(34, 197, 94)'
+                              }}>{Math.max(0, weekInfo.totalWeeksToContract - weekInfo.currentWeek)}</span></>
                             ) : (
                               <>Weeks to Construction <span className="font-bold text-blue-300" style={{ marginLeft: '3px', marginRight: '3px' }}>{Math.max(0, weekInfo.totalWeeksToAnticipated - weekInfo.currentWeek)}</span> Contract <span className="font-bold text-gray-800" style={{ marginLeft: '3px', marginRight: '3px' }}>{Math.max(0, weekInfo.totalWeeksToContract - weekInfo.currentWeek)}</span></>
                             )}
