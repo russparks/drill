@@ -576,7 +576,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                 const weekInfo = getCurrentWeekInfo();
                 
                 return (
-                  <div key={project.id}>
+                  <div key={project.id} className={weekInfo?.isGreyedOut ? 'opacity-60' : ''}>
                     <Card className="material-shadow">
                   <CardContent className="p-2.5 pb-8">
                     <div className="flex justify-between items-start">
