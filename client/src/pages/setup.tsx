@@ -583,8 +583,8 @@ export default function Setup({ onTabChange }: SetupProps) {
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-0.5">
                           <CardTitle className="text-lg">{project.name}</CardTitle>
-                          {project.projectNumber && (
-                            <span className="text-sm text-action-text-secondary">({project.projectNumber})</span>
+                          {project.value && (
+                            <span className="text-sm text-action-text-secondary">({formatValue(project.value)})</span>
                           )}
                           {/* Process indicator */}
                           <div className="ml-auto">
@@ -621,23 +621,19 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 <span className="text-white border border-gray-500 px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px', backgroundColor: 'rgba(31, 41, 55, 0.7)' }}>CONTR</span>
                                 <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.contractDate.toUpperCase()}</span>
                               </div>
-                              {/* Project value or retention display */}
-                              <div className="flex items-center" title={project.status === 'aftercare' ? 'Project Retention Value' : 'Project Value'}>
-                                <span className={`text-white px-1 py-0.5 rounded-l-sm border ${
-                                  project.status === 'aftercare' 
-                                    ? (isZeroOrNegativeValue(project.retention) ? 'bg-green-400 border-green-400' : 'bg-amber-500 border-amber-500')
-                                    : isNegativeValue(project.value)
-                                      ? 'bg-red-400 border-red-400'
-                                      : 'bg-black border-black'
-                                }`} style={{ fontSize: '10px' }}>
-                                  {project.status === 'aftercare' ? 'RET' : 'VAL'}
-                                </span>
-                                <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>
-                                  {project.status === 'aftercare' 
-                                    ? formatValue(project.retention) 
-                                    : formatValue(project.value)}
-                                </span>
-                              </div>
+                              {/* Retention display for aftercare projects only */}
+                              {project.status === 'aftercare' && (
+                                <div className="flex items-center" title="Project Retention Value">
+                                  <span className={`text-white px-1 py-0.5 rounded-l-sm border ${
+                                    isZeroOrNegativeValue(project.retention) ? 'bg-green-400 border-green-400' : 'bg-amber-500 border-amber-500'
+                                  }`} style={{ fontSize: '10px' }}>
+                                    RET
+                                  </span>
+                                  <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>
+                                    {formatValue(project.retention)}
+                                  </span>
+                                </div>
+                              )}
                               {/* EVA indicator for non-aftercare projects */}
                               {project.status !== 'aftercare' && weekInfo && !weekInfo.hideWeekIndicator && (
                                 <div className="flex items-center" title="Estimated Earned Value - calculated as (Project Value ÷ Total Weeks) × Weeks Completed">
