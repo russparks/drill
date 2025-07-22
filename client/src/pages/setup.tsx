@@ -814,13 +814,13 @@ export default function Setup({ onTabChange }: SetupProps) {
                         fontSize: '11.73px', 
                         zIndex: -1,
                         border: `2px solid ${(() => {
-                          if (weekInfo.isGreyedOut || weekInfo.hasPositiveRetention) return 'rgb(204, 204, 204)';
+                          if (weekInfo.isGreyedOut || weekInfo.hasPositiveRetention) return 'rgba(204, 204, 204, 0.5)';
                           switch (project.status) {
-                            case 'tender': return 'rgb(59, 130, 246)'; // blue
-                            case 'precon': return 'rgb(34, 197, 94)'; // green
-                            case 'construction': return 'rgb(249, 115, 22)'; // orange
-                            case 'aftercare': return 'rgb(168, 85, 247)'; // purple
-                            default: return 'rgb(107, 114, 128)'; // gray
+                            case 'tender': return 'rgba(59, 130, 246, 0.5)'; // blue
+                            case 'precon': return 'rgba(34, 197, 94, 0.5)'; // green
+                            case 'construction': return 'rgba(249, 115, 22, 0.5)'; // orange
+                            case 'aftercare': return 'rgba(168, 85, 247, 0.5)'; // purple
+                            default: return 'rgba(107, 114, 128, 0.5)'; // gray
                           }
                         })()}`
                       }}>
