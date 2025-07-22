@@ -582,18 +582,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                 
                 return (
                   <div key={project.id} className={weekInfo?.isGreyedOut ? 'opacity-60' : ''}>
-                    <Card className="material-shadow" style={{
-                      filter: (() => {
-                        if (weekInfo?.isGreyedOut || weekInfo?.hasPositiveRetention) return 'drop-shadow(0 4px 8px rgba(204, 204, 204, 0.3))';
-                        switch (project.status) {
-                          case 'tender': return 'drop-shadow(0 4px 8px rgba(59, 130, 246, 0.3))'; // blue
-                          case 'precon': return 'drop-shadow(0 4px 8px rgba(34, 197, 94, 0.3))'; // green
-                          case 'construction': return 'drop-shadow(0 4px 8px rgba(249, 115, 22, 0.3))'; // orange
-                          case 'aftercare': return 'drop-shadow(0 4px 8px rgba(168, 85, 247, 0.3))'; // purple
-                          default: return 'drop-shadow(0 4px 8px rgba(107, 114, 128, 0.3))'; // gray
-                        }
-                      })()
-                    }}>
+                    <Card className="material-shadow">
                   <CardContent className="p-2.5 pb-8">
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
