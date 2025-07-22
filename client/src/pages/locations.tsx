@@ -111,129 +111,71 @@ export default function Locations() {
   useEffect(() => {
     if (!map || !projects.length) return;
 
+    const geocoder = new window.google.maps.Geocoder();
     const infoWindow = new window.google.maps.InfoWindow();
-
-    // Approximate coordinates for UK cities (hardcoded to avoid Geocoding API requirement)
-    const cityCoordinates: { [key: string]: { lat: number; lng: number } } = {
-      'London': { lat: 51.5074, lng: -0.1278 },
-      'Manchester': { lat: 53.4808, lng: -2.2426 },
-      'Birmingham': { lat: 52.4862, lng: -1.8904 },
-      'Leeds': { lat: 53.8008, lng: -1.5491 },
-      'Glasgow': { lat: 55.8642, lng: -4.2518 },
-      'Liverpool': { lat: 53.4084, lng: -2.9916 },
-      'Edinburgh': { lat: 55.9533, lng: -3.1883 },
-      'Bristol': { lat: 51.4545, lng: -2.5879 },
-      'Cardiff': { lat: 51.4816, lng: -3.1791 },
-      'Sheffield': { lat: 53.3811, lng: -1.4701 },
-      'Newcastle': { lat: 54.9783, lng: -1.6178 },
-      'Nottingham': { lat: 52.9548, lng: -1.1581 },
-      'Leicester': { lat: 52.6369, lng: -1.1398 },
-      'Coventry': { lat: 52.4068, lng: -1.5197 },
-      'Bradford': { lat: 53.7960, lng: -1.7594 },
-      'Stoke-on-Trent': { lat: 53.0027, lng: -2.1794 },
-      'Wolverhampton': { lat: 52.5855, lng: -2.1282 },
-      'Plymouth': { lat: 50.3755, lng: -4.1427 },
-      'Derby': { lat: 52.9225, lng: -1.4746 },
-      'Southampton': { lat: 50.9097, lng: -1.4044 },
-      'Salford': { lat: 53.4875, lng: -2.2901 },
-      'Aberdeen': { lat: 57.1497, lng: -2.0943 },
-      'Portsmouth': { lat: 50.8198, lng: -1.0880 },
-      'York': { lat: 53.9600, lng: -1.0873 },
-      'Peterborough': { lat: 52.5695, lng: -0.2405 },
-      'Dundee': { lat: 56.4620, lng: -2.9707 },
-      'Lancaster': { lat: 54.0466, lng: -2.8007 },
-      'Oxford': { lat: 51.7520, lng: -1.2577 },
-      'Cambridge': { lat: 52.2053, lng: 0.1218 },
-      'Exeter': { lat: 50.7184, lng: -3.5339 },
-      'Bath': { lat: 51.3811, lng: -2.3590 },
-      'Chelmsford': { lat: 51.7356, lng: 0.4685 },
-      'Preston': { lat: 53.7632, lng: -2.7031 },
-    };
 
     // Group projects by city to avoid duplicate markers
     Object.entries(projectsByCity).forEach(([city, cityProjects]) => {
       if (city === 'Unknown') return;
       
-      // Find coordinates for this city
-      const cityCoords = cityCoordinates[city];
-      if (!cityCoords) {
-        // For cities not in our list, try to approximate based on postcode area
-        const firstProject = cityProjects[0];
-        if (!firstProject.postcode) return;
-        
-        // Basic postcode area mapping (first 1-2 letters)
-        const postcodeArea = firstProject.postcode.split(/\d/)[0].toUpperCase();
-        const postcodeCoords: { [key: string]: { lat: number; lng: number } } = {
-          'B': { lat: 52.4862, lng: -1.8904 }, // Birmingham
-          'M': { lat: 53.4808, lng: -2.2426 }, // Manchester
-          'LS': { lat: 53.8008, lng: -1.5491 }, // Leeds
-          'L': { lat: 53.4084, lng: -2.9916 }, // Liverpool
-          'S': { lat: 53.3811, lng: -1.4701 }, // Sheffield
-          'E': { lat: 51.5074, lng: -0.1278 }, // East London
-          'N': { lat: 51.5074, lng: -0.1278 }, // North London
-          'SW': { lat: 51.5074, lng: -0.1278 }, // Southwest London
-          'SE': { lat: 51.5074, lng: -0.1278 }, // Southeast London
-          'W': { lat: 51.5074, lng: -0.1278 }, // West London
-          'NW': { lat: 51.5074, lng: -0.1278 }, // Northwest London
-          'EC': { lat: 51.5074, lng: -0.1278 }, // East Central London
-          'WC': { lat: 51.5074, lng: -0.1278 }, // West Central London
-        };
-        
-        const coords = postcodeCoords[postcodeArea];
-        if (!coords) return;
-        
-        createMarker(coords, city, cityProjects, infoWindow);
-      } else {
-        createMarker(cityCoords, city, cityProjects, infoWindow);
-      }
-    });
+      // Use first project's postcode for geocoding
+      const representativeProject = cityProjects[0];
+      if (!representativeProject.postcode) return;
 
-    function createMarker(position: { lat: number; lng: number }, city: string, cityProjects: Project[], infoWindow: any) {
-      // Get the most advanced phase for marker color
-      const phases = ['tender', 'precon', 'construction', 'aftercare'];
-      const mostAdvancedPhase = cityProjects.reduce((advanced, project) => {
-        const currentIndex = phases.indexOf(project.status);
-        const advancedIndex = phases.indexOf(advanced);
-        return currentIndex > advancedIndex ? project.status : advanced;
-      }, 'tender');
+      geocoder.geocode(
+        { address: `${representativeProject.postcode}, UK` },
+        (results: any[], status: string) => {
+          if (status === 'OK' && results[0]) {
+            const position = results[0].geometry.location;
+            
+            // Get the most advanced phase for marker color
+            const phases = ['tender', 'precon', 'construction', 'aftercare'];
+            const mostAdvancedPhase = cityProjects.reduce((advanced, project) => {
+              const currentIndex = phases.indexOf(project.status);
+              const advancedIndex = phases.indexOf(advanced);
+              return currentIndex > advancedIndex ? project.status : advanced;
+            }, 'tender');
 
-      // Create marker
-      const marker = new window.google.maps.Marker({
-        position,
-        map,
-        title: `${city} (${cityProjects.length} projects)`,
-        icon: {
-          path: window.google.maps.SymbolPath.CIRCLE,
-          scale: 12,
-          fillColor: getPhaseColor(mostAdvancedPhase),
-          fillOpacity: 0.9,
-          strokeColor: 'white',
-          strokeWeight: 3,
-        },
-      });
+            // Create marker
+            const marker = new window.google.maps.Marker({
+              position,
+              map,
+              title: `${city} (${cityProjects.length} projects)`,
+              icon: {
+                path: window.google.maps.SymbolPath.CIRCLE,
+                scale: 12,
+                fillColor: getPhaseColor(mostAdvancedPhase),
+                fillOpacity: 0.9,
+                strokeColor: 'white',
+                strokeWeight: 3,
+              },
+            });
 
-      // Create info window content
-      const infoContent = `
-        <div style="padding: 8px; max-width: 250px;">
-          <h3 style="margin: 0 0 8px 0; color: #374151; font-size: 16px;">${city}</h3>
-          <p style="margin: 0 0 8px 0; color: #6B7280; font-size: 14px;">${cityProjects.length} project${cityProjects.length !== 1 ? 's' : ''}</p>
-          <div style="max-height: 120px; overflow-y: auto;">
-            ${cityProjects.map(project => `
-              <div style="margin-bottom: 6px; padding: 4px; background: #F9FAFB; border-radius: 4px;">
-                <div style="font-weight: 500; color: #111827; font-size: 12px;">${project.projectNumber}</div>
-                <div style="color: #6B7280; font-size: 11px; margin-top: 2px;">${project.name}</div>
-                <div style="color: ${getPhaseColor(project.status)}; font-size: 10px; text-transform: uppercase; margin-top: 2px;">${project.status}</div>
+            // Create info window content
+            const infoContent = `
+              <div style="padding: 8px; max-width: 250px;">
+                <h3 style="margin: 0 0 8px 0; color: #374151; font-size: 16px;">${city}</h3>
+                <p style="margin: 0 0 8px 0; color: #6B7280; font-size: 14px;">${cityProjects.length} project${cityProjects.length !== 1 ? 's' : ''}</p>
+                <div style="max-height: 120px; overflow-y: auto;">
+                  ${cityProjects.map(project => `
+                    <div style="margin-bottom: 6px; padding: 4px; background: #F9FAFB; border-radius: 4px;">
+                      <div style="font-weight: 500; color: #111827; font-size: 12px;">${project.projectNumber}</div>
+                      <div style="color: #6B7280; font-size: 11px; margin-top: 2px;">${project.name}</div>
+                      <div style="color: ${getPhaseColor(project.status)}; font-size: 10px; text-transform: uppercase; margin-top: 2px;">${project.status}</div>
+                    </div>
+                  `).join('')}
+                </div>
               </div>
-            `).join('')}
-          </div>
-        </div>
-      `;
+            `;
 
-      marker.addListener('click', () => {
-        infoWindow.setContent(infoContent);
-        infoWindow.open(map, marker);
-      });
-    }
+            marker.addListener('click', () => {
+              infoWindow.setContent(infoContent);
+              infoWindow.open(map, marker);
+            });
+          }
+        }
+      );
+    });
   }, [map, projects, projectsByCity]);
 
   if (isLoading) {
