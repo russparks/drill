@@ -11,7 +11,7 @@ export default function Locations() {
     queryKey: ["/api/projects"],
   });
 
-  // Map postcodes to cities and coordinates
+  // Group projects by city
   const postcodeToCity: { [key: string]: string } = {
     'SW1A 1AA': 'London',
     'M1 1AA': 'Manchester',
@@ -29,25 +29,6 @@ export default function Locations() {
     'L1 8JQ': 'Liverpool'
   };
 
-  // Approximate coordinates for UK map positioning (scaled for 400x500 SVG)
-  const postcodeToCoords: { [key: string]: { x: number; y: number } } = {
-    'SW1A 1AA': { x: 200, y: 350 }, // London
-    'M1 1AA': { x: 160, y: 250 },   // Manchester
-    'B1 1TT': { x: 180, y: 300 },   // Birmingham
-    'E1 6AN': { x: 205, y: 350 },   // London (East)
-    'LS1 2TW': { x: 170, y: 220 },  // Leeds
-    'NE1 7RU': { x: 180, y: 140 },  // Newcastle
-    'CB2 1TN': { x: 220, y: 320 },  // Cambridge
-    'BS1 6XN': { x: 140, y: 340 },  // Bristol
-    'SE1 7TP': { x: 200, y: 355 },  // London (South)
-    'CF10 3NP': { x: 120, y: 360 }, // Cardiff
-    'G1 2FF': { x: 140, y: 80 },    // Glasgow
-    'RG1 3EH': { x: 190, y: 370 },  // Reading
-    'NG1 5DT': { x: 190, y: 280 },  // Nottingham
-    'L1 8JQ': { x: 140, y: 260 }    // Liverpool
-  };
-
-  // Group projects by city
   const projectsByCity = projects.reduce((acc, project) => {
     const city = project.postcode ? postcodeToCity[project.postcode] || 'Unknown' : 'Unknown';
     if (!acc[city]) {
@@ -99,173 +80,6 @@ export default function Locations() {
         </div>
       </div>
 
-      {/* UK Map with Project Pins */}
-      <div className="mb-8">
-        <Card className="material-shadow">
-          <CardHeader className="pb-4">
-            <CardTitle className="flex items-center gap-2">
-              <Map className="h-5 w-5 text-blue-600" />
-              UK Project Locations
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex justify-center">
-              <svg viewBox="0 0 350 450" className="w-full max-w-md h-96">
-                {/* Simple UK outline */}
-                <path
-                  d="M 100 380 
-                     L 80 370 
-                     L 70 350 
-                     L 75 330 
-                     L 85 320 
-                     L 90 300 
-                     L 95 280 
-                     L 100 260 
-                     L 110 240 
-                     L 120 220 
-                     L 130 200 
-                     L 140 180 
-                     L 150 160 
-                     L 155 140 
-                     L 160 120 
-                     L 165 100 
-                     L 170 80 
-                     L 175 60 
-                     L 180 50 
-                     L 190 45 
-                     L 200 50 
-                     L 210 60 
-                     L 215 80 
-                     L 220 100 
-                     L 225 120 
-                     L 230 140 
-                     L 235 160 
-                     L 240 180 
-                     L 245 200 
-                     L 250 220 
-                     L 255 240 
-                     L 260 260 
-                     L 265 280 
-                     L 270 300 
-                     L 275 320 
-                     L 280 340 
-                     L 275 360 
-                     L 270 380 
-                     L 260 390 
-                     L 250 395 
-                     L 240 398 
-                     L 230 400 
-                     L 220 398 
-                     L 210 395 
-                     L 200 390 
-                     L 190 385 
-                     L 180 380 
-                     L 170 378 
-                     L 160 380 
-                     L 150 382 
-                     L 140 384 
-                     L 130 385 
-                     L 120 384 
-                     L 110 382 
-                     Z"
-                  fill="#f3f4f6"
-                  stroke="#d1d5db"
-                  strokeWidth="2"
-                />
-                
-                {/* Project pins - one per city */}
-                {Object.entries(projectsByCity).filter(([city]) => city !== 'Unknown').map(([city, cityProjects]) => {
-                  // Find a representative project for coordinate lookup
-                  const repProject = cityProjects.find(p => p.postcode && postcodeToCoords[p.postcode]);
-                  if (!repProject || !repProject.postcode) return null;
-                  
-                  const coords = postcodeToCoords[repProject.postcode];
-                  // Use the most advanced phase color for the pin
-                  const phases = ['tender', 'precon', 'construction', 'aftercare'];
-                  const mostAdvancedPhase = cityProjects.reduce((advanced, project) => {
-                    const currentIndex = phases.indexOf(project.status);
-                    const advancedIndex = phases.indexOf(advanced);
-                    return currentIndex > advancedIndex ? project.status : advanced;
-                  }, 'tender');
-                  
-                  return (
-                    <g key={city}>
-                      {/* Pin shadow */}
-                      <circle
-                        cx={coords.x + 1}
-                        cy={coords.y + 1}
-                        r="8"
-                        fill="rgba(0,0,0,0.2)"
-                      />
-                      {/* Pin */}
-                      <circle
-                        cx={coords.x}
-                        cy={coords.y}
-                        r="8"
-                        fill={getPhaseColor(mostAdvancedPhase)}
-                        stroke="white"
-                        strokeWidth="2"
-                        className="cursor-pointer hover:opacity-80 transition-all"
-                      />
-                      {/* Project count badge */}
-                      <circle
-                        cx={coords.x + 6}
-                        cy={coords.y - 6}
-                        r="6"
-                        fill="white"
-                        stroke={getPhaseColor(mostAdvancedPhase)}
-                        strokeWidth="1"
-                      />
-                      <text
-                        x={coords.x + 6}
-                        y={coords.y - 6}
-                        textAnchor="middle"
-                        dominantBaseline="middle"
-                        fontSize="8"
-                        fill={getPhaseColor(mostAdvancedPhase)}
-                        fontWeight="bold"
-                      >
-                        {cityProjects.length}
-                      </text>
-                      {/* City label */}
-                      <text
-                        x={coords.x}
-                        y={coords.y + 20}
-                        textAnchor="middle"
-                        fontSize="10"
-                        fill="#374151"
-                        fontWeight="500"
-                      >
-                        {city}
-                      </text>
-                    </g>
-                  );
-                }).filter(Boolean)}
-                
-                {/* Legend */}
-                <g transform="translate(20, 20)">
-                  <rect x="0" y="0" width="80" height="90" fill="white" stroke="#e5e7eb" rx="4" />
-                  <text x="8" y="15" fontSize="10" fontWeight="bold" fill="#374151">Phase</text>
-                  
-                  <circle cx="15" cy="25" r="4" fill="rgb(59, 130, 246)" />
-                  <text x="25" y="29" fontSize="8" fill="#374151">Tender</text>
-                  
-                  <circle cx="15" cy="38" r="4" fill="rgb(34, 197, 94)" />
-                  <text x="25" y="42" fontSize="8" fill="#374151">Precon</text>
-                  
-                  <circle cx="15" cy="51" r="4" fill="rgb(234, 179, 8)" />
-                  <text x="25" y="55" fontSize="8" fill="#374151">Construction</text>
-                  
-                  <circle cx="15" cy="64" r="4" fill="rgb(107, 114, 128)" />
-                  <text x="25" y="68" fontSize="8" fill="#374151">Aftercare</text>
-                  
-                  <text x="8" y="82" fontSize="8" fill="#6b7280">Number = project count</text>
-                </g>
-              </svg>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
 
       {/* Location Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
