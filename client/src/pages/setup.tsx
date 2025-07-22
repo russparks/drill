@@ -586,33 +586,44 @@ export default function Setup({ onTabChange }: SetupProps) {
                   <CardContent className="p-2.5 pb-8">
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
-                        <div className={`flex items-center gap-2 mb-0.5 ${weekInfo?.hasPositiveRetention ? 'opacity-60' : ''}`}>
-                          <CardTitle className="text-lg">{project.name}</CardTitle>
-                          {project.value && (
-                            <span className="text-sm text-action-text-secondary">
-                              (<span className={isZeroOrNegativeValue(project.value) ? 'text-red-400' : ''}>{formatValue(project.value)}</span>)
-                            </span>
-                          )}
-                          {/* Process indicator */}
-                          <div className="ml-auto">
-                            <button
-                              className={`
-                                rounded-full px-2 py-0.5 text-xs font-medium border transition-colors
-                                ${project.status === "tender" ? "bg-blue-100 text-blue-800 border-blue-200" : ""}
-                                ${project.status === "precon" ? "bg-green-100 text-green-800 border-green-200" : ""}
-                                ${project.status === "construction" ? "bg-yellow-100 text-yellow-800 border-yellow-200" : ""}
-                                ${project.status === "aftercare" ? "bg-gray-100 text-gray-800 border-gray-200" : ""}
-                                ${!project.status ? "bg-gray-100 text-gray-800 border-gray-200" : ""}
-                              `}
-                            >
-                              {project.status === "tender" && "TEN"}
-                              {project.status === "precon" && "PRE"}
-                              {project.status === "construction" && "CON"}
-                              {project.status === "aftercare" && "AFT"}
-                              {!project.status && "UNK"}
-                            </button>
+                        <div className={`${weekInfo?.hasPositiveRetention ? 'opacity-60' : ''}`}>
+                          <div className="text-xs text-gray-600 font-light uppercase mb-1">
+                            {new Date(project.startOnSiteDate || project.createdAt).toLocaleDateString('en-GB', { 
+                              day: '2-digit', 
+                              month: 'short', 
+                              year: '2-digit' 
+                            }).replace(/ /g, '-')} | {project.projectNumber}
+                          </div>
+                          <div className="flex items-center gap-2 mb-0.5">
+                            <CardTitle className="text-lg">{project.name}</CardTitle>
+                            {project.value && (
+                              <span className="text-sm text-action-text-secondary">
+                                (<span className={isZeroOrNegativeValue(project.value) ? 'text-red-400' : ''}>{formatValue(project.value)}</span>)
+                              </span>
+                            )}
                           </div>
                         </div>
+                      </div>
+                      {/* Process indicator */}
+                      <div className="ml-auto">
+                        <button
+                          className={`
+                            rounded-full px-2 py-0.5 text-xs font-medium border transition-colors
+                            ${project.status === "tender" ? "bg-blue-100 text-blue-800 border-blue-200" : ""}
+                            ${project.status === "precon" ? "bg-green-100 text-green-800 border-green-200" : ""}
+                            ${project.status === "construction" ? "bg-yellow-100 text-yellow-800 border-yellow-200" : ""}
+                            ${project.status === "aftercare" ? "bg-gray-100 text-gray-800 border-gray-200" : ""}
+                            ${!project.status ? "bg-gray-100 text-gray-800 border-gray-200" : ""}
+                          `}
+                        >
+                          {project.status === "tender" && "TEN"}
+                          {project.status === "precon" && "PRE"}
+                          {project.status === "construction" && "CON"}
+                          {project.status === "aftercare" && "AFT"}
+                          {!project.status && "UNK"}
+                        </button>
+                      </div>
+                    </div>
                         {weekInfo && (
                           <div className="flex items-center justify-between" style={{ fontSize: '10px' }}>
                             <div className="flex items-center" style={{ gap: '10px' }}>
