@@ -968,14 +968,14 @@ export default function Setup({ onTabChange }: SetupProps) {
                                     style={{ marginTop: '-8px' }}
                                     title="Today"
                                   />
-                                  {/* Week indicator positioned to the left and vertically aligned with marker */}
+                                  {/* Week indicator positioned to the left and slightly under the timeline */}
                                   <div 
                                     className="absolute whitespace-nowrap text-gray-600"
                                     style={{ 
                                       fontSize: '10.2px', 
-                                      top: '-4px', 
+                                      top: '8px', 
                                       right: '4px',
-                                      lineHeight: '28px',
+                                      lineHeight: '1',
                                       color: 'rgb(75, 85, 99)'
                                     }}
                                   >
@@ -992,8 +992,8 @@ export default function Setup({ onTabChange }: SetupProps) {
                               );
                             })()}
                             {/* Completion percentage in the right gap */}
-                            <div className="ml-2 text-xs font-medium" style={{ 
-                              fontSize: '10px',
+                            <div className="ml-2 text-xs font-bold" style={{ 
+                              fontSize: '15px',
                               color: (() => {
                                 switch (project.status) {
                                   case 'tender': return 'rgb(59, 130, 246)'; // blue
