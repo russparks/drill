@@ -1001,6 +1001,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                                       fontSize: '10.2px', 
                                       top: '28px', 
                                       right: '4px',
+                                      marginRight: '3px',
                                       lineHeight: '1',
                                       color: 'rgb(75, 85, 99)'
                                     }}
