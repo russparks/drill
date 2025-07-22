@@ -990,8 +990,19 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 <div className="absolute" style={{ left: `calc(${currentPercent}% - 2px)` }}>
                                   {/* Today marker extending through timeline */}
                                   <div 
-                                    className="w-0.5 h-7 bg-gray-600 rounded-sm"
-                                    style={{ marginTop: '12px' }}
+                                    className="w-0.5 h-7 rounded-sm"
+                                    style={{ 
+                                      marginTop: '12px',
+                                      backgroundColor: (() => {
+                                        switch (project.status) {
+                                          case 'tender': return 'rgb(59, 130, 246)'; // blue
+                                          case 'precon': return 'rgb(34, 197, 94)'; // green
+                                          case 'construction': return 'rgb(234, 179, 8)'; // yellow
+                                          case 'aftercare': return 'rgb(107, 114, 128)'; // grey
+                                          default: return 'rgb(107, 114, 128)'; // default grey
+                                        }
+                                      })()
+                                    }}
                                     title="Today"
                                   />
                                   {/* Week indicator positioned to the left and slightly under the timeline */}
