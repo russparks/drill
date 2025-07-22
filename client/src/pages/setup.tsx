@@ -583,7 +583,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                 return (
                   <div key={project.id} className={weekInfo?.isGreyedOut ? 'opacity-60' : ''}>
                     <Card className="material-shadow">
-                  <CardContent className="p-2.5 pb-8">
+                      <CardContent className="p-2.5 pb-8">
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
                         <div className={`${weekInfo?.hasPositiveRetention ? 'opacity-60' : ''}`}>
@@ -690,7 +690,6 @@ export default function Setup({ onTabChange }: SetupProps) {
                         )}
                         {/* Add 8px vertical space below indicators */}
                         <div style={{ height: '8px' }}></div>
-                      </div>
                       <div className={`flex space-x-1 ml-2 ${weekInfo?.hasPositiveRetention ? 'opacity-60' : ''}`}>
                         <Button
                           variant="ghost"
@@ -716,9 +715,10 @@ export default function Setup({ onTabChange }: SetupProps) {
                           <Trash2 className="h-3 w-3" />
                         </Button>
                       </div>
-                    </div>
-                    
-                    {/* Timeline bar chart - full width */}
+                    </CardContent>
+                  </Card>
+                  
+                  {/* Timeline bar chart - full width */}
                     {weekInfo && (
                           <div className={`mt-2 relative ${weekInfo.hasPositiveRetention ? 'opacity-60' : ''}`}>
                             <div className={`w-full h-1 rounded-sm overflow-hidden flex ${
@@ -813,8 +813,6 @@ export default function Setup({ onTabChange }: SetupProps) {
 
                           </div>
                         )}
-                    </CardContent>
-                  </Card>
                   
                   {/* Remaining weeks display - tab behind project card */}
                   {weekInfo && (
@@ -828,12 +826,12 @@ export default function Setup({ onTabChange }: SetupProps) {
                       </div>
                     </div>
                   )}
-                </div>
-              );
-            })
+                  </div>
+                );
+              })
             )}
           </div>
-        </TabsContent>
+          </TabsContent>
 
         <TabsContent value="live" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
