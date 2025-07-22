@@ -810,7 +810,22 @@ export default function Setup({ onTabChange }: SetupProps) {
                   {/* Remaining weeks display - tab behind project card */}
                   {weekInfo && (
                     <div className={`flex justify-end relative ${weekInfo.hasPositiveRetention ? 'opacity-60' : ''}`} style={{ marginTop: '-3px', marginRight: '25px' }}>
-                      <div className="bg-white border border-gray-200 rounded-b-lg px-3 py-1.5 text-gray-600 inline-block italic flex justify-center" style={{ fontSize: '11.73px', zIndex: -1 }}>
+                      <div className="bg-white border border-gray-200 rounded-b-lg px-3 py-1.5 text-gray-600 inline-block italic flex justify-center relative" style={{ fontSize: '11.73px', zIndex: -1 }}>
+                        {/* Colored right edge stripe */}
+                        <div className="absolute top-0 right-0 h-full w-1" style={{ 
+                          backgroundColor: (() => {
+                            if (weekInfo.isGreyedOut || weekInfo.hasPositiveRetention) return 'rgb(204, 204, 204)';
+                            switch (project.status) {
+                              case 'tender': return 'rgb(59, 130, 246)'; // blue
+                              case 'precon': return 'rgb(34, 197, 94)'; // green
+                              case 'construction': return 'rgb(249, 115, 22)'; // orange
+                              case 'aftercare': return 'rgb(168, 85, 247)'; // purple
+                              default: return 'rgb(107, 114, 128)'; // gray
+                            }
+                          })(),
+                          borderTopRightRadius: '0.5rem',
+                          borderBottomRightRadius: '0.5rem'
+                        }}></div>
                         {weekInfo.isGreyedOut || weekInfo.hasPositiveRetention ? (
                           <span className="text-gray-500 font-medium">Project Complete</span>
                         ) : (
