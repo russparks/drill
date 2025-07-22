@@ -592,7 +592,11 @@ export default function Setup({ onTabChange }: SetupProps) {
                               color: (project.status === 'tender' || project.status === 'precon') 
                                 ? (project.status === 'tender' ? 'rgb(59, 130, 246)' : 'rgb(34, 197, 94)')
                                 : 'rgb(55, 65, 81)' // default gray-700
-                            }}>{project.projectNumber}</span> <span className="font-light mx-1">|</span> {project.name}
+                            }}>{project.projectNumber}</span> <span className="font-light mx-1">|</span> <span style={{
+                              color: (project.status === 'tender' || project.status === 'precon') 
+                                ? (project.status === 'tender' ? 'rgb(59, 130, 246)' : 'rgb(34, 197, 94)')
+                                : 'inherit' // default color
+                            }}>{project.name}</span>
                           </CardTitle>
                           {project.value && (
                             <span className="text-sm text-action-text-secondary">
