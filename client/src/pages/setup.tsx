@@ -588,11 +588,10 @@ export default function Setup({ onTabChange }: SetupProps) {
                       <div className="flex-1">
                         <div className={`flex items-center gap-2 mb-0.5 ${weekInfo?.hasPositiveRetention ? 'opacity-60' : ''}`}>
                           <CardTitle className="text-lg">
-                            {project.name} ({project.projectNumber}
+                            {project.name}
                             {(weekInfo?.isGreyedOut || weekInfo?.hasPositiveRetention) && (
                               <span className="font-bold text-gray-500"> - [COMPLETED]</span>
                             )}
-                            )
                           </CardTitle>
                           {project.value && (
                             <span className="text-sm text-action-text-secondary">
