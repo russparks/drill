@@ -47,10 +47,11 @@ export default function People() {
         description: "Person created successfully.",
       });
     },
-    onError: (error) => {
+    onError: (error: any) => {
+      const errorMessage = error?.response?.data?.message || "Failed to create person.";
       toast({
         title: "Error",
-        description: "Failed to create person.",
+        description: errorMessage,
         variant: "destructive",
       });
     },

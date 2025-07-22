@@ -133,11 +133,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log('Validated user data:', validatedData);
       const user = await storage.createUser(validatedData);
       res.status(201).json(user);
-    } catch (error) {
+    } catch (error: any) {
       if (error instanceof z.ZodError) {
         console.log('User validation errors:', error.errors);
         return res.status(400).json({ message: "Invalid data", errors: error.errors });
       }
+      
+      // Handle unique constraint violations
+      if (error.code === '23505') {
+        if (error.constraint === 'users_email_unique') {
+          return res.status(400).json({ message: "Email address already exists" });
+        }
+        if (error.constraint === 'users_username_unique') {
+          return res.status(400).json({ message: "Username already exists" });
+        }
+      }
+      
       console.log('User creation error:', error);
       res.status(500).json({ message: "Failed to create user" });
     }
