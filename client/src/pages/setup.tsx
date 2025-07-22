@@ -782,7 +782,14 @@ export default function Setup({ onTabChange }: SetupProps) {
                                       color: 'rgb(75, 85, 99)'
                                     }}
                                   >
-                                    w{currentWeek} of {totalWeeksToAnticipated} ({totalWeeksToContract})
+                                    {(() => {
+                                      // For precon and tender, CONSTR and CONTR are the same, so no need for brackets
+                                      if (project.status === 'precon' || project.status === 'tender') {
+                                        return `w${currentWeek} of ${totalWeeksToContract}`;
+                                      }
+                                      // For construction and aftercare, show both
+                                      return `w${currentWeek} of ${totalWeeksToAnticipated} (${totalWeeksToContract})`;
+                                    })()}
                                   </div>
                                 </div>
                               );
