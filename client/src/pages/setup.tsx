@@ -584,7 +584,9 @@ export default function Setup({ onTabChange }: SetupProps) {
                         <div className="flex items-center gap-2 mb-0.5">
                           <CardTitle className="text-lg">{project.name}</CardTitle>
                           {project.projectNumber && (
-                            <span className="text-sm text-action-text-secondary">({project.projectNumber})</span>
+                            <span className="text-sm text-action-text-secondary">
+                              ({project.projectNumber}){weekInfo && weekInfo.startDate ? ` - SoS ${weekInfo.startDate}` : ''}
+                            </span>
                           )}
                           {/* Process indicator */}
                           <div className="ml-auto">
@@ -609,10 +611,6 @@ export default function Setup({ onTabChange }: SetupProps) {
                         {weekInfo && (
                           <div className="flex items-center justify-between" style={{ fontSize: '10px' }}>
                             <div className="flex items-center" style={{ gap: '10px' }}>
-                              <div className="flex items-center" title="Start on Site Date">
-                                <span className="bg-gray-400 text-white border border-gray-400 px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>SOS</span>
-                                <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.startDate.toUpperCase()}</span>
-                              </div>
                               <div className="flex items-center" title="Construction Practical Completion Date">
                                 <span className="bg-blue-300 text-white border border-blue-300 px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>CONST</span>
                                 <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.anticipatedDate.toUpperCase()}</span>
