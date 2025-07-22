@@ -323,7 +323,7 @@ export default function Setup({ onTabChange }: SetupProps) {
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="projects" className="space-y-6" style={{ marginTop: '20px' }}>
+        <TabsContent value="projects" className="space-y-6" style={{ marginTop: '40px' }}>
           <Dialog open={isProjectDialogOpen} onOpenChange={setIsProjectDialogOpen}>
             <DialogContent className="max-w-lg">
                 <DialogHeader>
@@ -553,11 +553,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                   // Check if project end dates have passed
                   const hasPreconEnded = project.status === 'precon' && currentDate > contractDate;
                   const hasTenderEnded = project.status === 'tender' && currentDate > contractDate;
-                  
-                  // Hide week indicator if precon/tender end dates have passed
-                  if (hasPreconEnded || hasTenderEnded) {
-                    return null;
-                  }
+                  const isCompleted = project.status === 'aftercare';
                   
                   const currentWeek = Math.ceil((currentDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
                   const totalWeeksToAnticipated = Math.ceil((anticipatedDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
@@ -569,7 +565,9 @@ export default function Setup({ onTabChange }: SetupProps) {
                     totalWeeksToContract: Math.max(1, totalWeeksToContract),
                     startDate: startDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }),
                     anticipatedDate: anticipatedDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }),
-                    contractDate: contractDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' })
+                    contractDate: contractDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }),
+                    hideWeekIndicator: hasPreconEnded || hasTenderEnded,
+                    isGreyedOut: isCompleted || hasPreconEnded || hasTenderEnded
                   };
                 };
 
@@ -607,7 +605,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                           </div>
                         </div>
                         {weekInfo && (
-                          <div className="flex items-center justify-between" style={{ fontSize: '10px' }}>
+                          <div className={`flex items-center justify-between ${weekInfo.isGreyedOut ? 'opacity-50' : ''}`} style={{ fontSize: '10px' }}>
                             <div className="flex items-center" style={{ gap: '10px' }}>
                               <div className="flex items-center" title="Start on Site Date">
                                 <span className="bg-gray-400 text-white border border-gray-400 px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>SOS</span>
@@ -632,20 +630,14 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 }`} style={{ fontSize: '10px' }}>
                                   {project.status === 'aftercare' ? 'RET' : 'VAL'}
                                 </span>
-                                <span className={`text-black px-1 py-0.5 rounded-r-sm border ${
-                                  project.status === 'aftercare'
-                                    ? (isZeroOrNegativeValue(project.retention) ? 'bg-green-400 border-green-400 text-white' : 'bg-white border-gray-300')
-                                    : isNegativeValue(project.value)
-                                      ? 'bg-red-400 border-red-400 text-white'
-                                      : 'bg-white border-gray-300'
-                                }`} style={{ fontSize: '10px' }}>
+                                <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>
                                   {project.status === 'aftercare' 
                                     ? formatValue(project.retention) 
                                     : formatValue(project.value)}
                                 </span>
                               </div>
                               {/* EVA indicator for non-aftercare projects */}
-                              {project.status !== 'aftercare' && weekInfo && (
+                              {project.status !== 'aftercare' && weekInfo && !weekInfo.hideWeekIndicator && (
                                 <div className="flex items-center" title="Estimated Earned Value - calculated as (Project Value ÷ Total Weeks) × Weeks Completed">
                                   <span className={`border px-1 py-0.5 rounded-l-sm ${
                                     isZeroOrNegativeValue(project.value)
@@ -654,11 +646,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                                   }`} style={{ fontSize: '10px' }}>
                                     EEV
                                   </span>
-                                  <span className={`border px-1 py-0.5 rounded-r-sm ${
-                                    isZeroOrNegativeValue(project.value)
-                                      ? 'bg-gray-100 border-gray-300 text-gray-400'
-                                      : 'bg-white border-gray-300 text-black'
-                                  }`} style={{ fontSize: '10px' }}>
+                                  <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>
                                     {(() => {
                                       if (isZeroOrNegativeValue(project.value)) {
                                         return '£0 (0%)';
@@ -883,6 +871,196 @@ export default function Setup({ onTabChange }: SetupProps) {
                   <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
                   <span className="text-sm text-gray-600">System health and performance monitoring</span>
                 </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="dash" className="space-y-6">
+          {/* Project Value Overview Chart */}
+          <Card className="material-shadow">
+            <CardHeader>
+              <CardTitle className="text-lg">Project Value Distribution</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-blue-600">
+                    {projects?.filter(p => p.status === 'tender').length || 0}
+                  </div>
+                  <div className="text-sm text-gray-500">Tender</div>
+                  <div className="text-xs font-medium text-red-600">
+                    -{formatValue(`£${Math.abs(projects?.filter(p => p.status === 'tender').reduce((sum, p) => {
+                      const value = p.value?.replace(/[£,-]/g, '') || '0';
+                      return sum + parseFloat(value);
+                    }, 0) || 0)}`)}
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-600">
+                    {projects?.filter(p => p.status === 'precon').length || 0}
+                  </div>
+                  <div className="text-sm text-gray-500">Precon</div>
+                  <div className="text-xs font-medium text-green-600">
+                    {formatValue(`£${projects?.filter(p => p.status === 'precon').reduce((sum, p) => {
+                      const value = p.value?.replace(/[£,]/g, '') || '0';
+                      return sum + parseFloat(value);
+                    }, 0) || 0}`)}
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-yellow-600">
+                    {projects?.filter(p => p.status === 'construction').length || 0}
+                  </div>
+                  <div className="text-sm text-gray-500">Construction</div>
+                  <div className="text-xs font-medium text-yellow-600">
+                    {formatValue(`£${projects?.filter(p => p.status === 'construction').reduce((sum, p) => {
+                      const value = p.value?.replace(/[£,]/g, '') || '0';
+                      return sum + parseFloat(value);
+                    }, 0) || 0}`)}
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-purple-600">
+                    {projects?.filter(p => p.status === 'aftercare').length || 0}
+                  </div>
+                  <div className="text-sm text-gray-500">Aftercare</div>
+                  <div className="text-xs font-medium text-amber-600">
+                    Retention: {formatValue(`£${projects?.filter(p => p.status === 'aftercare').reduce((sum, p) => {
+                      const value = p.retention?.replace(/[£,-]/g, '') || '0';
+                      return sum + parseFloat(value);
+                    }, 0) || 0}`)}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Visual timeline chart */}
+              <div className="space-y-3">
+                <div className="text-sm font-medium">Project Timeline Overview</div>
+                {projects?.filter(p => p.startOnSiteDate && p.contractCompletionDate).map(project => {
+                  const startDate = new Date(project.startOnSiteDate!);
+                  const endDate = new Date(project.contractCompletionDate!);
+                  const currentDate = new Date();
+                  const totalDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+                  const elapsedDays = Math.max(0, Math.min(Math.ceil((currentDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)), totalDays));
+                  const progressPercent = totalDays > 0 ? (elapsedDays / totalDays) * 100 : 0;
+                  
+                  return (
+                    <div key={project.id} className="flex items-center gap-3">
+                      <div className="w-24 text-xs text-gray-600 truncate">{project.name}</div>
+                      <div className="flex-1 relative">
+                        <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
+                          <div 
+                            className={`h-full rounded-full transition-all ${
+                              project.status === 'tender' ? 'bg-blue-400' :
+                              project.status === 'precon' ? 'bg-green-400' :
+                              project.status === 'construction' ? 'bg-yellow-400' :
+                              project.status === 'aftercare' ? 'bg-purple-400 opacity-50' : 'bg-gray-400'
+                            }`}
+                            style={{ width: `${Math.min(progressPercent, 100)}%` }}
+                          />
+                        </div>
+                      </div>
+                      <div className="w-16 text-xs text-gray-600 text-right">
+                        {Math.round(progressPercent)}%
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Financial Metrics Chart */}
+          <Card className="material-shadow">
+            <CardHeader>
+              <CardTitle className="text-lg">Financial Performance</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Total Portfolio Value */}
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-green-600">
+                    {formatValue(`£${projects?.reduce((sum, p) => {
+                      if (p.status === 'tender') return sum; // Don't count tender costs as value
+                      const value = p.value?.replace(/[£,]/g, '') || '0';
+                      return sum + parseFloat(value);
+                    }, 0) || 0}`)}
+                  </div>
+                  <div className="text-sm text-gray-500">Total Portfolio Value</div>
+                  <div className="text-xs text-gray-400">(Excluding tender costs)</div>
+                </div>
+                
+                {/* Active Retention */}
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-amber-600">
+                    {formatValue(`£${projects?.filter(p => p.status === 'aftercare').reduce((sum, p) => {
+                      const value = p.retention?.replace(/[£,-]/g, '') || '0';
+                      return sum + parseFloat(value);
+                    }, 0) || 0}`)}
+                  </div>
+                  <div className="text-sm text-gray-500">Active Retention</div>
+                  <div className="text-xs text-gray-400">Projects in aftercare</div>
+                </div>
+                
+                {/* Projects at Risk */}
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-red-600">
+                    {projects?.filter(p => {
+                      if (!p.startOnSiteDate || !p.contractCompletionDate) return false;
+                      const endDate = new Date(p.contractCompletionDate);
+                      const currentDate = new Date();
+                      return currentDate > endDate && p.status !== 'aftercare';
+                    }).length || 0}
+                  </div>
+                  <div className="text-sm text-gray-500">Overrun Projects</div>
+                  <div className="text-xs text-gray-400">Past contract completion</div>
+                </div>
+              </div>
+              
+              {/* EEV vs Project Value Comparison */}
+              <div className="mt-6 space-y-3">
+                <div className="text-sm font-medium">EEV vs Project Value Comparison</div>
+                {projects?.filter(p => p.status !== 'aftercare' && p.status !== 'tender').map(project => {
+                  const projectValueNum = parseFloat(project.value?.replace(/[£,]/g, '') || '0');
+                  
+                  // Calculate EEV if we have timeline data
+                  let eevValue = 0;
+                  let eevPercent = 0;
+                  if (project.startOnSiteDate && project.contractCompletionDate && projectValueNum > 0) {
+                    const startDate = new Date(project.startOnSiteDate);
+                    const endDate = new Date(project.contractCompletionDate);
+                    const currentDate = new Date();
+                    const totalWeeks = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
+                    const currentWeek = Math.ceil((currentDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
+                    
+                    if (totalWeeks > 0) {
+                      const weeklyValue = projectValueNum / totalWeeks;
+                      eevValue = Math.min(weeklyValue * Math.max(1, currentWeek), projectValueNum);
+                      eevPercent = (eevValue / projectValueNum) * 100;
+                    }
+                  }
+                  
+                  return (
+                    <div key={project.id} className="flex items-center gap-3">
+                      <div className="w-24 text-xs text-gray-600 truncate">{project.name}</div>
+                      <div className="flex-1 relative">
+                        <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
+                          <div 
+                            className="h-full bg-green-400 rounded-full transition-all"
+                            style={{ width: `${Math.min(eevPercent, 100)}%` }}
+                          />
+                        </div>
+                      </div>
+                      <div className="w-20 text-xs text-gray-600 text-right">
+                        {formatValue(`£${eevValue}`)}
+                      </div>
+                      <div className="w-16 text-xs text-gray-600 text-right">
+                        {Math.round(eevPercent)}%
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </CardContent>
           </Card>
