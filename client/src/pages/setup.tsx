@@ -663,12 +663,6 @@ export default function Setup({ onTabChange }: SetupProps) {
                                       }
                                       
                                       const percentComplete = Math.min((weekInfo.currentWeek / weekInfo.totalWeeksToContract) * 100, 100);
-                                      
-                                      // For precon and tender, don't show percentage
-                                      if (project.status === 'precon' || project.status === 'tender') {
-                                        return `${formatValue(`£${evaValue}`)}`;
-                                      }
-                                      
                                       return `${formatValue(`£${evaValue}`)} (${percentComplete.toFixed(0)}%)`;
                                     })()}
                                   </span>
