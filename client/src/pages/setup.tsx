@@ -639,21 +639,14 @@ export default function Setup({ onTabChange }: SetupProps) {
                                   </span>
                                 </div>
                               )}
-                              {/* EVA indicator for non-aftercare projects */}
-                              {project.status !== 'aftercare' && weekInfo && !weekInfo.hideWeekIndicator && (
+                              {/* EVA indicator for non-aftercare projects with non-zero values */}
+                              {project.status !== 'aftercare' && weekInfo && !weekInfo.hideWeekIndicator && !isZeroOrNegativeValue(project.value) && (
                                 <div className="flex items-center" title="Estimated Earned Value - calculated as (Project Value ÷ Total Weeks) × Weeks Completed">
-                                  <span className={`border px-1 py-0.5 rounded-l-sm ${
-                                    isZeroOrNegativeValue(project.value)
-                                      ? 'bg-gray-400 border-gray-400 text-gray-200'
-                                      : 'bg-purple-300 border-purple-300 text-white'
-                                  }`} style={{ fontSize: '10px' }}>
+                                  <span className="bg-purple-300 border-purple-300 text-white border px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>
                                     EEV
                                   </span>
                                   <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>
                                     {(() => {
-                                      if (isZeroOrNegativeValue(project.value)) {
-                                        return '£0 (0%)';
-                                      }
                                       const projectValueNum = parseFloat(project.value?.replace(/[£,]/g, '') || '0');
                                       const weeklyValue = projectValueNum / weekInfo.totalWeeksToContract;
                                       let evaValue = weeklyValue * weekInfo.currentWeek;
