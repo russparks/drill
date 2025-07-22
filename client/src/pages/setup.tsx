@@ -282,30 +282,36 @@ export default function Setup({ onTabChange }: SetupProps) {
               }, 0);
 
               return (
-                <div className="flex flex-col items-center gap-1.5 text-xs">
-                  <div className="flex items-center gap-2">
-                    <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
-                      TENDER
-                    </span>
-                    <span className="text-base font-bold">{tenderProjects.length} <span className="text-sm font-normal italic">({formatValue(`£${Math.abs(tenderValue)}`)?.replace('£', '-£')})</span></span>
+                <div className="flex flex-col items-center gap-2 text-xs">
+                  {/* First row: TENDER and PRECON */}
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2">
+                      <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
+                        TENDER
+                      </span>
+                      <span className="text-base font-bold">{tenderProjects.length} <span className="text-sm font-normal italic">({formatValue(`£${Math.abs(tenderValue)}`)?.replace('£', '-£')})</span></span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
+                        PRECON
+                      </span>
+                      <span className="text-base font-bold">{preconProjects.length} <span className="text-sm font-normal italic">({formatValue(`£${preconValue}`)})</span></span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
-                      PRECON
-                    </span>
-                    <span className="text-base font-bold">{preconProjects.length} <span className="text-sm font-normal italic">({formatValue(`£${preconValue}`)})</span></span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-medium">
-                      CONSTRUCTION
-                    </span>
-                    <span className="text-base font-bold">{constructionProjects.length} <span className="text-sm font-normal italic">({formatValue(`£${constructionValue}`)})</span></span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs font-medium">
-                      AFTERCARE
-                    </span>
-                    <span className="text-base font-bold">{aftercareProjects.length} <span className="text-sm font-normal italic">({formatValue(`£${aftercareValue}`)})</span></span>
+                  {/* Second row: CONSTRUCTION and AFTERCARE */}
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2">
+                      <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-medium">
+                        CONSTR
+                      </span>
+                      <span className="text-base font-bold">{constructionProjects.length} <span className="text-sm font-normal italic">({formatValue(`£${constructionValue}`)})</span></span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs font-medium">
+                        AFTER
+                      </span>
+                      <span className="text-base font-bold">{aftercareProjects.length} <span className="text-sm font-normal italic">({formatValue(`£${aftercareValue}`)})</span></span>
+                    </div>
                   </div>
                 </div>
               );
@@ -317,7 +323,7 @@ export default function Setup({ onTabChange }: SetupProps) {
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="projects" className="space-y-6">
+        <TabsContent value="projects" className="space-y-6" style={{ marginTop: '20px' }}>
           <Dialog open={isProjectDialogOpen} onOpenChange={setIsProjectDialogOpen}>
             <DialogContent className="max-w-lg">
                 <DialogHeader>
@@ -544,6 +550,15 @@ export default function Setup({ onTabChange }: SetupProps) {
                   const contractDate = new Date(project.contractCompletionDate);
                   const currentDate = new Date();
                   
+                  // Check if project end dates have passed
+                  const hasPreconEnded = project.status === 'precon' && currentDate > contractDate;
+                  const hasTenderEnded = project.status === 'tender' && currentDate > contractDate;
+                  
+                  // Hide week indicator if precon/tender end dates have passed
+                  if (hasPreconEnded || hasTenderEnded) {
+                    return null;
+                  }
+                  
                   const currentWeek = Math.ceil((currentDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
                   const totalWeeksToAnticipated = Math.ceil((anticipatedDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
                   const totalWeeksToContract = Math.ceil((contractDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
@@ -610,7 +625,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                               <div className="flex items-center" title={project.status === 'aftercare' ? 'Project Retention Value' : 'Project Value'}>
                                 <span className={`text-white px-1 py-0.5 rounded-l-sm border ${
                                   project.status === 'aftercare' 
-                                    ? 'bg-amber-500 border-amber-500' 
+                                    ? (isZeroOrNegativeValue(project.retention) ? 'bg-green-400 border-green-400' : 'bg-amber-500 border-amber-500')
                                     : isNegativeValue(project.value)
                                       ? 'bg-red-400 border-red-400'
                                       : 'bg-black border-black'
@@ -619,7 +634,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 </span>
                                 <span className={`text-black px-1 py-0.5 rounded-r-sm border ${
                                   project.status === 'aftercare'
-                                    ? 'bg-white border-gray-300'
+                                    ? (isZeroOrNegativeValue(project.retention) ? 'bg-green-400 border-green-400 text-white' : 'bg-white border-gray-300')
                                     : isNegativeValue(project.value)
                                       ? 'bg-red-400 border-red-400 text-white'
                                       : 'bg-white border-gray-300'
@@ -650,7 +665,14 @@ export default function Setup({ onTabChange }: SetupProps) {
                                       }
                                       const projectValueNum = parseFloat(project.value?.replace(/[£,]/g, '') || '0');
                                       const weeklyValue = projectValueNum / weekInfo.totalWeeksToContract;
-                                      const evaValue = weeklyValue * weekInfo.currentWeek;
+                                      let evaValue = weeklyValue * weekInfo.currentWeek;
+                                      
+                                      // Cap EEV at project value for late projects
+                                      const isLate = weekInfo.currentWeek > weekInfo.totalWeeksToContract;
+                                      if (isLate) {
+                                        evaValue = Math.min(evaValue, projectValueNum);
+                                      }
+                                      
                                       const percentComplete = Math.min((weekInfo.currentWeek / weekInfo.totalWeeksToContract) * 100, 100);
                                       return `${formatValue(`£${evaValue}`)} (${percentComplete.toFixed(0)}%)`;
                                     })()}
