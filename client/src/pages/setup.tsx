@@ -697,24 +697,25 @@ export default function Setup({ onTabChange }: SetupProps) {
                                         }
                                       })()}`
                                     }}>{weekInfo.startDate.toUpperCase()}</span>
-                                    <span className="text-white px-1 py-0.5 border" style={{ 
+                                    <span className="px-1 py-0.5 border" style={{ 
                                       fontSize: '10px',
+                                      color: project.status === 'construction' ? 'rgb(31, 41, 55)' : 'white', // same font color as first section
                                       backgroundColor: (() => {
                                         switch (project.status) {
-                                          case 'tender': return 'rgb(59, 130, 246)'; // blue
-                                          case 'precon': return 'rgb(34, 197, 94)'; // green
-                                          case 'construction': return 'rgb(234, 179, 8)'; // yellow
-                                          case 'aftercare': return 'rgb(107, 114, 128)'; // grey
-                                          default: return 'rgb(107, 114, 128)'; // default gray
+                                          case 'tender': return 'rgb(147, 197, 253)'; // light blue - same as first section
+                                          case 'precon': return 'rgb(134, 239, 172)'; // light green - same as first section
+                                          case 'construction': return 'rgb(254, 240, 138)'; // light yellow - same as first section
+                                          case 'aftercare': return 'rgb(209, 213, 219)'; // light grey - same as first section
+                                          default: return 'rgb(156, 163, 175)'; // default gray-400
                                         }
                                       })(),
                                       borderColor: (() => {
                                         switch (project.status) {
-                                          case 'tender': return 'rgb(59, 130, 246)';
-                                          case 'precon': return 'rgb(34, 197, 94)';
-                                          case 'construction': return 'rgb(234, 179, 8)';
-                                          case 'aftercare': return 'rgb(107, 114, 128)';
-                                          default: return 'rgb(107, 114, 128)';
+                                          case 'tender': return 'rgb(147, 197, 253)';
+                                          case 'precon': return 'rgb(134, 239, 172)';
+                                          case 'construction': return 'rgb(254, 240, 138)';
+                                          case 'aftercare': return 'rgb(209, 213, 219)';
+                                          default: return 'rgb(156, 163, 175)';
                                         }
                                       })(),
                                       borderTopRightRadius: '0.125rem',
