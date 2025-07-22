@@ -809,29 +809,6 @@ export default function Setup({ onTabChange }: SetupProps) {
                   {weekInfo && (
                     <div className={`flex justify-end relative ${weekInfo.hasPositiveRetention ? 'opacity-60' : ''}`} style={{ marginTop: '-3px', marginRight: '25px' }}>
                       <div className="bg-white border border-gray-200 rounded-b-lg px-3 py-1.5 text-gray-600 inline-block italic flex justify-center" style={{ fontSize: '11.73px', zIndex: -1 }}>
-                        {(() => {
-                          // For completed projects, show PROJECT COMPLETE
-                          if (weekInfo.isGreyedOut || weekInfo.hasPositiveRetention) {
-                            return (
-                              <span className="text-gray-500 font-medium">PROJECT COMPLETE</span>
-                            );
-                          }
-                          
-                          // For tender and precon projects, show single completion message
-                          if (project.status === 'tender' || project.status === 'precon') {
-                            return (
-                              <>
-                                Weeks Remaining to Completion <span className="font-bold text-gray-800">{Math.max(0, weekInfo.totalWeeksToContract - weekInfo.currentWeek)}</span>
-                              </>
-                            );
-                          }
-                          // For construction and aftercare, show both construction and contract
-                          return (
-                            <>
-                              <span className="font-bold text-blue-300">{Math.max(0, weekInfo.totalWeeksToAnticipated - weekInfo.currentWeek)}</span> Remaining Construction Weeks - <span className="font-bold text-gray-800">{Math.max(0, weekInfo.totalWeeksToContract - weekInfo.currentWeek)}</span> Contract
-                            </>
-                          );
-                        })()}
                       </div>
                     </div>
                   )}
