@@ -642,7 +642,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 }
                               })()
                             }}>{project.name}{project.postcode && (
-                              <span className="ml-1" style={{ 
+                              <span style={{ 
                                 fontSize: '0.7em',
                                 color: (() => {
                                   switch (project.status) {
