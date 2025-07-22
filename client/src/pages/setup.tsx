@@ -725,7 +725,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                                   {/* Hide CONSTR indicator for precon and tender projects */}
                                   {project.status !== 'precon' && project.status !== 'tender' && (
                                     <div className="flex items-center" title="Construction Practical Completion Date">
-                                      <span className="text-white border px-1 py-0.5 rounded-l-sm" style={{ 
+                                      <span className="text-white border px-1 py-0.5" style={{ 
                                         fontSize: '10px',
                                         backgroundColor: (() => {
                                           switch (project.status) {
@@ -740,18 +740,13 @@ export default function Setup({ onTabChange }: SetupProps) {
                                             case 'aftercare': return 'rgb(156, 163, 175)';
                                             default: return 'rgb(147, 197, 253)';
                                           }
-                                        })()
+                                        })(),
+                                        borderTopLeftRadius: '0.125rem',
+                                        borderBottomLeftRadius: '0.125rem'
                                       }}>CONST</span>
-                                      <span className="bg-white text-black px-1 py-0.5 rounded-r-sm" style={{ 
+                                      <span className="bg-white text-black px-1 py-0.5" style={{ 
                                         fontSize: '10px',
                                         borderTop: `1px solid ${(() => {
-                                          switch (project.status) {
-                                            case 'construction': return 'rgb(250, 204, 21)';
-                                            case 'aftercare': return 'rgb(156, 163, 175)';
-                                            default: return 'rgb(147, 197, 253)';
-                                          }
-                                        })()}`,
-                                        borderRight: `1px solid ${(() => {
                                           switch (project.status) {
                                             case 'construction': return 'rgb(250, 204, 21)';
                                             case 'aftercare': return 'rgb(156, 163, 175)';
@@ -766,10 +761,29 @@ export default function Setup({ onTabChange }: SetupProps) {
                                           }
                                         })()}`
                                       }}>{weekInfo.anticipatedDate.toUpperCase()}</span>
+                                      <span className="text-white px-1 py-0.5 border" style={{ 
+                                        fontSize: '10px',
+                                        backgroundColor: (() => {
+                                          switch (project.status) {
+                                            case 'construction': return 'rgb(250, 204, 21)'; // middle yellow shade - same as first section
+                                            case 'aftercare': return 'rgb(156, 163, 175)'; // middle grey shade - same as first section
+                                            default: return 'rgb(147, 197, 253)'; // default blue-300
+                                          }
+                                        })(),
+                                        borderColor: (() => {
+                                          switch (project.status) {
+                                            case 'construction': return 'rgb(250, 204, 21)';
+                                            case 'aftercare': return 'rgb(156, 163, 175)';
+                                            default: return 'rgb(147, 197, 253)';
+                                          }
+                                        })(),
+                                        borderTopRightRadius: '0.125rem',
+                                        borderBottomRightRadius: '0.125rem'
+                                      }}>{Math.min(((weekInfo.totalWeeksToAnticipated / weekInfo.totalWeeksToContract) * 100), 100).toFixed(0)}%</span>
                                     </div>
                                   )}
                                   <div className="flex items-center" title="Contract Practical Completion Date">
-                                    <span className="text-white border px-1 py-0.5 rounded-l-sm" style={{ 
+                                    <span className="text-white border px-1 py-0.5" style={{ 
                                       fontSize: '10px',
                                       backgroundColor: (() => {
                                         switch (project.status) {
@@ -788,20 +802,13 @@ export default function Setup({ onTabChange }: SetupProps) {
                                           case 'aftercare': return 'rgb(107, 114, 128)';
                                           default: return 'rgb(107, 114, 128)';
                                         }
-                                      })()
+                                      })(),
+                                      borderTopLeftRadius: '0.125rem',
+                                      borderBottomLeftRadius: '0.125rem'
                                     }}>CONTR</span>
-                                    <span className="bg-white text-black px-1 py-0.5 rounded-r-sm" style={{ 
+                                    <span className="bg-white text-black px-1 py-0.5" style={{ 
                                       fontSize: '10px',
                                       borderTop: `1px solid ${(() => {
-                                        switch (project.status) {
-                                          case 'tender': return 'rgb(59, 130, 246)';
-                                          case 'precon': return 'rgb(34, 197, 94)';
-                                          case 'construction': return 'rgb(234, 179, 8)';
-                                          case 'aftercare': return 'rgb(107, 114, 128)';
-                                          default: return 'rgb(107, 114, 128)';
-                                        }
-                                      })()}`,
-                                      borderRight: `1px solid ${(() => {
                                         switch (project.status) {
                                           case 'tender': return 'rgb(59, 130, 246)';
                                           case 'precon': return 'rgb(34, 197, 94)';
@@ -820,6 +827,29 @@ export default function Setup({ onTabChange }: SetupProps) {
                                         }
                                       })()}`
                                     }}>{weekInfo.contractDate.toUpperCase()}</span>
+                                    <span className="text-white px-1 py-0.5 border" style={{ 
+                                      fontSize: '10px',
+                                      backgroundColor: (() => {
+                                        switch (project.status) {
+                                          case 'tender': return 'rgb(59, 130, 246)'; // dark blue - same as first section
+                                          case 'precon': return 'rgb(34, 197, 94)'; // dark green - same as first section
+                                          case 'construction': return 'rgb(234, 179, 8)'; // dark yellow - same as first section
+                                          case 'aftercare': return 'rgb(107, 114, 128)'; // dark grey - same as first section
+                                          default: return 'rgba(31, 41, 55, 0.7)';
+                                        }
+                                      })(),
+                                      borderColor: (() => {
+                                        switch (project.status) {
+                                          case 'tender': return 'rgb(59, 130, 246)';
+                                          case 'precon': return 'rgb(34, 197, 94)';
+                                          case 'construction': return 'rgb(234, 179, 8)';
+                                          case 'aftercare': return 'rgb(107, 114, 128)';
+                                          default: return 'rgb(107, 114, 128)';
+                                        }
+                                      })(),
+                                      borderTopRightRadius: '0.125rem',
+                                      borderBottomRightRadius: '0.125rem'
+                                    }}>100%</span>
                                   </div>
                                   {/* EVA indicator for non-aftercare projects with non-zero values */}
                                   {project.status !== 'aftercare' && weekInfo && !weekInfo.hideWeekIndicator && !isZeroOrNegativeValue(project.value) && (
