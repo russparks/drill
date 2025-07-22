@@ -589,13 +589,25 @@ export default function Setup({ onTabChange }: SetupProps) {
                         <div className={`flex items-center gap-2 mb-0.5 ${weekInfo?.hasPositiveRetention ? 'opacity-60' : ''}`}>
                           <CardTitle className="text-lg flex items-center">
                             <span className="font-normal text-sm" style={{
-                              color: (project.status === 'tender' || project.status === 'precon') 
-                                ? (project.status === 'tender' ? 'rgb(59, 130, 246)' : 'rgb(34, 197, 94)')
-                                : 'rgb(55, 65, 81)' // default gray-700
+                              color: (() => {
+                                switch (project.status) {
+                                  case 'tender': return 'rgb(59, 130, 246)'; // blue
+                                  case 'precon': return 'rgb(34, 197, 94)'; // green
+                                  case 'construction': return 'rgb(249, 115, 22)'; // orange
+                                  case 'aftercare': return 'rgb(168, 85, 247)'; // purple
+                                  default: return 'rgb(55, 65, 81)'; // default gray-700
+                                }
+                              })()
                             }}>{project.projectNumber}</span> <span className="font-light mx-1">|</span> <span style={{
-                              color: (project.status === 'tender' || project.status === 'precon') 
-                                ? (project.status === 'tender' ? 'rgb(59, 130, 246)' : 'rgb(34, 197, 94)')
-                                : 'inherit' // default color
+                              color: (() => {
+                                switch (project.status) {
+                                  case 'tender': return 'rgb(59, 130, 246)'; // blue
+                                  case 'precon': return 'rgb(34, 197, 94)'; // green
+                                  case 'construction': return 'rgb(249, 115, 22)'; // orange
+                                  case 'aftercare': return 'rgb(168, 85, 247)'; // purple
+                                  default: return 'inherit'; // default color
+                                }
+                              })()
                             }}>{project.name}</span>
                           </CardTitle>
                           {project.value && (
@@ -632,12 +644,24 @@ export default function Setup({ onTabChange }: SetupProps) {
                                   <div className="flex items-center" title="Start on Site Date">
                                     <span className="text-white border px-1 py-0.5 rounded-l-sm" style={{ 
                                       fontSize: '10px',
-                                      backgroundColor: (project.status === 'tender' || project.status === 'precon') 
-                                        ? (project.status === 'tender' ? 'rgb(147, 197, 253)' : 'rgb(134, 239, 172)') // lighter shade matching project number
-                                        : 'rgb(156, 163, 175)', // default gray-400
-                                      borderColor: (project.status === 'tender' || project.status === 'precon') 
-                                        ? (project.status === 'tender' ? 'rgb(147, 197, 253)' : 'rgb(134, 239, 172)')
-                                        : 'rgb(156, 163, 175)'
+                                      backgroundColor: (() => {
+                                        switch (project.status) {
+                                          case 'tender': return 'rgb(147, 197, 253)'; // light blue
+                                          case 'precon': return 'rgb(134, 239, 172)'; // light green
+                                          case 'construction': return 'rgb(254, 215, 170)'; // light orange
+                                          case 'aftercare': return 'rgb(221, 214, 254)'; // light purple
+                                          default: return 'rgb(156, 163, 175)'; // default gray-400
+                                        }
+                                      })(),
+                                      borderColor: (() => {
+                                        switch (project.status) {
+                                          case 'tender': return 'rgb(147, 197, 253)';
+                                          case 'precon': return 'rgb(134, 239, 172)';
+                                          case 'construction': return 'rgb(254, 215, 170)';
+                                          case 'aftercare': return 'rgb(221, 214, 254)';
+                                          default: return 'rgb(156, 163, 175)';
+                                        }
+                                      })()
                                     }}>SOS</span>
                                     <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.startDate.toUpperCase()}</span>
                                   </div>
@@ -667,12 +691,24 @@ export default function Setup({ onTabChange }: SetupProps) {
                                   <div className="flex items-center" title="Contract Practical Completion Date">
                                     <span className="text-white border px-1 py-0.5 rounded-l-sm" style={{ 
                                       fontSize: '10px',
-                                      backgroundColor: (project.status === 'tender' || project.status === 'precon') 
-                                        ? (project.status === 'tender' ? 'rgb(59, 130, 246)' : 'rgb(34, 197, 94)') // darker shade matching title
-                                        : 'rgba(31, 41, 55, 0.7)', // default dark gray
-                                      borderColor: (project.status === 'tender' || project.status === 'precon') 
-                                        ? (project.status === 'tender' ? 'rgb(59, 130, 246)' : 'rgb(34, 197, 94)')
-                                        : 'rgb(107, 114, 128)'
+                                      backgroundColor: (() => {
+                                        switch (project.status) {
+                                          case 'tender': return 'rgb(59, 130, 246)'; // dark blue
+                                          case 'precon': return 'rgb(34, 197, 94)'; // dark green
+                                          case 'construction': return 'rgb(249, 115, 22)'; // dark orange
+                                          case 'aftercare': return 'rgb(168, 85, 247)'; // dark purple
+                                          default: return 'rgba(31, 41, 55, 0.7)'; // default dark gray
+                                        }
+                                      })(),
+                                      borderColor: (() => {
+                                        switch (project.status) {
+                                          case 'tender': return 'rgb(59, 130, 246)';
+                                          case 'precon': return 'rgb(34, 197, 94)';
+                                          case 'construction': return 'rgb(249, 115, 22)';
+                                          case 'aftercare': return 'rgb(168, 85, 247)';
+                                          default: return 'rgb(107, 114, 128)';
+                                        }
+                                      })()
                                     }}>CONTR</span>
                                     <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.contractDate.toUpperCase()}</span>
                                   </div>
