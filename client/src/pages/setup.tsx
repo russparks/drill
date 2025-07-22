@@ -810,7 +810,30 @@ export default function Setup({ onTabChange }: SetupProps) {
                   {/* Remaining weeks display - tab behind project card */}
                   {weekInfo && (
                     <div className={`flex justify-end relative ${weekInfo.hasPositiveRetention ? 'opacity-60' : ''}`} style={{ marginTop: '-3px', marginRight: '25px' }}>
-                      <div className="bg-white border border-gray-200 rounded-b-lg px-3 py-1.5 text-gray-600 inline-block italic flex justify-center" style={{ fontSize: '11.73px', zIndex: -1 }}>
+                      <div className="rounded-b-lg px-3 py-1.5 text-gray-600 inline-block italic flex justify-center" style={{ 
+                        fontSize: '11.73px', 
+                        zIndex: -1,
+                        backgroundColor: (() => {
+                          if (weekInfo.isGreyedOut || weekInfo.hasPositiveRetention) return 'rgba(204, 204, 204, 0.25)';
+                          switch (project.status) {
+                            case 'tender': return 'rgba(59, 130, 246, 0.25)'; // blue
+                            case 'precon': return 'rgba(34, 197, 94, 0.25)'; // green
+                            case 'construction': return 'rgba(249, 115, 22, 0.25)'; // orange
+                            case 'aftercare': return 'rgba(168, 85, 247, 0.25)'; // purple
+                            default: return 'rgba(107, 114, 128, 0.25)'; // gray
+                          }
+                        })(),
+                        border: (() => {
+                          if (weekInfo.isGreyedOut || weekInfo.hasPositiveRetention) return '1px solid rgb(204, 204, 204)';
+                          switch (project.status) {
+                            case 'tender': return '1px solid rgb(59, 130, 246)'; // blue
+                            case 'precon': return '1px solid rgb(34, 197, 94)'; // green
+                            case 'construction': return '1px solid rgb(249, 115, 22)'; // orange
+                            case 'aftercare': return '1px solid rgb(168, 85, 247)'; // purple
+                            default: return '1px solid rgb(107, 114, 128)'; // gray
+                          }
+                        })()
+                      }}>
                         {weekInfo.isGreyedOut || weekInfo.hasPositiveRetention ? (
                           <span className="text-gray-500 font-medium">Project Complete</span>
                         ) : (
