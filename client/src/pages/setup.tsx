@@ -965,7 +965,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                                   {/* Today marker extending through timeline */}
                                   <div 
                                     className="w-0.5 h-7 bg-gray-600 rounded-sm"
-                                    style={{ marginTop: '-8px' }}
+                                    style={{ marginTop: '12px' }}
                                     title="Today"
                                   />
                                   {/* Week indicator positioned to the left and slightly under the timeline */}
@@ -973,7 +973,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                                     className="absolute whitespace-nowrap text-gray-600"
                                     style={{ 
                                       fontSize: '10.2px', 
-                                      top: '8px', 
+                                      top: '28px', 
                                       right: '4px',
                                       lineHeight: '1',
                                       color: 'rgb(75, 85, 99)'
