@@ -828,7 +828,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                           // For construction and aftercare, show both construction and contract
                           return (
                             <>
-                              Weeks Remaining Construction <span className="font-bold text-blue-300">{Math.max(0, weekInfo.totalWeeksToAnticipated - weekInfo.currentWeek)}</span> - Contract <span className="font-bold text-gray-800">{Math.max(0, weekInfo.totalWeeksToContract - weekInfo.currentWeek)}</span>
+                              Weeks Remaining Construction <span className="font-bold text-blue-300">{Math.max(0, weekInfo.totalWeeksToAnticipated - weekInfo.currentWeek)} </span>- Contract <span className="font-bold text-gray-800">({Math.max(0, weekInfo.totalWeeksToContract - weekInfo.currentWeek)})</span>
                             </>
                           );
                         })()}
