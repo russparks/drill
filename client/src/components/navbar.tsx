@@ -23,8 +23,20 @@ export default function Navbar({ onCreateAction, onCreateProject, onCreatePerson
         </Button>
       );
     } else if (location === "/setup") {
+      // Grey out the button when on the Dash tab (activeTab === "users")
+      const isOnDashTab = activeTab === "users";
       return (
-        <Button size="sm" onClick={onCreateProject} style={{ backgroundColor: '#333333', borderColor: '#333333', borderRadius: '9999px' }}>
+        <Button 
+          size="sm" 
+          onClick={isOnDashTab ? undefined : onCreateProject}
+          disabled={isOnDashTab}
+          style={{ 
+            backgroundColor: isOnDashTab ? '#9ca3af' : '#333333', 
+            borderColor: isOnDashTab ? '#9ca3af' : '#333333', 
+            borderRadius: '9999px',
+            cursor: isOnDashTab ? 'not-allowed' : 'pointer'
+          }}
+        >
           <Plus className="h-4 w-4 mr-0.5" />
           Project
         </Button>
