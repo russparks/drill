@@ -105,6 +105,7 @@ export default function People() {
       username: data.username,
       email: data.email,
       password: data.password || "password123",
+      discipline: data.discipline || null,
     };
 
     if (selectedUser) {
@@ -260,7 +261,7 @@ export default function People() {
                     </button>
                   ))}
                 </div>
-                <input type="hidden" id="disciplineValue" name="discipline" />
+                <input type="hidden" id="disciplineValue" name="discipline" value="" />
               </div>
               <div className="flex justify-end space-x-2 pt-2">
                 <Button type="button" variant="outline" onClick={() => setIsUserDialogOpen(false)} style={{ borderRadius: '9999px' }}>
