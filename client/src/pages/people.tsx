@@ -125,71 +125,62 @@ export default function People() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-action-text-primary">People</h1>
-          <Dialog open={isUserDialogOpen} onOpenChange={setIsUserDialogOpen}>
-            <DialogTrigger asChild>
-              <Button onClick={() => setSelectedUser(null)}>
-                <Plus className="h-4 w-4 mr-2" />
-                Add Person
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>{selectedUser ? "Edit Person" : "Add New Person"}</DialogTitle>
-              </DialogHeader>
-              <form onSubmit={handleUserSubmit} className="space-y-4">
+        <Dialog open={isUserDialogOpen} onOpenChange={setIsUserDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>{selectedUser ? "Edit Person" : "Add New Person"}</DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleUserSubmit} className="space-y-4">
+              <div>
+                <Label htmlFor="name">Full Name</Label>
+                <Input
+                  id="name"
+                  name="name"
+                  defaultValue={selectedUser?.name}
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="username">Username</Label>
+                <Input
+                  id="username"
+                  name="username"
+                  defaultValue={selectedUser?.username}
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  defaultValue={selectedUser?.email}
+                  required
+                />
+              </div>
+              {!selectedUser && (
                 <div>
-                  <Label htmlFor="name">Full Name</Label>
+                  <Label htmlFor="password">Password</Label>
                   <Input
-                    id="name"
-                    name="name"
-                    defaultValue={selectedUser?.name}
-                    required
+                    id="password"
+                    name="password"
+                    type="password"
+                    placeholder="Default: password123"
                   />
                 </div>
-                <div>
-                  <Label htmlFor="username">Username</Label>
-                  <Input
-                    id="username"
-                    name="username"
-                    defaultValue={selectedUser?.username}
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    defaultValue={selectedUser?.email}
-                    required
-                  />
-                </div>
-                {!selectedUser && (
-                  <div>
-                    <Label htmlFor="password">Password</Label>
-                    <Input
-                      id="password"
-                      name="password"
-                      type="password"
-                      placeholder="Default: password123"
-                    />
-                  </div>
-                )}
-                <div className="flex justify-end space-x-2">
-                  <Button type="button" variant="outline" onClick={() => setIsUserDialogOpen(false)}>
-                    Cancel
-                  </Button>
-                  <Button type="submit">
-                    {selectedUser ? "Update" : "Create"}
-                  </Button>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog>
-        </div>
+              )}
+              <div className="flex justify-end space-x-2">
+                <Button type="button" variant="outline" onClick={() => setIsUserDialogOpen(false)}>
+                  Cancel
+                </Button>
+                <Button type="submit">
+                  {selectedUser ? "Update" : "Create"}
+                </Button>
+              </div>
+            </form>
+          </DialogContent>
+        </Dialog>
 
         <div className="grid gap-4">
           {usersLoading ? (
