@@ -43,8 +43,9 @@ export default function People() {
       setIsUserDialogOpen(false);
       setSelectedUser(null);
       toast({
-        title: "Success",
-        description: "Person created successfully.",
+        title: "Person Created",
+        className: "bg-[#b9f6b6] text-[#079800] border-[#079800] !p-2 !px-4 !pr-4 w-auto max-w-none min-w-fit text-center justify-center",
+        duration: 5000,
       });
     },
     onError: (error: any) => {
@@ -65,8 +66,9 @@ export default function People() {
       setIsUserDialogOpen(false);
       setSelectedUser(null);
       toast({
-        title: "Success",
-        description: "Person updated successfully.",
+        title: "Person Updated",
+        className: "bg-[#b9f6b6] text-[#079800] border-[#079800] !p-2 !px-4 !pr-4 w-auto max-w-none min-w-fit text-center justify-center",
+        duration: 5000,
       });
     },
     onError: (error) => {
@@ -83,8 +85,9 @@ export default function People() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/users"] });
       toast({
-        title: "Success",
-        description: "Person deleted successfully.",
+        title: "Person Deleted",
+        className: "bg-[#b9f6b6] text-[#079800] border-[#079800] !p-2 !px-4 !pr-4 w-auto max-w-none min-w-fit text-center justify-center",
+        duration: 5000,
       });
     },
     onError: (error) => {
