@@ -809,7 +809,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                   {weekInfo && (
                     <div className={`flex justify-end relative ${weekInfo.hasPositiveRetention ? 'opacity-60' : ''}`} style={{ marginTop: '-3px', marginRight: '25px' }}>
                       <div className="bg-white border border-gray-200 rounded-b-lg px-3 py-1.5 text-gray-600 inline-block italic flex justify-center" style={{ fontSize: '11.73px', zIndex: -1 }}>
-                        Weeks to Construction - <span className="font-bold text-blue-300">{Math.max(0, weekInfo.totalWeeksToAnticipated - weekInfo.currentWeek)}</span> - Contract - <span className="font-bold text-gray-800">{Math.max(0, weekInfo.totalWeeksToContract - weekInfo.currentWeek)}</span>
+                        Weeks to Construction - <span className="font-bold text-blue-300">[ {Math.max(0, weekInfo.totalWeeksToAnticipated - weekInfo.currentWeek)} ]</span> - Contract - <span className="font-bold text-gray-800">[ {Math.max(0, weekInfo.totalWeeksToContract - weekInfo.currentWeek)} ]</span>
                       </div>
                     </div>
                   )}
