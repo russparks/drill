@@ -23,6 +23,7 @@ export const projects = pgTable("projects", {
   description: text("description"),
   value: text("value"),
   retention: text("retention"),
+  postcode: text("postcode"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
