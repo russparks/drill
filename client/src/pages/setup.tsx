@@ -809,8 +809,8 @@ export default function Setup({ onTabChange }: SetupProps) {
                                     <div className="flex items-center" title="Estimated Earned Value - calculated as (Project Value ÷ Total Weeks) × Weeks Completed">
                                       <span className="text-white border px-1 py-0.5 rounded-l-sm" style={{ 
                                         fontSize: '10px',
-                                        backgroundColor: 'rgb(64, 64, 64)', // 75% black (25% opacity from black)
-                                        borderColor: 'rgb(64, 64, 64)'
+                                        backgroundColor: 'rgb(115, 115, 115)', // 55% black (45% opacity from black)
+                                        borderColor: 'rgb(115, 115, 115)'
                                       }}>
                                         EEV
                                       </span>
