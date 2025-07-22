@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { MapPin, Plus, Building2, Navigation, Map } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -6,10 +6,22 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Project } from "@shared/schema";
 import { Skeleton } from "@/components/ui/skeleton";
 
+// Declare global google variable for TypeScript
+declare global {
+  interface Window {
+    google: any;
+    initMap: () => void;
+  }
+}
+
 export default function Locations() {
   const { data: projects = [], isLoading } = useQuery<Project[]>({
     queryKey: ["/api/projects"],
   });
+  
+  const mapRef = useRef<HTMLDivElement>(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
+  const [map, setMap] = useState<any>(null);
 
   // Group projects by city
   const postcodeToCity: { [key: string]: string } = {
@@ -48,6 +60,124 @@ export default function Locations() {
     }
   };
 
+  // Load Google Maps API
+  useEffect(() => {
+    const loadGoogleMaps = () => {
+      if (window.google) {
+        setMapLoaded(true);
+        return;
+      }
+
+      // Since GOOGLE_MAPS_API_KEY is not prefixed with VITE_, we need to get it from the server
+      fetch('/api/google-maps-key')
+        .then(res => res.text())
+        .then(apiKey => {
+          const script = document.createElement('script');
+          script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=geometry`;
+          script.async = true;
+          script.defer = true;
+          script.onload = () => setMapLoaded(true);
+          document.head.appendChild(script);
+        })
+        .catch(err => {
+          console.error('Failed to load Google Maps API key:', err);
+        });
+    };
+
+    loadGoogleMaps();
+  }, []);
+
+  // Initialize map when Google Maps is loaded and we have projects
+  useEffect(() => {
+    if (!mapLoaded || !mapRef.current || !projects.length || map) return;
+
+    const ukCenter = { lat: 54.5, lng: -2.0 }; // Approximate UK center
+    const newMap = new window.google.maps.Map(mapRef.current, {
+      center: ukCenter,
+      zoom: 6,
+      styles: [
+        {
+          featureType: "poi",
+          elementType: "labels",
+          stylers: [{ visibility: "off" }]
+        }
+      ]
+    });
+
+    setMap(newMap);
+  }, [mapLoaded, projects, map]);
+
+  // Add markers when map is ready
+  useEffect(() => {
+    if (!map || !projects.length) return;
+
+    const geocoder = new window.google.maps.Geocoder();
+    const infoWindow = new window.google.maps.InfoWindow();
+
+    // Group projects by city to avoid duplicate markers
+    Object.entries(projectsByCity).forEach(([city, cityProjects]) => {
+      if (city === 'Unknown') return;
+      
+      // Use first project's postcode for geocoding
+      const representativeProject = cityProjects[0];
+      if (!representativeProject.postcode) return;
+
+      geocoder.geocode(
+        { address: `${representativeProject.postcode}, UK` },
+        (results: any[], status: string) => {
+          if (status === 'OK' && results[0]) {
+            const position = results[0].geometry.location;
+            
+            // Get the most advanced phase for marker color
+            const phases = ['tender', 'precon', 'construction', 'aftercare'];
+            const mostAdvancedPhase = cityProjects.reduce((advanced, project) => {
+              const currentIndex = phases.indexOf(project.status);
+              const advancedIndex = phases.indexOf(advanced);
+              return currentIndex > advancedIndex ? project.status : advanced;
+            }, 'tender');
+
+            // Create marker
+            const marker = new window.google.maps.Marker({
+              position,
+              map,
+              title: `${city} (${cityProjects.length} projects)`,
+              icon: {
+                path: window.google.maps.SymbolPath.CIRCLE,
+                scale: 10,
+                fillColor: getPhaseColor(mostAdvancedPhase),
+                fillOpacity: 0.8,
+                strokeColor: 'white',
+                strokeWeight: 2,
+              },
+            });
+
+            // Create info window content
+            const infoContent = `
+              <div style="padding: 8px; max-width: 250px;">
+                <h3 style="margin: 0 0 8px 0; color: #374151; font-size: 16px;">${city}</h3>
+                <p style="margin: 0 0 8px 0; color: #6B7280; font-size: 14px;">${cityProjects.length} project${cityProjects.length !== 1 ? 's' : ''}</p>
+                <div style="max-height: 120px; overflow-y: auto;">
+                  ${cityProjects.map(project => `
+                    <div style="margin-bottom: 6px; padding: 4px; background: #F9FAFB; border-radius: 4px;">
+                      <div style="font-weight: 500; color: #111827; font-size: 12px;">${project.projectNumber}</div>
+                      <div style="color: #6B7280; font-size: 11px; margin-top: 2px;">${project.name}</div>
+                      <div style="color: ${getPhaseColor(project.status)}; font-size: 10px; text-transform: uppercase; margin-top: 2px;">${project.status}</div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            `;
+
+            marker.addListener('click', () => {
+              infoWindow.setContent(infoContent);
+              infoWindow.open(map, marker);
+            });
+          }
+        }
+      );
+    });
+  }, [map, projects, projectsByCity]);
+
   if (isLoading) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-8">
@@ -80,6 +210,33 @@ export default function Locations() {
         </div>
       </div>
 
+      {/* Google Maps */}
+      <div className="mb-8">
+        <Card className="material-shadow">
+          <CardHeader className="pb-4">
+            <CardTitle className="flex items-center gap-2">
+              <Map className="h-5 w-5 text-blue-600" />
+              Project Locations Map
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div 
+              ref={mapRef} 
+              className="w-full h-96 rounded-lg"
+              style={{ minHeight: '400px' }}
+            >
+              {!mapLoaded && (
+                <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-lg">
+                  <div className="text-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
+                    <p className="text-gray-600">Loading map...</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Location Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
