@@ -79,6 +79,36 @@ export default function Setup({ onTabChange }: SetupProps) {
     }, 0);
   };
 
+  // Helper function to format values with k/m suffixes
+  const formatValue = (value: string | undefined) => {
+    if (!value) return '£0';
+    const numValue = parseFloat(value.replace(/[£,]/g, ''));
+    const isNegative = numValue < 0;
+    const absValue = Math.abs(numValue);
+    
+    let formatted;
+    if (absValue >= 1000000) {
+      formatted = `£${isNegative ? '-' : ''}${(absValue / 1000000).toFixed(1)}m`;
+    } else if (absValue >= 1000) {
+      formatted = `£${isNegative ? '-' : ''}${(absValue / 1000).toFixed(1)}k`;
+    } else {
+      formatted = `£${isNegative ? '-' : ''}${absValue.toFixed(1)}`;
+    }
+    return formatted;
+  };
+
+  // Helper function to determine if value is negative
+  const isNegativeValue = (value: string | undefined) => {
+    if (!value) return false;
+    return parseFloat(value.replace(/[£,]/g, '')) < 0;
+  };
+
+  // Helper function to determine if value is zero or negative
+  const isZeroOrNegativeValue = (value: string | undefined) => {
+    if (!value) return true;
+    return parseFloat(value.replace(/[£,]/g, '')) <= 0;
+  };
+
   const { data: projects = [], isLoading: projectsLoading } = useQuery<Project[]>({
     queryKey: ["/api/projects"],
   });
@@ -226,32 +256,56 @@ export default function Setup({ onTabChange }: SetupProps) {
           </TabsTrigger>
           <TabsTrigger value="live" className="flex items-center justify-center cursor-not-allowed text-xs !opacity-100" disabled>
             {(() => {
-              const constructionProjects = projects.filter(p => p.status === 'construction');
+              const tenderProjects = projects.filter(p => p.status === 'tender');
               const preconProjects = projects.filter(p => p.status === 'precon');
+              const constructionProjects = projects.filter(p => p.status === 'construction');
+              const aftercareProjects = projects.filter(p => p.status === 'aftercare');
               
-              const constructionValue = constructionProjects.reduce((sum, p) => {
-                const value = p.value?.replace(/[£,]/g, '') || '0';
+              const tenderValue = tenderProjects.reduce((sum, p) => {
+                const value = p.value?.replace(/[£,-]/g, '') || '0';
                 return sum + parseFloat(value);
               }, 0);
               
               const preconValue = preconProjects.reduce((sum, p) => {
-                const value = p.value?.replace(/[£,]/g, '') || '0';
+                const value = p.value?.replace(/[£,-]/g, '') || '0';
+                return sum + parseFloat(value);
+              }, 0);
+              
+              const constructionValue = constructionProjects.reduce((sum, p) => {
+                const value = p.value?.replace(/[£,-]/g, '') || '0';
+                return sum + parseFloat(value);
+              }, 0);
+              
+              const aftercareValue = aftercareProjects.reduce((sum, p) => {
+                const value = p.retention?.replace(/[£,-]/g, '') || '0';
                 return sum + parseFloat(value);
               }, 0);
 
               return (
                 <div className="flex flex-col items-center gap-1.5 text-xs">
                   <div className="flex items-center gap-2">
+                    <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
+                      TENDER
+                    </span>
+                    <span className="text-base font-bold">{tenderProjects.length} <span className="text-sm font-normal italic">({formatValue(`£${Math.abs(tenderValue)}`)?.replace('£', '-£')})</span></span>
+                  </div>
+                  <div className="flex items-center gap-2">
                     <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
                       PRECON
                     </span>
-                    <span className="text-base font-bold">{preconProjects.length} <span className="text-sm font-normal italic">(£{Math.floor(preconValue)}m)</span></span>
+                    <span className="text-base font-bold">{preconProjects.length} <span className="text-sm font-normal italic">({formatValue(`£${preconValue}`)})</span></span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-medium">
                       CONSTRUCTION
                     </span>
-                    <span className="text-base font-bold">{constructionProjects.length} <span className="text-sm font-normal italic">(£{Math.floor(constructionValue)}m)</span></span>
+                    <span className="text-base font-bold">{constructionProjects.length} <span className="text-sm font-normal italic">({formatValue(`£${constructionValue}`)})</span></span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs font-medium">
+                      AFTERCARE
+                    </span>
+                    <span className="text-base font-bold">{aftercareProjects.length} <span className="text-sm font-normal italic">({formatValue(`£${aftercareValue}`)})</span></span>
                   </div>
                 </div>
               );
@@ -557,27 +611,48 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 <span className={`text-white px-1 py-0.5 rounded-l-sm border ${
                                   project.status === 'aftercare' 
                                     ? 'bg-amber-500 border-amber-500' 
-                                    : 'bg-black border-black'
+                                    : isNegativeValue(project.value)
+                                      ? 'bg-red-400 border-red-400'
+                                      : 'bg-black border-black'
                                 }`} style={{ fontSize: '10px' }}>
                                   {project.status === 'aftercare' ? 'RET' : 'VAL'}
                                 </span>
-                                <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>
-                                  {project.status === 'aftercare' ? project.retention || '£0.00' : project.value || '£0.00'}
+                                <span className={`text-black px-1 py-0.5 rounded-r-sm border ${
+                                  project.status === 'aftercare'
+                                    ? 'bg-white border-gray-300'
+                                    : isNegativeValue(project.value)
+                                      ? 'bg-red-400 border-red-400 text-white'
+                                      : 'bg-white border-gray-300'
+                                }`} style={{ fontSize: '10px' }}>
+                                  {project.status === 'aftercare' 
+                                    ? formatValue(project.retention) 
+                                    : formatValue(project.value)}
                                 </span>
                               </div>
                               {/* EVA indicator for non-aftercare projects */}
                               {project.status !== 'aftercare' && weekInfo && (
                                 <div className="flex items-center" title="Estimated Earned Value - calculated as (Project Value ÷ Total Weeks) × Weeks Completed">
-                                  <span className="bg-purple-300 border border-purple-300 text-white px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>
+                                  <span className={`border px-1 py-0.5 rounded-l-sm ${
+                                    isZeroOrNegativeValue(project.value)
+                                      ? 'bg-gray-400 border-gray-400 text-gray-200'
+                                      : 'bg-purple-300 border-purple-300 text-white'
+                                  }`} style={{ fontSize: '10px' }}>
                                     EEV
                                   </span>
-                                  <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>
+                                  <span className={`border px-1 py-0.5 rounded-r-sm ${
+                                    isZeroOrNegativeValue(project.value)
+                                      ? 'bg-gray-100 border-gray-300 text-gray-400'
+                                      : 'bg-white border-gray-300 text-black'
+                                  }`} style={{ fontSize: '10px' }}>
                                     {(() => {
+                                      if (isZeroOrNegativeValue(project.value)) {
+                                        return '£0 (0%)';
+                                      }
                                       const projectValueNum = parseFloat(project.value?.replace(/[£,]/g, '') || '0');
                                       const weeklyValue = projectValueNum / weekInfo.totalWeeksToContract;
                                       const evaValue = weeklyValue * weekInfo.currentWeek;
                                       const percentComplete = Math.min((weekInfo.currentWeek / weekInfo.totalWeeksToContract) * 100, 100);
-                                      return `£${evaValue.toFixed(1)} (${percentComplete.toFixed(0)}%)`;
+                                      return `${formatValue(`£${evaValue}`)} (${percentComplete.toFixed(0)}%)`;
                                     })()}
                                   </span>
                                 </div>
