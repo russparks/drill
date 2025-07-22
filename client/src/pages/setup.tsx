@@ -888,9 +888,9 @@ export default function Setup({ onTabChange }: SetupProps) {
                       </div>
                     </div>
                     
-                    {/* Timeline bar chart - full width */}
+                    {/* Timeline bar chart with completion percentage */}
                     {weekInfo && (
-                          <div className={`mt-2 relative ${weekInfo.hasPositiveRetention ? 'opacity-60' : ''}`}>
+                          <div className={`mt-2 relative flex items-center ${weekInfo.hasPositiveRetention ? 'opacity-60' : ''}`}>
                             <div className={`h-1 rounded-sm overflow-hidden flex ${
                               project.status === 'aftercare' ? 'bg-gray-200' : 'bg-gray-100'
                             }`} style={{ width: '95%' }}>
@@ -991,6 +991,26 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 </div>
                               );
                             })()}
+                            {/* Completion percentage in the right gap */}
+                            <div className="ml-2 text-xs font-medium" style={{ 
+                              fontSize: '10px',
+                              color: (() => {
+                                switch (project.status) {
+                                  case 'tender': return 'rgb(59, 130, 246)'; // blue
+                                  case 'precon': return 'rgb(34, 197, 94)'; // green
+                                  case 'construction': return 'rgb(234, 179, 8)'; // yellow
+                                  case 'aftercare': return 'rgb(107, 114, 128)'; // grey
+                                  default: return 'rgb(107, 114, 128)';
+                                }
+                              })()
+                            }}>
+                              {(() => {
+                                const currentWeek = weekInfo.currentWeek;
+                                const totalWeeksToContract = weekInfo.totalWeeksToContract;
+                                const percentComplete = Math.min((currentWeek / totalWeeksToContract) * 100, 100);
+                                return `${Math.round(percentComplete)}%`;
+                              })()}
+                            </div>
 
                           </div>
                         )}
