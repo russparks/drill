@@ -101,7 +101,7 @@ export default function People() {
     const data = Object.fromEntries(formData.entries()) as Record<string, string>;
     
     const userData: InsertUser = {
-      name: data.name,
+      name: `${data.firstName} ${data.surname}`.trim(),
       username: data.username,
       email: data.email,
       password: data.password || "password123",
@@ -130,51 +130,143 @@ export default function People() {
             <DialogHeader>
               <DialogTitle>{selectedUser ? "Edit Person" : "Add New Person"}</DialogTitle>
             </DialogHeader>
-            <form onSubmit={handleUserSubmit} className="space-y-4">
-              <div>
-                <Label htmlFor="name">Full Name</Label>
+            <form onSubmit={handleUserSubmit} className="space-y-3">
+              <div className="flex items-center gap-4">
+                <Label htmlFor="firstName" className="w-20 text-sm">First Name</Label>
                 <Input
-                  id="name"
-                  name="name"
-                  defaultValue={selectedUser?.name}
+                  id="firstName"
+                  name="firstName"
+                  className="h-8 flex-1"
+                  style={{ fontSize: '0.85rem' }}
+                  placeholder="Enter first name"
+                  defaultValue={selectedUser?.name?.split(' ')[0] || ''}
+                  onChange={(e) => {
+                    const firstName = e.target.value;
+                    const surnameInput = document.getElementById('surname') as HTMLInputElement;
+                    const usernameInput = document.getElementById('username') as HTMLInputElement;
+                    if (surnameInput && usernameInput) {
+                      const surname = surnameInput.value;
+                      if (firstName && surname) {
+                        usernameInput.value = `${firstName.toLowerCase()}${surname.toLowerCase()}`;
+                      }
+                    }
+                  }}
                   required
                 />
               </div>
-              <div>
-                <Label htmlFor="username">Username</Label>
+              <div className="flex items-center gap-4">
+                <Label htmlFor="surname" className="w-20 text-sm">Surname</Label>
+                <Input
+                  id="surname"
+                  name="surname"
+                  className="h-8 flex-1"
+                  style={{ fontSize: '0.85rem' }}
+                  placeholder="Enter surname"
+                  defaultValue={selectedUser?.name?.split(' ').slice(1).join(' ') || ''}
+                  onChange={(e) => {
+                    const surname = e.target.value;
+                    const firstNameInput = document.getElementById('firstName') as HTMLInputElement;
+                    const usernameInput = document.getElementById('username') as HTMLInputElement;
+                    if (firstNameInput && usernameInput) {
+                      const firstName = firstNameInput.value;
+                      if (firstName && surname) {
+                        usernameInput.value = `${firstName.toLowerCase()}${surname.toLowerCase()}`;
+                      }
+                    }
+                  }}
+                  required
+                />
+              </div>
+              <div className="flex items-center gap-4">
+                <Label htmlFor="username" className="w-20 text-sm">Username</Label>
                 <Input
                   id="username"
                   name="username"
+                  className="h-8 flex-1 bg-gray-100 text-gray-500"
+                  style={{ fontSize: '0.85rem' }}
+                  placeholder="Auto-generated from name"
                   defaultValue={selectedUser?.username}
-                  required
+                  readOnly
                 />
               </div>
-              <div>
-                <Label htmlFor="email">Email</Label>
+              <div className="flex items-center gap-4">
+                <Label htmlFor="email" className="w-20 text-sm">Email</Label>
                 <Input
                   id="email"
                   name="email"
                   type="email"
+                  className="h-8 flex-1"
+                  style={{ fontSize: '0.85rem' }}
+                  placeholder="Enter email address"
                   defaultValue={selectedUser?.email}
                   required
                 />
               </div>
-              {!selectedUser && (
-                <div>
-                  <Label htmlFor="password">Password</Label>
-                  <Input
-                    id="password"
-                    name="password"
-                    type="password"
-                    placeholder="Default: password123"
-                  />
+              <div className="flex items-center gap-4">
+                <Label htmlFor="password" className="w-20 text-sm">Password</Label>
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  className="h-8 flex-1 bg-gray-100 text-gray-500"
+                  style={{ fontSize: '0.85rem' }}
+                  placeholder="Auto-generated on creation"
+                  readOnly
+                />
+              </div>
+              <div className="flex items-center gap-4">
+                <Label className="w-20 text-sm">Discipline</Label>
+                <div className="flex justify-between gap-2 flex-1">
+                  {[
+                    { value: "operations", label: "OPS", activeColor: "bg-blue-500 border-blue-600 text-white", inactiveColor: "bg-blue-50 border-blue-200 text-blue-700" },
+                    { value: "commercial", label: "COMM", activeColor: "bg-green-500 border-green-600 text-white", inactiveColor: "bg-green-50 border-green-200 text-green-700" },
+                    { value: "design", label: "DES", activeColor: "bg-purple-500 border-purple-600 text-white", inactiveColor: "bg-purple-50 border-purple-200 text-purple-700" },
+                    { value: "she", label: "SHE", activeColor: "bg-orange-500 border-orange-600 text-white", inactiveColor: "bg-orange-50 border-orange-200 text-orange-700" },
+                    { value: "qa", label: "QA", activeColor: "bg-red-500 border-red-600 text-white", inactiveColor: "bg-red-50 border-red-200 text-red-700" }
+                  ].map((discipline) => (
+                    <button
+                      key={discipline.value}
+                      type="button"
+                      onClick={() => {
+                        const disciplineInput = document.getElementById('disciplineValue') as HTMLInputElement;
+                        if (disciplineInput) {
+                          disciplineInput.value = discipline.value;
+                        }
+                        // Update button states
+                        const buttons = document.querySelectorAll('[data-discipline-button]');
+                        buttons.forEach(btn => {
+                          const button = btn as HTMLButtonElement;
+                          if (button.dataset.disciplineValue === discipline.value) {
+                            button.className = `flex-1 px-3 py-1.5 text-xs font-medium uppercase rounded-full border transition-colors ${discipline.activeColor}`;
+                          } else {
+                            const otherDiscipline = [
+                              { value: "operations", label: "OPS", activeColor: "bg-blue-500 border-blue-600 text-white", inactiveColor: "bg-blue-50 border-blue-200 text-blue-700" },
+                              { value: "commercial", label: "COMM", activeColor: "bg-green-500 border-green-600 text-white", inactiveColor: "bg-green-50 border-green-200 text-green-700" },
+                              { value: "design", label: "DES", activeColor: "bg-purple-500 border-purple-600 text-white", inactiveColor: "bg-purple-50 border-purple-200 text-purple-700" },
+                              { value: "she", label: "SHE", activeColor: "bg-orange-500 border-orange-600 text-white", inactiveColor: "bg-orange-50 border-orange-200 text-orange-700" },
+                              { value: "qa", label: "QA", activeColor: "bg-red-500 border-red-600 text-white", inactiveColor: "bg-red-50 border-red-200 text-red-700" }
+                            ].find(d => d.value === button.dataset.disciplineValue);
+                            if (otherDiscipline) {
+                              button.className = `flex-1 px-3 py-1.5 text-xs font-medium uppercase rounded-full border transition-colors ${otherDiscipline.inactiveColor}`;
+                            }
+                          }
+                        });
+                      }}
+                      className={`flex-1 px-3 py-1.5 text-xs font-medium uppercase rounded-full border transition-colors ${discipline.inactiveColor}`}
+                      data-discipline-button
+                      data-discipline-value={discipline.value}
+                    >
+                      {discipline.label}
+                    </button>
+                  ))}
                 </div>
-              )}
-              <div className="flex justify-end space-x-2">
-                <Button type="button" variant="outline" onClick={() => setIsUserDialogOpen(false)}>
+                <input type="hidden" id="disciplineValue" name="discipline" />
+              </div>
+              <div className="flex justify-end space-x-2 pt-2">
+                <Button type="button" variant="outline" onClick={() => setIsUserDialogOpen(false)} style={{ borderRadius: '9999px' }}>
                   Cancel
                 </Button>
-                <Button type="submit">
+                <Button type="submit" style={{ backgroundColor: '#333333', borderColor: '#333333', borderRadius: '9999px' }}>
                   {selectedUser ? "Update" : "Create"}
                 </Button>
               </div>
