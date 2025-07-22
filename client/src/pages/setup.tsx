@@ -958,7 +958,10 @@ export default function Setup({ onTabChange }: SetupProps) {
                               const currentWeek = weekInfo.currentWeek;
                               const totalWeeksToContract = weekInfo.totalWeeksToContract;
                               const totalWeeksToAnticipated = weekInfo.totalWeeksToAnticipated;
-                              const currentPercent = Math.min((currentWeek / totalWeeksToContract) * 100, 100);
+                              // Calculate marker position - align with the visual timeline segments
+                              const greyPercent = Math.min((currentWeek / totalWeeksToContract) * 100, 100);
+                              // Scale the position to the 95% timeline width
+                              const currentPercent = (greyPercent * 95) / 100;
                               
                               return (
                                 <div className="absolute" style={{ left: `calc(${currentPercent}% - 2px)` }}>
