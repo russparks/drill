@@ -813,7 +813,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                       <div className="bg-white rounded-b-lg px-3 py-1.5 text-gray-600 inline-block italic flex justify-center" style={{ 
                         fontSize: '11.73px', 
                         zIndex: -1,
-                        border: `2px solid ${(() => {
+                        border: `1px solid ${(() => {
                           if (weekInfo.isGreyedOut || weekInfo.hasPositiveRetention) return 'rgba(204, 204, 204, 0.5)';
                           switch (project.status) {
                             case 'tender': return 'rgba(59, 130, 246, 0.5)'; // blue
