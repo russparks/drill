@@ -37,7 +37,7 @@ export default function People() {
   });
 
   const createUserMutation = useMutation({
-    mutationFn: (data: InsertUser) => apiRequest(`/api/users`, "POST", data),
+    mutationFn: (data: InsertUser) => apiRequest("POST", `/api/users`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/users"] });
       setIsUserDialogOpen(false);
@@ -58,7 +58,7 @@ export default function People() {
 
   const updateUserMutation = useMutation({
     mutationFn: ({ id, data }: { id: number; data: Partial<InsertUser> }) => 
-      apiRequest(`/api/users/${id}`, "PATCH", data),
+      apiRequest("PATCH", `/api/users/${id}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/users"] });
       setIsUserDialogOpen(false);
@@ -78,7 +78,7 @@ export default function People() {
   });
 
   const deleteUserMutation = useMutation({
-    mutationFn: (id: number) => apiRequest(`/api/users/${id}`, "DELETE"),
+    mutationFn: (id: number) => apiRequest("DELETE", `/api/users/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/users"] });
       toast({
