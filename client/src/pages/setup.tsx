@@ -557,6 +557,10 @@ export default function Setup({ onTabChange }: SetupProps) {
                   const isCompleted = project.status === 'aftercare';
                   const isFinished = hasPreconEnded || hasTenderEnded || hasConstructionEnded || isCompleted;
                   
+                  // For aftercare projects, check if retention is positive
+                  const hasPositiveRetention = project.status === 'aftercare' && !isZeroOrNegativeValue(project.retention);
+                  const shouldGreyOutCompletely = isFinished && !hasPositiveRetention;
+                  
                   const currentWeek = Math.ceil((currentDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
                   const totalWeeksToAnticipated = Math.ceil((anticipatedDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
                   const totalWeeksToContract = Math.ceil((contractDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
@@ -569,7 +573,8 @@ export default function Setup({ onTabChange }: SetupProps) {
                     anticipatedDate: anticipatedDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }),
                     contractDate: contractDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }),
                     hideWeekIndicator: isFinished,
-                    isGreyedOut: isFinished
+                    isGreyedOut: shouldGreyOutCompletely,
+                    hasPositiveRetention: hasPositiveRetention
                   };
                 };
 
@@ -581,7 +586,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                   <CardContent className="p-2.5 pb-8">
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-0.5">
+                        <div className={`flex items-center gap-2 mb-0.5 ${weekInfo?.hasPositiveRetention ? 'opacity-60' : ''}`}>
                           <CardTitle className="text-lg">{project.name}</CardTitle>
                           {project.value && (
                             <span className="text-sm text-action-text-secondary">
@@ -611,22 +616,51 @@ export default function Setup({ onTabChange }: SetupProps) {
                         {weekInfo && (
                           <div className="flex items-center justify-between" style={{ fontSize: '10px' }}>
                             <div className="flex items-center" style={{ gap: '10px' }}>
-                              <div className="flex items-center" title="Start on Site Date">
-                                <span className="bg-gray-400 text-white border border-gray-400 px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>SOS</span>
-                                <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.startDate.toUpperCase()}</span>
-                              </div>
-                              {/* Hide CONSTR indicator for precon and tender projects */}
-                              {project.status !== 'precon' && project.status !== 'tender' && (
-                                <div className="flex items-center" title="Construction Practical Completion Date">
-                                  <span className="bg-blue-300 text-white border border-blue-300 px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>CONST</span>
-                                  <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.anticipatedDate.toUpperCase()}</span>
+                              {/* Indicators that get greyed out for projects with positive retention */}
+                              <div className={weekInfo.hasPositiveRetention ? 'opacity-60' : ''}>
+                                <div className="flex items-center gap-[10px]">
+                                  <div className="flex items-center" title="Start on Site Date">
+                                    <span className="bg-gray-400 text-white border border-gray-400 px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>SOS</span>
+                                    <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.startDate.toUpperCase()}</span>
+                                  </div>
+                                  {/* Hide CONSTR indicator for precon and tender projects */}
+                                  {project.status !== 'precon' && project.status !== 'tender' && (
+                                    <div className="flex items-center" title="Construction Practical Completion Date">
+                                      <span className="bg-blue-300 text-white border border-blue-300 px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>CONST</span>
+                                      <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.anticipatedDate.toUpperCase()}</span>
+                                    </div>
+                                  )}
+                                  <div className="flex items-center" title="Contract Practical Completion Date">
+                                    <span className="text-white border border-gray-500 px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px', backgroundColor: 'rgba(31, 41, 55, 0.7)' }}>CONTR</span>
+                                    <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.contractDate.toUpperCase()}</span>
+                                  </div>
+                                  {/* EVA indicator for non-aftercare projects with non-zero values */}
+                                  {project.status !== 'aftercare' && weekInfo && !weekInfo.hideWeekIndicator && !isZeroOrNegativeValue(project.value) && (
+                                    <div className="flex items-center" title="Estimated Earned Value - calculated as (Project Value ÷ Total Weeks) × Weeks Completed">
+                                      <span className="bg-purple-300 border-purple-300 text-white border px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>
+                                        EEV
+                                      </span>
+                                      <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>
+                                        {(() => {
+                                          const projectValueNum = parseFloat(project.value?.replace(/[£,]/g, '') || '0');
+                                          const weeklyValue = projectValueNum / weekInfo.totalWeeksToContract;
+                                          let evaValue = weeklyValue * weekInfo.currentWeek;
+                                          
+                                          // Cap EEV at project value for late projects
+                                          const isLate = weekInfo.currentWeek > weekInfo.totalWeeksToContract;
+                                          if (isLate) {
+                                            evaValue = Math.min(evaValue, projectValueNum);
+                                          }
+                                          
+                                          const percentComplete = Math.min((weekInfo.currentWeek / weekInfo.totalWeeksToContract) * 100, 100);
+                                          return `${formatValue(`£${evaValue}`)} (${percentComplete.toFixed(0)}%)`;
+                                        })()}
+                                      </span>
+                                    </div>
+                                  )}
                                 </div>
-                              )}
-                              <div className="flex items-center" title="Contract Practical Completion Date">
-                                <span className="text-white border border-gray-500 px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px', backgroundColor: 'rgba(31, 41, 55, 0.7)' }}>CONTR</span>
-                                <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.contractDate.toUpperCase()}</span>
                               </div>
-                              {/* Retention display for aftercare projects only */}
+                              {/* Retention display for aftercare projects only - always full opacity */}
                               {project.status === 'aftercare' && (
                                 <div className="flex items-center" title="Project Retention Value">
                                   <span className={`text-white px-1 py-0.5 rounded-l-sm border ${
@@ -639,30 +673,6 @@ export default function Setup({ onTabChange }: SetupProps) {
                                   </span>
                                 </div>
                               )}
-                              {/* EVA indicator for non-aftercare projects with non-zero values */}
-                              {project.status !== 'aftercare' && weekInfo && !weekInfo.hideWeekIndicator && !isZeroOrNegativeValue(project.value) && (
-                                <div className="flex items-center" title="Estimated Earned Value - calculated as (Project Value ÷ Total Weeks) × Weeks Completed">
-                                  <span className="bg-purple-300 border-purple-300 text-white border px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>
-                                    EEV
-                                  </span>
-                                  <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>
-                                    {(() => {
-                                      const projectValueNum = parseFloat(project.value?.replace(/[£,]/g, '') || '0');
-                                      const weeklyValue = projectValueNum / weekInfo.totalWeeksToContract;
-                                      let evaValue = weeklyValue * weekInfo.currentWeek;
-                                      
-                                      // Cap EEV at project value for late projects
-                                      const isLate = weekInfo.currentWeek > weekInfo.totalWeeksToContract;
-                                      if (isLate) {
-                                        evaValue = Math.min(evaValue, projectValueNum);
-                                      }
-                                      
-                                      const percentComplete = Math.min((weekInfo.currentWeek / weekInfo.totalWeeksToContract) * 100, 100);
-                                      return `${formatValue(`£${evaValue}`)} (${percentComplete.toFixed(0)}%)`;
-                                    })()}
-                                  </span>
-                                </div>
-                              )}
                             </div>
 
                           </div>
@@ -670,7 +680,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                         {/* Add 8px vertical space below indicators */}
                         <div style={{ height: '8px' }}></div>
                       </div>
-                      <div className="flex space-x-1 ml-2">
+                      <div className={`flex space-x-1 ml-2 ${weekInfo?.hasPositiveRetention ? 'opacity-60' : ''}`}>
                         <Button
                           variant="ghost"
                           size="icon"
@@ -699,7 +709,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                     
                     {/* Timeline bar chart - full width */}
                     {weekInfo && (
-                          <div className="mt-2 relative">
+                          <div className={`mt-2 relative ${weekInfo.hasPositiveRetention ? 'opacity-60' : ''}`}>
                             <div className={`w-full h-1 rounded-sm overflow-hidden flex ${
                               project.status === 'aftercare' ? 'bg-gray-200' : 'bg-gray-100'
                             }`}>
@@ -797,7 +807,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                   
                   {/* Remaining weeks display - tab behind project card */}
                   {weekInfo && (
-                    <div className="flex justify-end relative" style={{ marginTop: '-3px', marginRight: '25px' }}>
+                    <div className={`flex justify-end relative ${weekInfo.hasPositiveRetention ? 'opacity-60' : ''}`} style={{ marginTop: '-3px', marginRight: '25px' }}>
                       <div className="bg-white border border-gray-200 rounded-b-lg px-3 py-1.5 text-gray-600 inline-block italic" style={{ fontSize: '11.73px', zIndex: -1 }}>
                         Weeks Remaining Construction <span className="font-bold text-blue-300">{Math.max(0, weekInfo.totalWeeksToAnticipated - weekInfo.currentWeek)}</span> - Contract <span className="font-bold text-gray-800">{Math.max(0, weekInfo.totalWeeksToContract - weekInfo.currentWeek)}</span>
                       </div>
