@@ -587,7 +587,12 @@ export default function Setup({ onTabChange }: SetupProps) {
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
                         <div className={`flex items-center gap-2 mb-0.5 ${weekInfo?.hasPositiveRetention ? 'opacity-60' : ''}`}>
-                          <CardTitle className="text-lg">{project.name}</CardTitle>
+                          <CardTitle className="text-lg">
+                            {project.name} 
+                            {(weekInfo?.isGreyedOut || weekInfo?.hasPositiveRetention) && (
+                              <span className="font-bold text-gray-500 ml-2">[COMPLETED]</span>
+                            )}
+                          </CardTitle>
                           {project.value && (
                             <span className="text-sm text-action-text-secondary">
                               (<span className={isZeroOrNegativeValue(project.value) ? 'text-red-400' : ''}>{formatValue(project.value)}</span>)
