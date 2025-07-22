@@ -719,7 +719,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 const totalWeeksToContract = weekInfo.totalWeeksToContract;
                                 
                                 // If project is finished, grey out the entire timeline
-                                if (weekInfo.isGreyedOut) {
+                                if (weekInfo.isGreyedOut || weekInfo.hasPositiveRetention) {
                                   return (
                                     <div 
                                       className="bg-gray-400 h-full opacity-40" 
