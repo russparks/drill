@@ -655,7 +655,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 })(),
                                 opacity: 0.8
                               }}>
-                                {`,${(() => {
+                                {`, ${(() => {
                                   const postcodeToCity: { [key: string]: string } = {
                                     'SW1A 1AA': 'London',
                                     'M1 1AA': 'Manchester',
