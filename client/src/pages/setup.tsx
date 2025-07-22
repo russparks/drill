@@ -582,7 +582,18 @@ export default function Setup({ onTabChange }: SetupProps) {
                 
                 return (
                   <div key={project.id} className={weekInfo?.isGreyedOut ? 'opacity-60' : ''}>
-                    <Card className="material-shadow">
+                    <Card className="material-shadow" style={{
+                      filter: (() => {
+                        if (weekInfo?.isGreyedOut || weekInfo?.hasPositiveRetention) return 'drop-shadow(0 4px 8px rgba(204, 204, 204, 0.3))';
+                        switch (project.status) {
+                          case 'tender': return 'drop-shadow(0 4px 8px rgba(59, 130, 246, 0.3))'; // blue
+                          case 'precon': return 'drop-shadow(0 4px 8px rgba(34, 197, 94, 0.3))'; // green
+                          case 'construction': return 'drop-shadow(0 4px 8px rgba(249, 115, 22, 0.3))'; // orange
+                          case 'aftercare': return 'drop-shadow(0 4px 8px rgba(168, 85, 247, 0.3))'; // purple
+                          default: return 'drop-shadow(0 4px 8px rgba(107, 114, 128, 0.3))'; // gray
+                        }
+                      })()
+                    }}>
                   <CardContent className="p-2.5 pb-8">
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
@@ -810,20 +821,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                   {/* Remaining weeks display - tab behind project card */}
                   {weekInfo && (
                     <div className={`flex justify-end relative ${weekInfo.hasPositiveRetention ? 'opacity-60' : ''}`} style={{ marginTop: '-3px', marginRight: '25px' }}>
-                      <div className="bg-white border border-gray-200 rounded-b-lg px-3 py-1.5 text-gray-600 inline-block italic flex justify-center" style={{ 
-                        fontSize: '11.73px', 
-                        zIndex: -1,
-                        boxShadow: (() => {
-                          if (weekInfo.isGreyedOut || weekInfo.hasPositiveRetention) return '0 4px 8px rgba(204, 204, 204, 0.3)';
-                          switch (project.status) {
-                            case 'tender': return '0 4px 8px rgba(59, 130, 246, 0.3)'; // blue
-                            case 'precon': return '0 4px 8px rgba(34, 197, 94, 0.3)'; // green
-                            case 'construction': return '0 4px 8px rgba(249, 115, 22, 0.3)'; // orange
-                            case 'aftercare': return '0 4px 8px rgba(168, 85, 247, 0.3)'; // purple
-                            default: return '0 4px 8px rgba(107, 114, 128, 0.3)'; // gray
-                          }
-                        })()
-                      }}>
+                      <div className="bg-white border border-gray-200 rounded-b-lg px-3 py-1.5 text-gray-600 inline-block italic flex justify-center" style={{ fontSize: '11.73px', zIndex: -1 }}>
                         {weekInfo.isGreyedOut || weekInfo.hasPositiveRetention ? (
                           <span className="text-gray-500 font-medium">Project Complete</span>
                         ) : (
