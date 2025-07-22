@@ -550,10 +550,12 @@ export default function Setup({ onTabChange }: SetupProps) {
                   const contractDate = new Date(project.contractCompletionDate);
                   const currentDate = new Date();
                   
-                  // Check if project end dates have passed
+                  // Check if project end dates have passed or project is completed
                   const hasPreconEnded = project.status === 'precon' && currentDate > contractDate;
                   const hasTenderEnded = project.status === 'tender' && currentDate > contractDate;
+                  const hasConstructionEnded = project.status === 'construction' && currentDate > contractDate;
                   const isCompleted = project.status === 'aftercare';
+                  const isFinished = hasPreconEnded || hasTenderEnded || hasConstructionEnded || isCompleted;
                   
                   const currentWeek = Math.ceil((currentDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
                   const totalWeeksToAnticipated = Math.ceil((anticipatedDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
@@ -566,8 +568,8 @@ export default function Setup({ onTabChange }: SetupProps) {
                     startDate: startDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }),
                     anticipatedDate: anticipatedDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }),
                     contractDate: contractDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }),
-                    hideWeekIndicator: hasPreconEnded || hasTenderEnded,
-                    isGreyedOut: isCompleted || hasPreconEnded || hasTenderEnded
+                    hideWeekIndicator: isFinished,
+                    isGreyedOut: isFinished
                   };
                 };
 
@@ -605,7 +607,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                           </div>
                         </div>
                         {weekInfo && (
-                          <div className={`flex items-center justify-between ${weekInfo.isGreyedOut ? 'opacity-50' : ''}`} style={{ fontSize: '10px' }}>
+                          <div className="flex items-center justify-between" style={{ fontSize: '10px' }}>
                             <div className="flex items-center" style={{ gap: '10px' }}>
                               <div className="flex items-center" title="Start on Site Date">
                                 <span className="bg-gray-400 text-white border border-gray-400 px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>SOS</span>
@@ -712,13 +714,13 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 const totalWeeksToAnticipated = weekInfo.totalWeeksToAnticipated;
                                 const totalWeeksToContract = weekInfo.totalWeeksToContract;
                                 
-                                // If project is in aftercare, grey out the entire timeline
-                                if (project.status === 'aftercare') {
+                                // If project is finished, grey out the entire timeline
+                                if (weekInfo.isGreyedOut) {
                                   return (
                                     <div 
                                       className="bg-gray-400 h-full opacity-40" 
                                       style={{ width: '100%' }}
-                                      title="Project completed"
+                                      title="Project finished"
                                     />
                                   );
                                 }
@@ -755,8 +757,8 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 );
                               })()}
                             </div>
-                            {/* Today marker and week indicator - hidden for aftercare */}
-                            {project.status !== 'aftercare' && (() => {
+                            {/* Today marker and week indicator - hidden for finished projects */}
+                            {weekInfo && !weekInfo.hideWeekIndicator && (() => {
                               const currentWeek = weekInfo.currentWeek;
                               const totalWeeksToContract = weekInfo.totalWeeksToContract;
                               const totalWeeksToAnticipated = weekInfo.totalWeeksToAnticipated;
