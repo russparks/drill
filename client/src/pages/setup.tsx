@@ -593,8 +593,8 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 switch (project.status) {
                                   case 'tender': return 'rgb(59, 130, 246)'; // blue
                                   case 'precon': return 'rgb(34, 197, 94)'; // green
-                                  case 'construction': return 'rgb(249, 115, 22)'; // orange
-                                  case 'aftercare': return 'rgb(168, 85, 247)'; // purple
+                                  case 'construction': return 'rgb(234, 179, 8)'; // yellow
+                                  case 'aftercare': return 'rgb(107, 114, 128)'; // grey
                                   default: return 'rgb(55, 65, 81)'; // default gray-700
                                 }
                               })()
@@ -603,8 +603,8 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 switch (project.status) {
                                   case 'tender': return 'rgb(59, 130, 246)'; // blue
                                   case 'precon': return 'rgb(34, 197, 94)'; // green
-                                  case 'construction': return 'rgb(249, 115, 22)'; // orange
-                                  case 'aftercare': return 'rgb(168, 85, 247)'; // purple
+                                  case 'construction': return 'rgb(234, 179, 8)'; // yellow
+                                  case 'aftercare': return 'rgb(107, 114, 128)'; // grey
                                   default: return 'inherit'; // default color
                                 }
                               })()
@@ -648,8 +648,8 @@ export default function Setup({ onTabChange }: SetupProps) {
                                         switch (project.status) {
                                           case 'tender': return 'rgb(147, 197, 253)'; // light blue
                                           case 'precon': return 'rgb(134, 239, 172)'; // light green
-                                          case 'construction': return 'rgb(254, 215, 170)'; // light orange
-                                          case 'aftercare': return 'rgb(221, 214, 254)'; // light purple
+                                          case 'construction': return 'rgb(254, 240, 138)'; // light yellow
+                                          case 'aftercare': return 'rgb(209, 213, 219)'; // light grey
                                           default: return 'rgb(156, 163, 175)'; // default gray-400
                                         }
                                       })(),
@@ -657,8 +657,8 @@ export default function Setup({ onTabChange }: SetupProps) {
                                         switch (project.status) {
                                           case 'tender': return 'rgb(147, 197, 253)';
                                           case 'precon': return 'rgb(134, 239, 172)';
-                                          case 'construction': return 'rgb(254, 215, 170)';
-                                          case 'aftercare': return 'rgb(221, 214, 254)';
+                                          case 'construction': return 'rgb(254, 240, 138)';
+                                          case 'aftercare': return 'rgb(209, 213, 219)';
                                           default: return 'rgb(156, 163, 175)';
                                         }
                                       })()
@@ -672,15 +672,15 @@ export default function Setup({ onTabChange }: SetupProps) {
                                         fontSize: '10px',
                                         backgroundColor: (() => {
                                           switch (project.status) {
-                                            case 'construction': return 'rgb(251, 146, 60)'; // middle orange shade
-                                            case 'aftercare': return 'rgb(196, 181, 253)'; // middle purple shade
+                                            case 'construction': return 'rgb(250, 204, 21)'; // middle yellow shade
+                                            case 'aftercare': return 'rgb(156, 163, 175)'; // middle grey shade
                                             default: return 'rgb(147, 197, 253)'; // default blue-300
                                           }
                                         })(),
                                         borderColor: (() => {
                                           switch (project.status) {
-                                            case 'construction': return 'rgb(251, 146, 60)';
-                                            case 'aftercare': return 'rgb(196, 181, 253)';
+                                            case 'construction': return 'rgb(250, 204, 21)';
+                                            case 'aftercare': return 'rgb(156, 163, 175)';
                                             default: return 'rgb(147, 197, 253)';
                                           }
                                         })()
@@ -695,8 +695,8 @@ export default function Setup({ onTabChange }: SetupProps) {
                                         switch (project.status) {
                                           case 'tender': return 'rgb(59, 130, 246)'; // dark blue
                                           case 'precon': return 'rgb(34, 197, 94)'; // dark green
-                                          case 'construction': return 'rgb(249, 115, 22)'; // dark orange
-                                          case 'aftercare': return 'rgb(168, 85, 247)'; // dark purple
+                                          case 'construction': return 'rgb(234, 179, 8)'; // dark yellow
+                                          case 'aftercare': return 'rgb(107, 114, 128)'; // dark grey
                                           default: return 'rgba(31, 41, 55, 0.7)'; // default dark gray
                                         }
                                       })(),
@@ -704,8 +704,8 @@ export default function Setup({ onTabChange }: SetupProps) {
                                         switch (project.status) {
                                           case 'tender': return 'rgb(59, 130, 246)';
                                           case 'precon': return 'rgb(34, 197, 94)';
-                                          case 'construction': return 'rgb(249, 115, 22)';
-                                          case 'aftercare': return 'rgb(168, 85, 247)';
+                                          case 'construction': return 'rgb(234, 179, 8)';
+                                          case 'aftercare': return 'rgb(107, 114, 128)';
                                           default: return 'rgb(107, 114, 128)';
                                         }
                                       })()
@@ -830,8 +830,8 @@ export default function Setup({ onTabChange }: SetupProps) {
                                             switch (project.status) {
                                               case 'tender': return 'rgb(59, 130, 246)'; // blue
                                               case 'precon': return 'rgb(34, 197, 94)'; // green
-                                              case 'construction': return 'rgb(249, 115, 22)'; // orange
-                                              case 'aftercare': return 'rgb(168, 85, 247)'; // purple
+                                              case 'construction': return 'rgb(234, 179, 8)'; // yellow
+                                              case 'aftercare': return 'rgb(107, 114, 128)'; // grey
                                               default: return 'rgb(147, 197, 253)'; // default light blue
                                             }
                                           })()
