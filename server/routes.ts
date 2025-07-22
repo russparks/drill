@@ -128,13 +128,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/users", async (req, res) => {
     try {
+      console.log('Received user data:', req.body);
       const validatedData = insertUserSchema.parse(req.body);
+      console.log('Validated user data:', validatedData);
       const user = await storage.createUser(validatedData);
       res.status(201).json(user);
     } catch (error) {
       if (error instanceof z.ZodError) {
+        console.log('User validation errors:', error.errors);
         return res.status(400).json({ message: "Invalid data", errors: error.errors });
       }
+      console.log('User creation error:', error);
       res.status(500).json({ message: "Failed to create user" });
     }
   });

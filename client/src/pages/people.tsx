@@ -100,6 +100,8 @@ export default function People() {
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries()) as Record<string, string>;
     
+    console.log('Form data:', data);
+    
     const userData: InsertUser = {
       name: `${data.firstName} ${data.surname}`.trim(),
       username: data.username,
@@ -107,6 +109,8 @@ export default function People() {
       password: data.password || "password123",
       discipline: data.discipline || null,
     };
+
+    console.log('User data being sent:', userData);
 
     if (selectedUser) {
       updateUserMutation.mutate({ id: selectedUser.id, data: userData });
