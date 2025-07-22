@@ -641,7 +641,41 @@ export default function Setup({ onTabChange }: SetupProps) {
                                   default: return 'inherit'; // default color
                                 }
                               })()
-                            }}>{project.name}</span>
+                            }}>{project.name}{project.postcode && (
+                              <span className="ml-1" style={{ 
+                                fontSize: '0.7em',
+                                color: (() => {
+                                  switch (project.status) {
+                                    case 'tender': return 'rgb(59, 130, 246)'; // blue
+                                    case 'precon': return 'rgb(34, 197, 94)'; // green
+                                    case 'construction': return 'rgb(234, 179, 8)'; // yellow
+                                    case 'aftercare': return 'rgb(107, 114, 128)'; // grey
+                                    default: return 'inherit';
+                                  }
+                                })(),
+                                opacity: 0.8
+                              }}>
+                                {`, ${(() => {
+                                  const postcodeToCity: { [key: string]: string } = {
+                                    'SW1A 1AA': 'London',
+                                    'M1 1AA': 'Manchester',
+                                    'B1 1TT': 'Birmingham',
+                                    'E1 6AN': 'London',
+                                    'LS1 2TW': 'Leeds',
+                                    'NE1 7RU': 'Newcastle',
+                                    'CB2 1TN': 'Cambridge',
+                                    'BS1 6XN': 'Bristol',
+                                    'SE1 7TP': 'London',
+                                    'CF10 3NP': 'Cardiff',
+                                    'G1 2FF': 'Glasgow',
+                                    'RG1 3EH': 'Reading',
+                                    'NG1 5DT': 'Nottingham',
+                                    'L1 8JQ': 'Liverpool'
+                                  };
+                                  return postcodeToCity[project.postcode] || 'UK';
+                                })()}`}
+                              </span>
+                            )}</span>
                           </CardTitle>
                           {project.value && (
                             <span className="text-sm text-action-text-secondary">
