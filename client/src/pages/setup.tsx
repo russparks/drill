@@ -755,8 +755,19 @@ export default function Setup({ onTabChange }: SetupProps) {
                                     )}
                                     {lightBluePercent > 0 && (
                                       <div 
-                                        className="bg-blue-300 h-full opacity-60" 
-                                        style={{ width: `${lightBluePercent}%` }}
+                                        className="h-full opacity-60" 
+                                        style={{ 
+                                          width: `${lightBluePercent}%`,
+                                          backgroundColor: (() => {
+                                            switch (project.status) {
+                                              case 'tender': return 'rgb(59, 130, 246)'; // blue
+                                              case 'precon': return 'rgb(34, 197, 94)'; // green
+                                              case 'construction': return 'rgb(249, 115, 22)'; // orange
+                                              case 'aftercare': return 'rgb(168, 85, 247)'; // purple
+                                              default: return 'rgb(147, 197, 253)'; // default light blue
+                                            }
+                                          })()
+                                        }}
                                         title={`Remaining to anticipated: ${Math.max(0, totalWeeksToAnticipated - currentWeek)} weeks`}
                                       />
                                     )}
