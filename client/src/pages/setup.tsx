@@ -515,6 +515,29 @@ export default function Setup({ onTabChange }: SetupProps) {
             ) : (
               projects
                 .sort((a, b) => {
+                  // Helper function to determine if a project is completed
+                  const isProjectCompleted = (project: Project) => {
+                    if (!project.startOnSiteDate || !project.contractCompletionDate) return false;
+                    
+                    const contractDate = new Date(project.contractCompletionDate);
+                    const currentDate = new Date();
+                    
+                    const hasPreconEnded = project.status === 'precon' && currentDate > contractDate;
+                    const hasTenderEnded = project.status === 'tender' && currentDate > contractDate;
+                    const hasConstructionEnded = project.status === 'construction' && currentDate > contractDate;
+                    const isAftercare = project.status === 'aftercare';
+                    
+                    return hasPreconEnded || hasTenderEnded || hasConstructionEnded || isAftercare;
+                  };
+                  
+                  const aCompleted = isProjectCompleted(a);
+                  const bCompleted = isProjectCompleted(b);
+                  
+                  // Move completed projects to bottom
+                  if (aCompleted && !bCompleted) return 1;
+                  if (!aCompleted && bCompleted) return -1;
+                  
+                  // For projects in the same completion state, use existing logic
                   // Define status order priority: tender, precon, construction, aftercare
                   const statusOrder = { tender: 1, precon: 2, construction: 3, aftercare: 4 };
                   const aOrder = statusOrder[a.status as keyof typeof statusOrder] || 5;
