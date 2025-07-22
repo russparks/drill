@@ -515,10 +515,10 @@ export default function Setup({ onTabChange }: SetupProps) {
             ) : (
               projects
                 .sort((a, b) => {
-                  // Define status order priority
-                  const statusOrder = { precon: 1, construction: 2, aftercare: 3 };
-                  const aOrder = statusOrder[a.status as keyof typeof statusOrder] || 4;
-                  const bOrder = statusOrder[b.status as keyof typeof statusOrder] || 4;
+                  // Define status order priority: tender, precon, construction, aftercare
+                  const statusOrder = { tender: 1, precon: 2, construction: 3, aftercare: 4 };
+                  const aOrder = statusOrder[a.status as keyof typeof statusOrder] || 5;
+                  const bOrder = statusOrder[b.status as keyof typeof statusOrder] || 5;
                   
                   // First sort by status
                   if (aOrder !== bOrder) {
