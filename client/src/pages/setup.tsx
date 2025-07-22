@@ -891,9 +891,9 @@ export default function Setup({ onTabChange }: SetupProps) {
                     {/* Timeline bar chart - full width */}
                     {weekInfo && (
                           <div className={`mt-2 relative ${weekInfo.hasPositiveRetention ? 'opacity-60' : ''}`}>
-                            <div className={`w-full h-1 rounded-sm overflow-hidden flex ${
+                            <div className={`h-1 rounded-sm overflow-hidden flex ${
                               project.status === 'aftercare' ? 'bg-gray-200' : 'bg-gray-100'
-                            }`}>
+                            }`} style={{ width: '95%' }}>
                               {(() => {
                                 const currentWeek = weekInfo.currentWeek;
                                 const totalWeeksToAnticipated = weekInfo.totalWeeksToAnticipated;
