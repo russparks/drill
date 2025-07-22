@@ -612,25 +612,29 @@ export default function Setup({ onTabChange }: SetupProps) {
                           <div className="flex items-center justify-between" style={{ fontSize: '10px' }}>
                             <div className="flex items-center" style={{ gap: '10px' }}>
                               <div className="flex items-center" title="Start on Site Date">
-                                <span className="bg-gray-400 text-white border border-gray-400 px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>SOS</span>
+                                <span className={`text-white border px-1 py-0.5 rounded-l-sm ${weekInfo.isFinished ? 'bg-gray-300 border-gray-300' : 'bg-gray-400 border-gray-400'}`} style={{ fontSize: '10px' }}>SOS</span>
                                 <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.startDate.toUpperCase()}</span>
                               </div>
                               {/* Hide CONSTR indicator for precon and tender projects */}
                               {project.status !== 'precon' && project.status !== 'tender' && (
                                 <div className="flex items-center" title="Construction Practical Completion Date">
-                                  <span className="bg-blue-300 text-white border border-blue-300 px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>CONST</span>
+                                  <span className={`text-white border px-1 py-0.5 rounded-l-sm ${weekInfo.isFinished ? 'bg-gray-300 border-gray-300' : 'bg-blue-300 border-blue-300'}`} style={{ fontSize: '10px' }}>CONST</span>
                                   <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.anticipatedDate.toUpperCase()}</span>
                                 </div>
                               )}
                               <div className="flex items-center" title="Contract Practical Completion Date">
-                                <span className="text-white border border-gray-500 px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px', backgroundColor: 'rgba(31, 41, 55, 0.7)' }}>CONTR</span>
+                                <span className={`text-white border px-1 py-0.5 rounded-l-sm ${weekInfo.isFinished ? 'bg-gray-300 border-gray-300' : 'border-gray-500'}`} style={{ fontSize: '10px', backgroundColor: weekInfo.isFinished ? undefined : 'rgba(31, 41, 55, 0.7)' }}>CONTR</span>
                                 <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>{weekInfo.contractDate.toUpperCase()}</span>
                               </div>
                               {/* Retention display for aftercare projects only */}
                               {project.status === 'aftercare' && (
                                 <div className="flex items-center" title="Project Retention Value">
                                   <span className={`text-white px-1 py-0.5 rounded-l-sm border ${
-                                    isZeroOrNegativeValue(project.retention) ? 'bg-green-400 border-green-400' : 'bg-amber-500 border-amber-500'
+                                    weekInfo.isFinished 
+                                      ? 'bg-gray-300 border-gray-300'
+                                      : isZeroOrNegativeValue(project.retention) 
+                                        ? 'bg-green-400 border-green-400' 
+                                        : 'bg-amber-500 border-amber-500'
                                   }`} style={{ fontSize: '10px' }}>
                                     RET
                                   </span>
@@ -642,7 +646,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                               {/* EVA indicator for non-aftercare projects with non-zero values */}
                               {project.status !== 'aftercare' && weekInfo && !weekInfo.hideWeekIndicator && !isZeroOrNegativeValue(project.value) && (
                                 <div className="flex items-center" title="Estimated Earned Value - calculated as (Project Value ÷ Total Weeks) × Weeks Completed">
-                                  <span className="bg-purple-300 border-purple-300 text-white border px-1 py-0.5 rounded-l-sm" style={{ fontSize: '10px' }}>
+                                  <span className={`text-white border px-1 py-0.5 rounded-l-sm ${weekInfo.isFinished ? 'bg-gray-300 border-gray-300' : 'bg-purple-300 border-purple-300'}`} style={{ fontSize: '10px' }}>
                                     EEV
                                   </span>
                                   <span className="bg-white text-black border border-gray-300 px-1 py-0.5 rounded-r-sm" style={{ fontSize: '10px' }}>
