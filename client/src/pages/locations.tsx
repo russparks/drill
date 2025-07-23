@@ -651,7 +651,7 @@ export default function Locations() {
       </div>
 
       {/* Google Maps */}
-      <div className="mb-8">
+      <div className="mb-8 mt-6">
         <Card className="material-shadow">
           <CardHeader className="pb-4">
             <div className="flex items-center justify-between">
@@ -703,6 +703,17 @@ export default function Locations() {
                     
                     return (
                       <div key={phase} className="relative">
+                        {/* Value Tab - positioned behind button */}
+                        <div 
+                          className={`absolute bg-white border border-gray-200 rounded-b-lg px-2 py-1 text-xs font-medium ${colors.text} z-0 text-center`}
+                          style={{
+                            top: '21px', // -3px from button height
+                            left: '5%',
+                            width: '90%'
+                          }}
+                        >
+                          {formatValue(totalValue)}
+                        </div>
                         <Button
                           variant="outline"
                           size="sm"
@@ -713,7 +724,7 @@ export default function Locations() {
                                 : [...prev, phase]
                             );
                           }}
-                          className={`text-xs px-2 py-0.5 transition-all duration-300 rounded-lg h-7 flex items-center gap-2 ${
+                          className={`text-xs px-2 py-0.5 transition-all duration-300 rounded-lg h-7 flex items-center gap-2 relative z-10 shadow-sm ${
                             isActive 
                               ? `${colors.bg} ${colors.text} ${colors.border} border-2` 
                               : 'bg-gray-50 text-gray-400 border-gray-200'
@@ -724,17 +735,6 @@ export default function Locations() {
                             <span className="text-xs font-bold text-white">{phaseProjects.length}</span>
                           </div>
                         </Button>
-                        {/* Value Tab */}
-                        <div 
-                          className="absolute bg-white border border-gray-200 rounded-b-lg px-2 py-1 text-xs font-medium text-gray-600 z-10"
-                          style={{
-                            top: '24px', // -3px from button height
-                            left: '5%',
-                            width: '90%'
-                          }}
-                        >
-                          {formatValue(totalValue)}
-                        </div>
                       </div>
                     );
                   })}
