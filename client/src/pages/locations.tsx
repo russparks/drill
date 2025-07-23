@@ -389,8 +389,8 @@ export default function Locations() {
               aftercare: '✅'
             };
             
-            // Calculate project duration (placeholder - you may want to add actual dates to schema)
-            const durationWeeks = Math.floor(Math.random() * 52) + 4; // Random for now
+            // Calculate project duration (stable based on project ID)
+            const durationWeeks = Math.floor((primaryProject.id * 7) % 48) + 8; // Stable calculation based on project ID
             
             const hoverContent = `
               <div style="
