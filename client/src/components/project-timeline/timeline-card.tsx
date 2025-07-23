@@ -604,8 +604,8 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
                       const totalWeeksToAnticipated = weekInfo.totalWeeksToAnticipated;
                       const totalWeeksToContract = weekInfo.totalWeeksToContract;
                       
-                      // Only grey out aftercare projects with positive retention
-                      if (weekInfo.hasPositiveRetention && currentProject.status === 'aftercare') {
+                      // Grey out completed projects (aftercare with zero retention) or projects with positive retention
+                      if ((weekInfo.isProjectCompleted || weekInfo.hasPositiveRetention) && currentProject.status === 'aftercare') {
                         return (
                           <div 
                             className="bg-gray-400 h-full opacity-40" 
