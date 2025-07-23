@@ -485,38 +485,44 @@ export default function Locations() {
 
       // Add click listener for individual markers
       marker.addListener('click', () => {
-        // If there's already an overlay showing, fade it out
+        // Function to create new overlay
+        const createNewOverlay = () => {
+          // Smoothly pan to the clicked project's exact coordinates
+          map.panTo(basePosition);
+          
+          // Create new overlay for this marker after pan animation
+          setTimeout(() => {
+            const newOverlay = new CustomOverlay(position, project);
+            newOverlay.setMap(map);
+            currentOverlayRef.current = newOverlay;
+            setHoverOverlay(newOverlay);
+
+            // Add click handler to close when clicking the card
+            setTimeout(() => {
+              if (newOverlay && newOverlay.div) {
+                newOverlay.div.addEventListener('click', (e: Event) => {
+                  e.stopPropagation();
+                  newOverlay.fadeOut(() => {
+                    currentOverlayRef.current = null;
+                    setHoverOverlay(null);
+                  });
+                });
+              }
+            }, 100);
+          }, 400); // Wait for pan animation to complete
+        };
+
+        // If there's already an overlay showing, fade it out then create new one
         if (currentOverlayRef.current) {
           currentOverlayRef.current.fadeOut(() => {
             currentOverlayRef.current = null;
             setHoverOverlay(null);
+            createNewOverlay();
           });
-          return;
+        } else {
+          // No existing overlay, create new one directly
+          createNewOverlay();
         }
-        
-        // Smoothly pan to the clicked project's exact coordinates
-        map.panTo(basePosition);
-        
-        // Create new overlay for this marker after pan animation
-        setTimeout(() => {
-          const newOverlay = new CustomOverlay(position, project);
-          newOverlay.setMap(map);
-          currentOverlayRef.current = newOverlay;
-          setHoverOverlay(newOverlay);
-
-          // Add click handler to close when clicking the card
-          setTimeout(() => {
-            if (newOverlay && newOverlay.div) {
-              newOverlay.div.addEventListener('click', (e: Event) => {
-                e.stopPropagation();
-                newOverlay.fadeOut(() => {
-                  currentOverlayRef.current = null;
-                  setHoverOverlay(null);
-                });
-              });
-            }
-          }, 100);
-        }, 400); // Wait for pan animation to complete
       });
     });
 
