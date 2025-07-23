@@ -753,7 +753,7 @@ export default function Locations() {
               </div>
             </div>
           </CardHeader>
-          <CardContent className="pt-8">
+          <CardContent className="pt-5">
             <div className="space-y-3">
               <div 
                 ref={mapRef} 
