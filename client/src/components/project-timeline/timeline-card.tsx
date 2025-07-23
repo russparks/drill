@@ -534,10 +534,19 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
                           backgroundColor: (() => {
                             const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
                             return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)'; // red for positive, green for zero
-                          })()
+                          })(),
+                          border: `1px solid ${(() => {
+                            const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+                            return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
+                          })()}`
                         }}>RET</span>
                         <span className="bg-white text-black px-0.5 py-0.5 rounded-r-sm" style={{ 
-                          fontSize: '9px'
+                          fontSize: '9px',
+                          border: `1px solid ${(() => {
+                            const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+                            return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
+                          })()}`,
+                          borderLeft: 'none'
                         }}>{formatValue(currentProject.retention).replace(/M/g, 'm').replace(/K/g, 'k').toUpperCase()}</span>
                       </div>
                     )}
