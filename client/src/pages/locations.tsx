@@ -27,6 +27,7 @@ export default function Locations() {
   const [map, setMap] = useState<any>(null);
   const [hoverOverlay, setHoverOverlay] = useState<any>(null);
   const markersRef = useRef<any[]>([]);
+  const currentOverlayRef = useRef<any>(null);
 
 
   // Group projects by city (Yorkshire postcodes)
@@ -284,8 +285,9 @@ export default function Locations() {
 
     // Add global click listener to close any open overlays
     const mapClickListener = map.addListener('click', () => {
-      if (hoverOverlay) {
-        hoverOverlay.fadeOut(() => {
+      if (currentOverlayRef.current) {
+        currentOverlayRef.current.fadeOut(() => {
+          currentOverlayRef.current = null;
           setHoverOverlay(null);
         });
       }
@@ -481,27 +483,15 @@ export default function Locations() {
       // Store marker reference for cleanup
       markersRef.current.push(marker);
 
-      // Store overlay reference for this specific marker
-      let currentOverlay: any = null;
-
       // Add click listener for individual markers
       marker.addListener('click', () => {
-        // If this marker already has an overlay, fade it out
-        if (currentOverlay) {
-          currentOverlay.fadeOut(() => {
-            currentOverlay = null;
-            if (hoverOverlay === currentOverlay) {
-              setHoverOverlay(null);
-            }
-          });
-          return;
-        }
-
-        // Clean up any existing global overlay with fade out
-        if (hoverOverlay) {
-          hoverOverlay.fadeOut(() => {
+        // If there's already an overlay showing, fade it out
+        if (currentOverlayRef.current) {
+          currentOverlayRef.current.fadeOut(() => {
+            currentOverlayRef.current = null;
             setHoverOverlay(null);
           });
+          return;
         }
         
         // Smoothly pan to the clicked project's exact coordinates
@@ -509,17 +499,18 @@ export default function Locations() {
         
         // Create new overlay for this marker after pan animation
         setTimeout(() => {
-          currentOverlay = new CustomOverlay(position, project);
-          currentOverlay.setMap(map);
-          setHoverOverlay(currentOverlay);
+          const newOverlay = new CustomOverlay(position, project);
+          newOverlay.setMap(map);
+          currentOverlayRef.current = newOverlay;
+          setHoverOverlay(newOverlay);
 
           // Add click handler to close when clicking the card
           setTimeout(() => {
-            if (currentOverlay && currentOverlay.div) {
-              currentOverlay.div.addEventListener('click', (e: Event) => {
+            if (newOverlay && newOverlay.div) {
+              newOverlay.div.addEventListener('click', (e: Event) => {
                 e.stopPropagation();
-                currentOverlay.fadeOut(() => {
-                  currentOverlay = null;
+                newOverlay.fadeOut(() => {
+                  currentOverlayRef.current = null;
                   setHoverOverlay(null);
                 });
               });
@@ -550,6 +541,12 @@ export default function Locations() {
     return () => {
       if (mapClickListener) {
         window.google.maps.event.removeListener(mapClickListener);
+      }
+      // Clean up any active overlay
+      if (currentOverlayRef.current) {
+        currentOverlayRef.current.setMap(null);
+        currentOverlayRef.current = null;
+        setHoverOverlay(null);
       }
       // Clean up markers on unmount
       markersRef.current.forEach(marker => marker.setMap(null));
