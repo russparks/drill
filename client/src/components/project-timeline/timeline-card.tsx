@@ -8,7 +8,7 @@ import { useState, useEffect, useRef } from "react";
 import { useLocation } from "wouter";
 import { useToast } from "@/hooks/use-toast";
 import ConfirmDialog from "@/components/confirm-dialog";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 
 interface TimelineCardProps {
@@ -38,6 +38,16 @@ export default function TimelineCard({ project }: TimelineCardProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   const [, navigate] = useLocation();
+
+  // Fetch all projects for dropdown
+  const { data: projects = [] } = useQuery({
+    queryKey: ["/api/projects"],
+    queryFn: async () => {
+      const response = await fetch("/api/projects");
+      if (!response.ok) throw new Error("Failed to fetch projects");
+      return response.json();
+    },
+  });
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -701,53 +711,56 @@ export default function TimelineCard({ project }: TimelineCardProps) {
             className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 transition-colors"
             style={{ fontSize: '13px' }}
           >
-            <span className="font-medium text-gray-700">Navigate Project</span>
+            <span className="font-medium text-gray-700">Projects</span>
             <ChevronDown className={`h-4 w-4 text-gray-500 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
           </button>
           
           {isDropdownOpen && (
-            <div className="absolute left-0 top-full mt-1 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+            <div className="absolute left-0 top-full mt-1 w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto">
               <div className="py-1">
-                <button
-                  onClick={() => {
-                    navigate(`/projects?project=${project.projectNumber}`);
-                    setIsDropdownOpen(false);
-                  }}
-                  className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
-                >
-                  View Project Details
-                </button>
-                <button
-                  onClick={() => {
-                    navigate(`/actions?project=${project.projectNumber}`);
-                    setIsDropdownOpen(false);
-                  }}
-                  className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
-                >
-                  View Project Actions
-                </button>
-                <div className="border-t border-gray-100 my-1"></div>
-                <button
-                  onClick={() => {
-                    setSelectedProject(project);
-                    setSelectedPhase(project.status as "tender" | "precon" | "construction" | "aftercare");
-                    setIsProjectDialogOpen(true);
-                    setIsDropdownOpen(false);
-                  }}
-                  className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
-                >
-                  Edit Project
-                </button>
-                <button
-                  onClick={() => {
-                    setItemToDelete({ type: 'project', id: project.id, name: project.name });
-                    setIsConfirmDialogOpen(true);
-                    setIsDropdownOpen(false);
-                  }}
-                  className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
-                >
-                  Delete Project
-                </button>
+                {projects.map((proj: any) => (
+                  <button
+                    key={proj.id}
+                    onClick={() => {
+                      navigate(`/W0013?project=${proj.projectNumber}`);
+                      setIsDropdownOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition-colors border-l-4 ${
+                      proj.id === project.id ? 'bg-blue-50 border-l-blue-500' : 'border-l-transparent'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <span className="font-semibold text-gray-700" style={{ minWidth: '60px' }}>
+                          {proj.projectNumber}
+                        </span>
+                        <span className="text-gray-600 truncate">
+                          {proj.name}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {proj.value && (
+                          <span className="text-xs text-gray-500">
+                            ({proj.value.replace(/M/g, 'm').replace(/K/g, 'k')})
+                          </span>
+                        )}
+                        <span className={`
+                          text-xs px-2 py-0.5 rounded-full font-medium
+                          ${proj.status === "tender" ? "bg-blue-100 text-blue-800" : ""}
+                          ${proj.status === "precon" ? "bg-green-100 text-green-800" : ""}
+                          ${proj.status === "construction" ? "bg-yellow-100 text-yellow-800" : ""}
+                          ${proj.status === "aftercare" ? "bg-gray-100 text-gray-800" : ""}
+                        `}>
+                          {proj.status === "tender" && "TEN"}
+                          {proj.status === "precon" && "PRE"}
+                          {proj.status === "construction" && "CON"}
+                          {proj.status === "aftercare" && "AFT"}
+                          {!proj.status && "UNK"}
+                        </span>
+                      </div>
+                    </div>
+                  </button>
+                ))}
               </div>
             </div>
           )}
