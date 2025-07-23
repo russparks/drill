@@ -448,6 +448,40 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
                           </div>
                         )}
 
+                        {/* RET indicator for aftercare projects with retention */}
+                        {currentProject.status === 'aftercare' && currentProject.retention && (
+                          <div className="flex items-center" title="Retention">
+                            <span className="text-white border px-0.5 py-0.5 rounded-l-sm" style={{ 
+                              fontSize: '9px',
+                              backgroundColor: (() => {
+                                const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+                                return retentionValue > 0 ? 'rgb(34, 197, 94)' : 'rgb(239, 68, 68)'; // green for positive, red for negative/zero
+                              })(),
+                              borderColor: (() => {
+                                const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+                                return retentionValue > 0 ? 'rgb(34, 197, 94)' : 'rgb(239, 68, 68)';
+                              })(),
+                              borderWidth: '2px',
+                              borderStyle: 'solid'
+                            }}>RET</span>
+                            <span className="bg-white text-black px-0.5 py-0.5 rounded-r-sm" style={{ 
+                              fontSize: '9px',
+                              borderTop: `1px solid ${(() => {
+                                const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+                                return retentionValue > 0 ? 'rgb(34, 197, 94)' : 'rgb(239, 68, 68)';
+                              })()}`,
+                              borderRight: `1px solid ${(() => {
+                                const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+                                return retentionValue > 0 ? 'rgb(34, 197, 94)' : 'rgb(239, 68, 68)';
+                              })()}`,
+                              borderBottom: `1px solid ${(() => {
+                                const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+                                return retentionValue > 0 ? 'rgb(34, 197, 94)' : 'rgb(239, 68, 68)';
+                              })()}`
+                            }}>{formatValue(currentProject.retention).replace(/M/g, 'm').replace(/K/g, 'k').toUpperCase()}</span>
+                          </div>
+                        )}
+
                         <div className="flex items-center" title="Contract Practical Completion Date">
                           <span className="text-white border px-0.5 py-0.5 rounded-l-sm" style={{ 
                             fontSize: '9px',
