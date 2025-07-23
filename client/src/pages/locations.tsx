@@ -657,7 +657,7 @@ export default function Locations() {
             <div className="flex items-center justify-between">
               <CardTitle className="flex items-center gap-2">
                 <Map className="h-5 w-5 text-blue-600" />
-                Project Locations Map
+                Project Locations
               </CardTitle>
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-2">
@@ -696,9 +696,9 @@ export default function Locations() {
                 </div>
                 <div className="relative">
                   <Filter 
-                    className={`h-4 w-4 text-gray-400 ${activeFilters.length === 4 ? '' : 'opacity-50'}`} 
+                    className="h-4 w-4 text-gray-400" 
                   />
-                  {activeFilters.length < 4 && (
+                  {activeFilters.length === 4 && (
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="w-5 h-0.5 bg-gray-400 rotate-45"></div>
                     </div>
