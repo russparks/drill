@@ -302,14 +302,6 @@ export default function Locations() {
         'aftercare': 'bg-gray-100 text-gray-800 border-gray-200'
       };
 
-      const statusIcons = {
-        'tender': Building2,
-        'precon': MapPin,
-        'construction': Navigation,
-        'aftercare': Map
-      };
-
-      const StatusIcon = statusIcons[project.status as keyof typeof statusIcons] || Building2;
       const duration = project.startOnSiteDate && project.contractCompletionDate 
         ? Math.ceil((new Date(project.contractCompletionDate).getTime() - new Date(project.startOnSiteDate).getTime()) / (1000 * 60 * 60 * 24))
         : null;
@@ -317,32 +309,31 @@ export default function Locations() {
       // Get city from postcode
       const city = project.postcode ? postcodeToCity[project.postcode] || project.postcode : 'Unknown Location';
 
+      // Format value to 1 decimal place with k/m suffix
+      const formatValue = (value: string) => {
+        const num = Math.abs(parseFloat(value.replace(/[£,]/g, '')));
+        if (num >= 1000000) {
+          return `£${(num / 1000000).toFixed(1)}m`;
+        } else if (num >= 1000) {
+          return `£${(num / 1000).toFixed(1)}k`;
+        }
+        return `£${num.toFixed(1)}`;
+      };
+
       return (
         <Card className="w-80 shadow-lg border-2">
           <CardHeader className="pb-3">
-            <div className="flex items-center gap-2">
-              <StatusIcon className="h-4 w-4" />
-              <CardTitle className="text-lg font-semibold">{project.name}</CardTitle>
-            </div>
+            <CardTitle className="text-lg font-semibold">
+              {project.name} <span className="text-xs font-normal opacity-70">[{project.projectNumber}]</span>
+            </CardTitle>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <MapPin className="h-3 w-3" />
               {city}
             </div>
           </CardHeader>
           <CardContent className="pt-0">
-            <div className="space-y-3">
-              <Badge 
-                variant="secondary" 
-                className={statusColors[project.status as keyof typeof statusColors] || 'bg-gray-100 text-gray-800'}
-              >
-                {project.status.charAt(0).toUpperCase() + project.status.slice(1)}
-              </Badge>
-              
+            <div className="space-y-3 flex flex-col h-full">
               <div className="flex flex-wrap gap-4 text-sm">
-                <div className="flex items-center gap-1">
-                  <span className="font-medium">{project.projectNumber}</span>
-                </div>
-                
                 {duration && (
                   <div className="flex items-center gap-1">
                     <Calendar className="h-3 w-3 text-muted-foreground" />
@@ -352,9 +343,18 @@ export default function Locations() {
                 
                 {project.value && (
                   <div className="flex items-center gap-1">
-                    <span>£{Math.abs(parseFloat(project.value.replace(/[£,]/g, ''))).toLocaleString()}</span>
+                    <span>{formatValue(project.value)}</span>
                   </div>
                 )}
+              </div>
+              
+              <div className="mt-auto">
+                <Badge 
+                  variant="secondary" 
+                  className={statusColors[project.status as keyof typeof statusColors] || 'bg-gray-100 text-gray-800'}
+                >
+                  {project.status.charAt(0).toUpperCase() + project.status.slice(1)}
+                </Badge>
               </div>
             </div>
           </CardContent>
