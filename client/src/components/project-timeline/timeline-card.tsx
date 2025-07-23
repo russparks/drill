@@ -244,9 +244,9 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
   const weekInfo = getCurrentWeekInfo();
 
   return (
-    <div className={weekInfo?.isGreyedOut ? 'opacity-60' : ''}>
+    <div>
       <Card className="material-shadow" style={{ zIndex: 1, position: 'relative' }}>
-        <CardContent className="p-2.5" style={{ paddingBottom: '17px' }}>
+        <CardContent className={`p-2.5 ${weekInfo?.isGreyedOut ? 'opacity-60' : ''}`} style={{ paddingBottom: '17px' }}>
           <div className="flex justify-between items-start">
             <div className="flex-1">
               {/* Header with project number, name, location, value and status */}
@@ -712,7 +712,7 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
       
       {/* Bottom tab with remaining weeks */}
       {weekInfo && (
-        <div className={`flex justify-end relative ${weekInfo.hasPositiveRetention && currentProject.status === 'aftercare' ? 'opacity-60' : ''}`} style={{ marginTop: '-3px', marginRight: '25px' }}>
+        <div className={`flex justify-end relative ${weekInfo?.isGreyedOut ? 'opacity-60' : ''}`} style={{ marginTop: '-3px', marginRight: '25px' }}>
           <div className="bg-white rounded-b-lg px-3 py-1.5 text-gray-600 inline-block italic flex justify-center" style={{ 
             fontSize: '11.73px', 
             zIndex: 0,
