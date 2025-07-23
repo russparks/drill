@@ -505,7 +505,8 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                       const totalWeeksToAnticipated = weekInfo.totalWeeksToAnticipated;
                       const totalWeeksToContract = weekInfo.totalWeeksToContract;
                       
-                      if (weekInfo.isGreyedOut || weekInfo.hasPositiveRetention) {
+                      // Only grey out aftercare projects with positive retention
+                      if (weekInfo.hasPositiveRetention && project.status === 'aftercare') {
                         return (
                           <div 
                             className="bg-gray-400 h-full opacity-40" 
