@@ -382,7 +382,7 @@ export default function Locations() {
         this.div.style.zIndex = '9999';
         this.div.style.cursor = 'pointer';
         this.div.style.opacity = '0';
-        this.div.style.transition = 'opacity 0.5s ease-in-out';
+        this.div.style.transition = 'opacity 0.2s ease-in-out';
         
         // Create React root and render component
         this.root = createRoot(this.div);
@@ -417,7 +417,7 @@ export default function Locations() {
           setTimeout(() => {
             this.onRemove();
             if (callback) callback();
-          }, 500); // Wait for fade out animation
+          }, 200); // Wait for fade out animation
         }
       }
 
@@ -490,26 +490,24 @@ export default function Locations() {
           // Smoothly pan to the clicked project's exact coordinates
           map.panTo(basePosition);
           
-          // Create new overlay for this marker after pan animation
-          setTimeout(() => {
-            const newOverlay = new CustomOverlay(position, project);
-            newOverlay.setMap(map);
-            currentOverlayRef.current = newOverlay;
-            setHoverOverlay(newOverlay);
+          // Create new overlay immediately (don't wait for pan)
+          const newOverlay = new CustomOverlay(position, project);
+          newOverlay.setMap(map);
+          currentOverlayRef.current = newOverlay;
+          setHoverOverlay(newOverlay);
 
-            // Add click handler to close when clicking the card
-            setTimeout(() => {
-              if (newOverlay && newOverlay.div) {
-                newOverlay.div.addEventListener('click', (e: Event) => {
-                  e.stopPropagation();
-                  newOverlay.fadeOut(() => {
-                    currentOverlayRef.current = null;
-                    setHoverOverlay(null);
-                  });
+          // Add click handler to close when clicking the card
+          setTimeout(() => {
+            if (newOverlay && newOverlay.div) {
+              newOverlay.div.addEventListener('click', (e: Event) => {
+                e.stopPropagation();
+                newOverlay.fadeOut(() => {
+                  currentOverlayRef.current = null;
+                  setHoverOverlay(null);
                 });
-              }
-            }, 100);
-          }, 400); // Wait for pan animation to complete
+              });
+            }
+          }, 100);
         };
 
         // If there's already an overlay showing, fade it out then create new one
