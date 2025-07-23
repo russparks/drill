@@ -664,7 +664,8 @@ export default function Locations() {
               // Clean the value string and parse
               const cleanValue = valueStr.replace(/[£,\s]/g, '');
               const value = parseFloat(cleanValue) || 0;
-              return sum + value;
+              // Use absolute value to handle negative tender values
+              return sum + Math.abs(value);
             }, 0);
             
             // Format value
