@@ -281,10 +281,10 @@ export default function Locations() {
     // React component for hover card content
     const HoverCardComponent = ({ project }: { project: Project }) => {
       const statusColors = {
-        'tender': 'bg-amber-100 text-amber-800 border-amber-200',
-        'precon': 'bg-blue-100 text-blue-800 border-blue-200', 
-        'construction': 'bg-green-100 text-green-800 border-green-200',
-        'aftercare': 'bg-purple-100 text-purple-800 border-purple-200'
+        'tender': 'bg-blue-100 text-blue-800 border-blue-200',
+        'precon': 'bg-green-100 text-green-800 border-green-200', 
+        'construction': 'bg-yellow-100 text-yellow-800 border-yellow-200',
+        'aftercare': 'bg-gray-100 text-gray-800 border-gray-200'
       };
 
       const statusIcons = {
@@ -433,6 +433,9 @@ export default function Locations() {
               const advancedIndex = phases.indexOf(advanced);
               return currentIndex > advancedIndex ? project.status : advanced;
             }, 'tender');
+
+            // Debug logging
+            console.log(`${city}: Projects [${cityProjects.map(p => p.status).join(', ')}] → Most advanced: ${mostAdvancedPhase} → Color: ${getPhaseColor(mostAdvancedPhase)}`);
 
             // Create marker with Google pin style
             const marker = new window.google.maps.Marker({
