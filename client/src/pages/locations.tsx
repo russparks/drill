@@ -682,20 +682,20 @@ export default function Locations() {
             };
             
             return (
-              <Card key={phase} className={`${colors.bg} ${colors.border} border shadow-sm h-20 w-32 rounded-2xl`}>
-                <CardContent className="p-3 h-full">
-                  <div className="flex flex-col items-center justify-center text-center h-full space-y-2">
-                    <span className={`text-xs font-medium ${colors.text} uppercase`}>
-                      {phase}
-                    </span>
-                    <div className="flex items-center justify-center gap-2">
-                      <span className={`text-xl font-bold ${colors.number}`}>
+              <Card key={phase} className="bg-white border-gray-200 border shadow-sm h-20 w-32 rounded-2xl">
+                <CardContent className="p-2 h-full">
+                  <div className="flex flex-col items-center justify-between text-center h-full">
+                    <div className="flex items-center justify-center gap-2 mt-1">
+                      <span className="text-xl font-bold text-gray-900">
                         {phaseProjects.length}
                       </span>
                       <span className="text-xs font-medium text-gray-600">
                         {formatValue(totalValue)}
                       </span>
                     </div>
+                    <span className={`text-xs font-bold ${colors.text} uppercase mb-1`}>
+                      {phase}
+                    </span>
                   </div>
                 </CardContent>
               </Card>
