@@ -144,6 +144,12 @@ export default function Locations() {
     const newMap = new window.google.maps.Map(mapRef.current, {
       center: yorkshireCenter,
       zoom: 8, // Start with closer zoom, will be adjusted by bounds
+      mapTypeId: window.google.maps.MapTypeId.TERRAIN, // Default to terrain mode
+      mapTypeControl: false, // Hide MAP | SATELLITE controls
+      streetViewControl: true, // Keep street view control but we'll style it
+      streetViewControlOptions: {
+        position: window.google.maps.ControlPosition.RIGHT_BOTTOM
+      },
       styles: [
         {
           "elementType": "geometry",
@@ -307,6 +313,19 @@ export default function Locations() {
     });
 
     setMap(newMap);
+
+    // Add custom CSS to style the street view person darker
+    const style = document.createElement('style');
+    style.textContent = `
+      .gm-svpc {
+        filter: brightness(0.7) contrast(1.2) !important;
+      }
+      
+      .gm-svpc img {
+        filter: brightness(0.6) contrast(1.3) !important;
+      }
+    `;
+    document.head.appendChild(style);
   }, [mapLoaded, projects, map]);
 
   // Add markers when map is ready
