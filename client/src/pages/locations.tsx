@@ -466,25 +466,39 @@ export default function Locations() {
               
               // Remove default InfoWindow styling after opening
               setTimeout(() => {
+                // Target all InfoWindow related elements
                 const infoWindowElement = document.querySelector('.gm-style-iw') as HTMLElement;
-                if (infoWindowElement) {
-                  const parent = infoWindowElement.parentElement as HTMLElement;
-                  if (parent) {
-                    parent.style.background = 'transparent';
-                    parent.style.border = 'none';
-                    parent.style.boxShadow = 'none';
+                const infoWindowContainer = document.querySelector('.gm-style-iw-c') as HTMLElement;
+                const infoWindowOuterContainer = document.querySelector('.gm-style-iw-t') as HTMLElement;
+                
+                // Remove styling from all container levels
+                [infoWindowElement, infoWindowContainer, infoWindowOuterContainer].forEach(element => {
+                  if (element) {
+                    element.style.background = 'transparent';
+                    element.style.border = 'none';
+                    element.style.boxShadow = 'none';
+                    element.style.padding = '0';
+                    element.style.margin = '0';
+                    element.style.borderRadius = '0';
                   }
-                  infoWindowElement.style.background = 'transparent';
-                  infoWindowElement.style.border = 'none';
-                  infoWindowElement.style.boxShadow = 'none';
-                  infoWindowElement.style.padding = '0';
+                });
+                
+                // Remove parent container styling
+                if (infoWindowElement?.parentElement) {
+                  const parent = infoWindowElement.parentElement as HTMLElement;
+                  parent.style.background = 'transparent';
+                  parent.style.border = 'none';
+                  parent.style.boxShadow = 'none';
+                  parent.style.padding = '0';
+                  parent.style.margin = '0';
                 }
                 
-                // Hide the close button
+                // Hide close button and tail
                 const closeButton = document.querySelector('.gm-ui-hover-effect') as HTMLElement;
-                if (closeButton) {
-                  closeButton.style.display = 'none';
-                }
+                const tail = document.querySelector('.gm-style-iw-d') as HTMLElement;
+                
+                if (closeButton) closeButton.style.display = 'none';
+                if (tail) tail.style.display = 'none';
               }, 10);
             });
 
