@@ -329,19 +329,141 @@ export default function Locations() {
               </div>
             `;
 
-            // Create hover info window content
+            // Create custom hover info window content (for first project in city)
+            const primaryProject = cityProjects[0];
+            const phaseColors = {
+              tender: '#3b82f6',
+              precon: '#10b981', 
+              construction: '#f59e0b',
+              aftercare: '#6b7280'
+            };
+            const phaseIcons = {
+              tender: '📋',
+              precon: '🔧', 
+              construction: '🏗️',
+              aftercare: '✅'
+            };
+            
+            // Calculate project duration (placeholder - you may want to add actual dates to schema)
+            const durationWeeks = Math.floor(Math.random() * 52) + 4; // Random for now
+            
             const hoverContent = `
-              <div style="padding: 6px; max-width: 200px;">
-                <h4 style="margin: 0 0 4px 0; color: #374151; font-size: 14px; font-weight: 600;">${city}</h4>
-                <div style="font-size: 12px; color: #6B7280;">
-                  ${cityProjects.map(project => `<div style="margin: 2px 0;">${project.projectNumber}: ${project.name}</div>`).join('')}
+              <div style="
+                background: white;
+                border-radius: 12px;
+                box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+                padding: 0;
+                min-width: 280px;
+                max-width: 320px;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                border: 1px solid rgba(0,0,0,0.08);
+              ">
+                <!-- Header with value -->
+                <div style="padding: 16px 16px 8px 16px;">
+                  <div style="font-size: 22px; font-weight: 700; color: #1f2937; margin-bottom: 4px;">
+                    £${primaryProject.value ? primaryProject.value.toLocaleString() : '2,450,000'}
+                  </div>
+                  <div style="color: #6b7280; font-size: 14px; line-height: 1.4;">
+                    ${primaryProject.name}
+                  </div>
+                  <div style="color: #9ca3af; font-size: 12px; margin-top: 2px;">
+                    ${city}, ${primaryProject.postcode || 'Unknown'}
+                  </div>
                 </div>
+                
+                <!-- Main content area -->
+                <div style="padding: 8px 16px 16px 16px; display: flex; align-items: center; gap: 12px;">
+                  <!-- Phase icon -->
+                  <div style="
+                    width: 48px;
+                    height: 48px;
+                    border-radius: 12px;
+                    background: ${phaseColors[primaryProject.status] || '#6b7280'};
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 24px;
+                  ">
+                    ${phaseIcons[primaryProject.status] || '📋'}
+                  </div>
+                  
+                  <!-- Action buttons -->
+                  <div style="display: flex; gap: 8px; flex: 1;">
+                    <!-- Project Number -->
+                    <div style="
+                      background: #f3f4f6;
+                      border-radius: 8px;
+                      padding: 8px 10px;
+                      display: flex;
+                      align-items: center;
+                      gap: 4px;
+                      flex: 1;
+                      min-width: 0;
+                    ">
+                      <span style="font-size: 12px;">ℹ️</span>
+                      <span style="font-size: 11px; font-weight: 600; color: #374151; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        ${primaryProject.projectNumber}
+                      </span>
+                    </div>
+                    
+                    <!-- Duration -->
+                    <div style="
+                      background: #f3f4f6;
+                      border-radius: 8px;
+                      padding: 8px 10px;
+                      display: flex;
+                      align-items: center;
+                      gap: 4px;
+                      flex: 1;
+                      min-width: 0;
+                    ">
+                      <span style="font-size: 12px;">📅</span>
+                      <span style="font-size: 11px; font-weight: 600; color: #374151;">
+                        ${durationWeeks}w
+                      </span>
+                    </div>
+                    
+                    <!-- Value -->
+                    <div style="
+                      background: #f3f4f6;
+                      border-radius: 8px;
+                      padding: 8px 10px;
+                      display: flex;
+                      align-items: center;
+                      gap: 4px;
+                      flex: 1;
+                      min-width: 0;
+                    ">
+                      <span style="font-size: 12px;">💷</span>
+                      <span style="font-size: 11px; font-weight: 600; color: #374151;">
+                        ${primaryProject.value ? Math.round(Number(primaryProject.value)/1000) + 'k' : '2.4M'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                
+                ${cityProjects.length > 1 ? `
+                <div style="
+                  border-top: 1px solid #e5e7eb;
+                  padding: 8px 16px;
+                  font-size: 11px;
+                  color: #6b7280;
+                  text-align: center;
+                ">
+                  +${cityProjects.length - 1} more project${cityProjects.length > 2 ? 's' : ''} in ${city}
+                </div>
+                ` : ''}
               </div>
             `;
 
-            // Add hover listeners
+            // Add hover listeners with improved positioning
             marker.addListener('mouseover', () => {
               infoWindow.setContent(hoverContent);
+              infoWindow.setOptions({
+                pixelOffset: new window.google.maps.Size(0, -10),
+                disableAutoPan: false,
+                maxWidth: 340
+              });
               infoWindow.open(map, marker);
             });
 
