@@ -23,22 +23,22 @@ export default function Locations() {
   const [mapLoaded, setMapLoaded] = useState(false);
   const [map, setMap] = useState<any>(null);
 
-  // Group projects by city
+  // Group projects by city (Yorkshire postcodes)
   const postcodeToCity: { [key: string]: string } = {
-    'SW1A 1AA': 'London',
-    'M1 1AA': 'Manchester',
-    'B1 1TT': 'Birmingham',
-    'E1 6AN': 'London',
-    'LS1 2TW': 'Leeds',
-    'NE1 7RU': 'Newcastle',
-    'CB2 1TN': 'Cambridge',
-    'BS1 6XN': 'Bristol',
-    'SE1 7TP': 'London',
-    'CF10 3NP': 'Cardiff',
-    'G1 2FF': 'Glasgow',
-    'RG1 3EH': 'Reading',
-    'NG1 5DT': 'Nottingham',
-    'L1 8JQ': 'Liverpool'
+    'LS1 4DT': 'Leeds',
+    'LS6 3HG': 'Leeds',
+    'S1 2HE': 'Sheffield', 
+    'S70 2YW': 'Barnsley',
+    'BD1 1DB': 'Bradford',
+    'BD18 3SE': 'Shipley',
+    'YO1 7PR': 'York',
+    'YO24 4AB': 'York',
+    'YO31 0UR': 'York',
+    'HG1 2RQ': 'Harrogate',
+    'WF2 6SE': 'Wakefield',
+    'HD3 4UY': 'Huddersfield',
+    'HU1 3UB': 'Hull',
+    'DN4 5HT': 'Doncaster'
   };
 
   const projectsByCity = projects.reduce((acc, project) => {
@@ -114,19 +114,29 @@ export default function Locations() {
     const geocoder = new window.google.maps.Geocoder();
     const infoWindow = new window.google.maps.InfoWindow();
 
+    console.log('Projects by city:', projectsByCity);
+    console.log('Cities to process:', Object.keys(projectsByCity));
+
     // Group projects by city to avoid duplicate markers
     Object.entries(projectsByCity).forEach(([city, cityProjects]) => {
-      if (city === 'Unknown') return;
+      console.log(`Processing city: ${city} with ${cityProjects.length} projects`);
+      if (city === 'Unknown') {
+        console.log('Skipping Unknown city');
+        return;
+      }
       
       // Use first project's postcode for geocoding
       const representativeProject = cityProjects[0];
       if (!representativeProject.postcode) return;
 
+      console.log(`Geocoding ${representativeProject.postcode} for ${city}`);
       geocoder.geocode(
         { address: `${representativeProject.postcode}, UK` },
         (results: any[], status: string) => {
+          console.log(`Geocoding result for ${city}: status=${status}, results=`, results);
           if (status === 'OK' && results[0]) {
             const position = results[0].geometry.location;
+            console.log(`Creating marker for ${city} at position:`, position.lat(), position.lng());
             
             // Get the most advanced phase for marker color
             const phases = ['tender', 'precon', 'construction', 'aftercare'];
