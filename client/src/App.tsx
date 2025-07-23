@@ -14,6 +14,7 @@ import People from "@/pages/people";
 import Locations from "@/pages/locations";
 import NotFound from "@/pages/not-found";
 import ActionForm from "@/components/action-form";
+import W0013 from "@/pages/w0013";
 
 function Router() {
   const [isActionFormOpen, setIsActionFormOpen] = useState(false);
@@ -61,6 +62,7 @@ function Router() {
         </Route>
         <Route path="/people" component={People} />
         <Route path="/locations" component={Locations} />
+        <Route path="/W0013" component={W0013} />
         <Route component={NotFound} />
       </Switch>
 
