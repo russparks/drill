@@ -320,18 +320,22 @@ export default function Locations() {
         return `£${num.toFixed(1)}`;
       };
 
+      // Phase order and styling
+      const phaseOrder = ['tender', 'precon', 'construction', 'aftercare'];
+      const currentPhaseIndex = phaseOrder.indexOf(project.status);
+
       return (
-        <Card className="w-80 shadow-lg border-2">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg font-semibold">
-              {project.name} <span className="text-xs font-normal opacity-70">[{project.projectNumber}]</span>
+        <Card className="w-fit min-w-64 max-w-96 shadow-lg border-2 rounded-2xl">
+          <CardHeader className="pb-3 px-4">
+            <CardTitle className="text-lg font-semibold leading-tight">
+              {project.name} <span className="text-xs font-normal opacity-70">{project.projectNumber}</span>
             </CardTitle>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <MapPin className="h-3 w-3" />
               {city}
             </div>
           </CardHeader>
-          <CardContent className="pt-0">
+          <CardContent className="pt-0 px-4 pb-4">
             <div className="space-y-3 flex flex-col h-full">
               <div className="flex flex-wrap gap-4 text-sm">
                 {duration && (
@@ -348,13 +352,26 @@ export default function Locations() {
                 )}
               </div>
               
-              <div className="mt-auto">
-                <Badge 
-                  variant="secondary" 
-                  className={statusColors[project.status as keyof typeof statusColors] || 'bg-gray-100 text-gray-800'}
-                >
-                  {project.status.charAt(0).toUpperCase() + project.status.slice(1)}
-                </Badge>
+              <div className="mt-auto flex gap-1">
+                {phaseOrder.map((phase, index) => {
+                  const isActive = index === currentPhaseIndex;
+                  const phaseColors = {
+                    'tender': isActive ? 'bg-blue-100 text-blue-800 border-blue-200' : 'bg-gray-100 text-gray-400 border-gray-200',
+                    'precon': isActive ? 'bg-green-100 text-green-800 border-green-200' : 'bg-gray-100 text-gray-400 border-gray-200', 
+                    'construction': isActive ? 'bg-yellow-100 text-yellow-800 border-yellow-200' : 'bg-gray-100 text-gray-400 border-gray-200',
+                    'aftercare': isActive ? 'bg-gray-100 text-gray-800 border-gray-200' : 'bg-gray-100 text-gray-400 border-gray-200'
+                  };
+                  
+                  return (
+                    <Badge 
+                      key={phase}
+                      variant="secondary" 
+                      className={`text-xs px-2 py-1 ${phaseColors[phase as keyof typeof phaseColors]}`}
+                    >
+                      {phase.charAt(0).toUpperCase() + phase.slice(1)}
+                    </Badge>
+                  );
+                })}
               </div>
             </div>
           </CardContent>
