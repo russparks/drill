@@ -651,7 +651,7 @@ export default function Locations() {
       </div>
 
       {/* Google Maps */}
-      <div className="mb-8 mt-11">
+      <div className="mb-8">
         <Card className="material-shadow">
           <CardHeader className="pb-4">
             <div className="flex items-center justify-between">
@@ -753,7 +753,7 @@ export default function Locations() {
               </div>
             </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-8">
             <div className="space-y-3">
               <div 
                 ref={mapRef} 
