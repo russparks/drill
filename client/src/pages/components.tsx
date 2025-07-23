@@ -71,23 +71,6 @@ export default function Components() {
           <p className="text-gray-600">Reusable components for project timeline pages</p>
         </div>
 
-        {/* Project Header Examples */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">Project Header Component</h2>
-          
-          <div className="space-y-8">
-            <div>
-              <h3 className="text-lg font-medium text-gray-700 mb-4">Example 1: Construction Phase Project</h3>
-              <ProjectHeader project={sampleProject1} />
-            </div>
-            
-            <div>
-              <h3 className="text-lg font-medium text-gray-700 mb-4">Example 2: Precon Phase Project</h3>
-              <ProjectHeader project={sampleProject2} />
-            </div>
-          </div>
-        </section>
-
         {/* Timeline Card Examples */}
         <section className="mb-12">
           <h2 className="text-2xl font-semibold text-gray-900 mb-6">Timeline Card Component</h2>
@@ -101,6 +84,23 @@ export default function Components() {
             <div>
               <h3 className="text-lg font-medium text-gray-700 mb-4">Example 2: Construction Phase Timeline (Large Project)</h3>
               <TimelineCard project={sampleProject2} />
+            </div>
+          </div>
+        </section>
+
+        {/* Project Header Examples */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6">Project Header Component</h2>
+          
+          <div className="space-y-8">
+            <div>
+              <h3 className="text-lg font-medium text-gray-700 mb-4">Example 1: Construction Phase Project</h3>
+              <ProjectHeader project={sampleProject1} />
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-medium text-gray-700 mb-4">Example 2: Precon Phase Project</h3>
+              <ProjectHeader project={sampleProject2} />
             </div>
           </div>
         </section>
