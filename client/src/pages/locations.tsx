@@ -85,7 +85,6 @@ export default function Locations() {
           script.async = true;
           script.defer = true;
           script.onload = () => {
-            console.log('Google Maps API loaded successfully');
             setMapLoaded(true);
           };
           script.onerror = (err) => {
@@ -105,7 +104,7 @@ export default function Locations() {
   useEffect(() => {
     if (!mapLoaded || !mapRef.current || !projects.length || map) return;
 
-    console.log('Initializing map with', projects.length, 'projects');
+
     const yorkshireCenter = { lat: 53.8, lng: -1.5 }; // Yorkshire center
     const newMap = new window.google.maps.Map(mapRef.current, {
       center: yorkshireCenter,
@@ -484,46 +483,15 @@ export default function Locations() {
                 setHoverOverlay(null);
               }
               
-              // Check if card would be cut off and pan only if needed
-              // Use a simpler approach: create a temporary overlay to get exact pixel position
-              const tempOverlay = new window.google.maps.OverlayView();
-              tempOverlay.setMap(map);
-              
-              tempOverlay.onAdd = function() {
-                const projection = this.getProjection();
-                if (projection) {
-                  const markerPixel = projection.fromLatLngToContainerPixel(position);
-                  if (markerPixel) {
-                    // Card is positioned 180px above marker and is ~320px tall
-                    const cardTop = markerPixel.y - 180 - 320;
-                    
-                    console.log(`Marker at pixel Y: ${markerPixel.y}, Card top would be at: ${cardTop}`);
-                    
-                    // Only pan if card would be cut off at top of screen
-                    if (cardTop < 20) { // 20px buffer
-                      const pixelsToPan = 20 - cardTop;
-                      console.log(`Need to pan ${pixelsToPan} pixels down`);
-                      
-                      // Convert pixels to lat/lng offset
-                      const currentCenter = map.getCenter();
-                      const zoom = map.getZoom();
-                      const scale = Math.pow(2, zoom);
-                      const degreesPerPixel = 360 / (256 * scale);
-                      const latOffset = pixelsToPan * degreesPerPixel;
-                      
-                      const newCenter = new window.google.maps.LatLng(
-                        currentCenter.lat() - latOffset, // Pan south (down) to show card
-                        currentCenter.lng()
-                      );
-                      map.panTo(newCenter);
-                    } else {
-                      console.log('Card position is fine, no panning needed');
-                    }
-                  }
-                }
-                // Clean up temp overlay
-                tempOverlay.setMap(null);
-              };
+              // Simple pan to ensure card visibility
+              // Pan the map down by a reasonable amount to show the card
+              const currentCenter = map.getCenter();
+              const panOffset = 0.03; // About 3km at this zoom level
+              const newCenter = new window.google.maps.LatLng(
+                currentCenter.lat() - panOffset,
+                currentCenter.lng()
+              );
+              map.panTo(newCenter);
               
               // Create new overlay for this marker after a short delay for panning
               setTimeout(() => {
