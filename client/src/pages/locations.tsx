@@ -654,18 +654,30 @@ export default function Locations() {
             
             // Calculate total value for this phase
             const totalValue = phaseProjects.reduce((sum, project) => {
-              const value = parseFloat(project.value.replace(/[£,]/g, ''));
+              let valueStr = project.value || '0';
+              
+              // For aftercare phase, use retention value instead
+              if (phase === 'aftercare' && project.retention) {
+                valueStr = project.retention;
+              }
+              
+              // Clean the value string and parse
+              const cleanValue = valueStr.replace(/[£,\s]/g, '');
+              const value = parseFloat(cleanValue) || 0;
               return sum + value;
             }, 0);
             
             // Format value
             const formatValue = (value: number) => {
+              if (value === 0) {
+                return '£0.0k';
+              }
               if (value >= 1000000) {
                 return `£${(value / 1000000).toFixed(1)}m`;
               } else if (value >= 1000) {
                 return `£${(value / 1000).toFixed(1)}k`;
               }
-              return `£${value.toFixed(1)}k`;
+              return `£${value.toFixed(1)}`;
             };
             
             return (
