@@ -3,8 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Edit, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { Edit, Trash2, ChevronDown } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { useLocation } from "wouter";
 import { useToast } from "@/hooks/use-toast";
 import ConfirmDialog from "@/components/confirm-dialog";
 import { useMutation } from "@tanstack/react-query";
@@ -33,7 +34,22 @@ export default function TimelineCard({ project }: TimelineCardProps) {
   const [workingWeeks, setWorkingWeeks] = useState({ startToContract: 0, startToAnticipated: 0, anticipatedToContract: 0 });
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<{ type: 'project', id: number, name: string } | null>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const [, navigate] = useLocation();
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Update project mutation
   const updateProjectMutation = useMutation({
@@ -676,6 +692,67 @@ export default function TimelineCard({ project }: TimelineCardProps) {
           </div>
         </div>
       )}
+
+      {/* Project Navigation Dropdown */}
+      <div className="relative" style={{ marginTop: '10px', marginLeft: '25px' }}>
+        <div className="relative inline-block" ref={dropdownRef}>
+          <button
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 transition-colors"
+            style={{ fontSize: '13px' }}
+          >
+            <span className="font-medium text-gray-700">Navigate Project</span>
+            <ChevronDown className={`h-4 w-4 text-gray-500 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+          </button>
+          
+          {isDropdownOpen && (
+            <div className="absolute left-0 top-full mt-1 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+              <div className="py-1">
+                <button
+                  onClick={() => {
+                    navigate(`/projects?project=${project.projectNumber}`);
+                    setIsDropdownOpen(false);
+                  }}
+                  className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                >
+                  View Project Details
+                </button>
+                <button
+                  onClick={() => {
+                    navigate(`/actions?project=${project.projectNumber}`);
+                    setIsDropdownOpen(false);
+                  }}
+                  className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                >
+                  View Project Actions
+                </button>
+                <div className="border-t border-gray-100 my-1"></div>
+                <button
+                  onClick={() => {
+                    setSelectedProject(project);
+                    setSelectedPhase(project.status as "tender" | "precon" | "construction" | "aftercare");
+                    setIsProjectDialogOpen(true);
+                    setIsDropdownOpen(false);
+                  }}
+                  className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                >
+                  Edit Project
+                </button>
+                <button
+                  onClick={() => {
+                    setItemToDelete({ type: 'project', id: project.id, name: project.name });
+                    setIsConfirmDialogOpen(true);
+                    setIsDropdownOpen(false);
+                  }}
+                  className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                >
+                  Delete Project
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* Edit Project Dialog */}
       <Dialog open={isProjectDialogOpen} onOpenChange={setIsProjectDialogOpen}>
