@@ -710,11 +710,12 @@ export default function Locations() {
                       <div key={phase} className="relative">
                         {/* Value Tab - positioned behind button */}
                         <div 
-                          className={`absolute bg-white border border-gray-200 rounded-b-lg px-2 py-1 font-medium ${colors.text} z-0 text-center`}
+                          className={`absolute bg-white border border-gray-200 rounded-b-lg py-1 font-medium ${colors.text} z-0 text-center`}
                           style={{
                             top: '25px', // moved down 4px
-                            left: '15%',
-                            width: '70%',
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            width: '60px', // 8 characters * ~6px + 6px padding
                             fontSize: '0.625rem' // 15% smaller than text-xs (0.75rem)
                           }}
                         >
