@@ -86,7 +86,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
           <div className="flex justify-between items-start">
             <div className="flex-1">
               {/* Header with project number, name, location, value and status */}
-              <div className={`flex items-center gap-2 mb-0.5 ${weekInfo?.hasPositiveRetention ? 'opacity-60' : ''}`}>
+              <div className={`flex items-center gap-2 mb-0.5 ${weekInfo?.hasPositiveRetention && project.status === 'aftercare' ? 'opacity-60' : ''}`}>
                 <div className="text-lg flex items-center">
                   <span className="font-normal text-sm" style={{
                     color: (() => {
@@ -178,7 +178,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
               {weekInfo && (
                 <div className="flex items-center justify-between mb-2" style={{ fontSize: '10px' }}>
                   <div className="flex items-center" style={{ gap: '10px' }}>
-                    <div className={weekInfo.hasPositiveRetention ? 'opacity-60' : ''}>
+                    <div className={weekInfo.hasPositiveRetention && project.status === 'aftercare' ? 'opacity-60' : ''}>
                       <div className="flex items-center gap-[10px]">
                         <div className="flex items-center" title="Start on Site Date">
                           <span className="border px-1 py-0.5 rounded-l-sm" style={{ 
@@ -371,7 +371,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
 
               {/* Progress bar */}
               {weekInfo && (
-                <div className={`mt-2 relative flex items-center ${weekInfo.hasPositiveRetention ? 'opacity-60' : ''}`}>
+                <div className={`mt-2 relative flex items-center ${weekInfo.hasPositiveRetention && project.status === 'aftercare' ? 'opacity-60' : ''}`}>
                   <div className={`h-1 rounded-sm overflow-hidden flex ${
                     project.status === 'aftercare' ? 'bg-gray-200' : 'bg-gray-100'
                   }`} style={{ width: '95%' }}>
@@ -510,7 +510,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
       
       {/* Bottom tab with remaining weeks */}
       {weekInfo && (
-        <div className={`flex justify-end relative ${weekInfo.hasPositiveRetention ? 'opacity-60' : ''}`} style={{ marginTop: '-3px', marginRight: '25px' }}>
+        <div className={`flex justify-end relative ${weekInfo.hasPositiveRetention && project.status === 'aftercare' ? 'opacity-60' : ''}`} style={{ marginTop: '-3px', marginRight: '25px' }}>
           <div className="bg-white rounded-b-lg px-3 py-1.5 text-gray-600 inline-block italic flex justify-center" style={{ 
             fontSize: '11.73px', 
             zIndex: -1,
