@@ -225,8 +225,9 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
 
     const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
     const hasPositiveRetention = retentionValue > 0;
+    const hasZeroRetention = retentionValue === 0;
     const hideWeekIndicator = hasPositiveRetention && currentProject.status === 'aftercare';
-    const isGreyedOut = hasPositiveRetention && currentProject.status === 'aftercare';
+    const isGreyedOut = (hasPositiveRetention || hasZeroRetention) && currentProject.status === 'aftercare';
 
     return {
       currentWeek: Math.max(1, currentWeek),
@@ -246,11 +247,19 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
   return (
     <div>
       <Card className="material-shadow" style={{ zIndex: 1, position: 'relative' }}>
-        <CardContent className={`p-2.5 ${weekInfo?.isGreyedOut ? 'opacity-60' : ''}`} style={{ paddingBottom: '17px' }}>
+        <CardContent className={`p-2.5 ${(() => {
+          const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+          const hasZeroRetention = retentionValue === 0 && currentProject.status === 'aftercare';
+          return hasZeroRetention ? 'opacity-60' : '';
+        })()}`} style={{ paddingBottom: '17px' }}>
           <div className="flex justify-between items-start">
             <div className="flex-1">
               {/* Header with project number, name, location, value and status */}
-              <div className={`flex items-baseline gap-1 mb-0.5 ${weekInfo?.hasPositiveRetention && currentProject.status === 'aftercare' ? 'opacity-60' : ''}`}>
+              <div className={`flex items-baseline gap-1 mb-0.5 ${(() => {
+                const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+                const hasPositiveRetention = retentionValue > 0 && currentProject.status === 'aftercare';
+                return hasPositiveRetention ? 'opacity-60' : '';
+              })()}`}>
                 <div className="text-lg flex items-center">
                   <span className="font-normal text-sm" style={{
                     color: (() => {
@@ -345,8 +354,8 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
                     <div className={(() => {
                       // Check if we should grey out indicators
                       const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
-                      const hasZeroRetention = retentionValue === 0 && currentProject.status === 'aftercare';
-                      return hasZeroRetention ? 'opacity-60' : '';
+                      const hasPositiveRetention = retentionValue > 0 && currentProject.status === 'aftercare';
+                      return hasPositiveRetention ? 'opacity-60' : '';
                     })()}>
                       <div className="flex items-center gap-[10px]">
                         <div className="flex items-center" title="Start on Site Date">
@@ -513,11 +522,7 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
                           // Only show RET indicator if retention is positive (red) or exactly zero (green)
                           return retentionValue >= 0;
                         })() && (
-                          <div className={`flex items-center ${(() => {
-                            const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
-                            // Green RET (zero retention) should be greyed out, red RET (positive retention) should not
-                            return retentionValue === 0 ? 'opacity-60' : '';
-                          })()}`} title="Retention">
+                          <div className="flex items-center" title="Retention">
                             <span className="text-white border px-0.5 py-0.5 rounded-l-sm" style={{ 
                               fontSize: '9px',
                               backgroundColor: (() => {
@@ -725,7 +730,12 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
       
       {/* Bottom tab with remaining weeks */}
       {weekInfo && (
-        <div className={`flex justify-end relative ${weekInfo?.isGreyedOut ? 'opacity-60' : ''}`} style={{ marginTop: '-3px', marginRight: '25px' }}>
+        <div className={`flex justify-end relative ${(() => {
+          const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+          const hasPositiveRetention = retentionValue > 0 && currentProject.status === 'aftercare';
+          const hasZeroRetention = retentionValue === 0 && currentProject.status === 'aftercare';
+          return hasPositiveRetention || hasZeroRetention ? 'opacity-60' : '';
+        })()}`} style={{ marginTop: '-3px', marginRight: '25px' }}>
           <div className="bg-white rounded-b-lg px-3 py-1.5 text-gray-600 inline-block italic flex justify-center" style={{ 
             fontSize: '11.73px', 
             zIndex: 0,
