@@ -296,18 +296,19 @@ export default function Locations() {
               return currentIndex > advancedIndex ? project.status : advanced;
             }, 'tender');
 
-            // Create marker
+            // Create marker with Google pin style
             const marker = new window.google.maps.Marker({
               position,
               map,
               title: `${city} (${cityProjects.length} projects)`,
               icon: {
-                path: window.google.maps.SymbolPath.CIRCLE,
-                scale: 12,
+                path: "M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z M -2,-30 a 2,2 0 1,1 4,0 2,2 0 1,1 -4,0",
                 fillColor: '#706f6f',
                 fillOpacity: 0.9,
                 strokeColor: getPhaseColor(mostAdvancedPhase),
                 strokeWeight: 2.8,
+                scale: 1.2,
+                anchor: new window.google.maps.Point(0, 0),
               },
             });
 
@@ -327,6 +328,26 @@ export default function Locations() {
                 </div>
               </div>
             `;
+
+            // Create hover info window content
+            const hoverContent = `
+              <div style="padding: 6px; max-width: 200px;">
+                <h4 style="margin: 0 0 4px 0; color: #374151; font-size: 14px; font-weight: 600;">${city}</h4>
+                <div style="font-size: 12px; color: #6B7280;">
+                  ${cityProjects.map(project => `<div style="margin: 2px 0;">${project.projectNumber}: ${project.name}</div>`).join('')}
+                </div>
+              </div>
+            `;
+
+            // Add hover listeners
+            marker.addListener('mouseover', () => {
+              infoWindow.setContent(hoverContent);
+              infoWindow.open(map, marker);
+            });
+
+            marker.addListener('mouseout', () => {
+              infoWindow.close();
+            });
 
             marker.addListener('click', () => {
               infoWindow.setContent(infoContent);
