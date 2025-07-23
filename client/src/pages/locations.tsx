@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { MapPin, Plus, Building2, Navigation, Map, Calendar, DollarSign } from "lucide-react";
+import { MapPin, Plus, Building2, Navigation, Map, Calendar, DollarSign, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -28,9 +28,9 @@ export default function Locations() {
   const [hoverOverlay, setHoverOverlay] = useState<any>(null);
   const markersRef = useRef<any[]>([]);
   const currentOverlayRef = useRef<any>(null);
-  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [activeFilters, setActiveFilters] = useState<string[]>(['tender', 'precon', 'construction', 'aftercare']);
   const [hasInitializedZoom, setHasInitializedZoom] = useState(false);
-  const [isDemoMode, setIsDemoMode] = useState(true);
+  const [isDemoMode, setIsDemoMode] = useState(false);
   const [demoStep, setDemoStep] = useState(0);
 
 
@@ -641,18 +641,11 @@ export default function Locations() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-20 md:pb-8">
       {/* Header */}
       <div className="mb-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <MapPin className="h-8 w-8 text-blue-600" />
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Locations</h1>
-              <p className="text-gray-600">Project locations across the UK</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600">
-              {Object.keys(projectsByCity).length} cities • {projects.length} projects
-            </span>
+        <div className="flex items-center gap-3">
+          <MapPin className="h-8 w-8 text-blue-600" />
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Projects</h1>
+            <p className="text-gray-600">Project locations across the UK</p>
           </div>
         </div>
       </div>
@@ -666,66 +659,75 @@ export default function Locations() {
                 <Map className="h-5 w-5 text-blue-600" />
                 Project Locations Map
               </CardTitle>
-              {isDemoMode && (
-                <div className="flex-1 text-center">
-                  <span className="text-sm text-gray-500">
-                    Try The Filters
-                  </span>
-                </div>
-              )}
-              <div className="flex items-center gap-2">
-                {['tender', 'precon', 'construction', 'aftercare'].map((phase) => {
-                  const isActive = activeFilters.includes(phase);
-                  const phaseColors = {
-                    tender: { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-200' },
-                    precon: { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-200' },
-                    construction: { bg: 'bg-yellow-100', text: 'text-yellow-800', border: 'border-yellow-200' },
-                    aftercare: { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200' }
-                  };
-                  const colors = phaseColors[phase as keyof typeof phaseColors];
-                  
-                  return (
-                    <Button
-                      key={phase}
-                      variant="outline"
-                      size="sm"
-                      disabled={isDemoMode}
-                      onClick={() => {
-                        if (!isDemoMode) {
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
+                  {['tender', 'precon', 'construction', 'aftercare'].map((phase) => {
+                    const isActive = activeFilters.includes(phase);
+                    const phaseColors = {
+                      tender: { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-200' },
+                      precon: { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-200' },
+                      construction: { bg: 'bg-yellow-100', text: 'text-yellow-800', border: 'border-yellow-200' },
+                      aftercare: { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200' }
+                    };
+                    const colors = phaseColors[phase as keyof typeof phaseColors];
+                    
+                    return (
+                      <Button
+                        key={phase}
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
                           setActiveFilters(prev => 
                             isActive 
                               ? prev.filter(f => f !== phase)
                               : [...prev, phase]
                           );
-                        }
-                      }}
-                      className={`text-xs px-3 py-1 transition-all duration-300 ${
-                        isActive 
-                          ? `${colors.bg} ${colors.text} ${colors.border} border-2 ${isDemoMode ? 'ring-2 ring-blue-300' : ''}` 
-                          : 'bg-gray-50 text-gray-400 border-gray-200'
-                      } ${isDemoMode ? 'cursor-not-allowed' : ''}`}
-                    >
-                      {phase.charAt(0).toUpperCase() + phase.slice(1)}
-                    </Button>
-                  );
-                })}
+                        }}
+                        className={`text-xs px-2 py-0.5 transition-all duration-300 rounded-lg h-7 ${
+                          isActive 
+                            ? `${colors.bg} ${colors.text} ${colors.border} border-2` 
+                            : 'bg-gray-50 text-gray-400 border-gray-200'
+                        }`}
+                      >
+                        {phase.toUpperCase()}
+                      </Button>
+                    );
+                  })}
+                </div>
+                <div className="relative">
+                  <Filter 
+                    className={`h-4 w-4 text-gray-400 ${activeFilters.length === 4 ? '' : 'opacity-50'}`} 
+                  />
+                  {activeFilters.length < 4 && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-5 h-0.5 bg-gray-400 rotate-45"></div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </CardHeader>
           <CardContent>
-            <div 
-              ref={mapRef} 
-              className="w-full rounded-lg"
-              style={{ height: '500px' }}
-            >
-              {!mapLoaded && (
-                <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-lg">
-                  <div className="text-center">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
-                    <p className="text-gray-600">Loading map...</p>
+            <div className="space-y-3">
+              <div 
+                ref={mapRef} 
+                className="w-full rounded-lg"
+                style={{ height: '500px' }}
+              >
+                {!mapLoaded && (
+                  <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-lg">
+                    <div className="text-center">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
+                      <p className="text-gray-600">Loading map...</p>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
+              <div className="flex justify-end">
+                <span className="text-sm text-gray-500">
+                  {Object.keys(projectsByCity).length} Cities | {projects.length} Projects
+                </span>
+              </div>
             </div>
           </CardContent>
         </Card>
