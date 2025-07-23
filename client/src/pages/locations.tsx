@@ -454,7 +454,7 @@ export default function Locations() {
               </div>
             `;
 
-            // Add hover listeners with improved positioning
+            // Add hover listeners
             marker.addListener('mouseover', () => {
               infoWindow.setContent(hoverContent);
               infoWindow.setOptions({
@@ -463,43 +463,6 @@ export default function Locations() {
                 maxWidth: 340
               });
               infoWindow.open(map, marker);
-              
-              // Remove default InfoWindow styling after opening
-              setTimeout(() => {
-                // Target all InfoWindow related elements
-                const infoWindowElement = document.querySelector('.gm-style-iw') as HTMLElement;
-                const infoWindowContainer = document.querySelector('.gm-style-iw-c') as HTMLElement;
-                const infoWindowOuterContainer = document.querySelector('.gm-style-iw-t') as HTMLElement;
-                
-                // Remove styling from all container levels
-                [infoWindowElement, infoWindowContainer, infoWindowOuterContainer].forEach(element => {
-                  if (element) {
-                    element.style.background = 'transparent';
-                    element.style.border = 'none';
-                    element.style.boxShadow = 'none';
-                    element.style.padding = '0';
-                    element.style.margin = '0';
-                    element.style.borderRadius = '0';
-                  }
-                });
-                
-                // Remove parent container styling
-                if (infoWindowElement?.parentElement) {
-                  const parent = infoWindowElement.parentElement as HTMLElement;
-                  parent.style.background = 'transparent';
-                  parent.style.border = 'none';
-                  parent.style.boxShadow = 'none';
-                  parent.style.padding = '0';
-                  parent.style.margin = '0';
-                }
-                
-                // Hide close button and tail
-                const closeButton = document.querySelector('.gm-ui-hover-effect') as HTMLElement;
-                const tail = document.querySelector('.gm-style-iw-d') as HTMLElement;
-                
-                if (closeButton) closeButton.style.display = 'none';
-                if (tail) tail.style.display = 'none';
-              }, 10);
             });
 
             marker.addListener('mouseout', () => {
