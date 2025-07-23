@@ -304,10 +304,10 @@ export default function Locations() {
               icon: {
                 path: window.google.maps.SymbolPath.CIRCLE,
                 scale: 12,
-                fillColor: '#333333',
+                fillColor: '#706f6f',
                 fillOpacity: 0.9,
                 strokeColor: getPhaseColor(mostAdvancedPhase),
-                strokeWeight: 4,
+                strokeWeight: 2.8,
               },
             });
 
