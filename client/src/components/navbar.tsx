@@ -22,7 +22,7 @@ export default function Navbar({ onCreateAction, onCreateProject, onCreatePerson
           Action
         </Button>
       );
-    } else if (location === "/setup") {
+    } else if (location === "/setup" || location === "/projects") {
       // Grey out the button when on the Dash tab (activeTab === "users")
       const isOnDashTab = activeTab === "users";
       return (
@@ -79,12 +79,12 @@ export default function Navbar({ onCreateAction, onCreateProject, onCreatePerson
                   Actions
                 </span>
               </Link>
-              <Link href="/setup">
+              <Link href="/projects">
                 <span className={`px-3 py-2 text-sm font-medium cursor-pointer ${
-                  location === "/setup" 
+                  location === "/projects" 
                     ? "border-b-2" 
                     : "text-action-text-secondary hover:text-action-text-primary"
-                }`} style={location === "/setup" ? { color: '#333333', borderColor: '#333333' } : {}}>
+                }`} style={location === "/projects" ? { color: '#333333', borderColor: '#333333' } : {}}>
                   Projects
                 </span>
               </Link>

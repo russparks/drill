@@ -21,7 +21,7 @@ function Router() {
   const [, navigate] = useLocation();
 
   const handleCreateProject = () => {
-    navigate("/setup");
+    navigate("/projects");
     setActiveTab("projects");
     // Trigger the project modal from the setup page
     setTimeout(() => {
@@ -53,6 +53,9 @@ function Router() {
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/actions" component={Dashboard} />
+        <Route path="/projects">
+          <Setup onTabChange={setActiveTab} />
+        </Route>
         <Route path="/setup">
           <Setup onTabChange={setActiveTab} />
         </Route>
