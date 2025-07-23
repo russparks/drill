@@ -226,6 +226,7 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
     const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
     const hasPositiveRetention = retentionValue > 0;
     const hasZeroRetention = retentionValue === 0;
+    const isProjectCompleted = hasZeroRetention && currentProject.status === 'aftercare';
     const hideWeekIndicator = hasPositiveRetention && currentProject.status === 'aftercare';
     const isGreyedOut = (hasPositiveRetention || hasZeroRetention) && currentProject.status === 'aftercare';
 
@@ -236,6 +237,7 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
       hasPositiveRetention,
       hideWeekIndicator,
       isGreyedOut,
+      isProjectCompleted,
       startDate: startDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }).replace(/\s/g, ' '),
       anticipatedDate: constructionDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }).replace(/\s/g, ' '),
       contractDate: contractDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }).replace(/\s/g, ' ')
@@ -592,7 +594,7 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
               )}
 
               {/* Progress bar */}
-              {weekInfo && (
+              {weekInfo && !weekInfo.isProjectCompleted && (
                 <div className={`mt-2 relative flex items-center ${weekInfo.hasPositiveRetention && currentProject.status === 'aftercare' ? 'opacity-60' : ''}`}>
                   <div className={`h-1 rounded-sm overflow-hidden flex ${
                     currentProject.status === 'aftercare' ? 'bg-gray-200' : 'bg-gray-100'
@@ -658,7 +660,7 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
                   </div>
 
                   {/* Today marker and week indicator */}
-                  {weekInfo && !weekInfo.hideWeekIndicator && (() => {
+                  {weekInfo && !weekInfo.hideWeekIndicator && !weekInfo.isProjectCompleted && (() => {
                     const currentWeek = weekInfo.currentWeek;
                     const totalWeeksToContract = weekInfo.totalWeeksToContract;
                     const totalWeeksToAnticipated = weekInfo.totalWeeksToAnticipated;
