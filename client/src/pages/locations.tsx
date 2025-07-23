@@ -314,15 +314,15 @@ export default function Locations() {
 
     setMap(newMap);
 
-    // Add custom CSS to style the street view person darker
+    // Add custom CSS to make the street view person monochromatic
     const style = document.createElement('style');
     style.textContent = `
       .gm-svpc {
-        filter: brightness(0.7) contrast(1.2) !important;
+        filter: grayscale(1) !important;
       }
       
       .gm-svpc img {
-        filter: brightness(0.6) contrast(1.3) !important;
+        filter: grayscale(1) !important;
       }
     `;
     document.head.appendChild(style);
