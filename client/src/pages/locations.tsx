@@ -499,27 +499,30 @@ export default function Locations() {
               </div>
             `;
 
+            // Store overlay reference for this specific marker
+            let currentOverlay: any = null;
+
             // Add hover listeners with custom overlay
             marker.addListener('mouseover', () => {
-              // Clean up any existing overlay
+              // Clean up any existing global overlay
               if (hoverOverlay) {
                 hoverOverlay.setMap(null);
+                setHoverOverlay(null);
               }
               
-              // Create new overlay
-              const overlay = new CustomOverlay(position, hoverContent);
-              overlay.setMap(map);
-              setHoverOverlay(overlay);
+              // Create new overlay for this marker
+              currentOverlay = new CustomOverlay(position, hoverContent);
+              currentOverlay.setMap(map);
+              setHoverOverlay(currentOverlay);
             });
 
             marker.addListener('mouseout', () => {
-              // Clean up overlay on mouse out
-              setTimeout(() => {
-                if (hoverOverlay) {
-                  hoverOverlay.setMap(null);
-                  setHoverOverlay(null);
-                }
-              }, 100); // Small delay to prevent flickering
+              // Clean up this marker's overlay
+              if (currentOverlay) {
+                currentOverlay.setMap(null);
+                currentOverlay = null;
+                setHoverOverlay(null);
+              }
             });
 
             marker.addListener('click', () => {
