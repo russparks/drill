@@ -286,10 +286,11 @@ export default function Locations() {
         this.div.style.position = 'absolute';
         this.div.style.pointerEvents = 'auto';
         this.div.style.zIndex = '1000';
+        this.div.style.cursor = 'default';
         this.div.innerHTML = this.content;
         
         const panes = this.getPanes();
-        panes?.overlayMouseTarget.appendChild(this.div);
+        panes?.overlayLayer.appendChild(this.div);
       }
 
       addHoverHandlers(onMouseEnter: () => void, onMouseLeave: () => void) {
@@ -309,7 +310,7 @@ export default function Locations() {
         
         if (position) {
           this.div.style.left = (position.x - 160) + 'px'; // Center horizontally
-          this.div.style.top = (position.y - 120) + 'px'; // Position above marker
+          this.div.style.top = (position.y - 135) + 'px'; // Position further above marker to reduce overlap
         }
       }
 
@@ -560,7 +561,7 @@ export default function Locations() {
                           currentOverlay = null;
                           setHoverOverlay(null);
                         }
-                      }, 100);
+                      }, 50);
                     }
                   );
                 }, 50);
@@ -575,7 +576,7 @@ export default function Locations() {
                   currentOverlay = null;
                   setHoverOverlay(null);
                 }
-              }, 200); // 200ms delay to allow mouse to move to card
+              }, 100); // Reduced delay to minimize flashing
             });
 
             marker.addListener('click', () => {
