@@ -25,9 +25,10 @@ interface TimelineCardProps {
     constructionCompletionDate?: string;
     description?: string;
   };
+  onProjectChange?: (project: any) => void;
 }
 
-export default function TimelineCard({ project }: TimelineCardProps) {
+export default function TimelineCard({ project, onProjectChange }: TimelineCardProps) {
   const [isProjectDialogOpen, setIsProjectDialogOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [selectedPhase, setSelectedPhase] = useState<"tender" | "precon" | "construction" | "aftercare">("tender");
@@ -35,6 +36,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<{ type: 'project', id: number, name: string } | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [currentProject, setCurrentProject] = useState(project);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   const [, navigate] = useLocation();
@@ -208,23 +210,23 @@ export default function TimelineCard({ project }: TimelineCardProps) {
   };
 
   const getCurrentWeekInfo = () => {
-    if (!project.startOnSiteDate || !project.contractCompletionDate || !project.constructionCompletionDate) {
+    if (!currentProject.startOnSiteDate || !currentProject.contractCompletionDate || !currentProject.constructionCompletionDate) {
       return null;
     }
 
-    const startDate = new Date(project.startOnSiteDate);
-    const contractDate = new Date(project.contractCompletionDate);
-    const constructionDate = new Date(project.constructionCompletionDate);
+    const startDate = new Date(currentProject.startOnSiteDate);
+    const contractDate = new Date(currentProject.contractCompletionDate);
+    const constructionDate = new Date(currentProject.constructionCompletionDate);
     const currentDate = new Date();
 
     const totalWeeksToContract = Math.ceil((contractDate.getTime() - startDate.getTime()) / (7 * 24 * 60 * 60 * 1000));
     const totalWeeksToAnticipated = Math.ceil((constructionDate.getTime() - startDate.getTime()) / (7 * 24 * 60 * 60 * 1000));
     const currentWeek = Math.ceil((currentDate.getTime() - startDate.getTime()) / (7 * 24 * 60 * 60 * 1000));
 
-    const retentionValue = parseFloat(project.retention?.replace(/[£,]/g, '') || '0');
+    const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
     const hasPositiveRetention = retentionValue > 0;
-    const hideWeekIndicator = hasPositiveRetention && project.status === 'aftercare';
-    const isGreyedOut = hasPositiveRetention && project.status === 'aftercare';
+    const hideWeekIndicator = hasPositiveRetention && currentProject.status === 'aftercare';
+    const isGreyedOut = hasPositiveRetention && currentProject.status === 'aftercare';
 
     return {
       currentWeek: Math.max(1, currentWeek),
@@ -248,11 +250,11 @@ export default function TimelineCard({ project }: TimelineCardProps) {
           <div className="flex justify-between items-start">
             <div className="flex-1">
               {/* Header with project number, name, location, value and status */}
-              <div className={`flex items-baseline gap-1 mb-0.5 ${weekInfo?.hasPositiveRetention && project.status === 'aftercare' ? 'opacity-60' : ''}`}>
+              <div className={`flex items-baseline gap-1 mb-0.5 ${weekInfo?.hasPositiveRetention && currentProject.status === 'aftercare' ? 'opacity-60' : ''}`}>
                 <div className="text-lg flex items-center">
                   <span className="font-normal text-sm" style={{
                     color: (() => {
-                      switch (project.status) {
+                      switch (currentProject.status) {
                         case 'tender': return 'rgb(59, 130, 246)'; // blue
                         case 'precon': return 'rgb(34, 197, 94)'; // green
                         case 'construction': return 'rgb(234, 179, 8)'; // yellow
@@ -260,10 +262,10 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                         default: return 'rgb(55, 65, 81)'; // default gray-700
                       }
                     })()
-                  }}>{project.projectNumber}</span> 
+                  }}>{currentProject.projectNumber}</span> 
                   <span className="font-light mx-1" style={{
                     color: (() => {
-                      switch (project.status) {
+                      switch (currentProject.status) {
                         case 'tender': return 'rgb(59, 130, 246)'; // blue
                         case 'precon': return 'rgb(34, 197, 94)'; // green
                         case 'construction': return 'rgb(234, 179, 8)'; // yellow
@@ -274,7 +276,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                   }}>|</span> 
                   <span style={{
                     color: (() => {
-                      switch (project.status) {
+                      switch (currentProject.status) {
                         case 'tender': return 'rgb(59, 130, 246)'; // blue
                         case 'precon': return 'rgb(34, 197, 94)'; // green
                         case 'construction': return 'rgb(234, 179, 8)'; // yellow
@@ -282,11 +284,11 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                         default: return 'inherit'; // default color
                       }
                     })()
-                  }}>{project.name}</span>
+                  }}>{currentProject.name}</span>
                 </div>
-                {project.value && (
+                {currentProject.value && (
                   <span className="text-action-text-secondary" style={{ fontSize: '0.7225rem' }}>
-                    (<span className={isZeroOrNegativeValue(project.value) ? 'text-red-400' : ''}>{formatValue(project.value).replace(/M/g, 'm').replace(/K/g, 'k')}</span>)
+                    (<span className={isZeroOrNegativeValue(currentProject.value) ? 'text-red-400' : ''}>{formatValue(currentProject.value).replace(/M/g, 'm').replace(/K/g, 'k')}</span>)
                   </span>
                 )}
                 {/* Process indicator and action buttons */}
@@ -294,28 +296,28 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                   <button
                     className={`
                       rounded-full px-2 py-0.5 text-xs font-medium border transition-colors
-                      ${project.status === "tender" ? "bg-blue-100 text-blue-800 border-blue-200" : ""}
-                      ${project.status === "precon" ? "bg-green-100 text-green-800 border-green-200" : ""}
-                      ${project.status === "construction" ? "bg-yellow-100 text-yellow-800 border-yellow-200" : ""}
-                      ${project.status === "aftercare" ? "bg-gray-100 text-gray-800 border-gray-200" : ""}
-                      ${!project.status ? "bg-gray-100 text-gray-800 border-gray-200" : ""}
+                      ${currentProject.status === "tender" ? "bg-blue-100 text-blue-800 border-blue-200" : ""}
+                      ${currentProject.status === "precon" ? "bg-green-100 text-green-800 border-green-200" : ""}
+                      ${currentProject.status === "construction" ? "bg-yellow-100 text-yellow-800 border-yellow-200" : ""}
+                      ${currentProject.status === "aftercare" ? "bg-gray-100 text-gray-800 border-gray-200" : ""}
+                      ${!currentProject.status ? "bg-gray-100 text-gray-800 border-gray-200" : ""}
                     `}
                   >
-                    {project.status === "tender" && "TEN"}
-                    {project.status === "precon" && "PRE"}
-                    {project.status === "construction" && "CON"}
-                    {project.status === "aftercare" && "AFT"}
-                    {!project.status && "UNK"}
+                    {currentProject.status === "tender" && "TEN"}
+                    {currentProject.status === "precon" && "PRE"}
+                    {currentProject.status === "construction" && "CON"}
+                    {currentProject.status === "aftercare" && "AFT"}
+                    {!currentProject.status && "UNK"}
                   </button>
                   
-                  <div className={`flex space-x-1 ${weekInfo?.hasPositiveRetention && project.status === 'aftercare' ? 'opacity-60' : ''}`}>
+                  <div className={`flex space-x-1 ${weekInfo?.hasPositiveRetention && currentProject.status === 'aftercare' ? 'opacity-60' : ''}`}>
                     <Button
                       variant="ghost"
                       size="icon"
                       className="h-7 w-7"
                       onClick={() => {
-                        setSelectedProject(project);
-                        setSelectedPhase(project.status as "tender" | "precon" | "construction" | "aftercare");
+                        setSelectedProject(currentProject);
+                        setSelectedPhase(currentProject.status as "tender" | "precon" | "construction" | "aftercare");
                         setIsProjectDialogOpen(true);
                       }}
                     >
@@ -326,7 +328,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                       size="icon"
                       className="h-7 w-7"
                       onClick={() => {
-                        setItemToDelete({ type: 'project', id: project.id, name: project.name });
+                        setItemToDelete({ type: 'project', id: currentProject.id, name: currentProject.name });
                         setIsConfirmDialogOpen(true);
                       }}
                     >
@@ -340,14 +342,14 @@ export default function TimelineCard({ project }: TimelineCardProps) {
               {weekInfo && (
                 <div className="flex items-center justify-between mb-2" style={{ fontSize: '10px' }}>
                   <div className="flex items-center" style={{ gap: '10px' }}>
-                    <div className={weekInfo.hasPositiveRetention && project.status === 'aftercare' ? 'opacity-60' : ''}>
+                    <div className={weekInfo.hasPositiveRetention && currentProject.status === 'aftercare' ? 'opacity-60' : ''}>
                       <div className="flex items-center gap-[10px]">
                         <div className="flex items-center" title="Start on Site Date">
                           <span className="border px-0.5 py-0.5 rounded-l-sm" style={{ 
                             fontSize: '9px',
-                            color: project.status === 'construction' ? 'rgb(31, 41, 55)' : 'white',
+                            color: currentProject.status === 'construction' ? 'rgb(31, 41, 55)' : 'white',
                             backgroundColor: (() => {
-                              switch (project.status) {
+                              switch (currentProject.status) {
                                 case 'tender': return 'rgb(147, 197, 253)'; // light blue
                                 case 'precon': return 'rgb(134, 239, 172)'; // light green
                                 case 'construction': return 'rgb(254, 240, 138)'; // light yellow
@@ -356,7 +358,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                               }
                             })(),
                             borderColor: (() => {
-                              switch (project.status) {
+                              switch (currentProject.status) {
                                 case 'tender': return 'rgb(147, 197, 253)';
                                 case 'precon': return 'rgb(134, 239, 172)';
                                 case 'construction': return 'rgb(254, 240, 138)';
@@ -370,7 +372,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                           <span className="bg-white text-black px-1 py-0.5 rounded-r-sm" style={{ 
                             fontSize: '10px',
                             borderTop: `1px solid ${(() => {
-                              switch (project.status) {
+                              switch (currentProject.status) {
                                 case 'tender': return 'rgb(147, 197, 253)';
                                 case 'precon': return 'rgb(134, 239, 172)';
                                 case 'construction': return 'rgb(254, 240, 138)';
@@ -379,7 +381,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                               }
                             })()}`,
                             borderRight: `1px solid ${(() => {
-                              switch (project.status) {
+                              switch (currentProject.status) {
                                 case 'tender': return 'rgb(147, 197, 253)';
                                 case 'precon': return 'rgb(134, 239, 172)';
                                 case 'construction': return 'rgb(254, 240, 138)';
@@ -388,7 +390,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                               }
                             })()}`,
                             borderBottom: `1px solid ${(() => {
-                              switch (project.status) {
+                              switch (currentProject.status) {
                                 case 'tender': return 'rgb(147, 197, 253)';
                                 case 'precon': return 'rgb(134, 239, 172)';
                                 case 'construction': return 'rgb(254, 240, 138)';
@@ -400,19 +402,19 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                         </div>
 
                         {/* CONST indicator for construction and aftercare */}
-                        {project.status !== 'precon' && project.status !== 'tender' && (
+                        {currentProject.status !== 'precon' && currentProject.status !== 'tender' && (
                           <div className="flex items-center" title="Construction Practical Completion Date">
                             <span className="text-white border px-0.5 py-0.5 rounded-l-sm" style={{ 
                               fontSize: '9px',
                               backgroundColor: (() => {
-                                switch (project.status) {
+                                switch (currentProject.status) {
                                   case 'construction': return 'rgb(250, 204, 21)'; // middle yellow shade
                                   case 'aftercare': return 'rgb(156, 163, 175)'; // middle grey shade
                                   default: return 'rgb(147, 197, 253)';
                                 }
                               })(),
                               borderColor: (() => {
-                                switch (project.status) {
+                                switch (currentProject.status) {
                                   case 'construction': return 'rgb(250, 204, 21)';
                                   case 'aftercare': return 'rgb(156, 163, 175)';
                                   default: return 'rgb(147, 197, 253)';
@@ -422,21 +424,21 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                             <span className="bg-white text-black px-0.5 py-0.5 rounded-r-sm" style={{ 
                               fontSize: '9px',
                               borderTop: `1px solid ${(() => {
-                                switch (project.status) {
+                                switch (currentProject.status) {
                                   case 'construction': return 'rgb(250, 204, 21)';
                                   case 'aftercare': return 'rgb(156, 163, 175)';
                                   default: return 'rgb(147, 197, 253)';
                                 }
                               })()}`,
                               borderRight: `1px solid ${(() => {
-                                switch (project.status) {
+                                switch (currentProject.status) {
                                   case 'construction': return 'rgb(250, 204, 21)';
                                   case 'aftercare': return 'rgb(156, 163, 175)';
                                   default: return 'rgb(147, 197, 253)';
                                 }
                               })()}`,
                               borderBottom: `1px solid ${(() => {
-                                switch (project.status) {
+                                switch (currentProject.status) {
                                   case 'construction': return 'rgb(250, 204, 21)';
                                   case 'aftercare': return 'rgb(156, 163, 175)';
                                   default: return 'rgb(147, 197, 253)';
@@ -450,7 +452,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                           <span className="text-white border px-0.5 py-0.5 rounded-l-sm" style={{ 
                             fontSize: '9px',
                             backgroundColor: (() => {
-                              switch (project.status) {
+                              switch (currentProject.status) {
                                 case 'tender': return 'rgb(59, 130, 246)'; // dark blue
                                 case 'precon': return 'rgb(34, 197, 94)'; // dark green
                                 case 'construction': return 'rgb(234, 179, 8)'; // dark yellow
@@ -459,7 +461,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                               }
                             })(),
                             borderColor: (() => {
-                              switch (project.status) {
+                              switch (currentProject.status) {
                                 case 'tender': return 'rgb(59, 130, 246)';
                                 case 'precon': return 'rgb(34, 197, 94)';
                                 case 'construction': return 'rgb(234, 179, 8)';
@@ -471,7 +473,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                           <span className="bg-white text-black px-0.5 py-0.5 rounded-r-sm" style={{ 
                             fontSize: '9px',
                             borderTop: `1px solid ${(() => {
-                              switch (project.status) {
+                              switch (currentProject.status) {
                                 case 'tender': return 'rgb(59, 130, 246)';
                                 case 'precon': return 'rgb(34, 197, 94)';
                                 case 'construction': return 'rgb(234, 179, 8)';
@@ -480,7 +482,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                               }
                             })()}`,
                             borderRight: `1px solid ${(() => {
-                              switch (project.status) {
+                              switch (currentProject.status) {
                                 case 'tender': return 'rgb(59, 130, 246)';
                                 case 'precon': return 'rgb(34, 197, 94)';
                                 case 'construction': return 'rgb(234, 179, 8)';
@@ -489,7 +491,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                               }
                             })()}`,
                             borderBottom: `1px solid ${(() => {
-                              switch (project.status) {
+                              switch (currentProject.status) {
                                 case 'tender': return 'rgb(59, 130, 246)';
                                 case 'precon': return 'rgb(34, 197, 94)';
                                 case 'construction': return 'rgb(234, 179, 8)';
@@ -501,7 +503,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                         </div>
 
                         {/* EEV indicator for construction projects */}
-                        {project.status !== 'aftercare' && weekInfo && !weekInfo.hideWeekIndicator && !isZeroOrNegativeValue(project.value) && (
+                        {currentProject.status !== 'aftercare' && weekInfo && !weekInfo.hideWeekIndicator && !isZeroOrNegativeValue(currentProject.value) && (
                           <div className="flex items-center" title="Estimated Earned Value">
                             <span className="text-white border px-0.5 py-0.5 rounded-l-sm" style={{ 
                               fontSize: '9px',
@@ -512,7 +514,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                             </span>
                             <span className="bg-white text-black border border-gray-300 px-0.5 py-0.5 rounded-r-sm" style={{ fontSize: '9px' }}>
                               {(() => {
-                                const projectValueNum = parseFloat(project.value?.replace(/[£,]/g, '') || '0');
+                                const projectValueNum = parseFloat(currentProject.value?.replace(/[£,]/g, '') || '0');
                                 const weeklyValue = projectValueNum / weekInfo.totalWeeksToContract;
                                 let evaValue = weeklyValue * weekInfo.currentWeek;
                                 
@@ -535,9 +537,9 @@ export default function TimelineCard({ project }: TimelineCardProps) {
 
               {/* Progress bar */}
               {weekInfo && (
-                <div className={`mt-2 relative flex items-center ${weekInfo.hasPositiveRetention && project.status === 'aftercare' ? 'opacity-60' : ''}`}>
+                <div className={`mt-2 relative flex items-center ${weekInfo.hasPositiveRetention && currentProject.status === 'aftercare' ? 'opacity-60' : ''}`}>
                   <div className={`h-1 rounded-sm overflow-hidden flex ${
-                    project.status === 'aftercare' ? 'bg-gray-200' : 'bg-gray-100'
+                    currentProject.status === 'aftercare' ? 'bg-gray-200' : 'bg-gray-100'
                   }`} style={{ width: '95%' }}>
                     {(() => {
                       const currentWeek = weekInfo.currentWeek;
@@ -545,7 +547,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                       const totalWeeksToContract = weekInfo.totalWeeksToContract;
                       
                       // Only grey out aftercare projects with positive retention
-                      if (weekInfo.hasPositiveRetention && project.status === 'aftercare') {
+                      if (weekInfo.hasPositiveRetention && currentProject.status === 'aftercare') {
                         return (
                           <div 
                             className="bg-gray-400 h-full opacity-40" 
@@ -575,7 +577,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                               style={{ 
                                 width: `${lightBluePercent}%`,
                                 backgroundColor: (() => {
-                                  switch (project.status) {
+                                  switch (currentProject.status) {
                                     case 'tender': return 'rgb(59, 130, 246)'; // blue
                                     case 'precon': return 'rgb(34, 197, 94)'; // green
                                     case 'construction': return 'rgb(234, 179, 8)'; // yellow
@@ -614,7 +616,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                           style={{ 
                             marginTop: '12px',
                             backgroundColor: (() => {
-                              switch (project.status) {
+                              switch (currentProject.status) {
                                 case 'tender': return 'rgb(59, 130, 246)';
                                 case 'precon': return 'rgb(34, 197, 94)';
                                 case 'construction': return 'rgb(234, 179, 8)';
@@ -637,7 +639,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                           }}
                         >
                           {(() => {
-                            if (project.status === 'precon' || project.status === 'tender') {
+                            if (currentProject.status === 'precon' || currentProject.status === 'tender') {
                               return `w${currentWeek} of ${totalWeeksToContract}`;
                             }
                             return `w${currentWeek} of ${totalWeeksToAnticipated} (${totalWeeksToContract})`;
@@ -651,7 +653,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                   <div className="ml-2 text-xs font-bold" style={{ 
                     fontSize: '15px',
                     color: (() => {
-                      switch (project.status) {
+                      switch (currentProject.status) {
                         case 'tender': return 'rgb(59, 130, 246)';
                         case 'precon': return 'rgb(34, 197, 94)';
                         case 'construction': return 'rgb(234, 179, 8)';
@@ -676,13 +678,13 @@ export default function TimelineCard({ project }: TimelineCardProps) {
       
       {/* Bottom tab with remaining weeks */}
       {weekInfo && (
-        <div className={`flex justify-end relative ${weekInfo.hasPositiveRetention && project.status === 'aftercare' ? 'opacity-60' : ''}`} style={{ marginTop: '-3px', marginRight: '25px' }}>
+        <div className={`flex justify-end relative ${weekInfo.hasPositiveRetention && currentProject.status === 'aftercare' ? 'opacity-60' : ''}`} style={{ marginTop: '-3px', marginRight: '25px' }}>
           <div className="bg-white rounded-b-lg px-3 py-1.5 text-gray-600 inline-block italic flex justify-center" style={{ 
             fontSize: '11.73px', 
             zIndex: 0,
             border: `1px solid ${(() => {
-              if (weekInfo.hasPositiveRetention && project.status === 'aftercare') return 'rgba(204, 204, 204, 0.5)';
-              switch (project.status) {
+              if (weekInfo.hasPositiveRetention && currentProject.status === 'aftercare') return 'rgba(204, 204, 204, 0.5)';
+              switch (currentProject.status) {
                 case 'tender': return 'rgba(59, 130, 246, 0.5)';
                 case 'precon': return 'rgba(34, 197, 94, 0.5)';
                 case 'construction': return 'rgba(234, 179, 8, 0.5)';
@@ -691,21 +693,21 @@ export default function TimelineCard({ project }: TimelineCardProps) {
               }
             })()}`
           }}>
-            {weekInfo.hasPositiveRetention && project.status === 'aftercare' ? (
+            {weekInfo.hasPositiveRetention && currentProject.status === 'aftercare' ? (
               <span className="text-gray-500 font-medium">Project Complete</span>
             ) : (
               <>
-                {project.status === 'tender' || project.status === 'precon' ? (
+                {currentProject.status === 'tender' || currentProject.status === 'precon' ? (
                   <>Weeks to Completion <span className="font-bold" style={{ 
                     marginLeft: '3px', 
                     marginRight: '3px',
-                    color: project.status === 'tender' ? 'rgb(59, 130, 246)' : 'rgb(34, 197, 94)'
+                    color: currentProject.status === 'tender' ? 'rgb(59, 130, 246)' : 'rgb(34, 197, 94)'
                   }}>{Math.max(0, weekInfo.totalWeeksToContract - weekInfo.currentWeek)}</span></>
                 ) : (
                   <>Weeks to Construction <span className="font-bold" style={{ 
                     marginLeft: '3px', 
                     marginRight: '3px',
-                    color: project.status === 'construction' ? 'rgb(234, 179, 8)' : project.status === 'aftercare' ? 'rgb(107, 114, 128)' : 'rgb(59, 130, 246)'
+                    color: currentProject.status === 'construction' ? 'rgb(234, 179, 8)' : currentProject.status === 'aftercare' ? 'rgb(107, 114, 128)' : 'rgb(59, 130, 246)'
                   }}>{Math.max(0, weekInfo.totalWeeksToAnticipated - weekInfo.currentWeek)}</span> Contract <span className="font-bold text-gray-800" style={{ marginLeft: '3px', marginRight: '3px' }}>{Math.max(0, weekInfo.totalWeeksToContract - weekInfo.currentWeek)}</span></>
                 )}
               </>
@@ -733,11 +735,12 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                   <button
                     key={proj.id}
                     onClick={() => {
-                      navigate(`/W0013?project=${proj.projectNumber}`);
+                      setCurrentProject(proj);
+                      onProjectChange?.(proj);
                       setIsDropdownOpen(false);
                     }}
                     className={`w-full text-left px-2 py-1 hover:bg-gray-100 transition-colors border-l-4 ${
-                      proj.id === project.id ? 'bg-blue-50 border-l-blue-500' : 'border-l-transparent'
+                      proj.id === currentProject.id ? 'bg-blue-50 border-l-blue-500' : 'border-l-transparent'
                     }`}
                     style={{ fontSize: '11.05px' }}
                   >
