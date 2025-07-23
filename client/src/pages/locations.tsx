@@ -483,13 +483,13 @@ export default function Locations() {
       
       // Phase-based color coding for pins
       const phaseColors = {
-        tender: '#0ea5e9',    // Blue
-        precon: '#10b981',    // Green
-        construction: '#f59e0b', // Yellow
-        aftercare: '#6b7280'  // Gray
+        tender: { fill: '#87ceeb', stroke: '#0ea5e9' },    // Light blue fill, dark blue stroke
+        precon: { fill: '#86efac', stroke: '#10b981' },    // Light green fill, dark green stroke
+        construction: { fill: '#fcd34d', stroke: '#f59e0b' }, // Light yellow fill, dark yellow stroke
+        aftercare: { fill: '#d1d5db', stroke: '#6b7280' }  // Light gray fill, dark gray stroke
       };
 
-      const pinColor = phaseColors[project.status as keyof typeof phaseColors] || '#6b7280';
+      const colors = phaseColors[project.status as keyof typeof phaseColors] || phaseColors.aftercare;
 
       // Create individual project marker
       const marker = new window.google.maps.Marker({
@@ -498,9 +498,10 @@ export default function Locations() {
         title: project.name,
         icon: {
           path: "M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z M -2,-30 a 2,2 0 1,1 4,0 2,2 0 1,1 -4,0",
-          fillColor: pinColor,
+          fillColor: colors.fill,
           fillOpacity: 1.0,
-          strokeWeight: 0,
+          strokeColor: colors.stroke,
+          strokeWeight: 1,
           scale: 1.0,
           anchor: new window.google.maps.Point(0, 0),
         },
