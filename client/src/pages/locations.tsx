@@ -352,27 +352,24 @@ export default function Locations() {
                 background: white;
                 border-radius: 12px;
                 box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-                padding: 0;
+                padding: 16px;
                 min-width: 280px;
                 max-width: 320px;
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                border: 1px solid rgba(0,0,0,0.08);
+                border: 3px solid ${phaseColors[primaryProject.status] || '#6b7280'};
               ">
-                <!-- Header with value -->
-                <div style="padding: 16px 16px 8px 16px;">
-                  <div style="font-size: 22px; font-weight: 700; color: #1f2937; margin-bottom: 4px;">
-                    £${primaryProject.value ? primaryProject.value.toLocaleString() : '2,450,000'}
-                  </div>
-                  <div style="color: #6b7280; font-size: 14px; line-height: 1.4;">
+                <!-- Header -->
+                <div style="margin-bottom: 16px;">
+                  <div style="font-size: 18px; font-weight: 700; color: #1f2937; margin-bottom: 4px;">
                     ${primaryProject.name}
                   </div>
-                  <div style="color: #9ca3af; font-size: 12px; margin-top: 2px;">
+                  <div style="color: #6b7280; font-size: 14px;">
                     ${city}, ${primaryProject.postcode || 'Unknown'}
                   </div>
                 </div>
                 
                 <!-- Main content area -->
-                <div style="padding: 8px 16px 16px 16px; display: flex; align-items: center; gap: 12px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
                   <!-- Phase icon -->
                   <div style="
                     width: 48px;
@@ -445,7 +442,8 @@ export default function Locations() {
                 ${cityProjects.length > 1 ? `
                 <div style="
                   border-top: 1px solid #e5e7eb;
-                  padding: 8px 16px;
+                  padding: 12px 0 0 0;
+                  margin-top: 12px;
                   font-size: 11px;
                   color: #6b7280;
                   text-align: center;
