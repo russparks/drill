@@ -22,6 +22,7 @@ export default function Locations() {
   const mapRef = useRef<HTMLDivElement>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [map, setMap] = useState<any>(null);
+  const [hoverOverlay, setHoverOverlay] = useState<any>(null);
 
   // Group projects by city (Yorkshire postcodes)
   const postcodeToCity: { [key: string]: string } = {
@@ -59,6 +60,8 @@ export default function Locations() {
       default: return 'rgb(107, 114, 128)';
     }
   };
+
+
 
   // Load Google Maps API
   useEffect(() => {
@@ -264,6 +267,48 @@ export default function Locations() {
   useEffect(() => {
     if (!map || !projects.length) return;
 
+    // Custom overlay class for hover cards
+    class CustomOverlay extends window.google.maps.OverlayView {
+      private position: any;
+      private content: string;
+      private div: HTMLDivElement | null = null;
+
+      constructor(position: any, content: string) {
+        super();
+        this.position = position;
+        this.content = content;
+      }
+
+      onAdd() {
+        this.div = document.createElement('div');
+        this.div.style.position = 'absolute';
+        this.div.style.pointerEvents = 'none';
+        this.div.innerHTML = this.content;
+        
+        const panes = this.getPanes();
+        panes?.overlayMouseTarget.appendChild(this.div);
+      }
+
+      draw() {
+        if (!this.div) return;
+        
+        const overlayProjection = this.getProjection();
+        const position = overlayProjection.fromLatLngToDivPixel(this.position);
+        
+        if (position) {
+          this.div.style.left = (position.x - 160) + 'px'; // Center horizontally
+          this.div.style.top = (position.y - 120) + 'px'; // Position above marker
+        }
+      }
+
+      onRemove() {
+        if (this.div && this.div.parentNode) {
+          this.div.parentNode.removeChild(this.div);
+          this.div = null;
+        }
+      }
+    }
+
     const geocoder = new window.google.maps.Geocoder();
     const infoWindow = new window.google.maps.InfoWindow();
     const bounds = new window.google.maps.LatLngBounds();
@@ -454,19 +499,27 @@ export default function Locations() {
               </div>
             `;
 
-            // Add hover listeners with improved positioning
+            // Add hover listeners with custom overlay
             marker.addListener('mouseover', () => {
-              infoWindow.setContent(hoverContent);
-              infoWindow.setOptions({
-                pixelOffset: new window.google.maps.Size(0, -10),
-                disableAutoPan: false,
-                maxWidth: 340
-              });
-              infoWindow.open(map, marker);
+              // Clean up any existing overlay
+              if (hoverOverlay) {
+                hoverOverlay.setMap(null);
+              }
+              
+              // Create new overlay
+              const overlay = new CustomOverlay(position, hoverContent);
+              overlay.setMap(map);
+              setHoverOverlay(overlay);
             });
 
             marker.addListener('mouseout', () => {
-              infoWindow.close();
+              // Clean up overlay on mouse out
+              setTimeout(() => {
+                if (hoverOverlay) {
+                  hoverOverlay.setMap(null);
+                  setHoverOverlay(null);
+                }
+              }, 100); // Small delay to prevent flickering
             });
 
             marker.addListener('click', () => {
