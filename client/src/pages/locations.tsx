@@ -641,14 +641,14 @@ export default function Locations() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-20 md:pb-8">
       {/* Phase Statistics Tiles */}
       <div className="mb-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-2xl">
           {['tender', 'precon', 'construction', 'aftercare'].map((phase) => {
             const phaseProjects = projects.filter(p => p.status === phase);
             const phaseColors = {
-              tender: { bg: 'bg-blue-100', text: 'text-blue-800', badge: 'bg-blue-200', number: 'text-blue-800' },
-              precon: { bg: 'bg-green-100', text: 'text-green-800', badge: 'bg-green-200', number: 'text-green-800' },
-              construction: { bg: 'bg-yellow-100', text: 'text-yellow-800', badge: 'bg-yellow-200', number: 'text-yellow-800' },
-              aftercare: { bg: 'bg-gray-100', text: 'text-gray-800', badge: 'bg-gray-200', number: 'text-gray-800' }
+              tender: { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-800', number: 'text-blue-800' },
+              precon: { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-800', number: 'text-green-800' },
+              construction: { bg: 'bg-yellow-100', text: 'text-yellow-800', border: 'border-yellow-800', number: 'text-yellow-800' },
+              aftercare: { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-800', number: 'text-gray-800' }
             };
             const colors = phaseColors[phase as keyof typeof phaseColors];
             
@@ -669,14 +669,12 @@ export default function Locations() {
             };
             
             return (
-              <Card key={phase} className={`${colors.bg} border-0 shadow-sm h-24`}>
+              <Card key={phase} className={`${colors.bg} ${colors.border} border-2 shadow-sm h-24 w-32 rounded-2xl`}>
                 <CardContent className="p-3 h-full">
                   <div className="flex flex-col items-center justify-center text-center h-full space-y-1">
-                    <div className={`px-2 py-0.5 rounded-full ${colors.badge}`}>
-                      <span className={`text-xs font-medium ${colors.text} uppercase`}>
-                        {phase}
-                      </span>
-                    </div>
+                    <span className={`text-xs font-medium ${colors.text} uppercase`}>
+                      {phase}
+                    </span>
                     <div className={`text-xl font-bold ${colors.number}`}>
                       {phaseProjects.length}
                     </div>
