@@ -781,37 +781,79 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
           {isDropdownOpen && (
             <div className="absolute left-0 top-full mt-1 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto">
               <div className="py-1">
-                {projects.map((proj: any) => (
-                  <button
-                    key={proj.id}
-                    onClick={() => {
-                      setCurrentProject(proj);
-                      onProjectChange?.(proj);
-                      setIsDropdownOpen(false);
-                    }}
-                    className={`w-full text-left px-2 py-1 hover:bg-gray-100 transition-colors border-l-4 ${
-                      proj.id === currentProject.id ? 'bg-blue-50 border-l-blue-500' : 'border-l-transparent'
-                    }`}
-                    style={{ fontSize: '11.05px' }}
-                  >
-                    <span 
-                      className="font-medium truncate block"
-                      style={{
-                        color: (() => {
-                          switch (proj.status) {
-                            case 'tender': return 'rgb(59, 130, 246)'; // blue
-                            case 'precon': return 'rgb(34, 197, 94)'; // green
-                            case 'construction': return 'rgb(234, 179, 8)'; // yellow
-                            case 'aftercare': return 'rgb(107, 114, 128)'; // grey
-                            default: return 'rgb(75, 85, 99)'; // default gray
-                          }
-                        })()
+                {(() => {
+                  // Sort projects: live projects first (tender, precon, construction), then completed projects (tender complete, precon complete, aftercare)
+                  const sortedProjects = [...projects].sort((a, b) => {
+                    const getProjectInfo = (project) => {
+                      const retentionValue = parseFloat(project.retention?.replace(/[£,]/g, '') || '0');
+                      const contractDate = new Date(project.contractCompletionDate);
+                      const currentDate = new Date();
+                      const isPastContractDate = currentDate > contractDate;
+                      const isCompleted = (retentionValue === 0 && project.status === 'aftercare') || 
+                                        (isPastContractDate && project.status !== 'aftercare');
+                      
+                      return { isCompleted, status: project.status };
+                    };
+                    
+                    const aInfo = getProjectInfo(a);
+                    const bInfo = getProjectInfo(b);
+                    
+                    // Define order values
+                    const getOrderValue = (info) => {
+                      if (!info.isCompleted) {
+                        // Live projects
+                        switch (info.status) {
+                          case 'tender': return 1;
+                          case 'precon': return 2;
+                          case 'construction': return 3;
+                          default: return 4;
+                        }
+                      } else {
+                        // Completed projects
+                        switch (info.status) {
+                          case 'tender': return 5; // tender complete
+                          case 'precon': return 6; // precon complete
+                          case 'aftercare': return 7; // aftercare
+                          default: return 8;
+                        }
+                      }
+                    };
+                    
+                    return getOrderValue(aInfo) - getOrderValue(bInfo);
+                  });
+                  
+                  return sortedProjects.map((proj: any) => (
+                    <button
+                      key={proj.id}
+                      onClick={() => {
+                        setCurrentProject(proj);
+                        onProjectChange?.(proj);
+                        setIsDropdownOpen(false);
                       }}
+                      className={`w-full text-left px-2 py-1 hover:bg-gray-100 transition-colors border-l-4 ${
+                        proj.id === currentProject.id ? 'bg-blue-50 border-l-blue-500' : 'border-l-transparent'
+                      }`}
+                      style={{ fontSize: '11.05px' }}
                     >
-                      {proj.name}
-                    </span>
-                  </button>
-                ))}
+                      <span 
+                        className="font-medium truncate block"
+                        style={{
+                          color: (() => {
+                            switch (proj.status) {
+                              case 'tender': return 'rgb(59, 130, 246)'; // blue
+                              case 'precon': return 'rgb(34, 197, 94)'; // green
+                              case 'construction': return 'rgb(234, 179, 8)'; // yellow
+                              case 'aftercare': return 'rgb(107, 114, 128)'; // grey
+                              default: return 'rgb(75, 85, 99)'; // default gray
+                            }
+                          })()
+                        }}
+                      >
+                        {proj.name}
+                      </span>
+                    </button>
+                  ));
+                })()}
               </div>
             </div>
           )}
