@@ -26,6 +26,7 @@ export default function Locations() {
   const [mapLoaded, setMapLoaded] = useState(false);
   const [map, setMap] = useState<any>(null);
   const [hoverOverlay, setHoverOverlay] = useState<any>(null);
+  const markersRef = useRef<any[]>([]);
 
 
   // Group projects by city (Yorkshire postcodes)
@@ -271,6 +272,11 @@ export default function Locations() {
   useEffect(() => {
     if (!map || !projects.length) return;
 
+    // Clear existing markers to prevent duplicates
+    markersRef.current.forEach(marker => marker.setMap(null));
+    markersRef.current = [];
+    console.log(`Creating markers for ${projects.length} projects`);
+
     // Add global click listener to close any open overlays
     const mapClickListener = map.addListener('click', () => {
       if (hoverOverlay) {
@@ -407,9 +413,8 @@ export default function Locations() {
     let markersCreated = 0;
     const totalProjects = projects.filter(p => p.postcode).length;
     
-    // Create individual markers for each project with slight position offsets
-    let projectIndex = 0;
-    projects.forEach((project) => {
+    // Create individual markers for each project - one marker per project
+    projects.forEach((project, index) => {
       if (!project.postcode) return;
 
       geocoder.geocode(
@@ -418,9 +423,12 @@ export default function Locations() {
           if (status === 'OK' && results[0]) {
             const basePosition = results[0].geometry.location;
             
-            // Add small random offset to spread out markers that might be at same location
-            const offsetLat = (Math.random() - 0.5) * 0.01; // Small random offset
-            const offsetLng = (Math.random() - 0.5) * 0.01;
+            // Add small deterministic offset based on project index to spread out markers
+            const offsetRadius = 0.005; // Small offset radius
+            const angle = (index * 137.5) % 360; // Golden angle spacing for even distribution
+            const offsetLat = offsetRadius * Math.cos(angle * Math.PI / 180);
+            const offsetLng = offsetRadius * Math.sin(angle * Math.PI / 180);
+            
             const position = new window.google.maps.LatLng(
               basePosition.lat() + offsetLat,
               basePosition.lng() + offsetLng
@@ -445,6 +453,9 @@ export default function Locations() {
                 anchor: new window.google.maps.Point(0, 0),
               },
             });
+
+            // Store marker reference for cleanup
+            markersRef.current.push(marker);
 
             // Store overlay reference for this specific marker
             let currentOverlay: any = null;
@@ -511,8 +522,11 @@ export default function Locations() {
       if (mapClickListener) {
         window.google.maps.event.removeListener(mapClickListener);
       }
+      // Clean up markers on unmount
+      markersRef.current.forEach(marker => marker.setMap(null));
+      markersRef.current = [];
     };
-  }, [map, projects, projectsByCity, hoverOverlay]);
+  }, [map, projects]);
 
   if (isLoading) {
     return (
