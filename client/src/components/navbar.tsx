@@ -79,12 +79,21 @@ export default function Navbar({ onCreateAction, onCreateProject, onCreatePerson
                   Actions
                 </span>
               </Link>
-              <div className="relative group">
+              <Link href="/projects">
                 <span className={`px-3 py-2 text-sm font-medium cursor-pointer ${
-                  location.startsWith("/projects") || location === "/W0013" || location === "/L0011" || location === "/M0006"
+                  location === "/projects" 
                     ? "border-b-2" 
                     : "text-action-text-secondary hover:text-action-text-primary"
-                }`} style={(location.startsWith("/projects") || location === "/W0013" || location === "/L0011" || location === "/M0006") ? { color: '#333333', borderColor: '#333333' } : {}}>
+                }`} style={location === "/projects" ? { color: '#333333', borderColor: '#333333' } : {}}>
+                  Projects
+                </span>
+              </Link>
+              <div className="relative group">
+                <span className={`px-3 py-2 text-sm font-medium cursor-pointer ${
+                  location === "/W0013" || location === "/L0011" || location === "/M0006"
+                    ? "border-b-2" 
+                    : "text-action-text-secondary hover:text-action-text-primary"
+                }`} style={(location === "/W0013" || location === "/L0011" || location === "/M0006") ? { color: '#333333', borderColor: '#333333' } : {}}>
                   Timelines <ChevronDown className="inline h-3 w-3 ml-1" />
                 </span>
                 <div className="absolute left-0 top-full w-48 bg-white border border-gray-200 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
