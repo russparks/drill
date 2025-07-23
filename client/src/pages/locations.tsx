@@ -270,6 +270,14 @@ export default function Locations() {
   useEffect(() => {
     if (!map || !projects.length) return;
 
+    // Add global click listener to close any open overlays
+    const mapClickListener = map.addListener('click', () => {
+      if (hoverOverlay) {
+        hoverOverlay.setMap(null);
+        setHoverOverlay(null);
+      }
+    });
+
     // React component for hover card content
     const HoverCardComponent = ({ project }: { project: Project }) => {
       const statusColors = {
@@ -341,14 +349,12 @@ export default function Locations() {
       );
     };
 
-    // Custom overlay class for hover cards
+    // Custom overlay class for click cards
     class CustomOverlay extends window.google.maps.OverlayView {
       private position: any;
       private project: Project;
       public div: HTMLDivElement | null = null;
       private root: any = null;
-      private mouseEnterHandler: (() => void) | null = null;
-      private mouseLeaveHandler: (() => void) | null = null;
 
       constructor(position: any, project: Project) {
         super();
@@ -361,7 +367,7 @@ export default function Locations() {
         this.div.style.position = 'absolute';
         this.div.style.pointerEvents = 'auto';
         this.div.style.zIndex = '9999';
-        this.div.style.cursor = 'default';
+        this.div.style.cursor = 'pointer';
         
         // Create React root and render component
         this.root = createRoot(this.div);
@@ -369,15 +375,6 @@ export default function Locations() {
         
         const panes = this.getPanes();
         panes?.floatPane.appendChild(this.div);
-      }
-
-      addHoverHandlers(onMouseEnter: () => void, onMouseLeave: () => void) {
-        if (this.div) {
-          this.mouseEnterHandler = onMouseEnter;
-          this.mouseLeaveHandler = onMouseLeave;
-          this.div.addEventListener('mouseenter', onMouseEnter);
-          this.div.addEventListener('mouseleave', onMouseLeave);
-        }
       }
 
       draw() {
@@ -388,20 +385,12 @@ export default function Locations() {
         
         if (position) {
           this.div.style.left = (position.x - 160) + 'px'; // Center horizontally
-          this.div.style.top = (position.y - 180) + 'px'; // Position further above marker to prevent overlap
+          this.div.style.top = (position.y - 180) + 'px'; // Position above marker
         }
       }
 
       onRemove() {
         if (this.div && this.div.parentNode) {
-          // Remove event listeners
-          if (this.mouseEnterHandler) {
-            this.div.removeEventListener('mouseenter', this.mouseEnterHandler);
-          }
-          if (this.mouseLeaveHandler) {
-            this.div.removeEventListener('mouseleave', this.mouseLeaveHandler);
-          }
-          
           // Unmount React component
           if (this.root) {
             this.root.unmount();
@@ -482,69 +471,43 @@ export default function Locations() {
             // Use the first project in the city for the hover card
             const primaryProject = cityProjects[0];
 
-            // Store overlay reference and timeout for this specific marker
+            // Store overlay reference for this specific marker
             let currentOverlay: any = null;
-            let hideTimeout: NodeJS.Timeout | null = null;
 
-            // Add hover listeners with custom overlay
-            marker.addListener('mouseover', () => {
-              // Clear any pending hide timeout
-              if (hideTimeout) {
-                clearTimeout(hideTimeout);
-                hideTimeout = null;
+            // Add click listener for toggle behavior
+            marker.addListener('click', () => {
+              // If this marker already has an overlay, remove it
+              if (currentOverlay) {
+                currentOverlay.setMap(null);
+                currentOverlay = null;
+                if (hoverOverlay === currentOverlay) {
+                  setHoverOverlay(null);
+                }
+                return;
               }
 
               // Clean up any existing global overlay
-              if (hoverOverlay && hoverOverlay !== currentOverlay) {
+              if (hoverOverlay) {
                 hoverOverlay.setMap(null);
                 setHoverOverlay(null);
               }
               
-              // Create new overlay for this marker if it doesn't exist
-              if (!currentOverlay) {
-                // Small delay to prevent glitching
-                setTimeout(() => {
-                  currentOverlay = new CustomOverlay(position, primaryProject);
-                  currentOverlay.setMap(map);
-                  setHoverOverlay(currentOverlay);
+              // Create new overlay for this marker
+              currentOverlay = new CustomOverlay(position, primaryProject);
+              currentOverlay.setMap(map);
+              setHoverOverlay(currentOverlay);
 
-                  // Add mouse events to the overlay itself after DOM is ready
-                  setTimeout(() => {
-                    if (currentOverlay) {
-                      currentOverlay.addHoverHandlers(
-                        () => {
-                          // Mouse enters overlay - cancel any pending hide
-                          if (hideTimeout) {
-                            clearTimeout(hideTimeout);
-                            hideTimeout = null;
-                          }
-                        },
-                        () => {
-                          // Mouse leaves overlay - hide after delay
-                          hideTimeout = setTimeout(() => {
-                            if (currentOverlay) {
-                              currentOverlay.setMap(null);
-                              currentOverlay = null;
-                              setHoverOverlay(null);
-                            }
-                          }, 100);
-                        }
-                      );
-                    }
-                  }, 100);
-                }, 150);
-              }
-            });
-
-            marker.addListener('mouseout', () => {
-              // Set a timeout to hide the overlay, allowing time to move to the card
-              hideTimeout = setTimeout(() => {
-                if (currentOverlay) {
-                  currentOverlay.setMap(null);
-                  currentOverlay = null;
-                  setHoverOverlay(null);
+              // Add click handler to close when clicking the card
+              setTimeout(() => {
+                if (currentOverlay && currentOverlay.div) {
+                  currentOverlay.div.addEventListener('click', (e: Event) => {
+                    e.stopPropagation();
+                    currentOverlay.setMap(null);
+                    currentOverlay = null;
+                    setHoverOverlay(null);
+                  });
                 }
-              }, 200); // Longer delay to prevent glitching
+              }, 100);
             });
 
             marker.addListener('click', () => {
@@ -568,7 +531,14 @@ export default function Locations() {
         }
       );
     });
-  }, [map, projects, projectsByCity]);
+
+    // Cleanup function
+    return () => {
+      if (mapClickListener) {
+        window.google.maps.event.removeListener(mapClickListener);
+      }
+    };
+  }, [map, projects, projectsByCity, hoverOverlay]);
 
   if (isLoading) {
     return (
