@@ -666,12 +666,14 @@ export default function Locations() {
                 <Map className="h-5 w-5 text-blue-600" />
                 Project Locations Map
               </CardTitle>
-              <div className="flex items-center gap-2">
-                {isDemoMode && (
-                  <span className="text-xs text-blue-600 animate-pulse mr-2">
-                    Filter demo in progress...
+              {isDemoMode && (
+                <div className="flex-1 text-center">
+                  <span className="text-sm text-gray-500">
+                    Try The Filters
                   </span>
-                )}
+                </div>
+              )}
+              <div className="flex items-center gap-2">
                 {['tender', 'precon', 'construction', 'aftercare'].map((phase) => {
                   const isActive = activeFilters.includes(phase);
                   const phaseColors = {
