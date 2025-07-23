@@ -9,7 +9,7 @@ import Navbar from "@/components/navbar";
 import MobileNav from "@/components/mobile-nav";
 import Home from "@/pages/home";
 import Dashboard from "@/pages/dashboard";
-import Setup from "@/pages/setup";
+import Projects from "@/pages/projects";
 import People from "@/pages/people";
 import Locations from "@/pages/locations";
 import NotFound from "@/pages/not-found";
@@ -53,12 +53,7 @@ function Router() {
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/actions" component={Dashboard} />
-        <Route path="/projects">
-          <Setup onTabChange={setActiveTab} />
-        </Route>
-        <Route path="/setup">
-          <Setup onTabChange={setActiveTab} />
-        </Route>
+        <Route path="/projects" component={Projects} />
         <Route path="/people" component={People} />
         <Route path="/locations" component={Locations} />
         <Route component={NotFound} />
