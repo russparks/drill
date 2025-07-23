@@ -325,21 +325,19 @@ export default function Locations() {
               
               <div className="flex flex-wrap gap-4 text-sm">
                 <div className="flex items-center gap-1">
-                  <Building2 className="h-3 w-3 text-muted-foreground" />
                   <span className="font-medium">{project.projectNumber}</span>
                 </div>
                 
                 {duration && (
                   <div className="flex items-center gap-1">
                     <Calendar className="h-3 w-3 text-muted-foreground" />
-                    <span>{duration} days</span>
+                    <span>{Math.round(duration / 7)} weeks</span>
                   </div>
                 )}
                 
                 {project.value && (
                   <div className="flex items-center gap-1">
-                    <DollarSign className="h-3 w-3 text-muted-foreground" />
-                    <span>£{parseInt(project.value).toLocaleString()}</span>
+                    <span>£{Math.abs(parseFloat(project.value.replace(/[£,]/g, ''))).toLocaleString()}</span>
                   </div>
                 )}
               </div>
@@ -426,16 +424,15 @@ export default function Locations() {
             bounds.extend(position);
             markersCreated++;
             
-            // Get the most advanced phase for marker color
-            const phases = ['tender', 'precon', 'construction', 'aftercare'];
+            // Get the most advanced phase for marker color (construction is highest priority)
+            const phaseOrder = { 'tender': 1, 'precon': 2, 'construction': 4, 'aftercare': 3 };
             const mostAdvancedPhase = cityProjects.reduce((advanced, project) => {
-              const currentIndex = phases.indexOf(project.status);
-              const advancedIndex = phases.indexOf(advanced);
-              return currentIndex > advancedIndex ? project.status : advanced;
+              const currentPriority = phaseOrder[project.status as keyof typeof phaseOrder] || 0;
+              const advancedPriority = phaseOrder[advanced as keyof typeof phaseOrder] || 0;
+              return currentPriority > advancedPriority ? project.status : advanced;
             }, 'tender');
 
-            // Debug logging
-            console.log(`${city}: Projects [${cityProjects.map(p => p.status).join(', ')}] → Most advanced: ${mostAdvancedPhase} → Color: ${getPhaseColor(mostAdvancedPhase)}`);
+
 
             // Create marker with Google pin style
             const marker = new window.google.maps.Marker({
