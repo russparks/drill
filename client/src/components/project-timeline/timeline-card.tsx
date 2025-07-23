@@ -196,9 +196,9 @@ export default function TimelineCard({ project }: TimelineCardProps) {
       hasPositiveRetention,
       hideWeekIndicator,
       isGreyedOut,
-      startDate: startDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }).replace(/\s/g, '-'),
-      anticipatedDate: constructionDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }).replace(/\s/g, '-'),
-      contractDate: contractDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }).replace(/\s/g, '-')
+      startDate: startDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }).replace(/\s/g, ' '),
+      anticipatedDate: constructionDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }).replace(/\s/g, ' '),
+      contractDate: contractDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }).replace(/\s/g, ' ')
     };
   };
 
@@ -211,7 +211,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
           <div className="flex justify-between items-start">
             <div className="flex-1">
               {/* Header with project number, name, location, value and status */}
-              <div className={`flex items-end gap-1 mb-0.5 ${weekInfo?.hasPositiveRetention && project.status === 'aftercare' ? 'opacity-60' : ''}`}>
+              <div className={`flex items-baseline gap-1 mb-0.5 ${weekInfo?.hasPositiveRetention && project.status === 'aftercare' ? 'opacity-60' : ''}`}>
                 <div className="text-lg flex items-center">
                   <span className="font-normal text-sm" style={{
                     color: (() => {
@@ -327,7 +327,8 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                                 default: return 'rgb(156, 163, 175)';
                               }
                             })(),
-                            borderWidth: '1px'
+                            borderWidth: '1px',
+                            borderStyle: 'solid'
                           }}>SOS</span>
                           <span className="bg-white text-black px-1 py-0.5 rounded-r-sm" style={{ 
                             fontSize: '10px',
