@@ -454,12 +454,12 @@ export default function Locations() {
               </div>
             `;
 
-            // Add hover listeners
+            // Add hover listeners with improved positioning
             marker.addListener('mouseover', () => {
               infoWindow.setContent(hoverContent);
               infoWindow.setOptions({
                 pixelOffset: new window.google.maps.Size(0, -10),
-                disableAutoPan: true,
+                disableAutoPan: false,
                 maxWidth: 340
               });
               infoWindow.open(map, marker);
