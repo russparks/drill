@@ -28,6 +28,7 @@ export default function Locations() {
   const [hoverOverlay, setHoverOverlay] = useState<any>(null);
   const markersRef = useRef<any[]>([]);
   const currentOverlayRef = useRef<any>(null);
+  const [activeFilters, setActiveFilters] = useState<string[]>(['tender', 'precon', 'construction', 'aftercare']);
 
 
   // Group projects by city (Yorkshire postcodes)
@@ -459,6 +460,9 @@ export default function Locations() {
     // Create individual markers for each project using stored coordinates
     projects.forEach((project, index) => {
       if (!project.latitude || !project.longitude) return;
+      
+      // Filter projects based on active filters
+      if (!activeFilters.includes(project.status)) return;
 
       // Use stored coordinates directly
       const basePosition = new window.google.maps.LatLng(
@@ -583,7 +587,7 @@ export default function Locations() {
       markersRef.current.forEach(marker => marker.setMap(null));
       markersRef.current = [];
     };
-  }, [map, projects]);
+  }, [map, projects, activeFilters]);
 
   if (isLoading) {
     return (
@@ -621,10 +625,46 @@ export default function Locations() {
       <div className="mb-8">
         <Card className="material-shadow">
           <CardHeader className="pb-4">
-            <CardTitle className="flex items-center gap-2">
-              <Map className="h-5 w-5 text-blue-600" />
-              Project Locations Map
-            </CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center gap-2">
+                <Map className="h-5 w-5 text-blue-600" />
+                Project Locations Map
+              </CardTitle>
+              <div className="flex items-center gap-2">
+                {['tender', 'precon', 'construction', 'aftercare'].map((phase) => {
+                  const isActive = activeFilters.includes(phase);
+                  const phaseColors = {
+                    tender: { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-200' },
+                    precon: { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-200' },
+                    construction: { bg: 'bg-yellow-100', text: 'text-yellow-800', border: 'border-yellow-200' },
+                    aftercare: { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200' }
+                  };
+                  const colors = phaseColors[phase as keyof typeof phaseColors];
+                  
+                  return (
+                    <Button
+                      key={phase}
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setActiveFilters(prev => 
+                          isActive 
+                            ? prev.filter(f => f !== phase)
+                            : [...prev, phase]
+                        );
+                      }}
+                      className={`text-xs px-3 py-1 ${
+                        isActive 
+                          ? `${colors.bg} ${colors.text} ${colors.border} border-2` 
+                          : 'bg-gray-50 text-gray-400 border-gray-200'
+                      }`}
+                    >
+                      {phase.charAt(0).toUpperCase() + phase.slice(1)}
+                    </Button>
+                  );
+                })}
+              </div>
+            </div>
           </CardHeader>
           <CardContent>
             <div 
