@@ -306,7 +306,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                     <div className={weekInfo.hasPositiveRetention && project.status === 'aftercare' ? 'opacity-60' : ''}>
                       <div className="flex items-center gap-[10px]">
                         <div className="flex items-center" title="Start on Site Date">
-                          <span className="px-0.5 py-0.5 rounded-l-sm" style={{ 
+                          <span className="border px-0.5 py-0.5 rounded-l-sm" style={{ 
                             fontSize: '9px',
                             color: project.status === 'construction' ? 'rgb(31, 41, 55)' : 'white',
                             backgroundColor: (() => {
@@ -317,10 +317,48 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                                 case 'aftercare': return 'rgb(209, 213, 219)'; // light grey
                                 default: return 'rgb(156, 163, 175)';
                               }
-                            })()
+                            })(),
+                            borderColor: (() => {
+                              switch (project.status) {
+                                case 'tender': return 'rgb(147, 197, 253)';
+                                case 'precon': return 'rgb(134, 239, 172)';
+                                case 'construction': return 'rgb(254, 240, 138)';
+                                case 'aftercare': return 'rgb(209, 213, 219)';
+                                default: return 'rgb(156, 163, 175)';
+                              }
+                            })(),
+                            borderWidth: '1px',
+                            borderStyle: 'solid'
                           }}>SOS</span>
                           <span className="bg-white text-black px-1 py-0.5 rounded-r-sm" style={{ 
-                            fontSize: '10px'
+                            fontSize: '10px',
+                            borderTop: `1px solid ${(() => {
+                              switch (project.status) {
+                                case 'tender': return 'rgb(147, 197, 253)';
+                                case 'precon': return 'rgb(134, 239, 172)';
+                                case 'construction': return 'rgb(254, 240, 138)';
+                                case 'aftercare': return 'rgb(209, 213, 219)';
+                                default: return 'rgb(156, 163, 175)';
+                              }
+                            })()}`,
+                            borderRight: `1px solid ${(() => {
+                              switch (project.status) {
+                                case 'tender': return 'rgb(147, 197, 253)';
+                                case 'precon': return 'rgb(134, 239, 172)';
+                                case 'construction': return 'rgb(254, 240, 138)';
+                                case 'aftercare': return 'rgb(209, 213, 219)';
+                                default: return 'rgb(156, 163, 175)';
+                              }
+                            })()}`,
+                            borderBottom: `1px solid ${(() => {
+                              switch (project.status) {
+                                case 'tender': return 'rgb(147, 197, 253)';
+                                case 'precon': return 'rgb(134, 239, 172)';
+                                case 'construction': return 'rgb(254, 240, 138)';
+                                case 'aftercare': return 'rgb(209, 213, 219)';
+                                default: return 'rgb(156, 163, 175)';
+                              }
+                            })()}`
                           }}>{weekInfo.startDate.toUpperCase()}</span>
                         </div>
 
