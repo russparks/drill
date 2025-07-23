@@ -15,9 +15,11 @@ interface TimelineCardProps {
     contractCompletionDate?: string;
     constructionCompletionDate?: string;
   };
+  onEdit?: (project: any) => void;
+  onDelete?: (project: any) => void;
 }
 
-export default function TimelineCard({ project }: TimelineCardProps) {
+export default function TimelineCard({ project, onEdit, onDelete }: TimelineCardProps) {
   // Helper functions copied from setup.tsx
   const isZeroOrNegativeValue = (value?: string) => {
     if (!value) return false;
@@ -153,6 +155,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                       variant="ghost"
                       size="icon"
                       className="h-7 w-7"
+                      onClick={() => onEdit?.(project)}
                     >
                       <Edit className="h-3 w-3" />
                     </Button>
@@ -160,6 +163,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                       variant="ghost"
                       size="icon"
                       className="h-7 w-7"
+                      onClick={() => onDelete?.(project)}
                     >
                       <Trash2 className="h-3 w-3" />
                     </Button>

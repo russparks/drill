@@ -95,12 +95,20 @@ export default function Components() {
           <div className="space-y-8">
             <div>
               <h3 className="text-lg font-medium text-gray-700 mb-4">Example 1: Construction Phase Timeline</h3>
-              <TimelineCard project={sampleProject1} />
+              <TimelineCard 
+                project={sampleProject1} 
+                onEdit={(project) => alert(`Edit project: ${project.projectNumber}`)}
+                onDelete={(project) => alert(`Delete project: ${project.projectNumber}`)}
+              />
             </div>
             
             <div>
               <h3 className="text-lg font-medium text-gray-700 mb-4">Example 2: Construction Phase Timeline (Large Project)</h3>
-              <TimelineCard project={sampleProject2} />
+              <TimelineCard 
+                project={sampleProject2}
+                onEdit={(project) => alert(`Edit project: ${project.projectNumber}`)}
+                onDelete={(project) => alert(`Delete project: ${project.projectNumber}`)}
+              />
             </div>
           </div>
         </section>
