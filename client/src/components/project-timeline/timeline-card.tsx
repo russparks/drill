@@ -637,22 +637,22 @@ export default function TimelineCard({ project }: TimelineCardProps) {
       
       {/* Bottom tab with remaining weeks */}
       {weekInfo && (
-        <div className={`flex justify-end relative ${weekInfo.hasPositiveRetention && project.status === 'aftercare' ? 'opacity-60' : ''}`} style={{ marginTop: '-3px', marginRight: '25px' }}>
+        <div className={`flex justify-center relative ${weekInfo.hasPositiveRetention && project.status === 'aftercare' ? 'opacity-60' : ''}`} style={{ marginTop: '5px' }}>
           <div className="bg-white rounded-b-lg px-3 py-1.5 text-gray-600 inline-block italic flex justify-center" style={{ 
             fontSize: '11.73px', 
             zIndex: 1,
             border: `1px solid ${(() => {
-              if (weekInfo.isGreyedOut || weekInfo.hasPositiveRetention) return 'rgba(204, 204, 204, 0.5)';
+              if (weekInfo.hasPositiveRetention && project.status === 'aftercare') return 'rgba(204, 204, 204, 0.5)';
               switch (project.status) {
                 case 'tender': return 'rgba(59, 130, 246, 0.5)';
                 case 'precon': return 'rgba(34, 197, 94, 0.5)';
-                case 'construction': return 'rgba(249, 115, 22, 0.5)';
-                case 'aftercare': return 'rgba(168, 85, 247, 0.5)';
+                case 'construction': return 'rgba(234, 179, 8, 0.5)';
+                case 'aftercare': return 'rgba(107, 114, 128, 0.5)';
                 default: return 'rgba(107, 114, 128, 0.5)';
               }
             })()}`
           }}>
-            {weekInfo.isGreyedOut || weekInfo.hasPositiveRetention ? (
+            {weekInfo.hasPositiveRetention && project.status === 'aftercare' ? (
               <span className="text-gray-500 font-medium">Project Complete</span>
             ) : (
               <>
