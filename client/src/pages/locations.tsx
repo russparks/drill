@@ -84,7 +84,13 @@ export default function Locations() {
           script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=geometry`;
           script.async = true;
           script.defer = true;
-          script.onload = () => setMapLoaded(true);
+          script.onload = () => {
+            console.log('Google Maps API loaded successfully');
+            setMapLoaded(true);
+          };
+          script.onerror = (err) => {
+            console.error('Failed to load Google Maps script:', err);
+          };
           document.head.appendChild(script);
         })
         .catch(err => {
@@ -99,6 +105,7 @@ export default function Locations() {
   useEffect(() => {
     if (!mapLoaded || !mapRef.current || !projects.length || map) return;
 
+    console.log('Initializing map with', projects.length, 'projects');
     const yorkshireCenter = { lat: 53.8, lng: -1.5 }; // Yorkshire center
     const newMap = new window.google.maps.Map(mapRef.current, {
       center: yorkshireCenter,
@@ -477,21 +484,13 @@ export default function Locations() {
                 setHoverOverlay(null);
               }
               
-              // Pan map to ensure card is fully visible
-              // Calculate offset to move marker up so card doesn't go off screen
-              const projection = map.getProjection();
-              const zoom = map.getZoom();
-              const scale = Math.pow(2, zoom);
-              
-              // Card height is about 320px, so we need to move the center up by ~160px
-              const cardOffsetPixels = 160;
-              const cardOffsetLat = cardOffsetPixels / (scale * 256) * 360;
-              
+              // Pan slightly upward to ensure card visibility (small, fixed amount)
+              const currentCenter = map.getCenter();
+              const smallOffset = 0.01; // Very small latitude offset for minimal panning
               const newCenter = new window.google.maps.LatLng(
-                position.lat() + cardOffsetLat,
-                position.lng()
+                currentCenter.lat() - smallOffset,
+                currentCenter.lng()
               );
-              
               map.panTo(newCenter);
               
               // Create new overlay for this marker after a short delay for panning
