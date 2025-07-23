@@ -384,47 +384,7 @@ export default function W0013() {
                       </div>
                     </div>
 
-                    {/* Week indicator - only show if not greyed out for positive retention */}
-                    {!weekInfo.hideWeekIndicator && !weekInfo.hasPositiveRetention && (
-                      <div className="flex items-center gap-1">
-                        <div style={{ fontSize: '10px', color: '#666' }}>
-                          Week {weekInfo.currentWeek} of {weekInfo.totalWeeksToAnticipated}
-                        </div>
-                        <div className="flex items-center">
-                          <div 
-                            className="h-1.5 rounded-full"
-                            style={{
-                              width: '50px',
-                              backgroundColor: (() => {
-                                switch (w0013Project.status) {
-                                  case 'tender': return 'rgb(219, 234, 254)'; // very light blue
-                                  case 'precon': return 'rgb(220, 252, 231)'; // very light green
-                                  case 'construction': return 'rgb(254, 249, 195)'; // very light yellow
-                                  case 'aftercare': return 'rgb(243, 244, 246)'; // very light grey
-                                  default: return 'rgb(229, 231, 235)'; // default gray-200
-                                }
-                              })()
-                            }}
-                          >
-                            <div 
-                              className="h-1.5 rounded-full transition-all duration-500"
-                              style={{
-                                width: `${Math.min(100, (weekInfo.currentWeek / weekInfo.totalWeeksToAnticipated) * 100)}%`,
-                                backgroundColor: (() => {
-                                  switch (w0013Project.status) {
-                                    case 'tender': return 'rgb(59, 130, 246)'; // blue-500
-                                    case 'precon': return 'rgb(34, 197, 94)'; // green-500
-                                    case 'construction': return 'rgb(234, 179, 8)'; // yellow-500
-                                    case 'aftercare': return 'rgb(107, 114, 128)'; // gray-500
-                                    default: return 'rgb(156, 163, 175)'; // default gray-400
-                                  }
-                                })()
-                              }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    )}
+
                   </div>
                 )}
               </div>
