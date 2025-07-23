@@ -360,7 +360,7 @@ export default function Locations() {
         this.div = document.createElement('div');
         this.div.style.position = 'absolute';
         this.div.style.pointerEvents = 'auto';
-        this.div.style.zIndex = '1000';
+        this.div.style.zIndex = '9999';
         this.div.style.cursor = 'default';
         
         // Create React root and render component
@@ -368,7 +368,7 @@ export default function Locations() {
         this.root.render(<HoverCardComponent project={this.project} />);
         
         const panes = this.getPanes();
-        panes?.overlayLayer.appendChild(this.div);
+        panes?.floatPane.appendChild(this.div);
       }
 
       addHoverHandlers(onMouseEnter: () => void, onMouseLeave: () => void) {
@@ -388,7 +388,7 @@ export default function Locations() {
         
         if (position) {
           this.div.style.left = (position.x - 160) + 'px'; // Center horizontally
-          this.div.style.top = (position.y - 140) + 'px'; // Position above marker
+          this.div.style.top = (position.y - 180) + 'px'; // Position further above marker to prevent overlap
         }
       }
 
@@ -497,36 +497,42 @@ export default function Locations() {
               // Clean up any existing global overlay
               if (hoverOverlay && hoverOverlay !== currentOverlay) {
                 hoverOverlay.setMap(null);
+                setHoverOverlay(null);
               }
               
               // Create new overlay for this marker if it doesn't exist
               if (!currentOverlay) {
-                currentOverlay = new CustomOverlay(position, primaryProject);
-                currentOverlay.setMap(map);
-                setHoverOverlay(currentOverlay);
-
-                // Add mouse events to the overlay itself after a brief delay to ensure DOM is ready
+                // Small delay to prevent glitching
                 setTimeout(() => {
-                  currentOverlay.addHoverHandlers(
-                    () => {
-                      // Mouse enters overlay - cancel any pending hide
-                      if (hideTimeout) {
-                        clearTimeout(hideTimeout);
-                        hideTimeout = null;
-                      }
-                    },
-                    () => {
-                      // Mouse leaves overlay - hide after delay
-                      hideTimeout = setTimeout(() => {
-                        if (currentOverlay) {
-                          currentOverlay.setMap(null);
-                          currentOverlay = null;
-                          setHoverOverlay(null);
+                  currentOverlay = new CustomOverlay(position, primaryProject);
+                  currentOverlay.setMap(map);
+                  setHoverOverlay(currentOverlay);
+
+                  // Add mouse events to the overlay itself after DOM is ready
+                  setTimeout(() => {
+                    if (currentOverlay) {
+                      currentOverlay.addHoverHandlers(
+                        () => {
+                          // Mouse enters overlay - cancel any pending hide
+                          if (hideTimeout) {
+                            clearTimeout(hideTimeout);
+                            hideTimeout = null;
+                          }
+                        },
+                        () => {
+                          // Mouse leaves overlay - hide after delay
+                          hideTimeout = setTimeout(() => {
+                            if (currentOverlay) {
+                              currentOverlay.setMap(null);
+                              currentOverlay = null;
+                              setHoverOverlay(null);
+                            }
+                          }, 100);
                         }
-                      }, 50);
+                      );
                     }
-                  );
-                }, 50);
+                  }, 100);
+                }, 150);
               }
             });
 
@@ -538,7 +544,7 @@ export default function Locations() {
                   currentOverlay = null;
                   setHoverOverlay(null);
                 }
-              }, 100); // Reduced delay to minimize flashing
+              }, 200); // Longer delay to prevent glitching
             });
 
             marker.addListener('click', () => {
