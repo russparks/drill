@@ -327,7 +327,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                                 default: return 'rgb(156, 163, 175)';
                               }
                             })(),
-                            borderWidth: '1px',
+                            borderWidth: '2px',
                             borderStyle: 'solid'
                           }}>SOS</span>
                           <span className="bg-white text-black px-1 py-0.5 rounded-r-sm" style={{ 
