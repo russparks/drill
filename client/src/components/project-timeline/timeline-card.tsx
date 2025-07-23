@@ -449,17 +449,21 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
                         )}
 
                         {/* RET indicator for aftercare projects with retention */}
-                        {currentProject.status === 'aftercare' && currentProject.retention && (
+                        {currentProject.status === 'aftercare' && currentProject.retention && (() => {
+                          const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+                          // Only show RET indicator if retention is positive (red) or exactly zero (green)
+                          return retentionValue >= 0;
+                        })() && (
                           <div className="flex items-center" title="Retention">
                             <span className="text-white border px-0.5 py-0.5 rounded-l-sm" style={{ 
                               fontSize: '9px',
                               backgroundColor: (() => {
                                 const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
-                                return retentionValue > 0 ? 'rgb(34, 197, 94)' : 'rgb(239, 68, 68)'; // green for positive, red for negative/zero
+                                return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)'; // red for positive, green for zero
                               })(),
                               borderColor: (() => {
                                 const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
-                                return retentionValue > 0 ? 'rgb(34, 197, 94)' : 'rgb(239, 68, 68)';
+                                return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
                               })(),
                               borderWidth: '2px',
                               borderStyle: 'solid'
@@ -468,15 +472,15 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
                               fontSize: '9px',
                               borderTop: `1px solid ${(() => {
                                 const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
-                                return retentionValue > 0 ? 'rgb(34, 197, 94)' : 'rgb(239, 68, 68)';
+                                return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
                               })()}`,
                               borderRight: `1px solid ${(() => {
                                 const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
-                                return retentionValue > 0 ? 'rgb(34, 197, 94)' : 'rgb(239, 68, 68)';
+                                return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
                               })()}`,
                               borderBottom: `1px solid ${(() => {
                                 const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
-                                return retentionValue > 0 ? 'rgb(34, 197, 94)' : 'rgb(239, 68, 68)';
+                                return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
                               })()}`
                             }}>{formatValue(currentProject.retention).replace(/M/g, 'm').replace(/K/g, 'k').toUpperCase()}</span>
                           </div>
