@@ -404,7 +404,6 @@ export default function Locations() {
     }
 
     const geocoder = new window.google.maps.Geocoder();
-    const infoWindow = new window.google.maps.InfoWindow();
     const bounds = new window.google.maps.LatLngBounds();
     let markersCreated = 0;
     const totalCities = Object.keys(projectsByCity).filter(city => city !== 'Unknown').length;
@@ -451,24 +450,7 @@ export default function Locations() {
               },
             });
 
-            // Create info window content
-            const infoContent = `
-              <div style="padding: 8px; max-width: 250px;">
-                <h3 style="margin: 0 0 8px 0; color: #374151; font-size: 16px;">${city}</h3>
-                <p style="margin: 0 0 8px 0; color: #6B7280; font-size: 14px;">${cityProjects.length} project${cityProjects.length !== 1 ? 's' : ''}</p>
-                <div style="max-height: 120px; overflow-y: auto;">
-                  ${cityProjects.map(project => `
-                    <div style="margin-bottom: 6px; padding: 4px; background: #F9FAFB; border-radius: 4px;">
-                      <div style="font-weight: 500; color: #111827; font-size: 12px;">${project.projectNumber}</div>
-                      <div style="color: #6B7280; font-size: 11px; margin-top: 2px;">${project.name}</div>
-                      <div style="color: ${getPhaseColor(project.status)}; font-size: 10px; text-transform: uppercase; margin-top: 2px;">${project.status}</div>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-            `;
-
-            // Use the first project in the city for the hover card
+            // Use the first project in the city for the custom card
             const primaryProject = cityProjects[0];
 
             // Store overlay reference for this specific marker
@@ -508,11 +490,6 @@ export default function Locations() {
                   });
                 }
               }, 100);
-            });
-
-            marker.addListener('click', () => {
-              infoWindow.setContent(infoContent);
-              infoWindow.open(map, marker);
             });
 
             // Once all markers are created, fit the map to show all markers
