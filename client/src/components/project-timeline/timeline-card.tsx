@@ -640,7 +640,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
         <div className={`flex justify-end relative ${weekInfo.hasPositiveRetention && project.status === 'aftercare' ? 'opacity-60' : ''}`} style={{ marginTop: '-3px', marginRight: '25px' }}>
           <div className="bg-white rounded-b-lg px-3 py-1.5 text-gray-600 inline-block italic flex justify-center" style={{ 
             fontSize: '11.73px', 
-            zIndex: -10,
+            zIndex: 0,
             border: `1px solid ${(() => {
               if (weekInfo.hasPositiveRetention && project.status === 'aftercare') return 'rgba(204, 204, 204, 0.5)';
               switch (project.status) {
