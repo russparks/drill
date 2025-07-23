@@ -285,8 +285,9 @@ export default function Locations() {
     // Add global click listener to close any open overlays
     const mapClickListener = map.addListener('click', () => {
       if (hoverOverlay) {
-        hoverOverlay.setMap(null);
-        setHoverOverlay(null);
+        hoverOverlay.fadeOut(() => {
+          setHoverOverlay(null);
+        });
       }
     });
 
@@ -378,6 +379,8 @@ export default function Locations() {
         this.div.style.pointerEvents = 'auto';
         this.div.style.zIndex = '9999';
         this.div.style.cursor = 'pointer';
+        this.div.style.opacity = '0';
+        this.div.style.transition = 'opacity 0.5s ease-in-out';
         
         // Create React root and render component
         this.root = createRoot(this.div);
@@ -385,6 +388,13 @@ export default function Locations() {
         
         const panes = this.getPanes();
         panes?.floatPane.appendChild(this.div);
+        
+        // Trigger fade in after a brief delay
+        setTimeout(() => {
+          if (this.div) {
+            this.div.style.opacity = '1';
+          }
+        }, 50);
       }
 
       draw() {
@@ -396,6 +406,16 @@ export default function Locations() {
         if (position) {
           this.div.style.left = (position.x - 160) + 'px'; // Center horizontally
           this.div.style.top = (position.y - 180) + 'px'; // Position above marker
+        }
+      }
+
+      fadeOut(callback?: () => void) {
+        if (this.div) {
+          this.div.style.opacity = '0';
+          setTimeout(() => {
+            this.onRemove();
+            if (callback) callback();
+          }, 500); // Wait for fade out animation
         }
       }
 
@@ -466,20 +486,22 @@ export default function Locations() {
 
       // Add click listener for individual markers
       marker.addListener('click', () => {
-        // If this marker already has an overlay, remove it
+        // If this marker already has an overlay, fade it out
         if (currentOverlay) {
-          currentOverlay.setMap(null);
-          currentOverlay = null;
-          if (hoverOverlay === currentOverlay) {
-            setHoverOverlay(null);
-          }
+          currentOverlay.fadeOut(() => {
+            currentOverlay = null;
+            if (hoverOverlay === currentOverlay) {
+              setHoverOverlay(null);
+            }
+          });
           return;
         }
 
-        // Clean up any existing global overlay
+        // Clean up any existing global overlay with fade out
         if (hoverOverlay) {
-          hoverOverlay.setMap(null);
-          setHoverOverlay(null);
+          hoverOverlay.fadeOut(() => {
+            setHoverOverlay(null);
+          });
         }
         
         // Smoothly pan to the clicked project's exact coordinates
@@ -496,9 +518,10 @@ export default function Locations() {
             if (currentOverlay && currentOverlay.div) {
               currentOverlay.div.addEventListener('click', (e: Event) => {
                 e.stopPropagation();
-                currentOverlay.setMap(null);
-                currentOverlay = null;
-                setHoverOverlay(null);
+                currentOverlay.fadeOut(() => {
+                  currentOverlay = null;
+                  setHoverOverlay(null);
+                });
               });
             }
           }, 100);
