@@ -91,10 +91,10 @@ export default function Locations() {
   useEffect(() => {
     if (!mapLoaded || !mapRef.current || !projects.length || map) return;
 
-    const ukCenter = { lat: 54.5, lng: -2.0 }; // Approximate UK center
+    const yorkshireCenter = { lat: 53.8, lng: -1.5 }; // Yorkshire center
     const newMap = new window.google.maps.Map(mapRef.current, {
-      center: ukCenter,
-      zoom: 6,
+      center: yorkshireCenter,
+      zoom: 8, // Start with closer zoom, will be adjusted by bounds
       styles: [
         {
           featureType: "poi",
@@ -113,30 +113,27 @@ export default function Locations() {
 
     const geocoder = new window.google.maps.Geocoder();
     const infoWindow = new window.google.maps.InfoWindow();
-
-    console.log('Projects by city:', projectsByCity);
-    console.log('Cities to process:', Object.keys(projectsByCity));
+    const bounds = new window.google.maps.LatLngBounds();
+    let markersCreated = 0;
+    const totalCities = Object.keys(projectsByCity).filter(city => city !== 'Unknown').length;
 
     // Group projects by city to avoid duplicate markers
     Object.entries(projectsByCity).forEach(([city, cityProjects]) => {
-      console.log(`Processing city: ${city} with ${cityProjects.length} projects`);
-      if (city === 'Unknown') {
-        console.log('Skipping Unknown city');
-        return;
-      }
+      if (city === 'Unknown') return;
       
       // Use first project's postcode for geocoding
       const representativeProject = cityProjects[0];
       if (!representativeProject.postcode) return;
 
-      console.log(`Geocoding ${representativeProject.postcode} for ${city}`);
       geocoder.geocode(
         { address: `${representativeProject.postcode}, UK` },
         (results: any[], status: string) => {
-          console.log(`Geocoding result for ${city}: status=${status}, results=`, results);
           if (status === 'OK' && results[0]) {
             const position = results[0].geometry.location;
-            console.log(`Creating marker for ${city} at position:`, position.lat(), position.lng());
+            
+            // Add position to bounds
+            bounds.extend(position);
+            markersCreated++;
             
             // Get the most advanced phase for marker color
             const phases = ['tender', 'precon', 'construction', 'aftercare'];
@@ -182,6 +179,19 @@ export default function Locations() {
               infoWindow.setContent(infoContent);
               infoWindow.open(map, marker);
             });
+
+            // Once all markers are created, fit the map to show all markers
+            if (markersCreated === totalCities) {
+              map.fitBounds(bounds);
+              
+              // Add some padding to the bounds and prevent over-zooming
+              const listener = window.google.maps.event.addListener(map, 'idle', () => {
+                if (map.getZoom() > 10) { // Prevent over-zooming for very close markers
+                  map.setZoom(10);
+                }
+                window.google.maps.event.removeListener(listener);
+              });
+            }
           }
         }
       );
