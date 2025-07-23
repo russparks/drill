@@ -1,12 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Plus, Menu, Settings, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import logo from "@assets/drill logo_1753113360383.png";
 
 interface NavbarProps {
@@ -85,40 +79,33 @@ export default function Navbar({ onCreateAction, onCreateProject, onCreatePerson
                   Actions
                 </span>
               </Link>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <span className={`px-3 py-2 text-sm font-medium cursor-pointer flex items-center gap-1 ${
-                    location.startsWith("/projects") || location === "/W0013" || location === "/L0011" || location === "/M0006"
-                      ? "border-b-2" 
-                      : "text-action-text-secondary hover:text-action-text-primary"
-                  }`} style={(location.startsWith("/projects") || location === "/W0013" || location === "/L0011" || location === "/M0006") ? { color: '#333333', borderColor: '#333333' } : {}}>
-                    Projects
-                    <ChevronDown className="h-3 w-3" />
-                  </span>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start">
-                  <DropdownMenuItem asChild>
-                    <Link href="/projects">
-                      <span className="w-full">All Projects</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/W0013">
-                      <span className="w-full">W0013</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/L0011">
-                      <span className="w-full">L0011</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/M0006">
-                      <span className="w-full">M0006</span>
-                    </Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <div className="relative group">
+                <span className={`px-3 py-2 text-sm font-medium cursor-pointer flex items-center gap-1 ${
+                  location.startsWith("/projects") || location === "/W0013" || location === "/L0011" || location === "/M0006"
+                    ? "border-b-2" 
+                    : "text-action-text-secondary hover:text-action-text-primary"
+                }`} style={(location.startsWith("/projects") || location === "/W0013" || location === "/L0011" || location === "/M0006") ? { color: '#333333', borderColor: '#333333' } : {}}>
+                  Projects
+                  <ChevronDown className="h-3 w-3" />
+                </span>
+                <div className="absolute left-0 top-full w-48 bg-white border border-gray-200 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                  <Link href="/W0013">
+                    <div className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+                      W0013
+                    </div>
+                  </Link>
+                  <Link href="/L0011">
+                    <div className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+                      L0011
+                    </div>
+                  </Link>
+                  <Link href="/M0006">
+                    <div className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+                      M0006
+                    </div>
+                  </Link>
+                </div>
+              </div>
               <Link href="/locations">
                 <span className={`px-3 py-2 text-sm font-medium cursor-pointer ${
                   location === "/locations" 
