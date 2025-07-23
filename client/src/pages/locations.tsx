@@ -275,7 +275,6 @@ export default function Locations() {
     // Clear existing markers to prevent duplicates
     markersRef.current.forEach(marker => marker.setMap(null));
     markersRef.current = [];
-    console.log(`Creating markers for ${projects.length} projects`);
 
     // Add global click listener to close any open overlays
     const mapClickListener = map.addListener('click', () => {
@@ -478,22 +477,41 @@ export default function Locations() {
                 setHoverOverlay(null);
               }
               
-              // Create new overlay for this marker
-              currentOverlay = new CustomOverlay(position, project);
-              currentOverlay.setMap(map);
-              setHoverOverlay(currentOverlay);
-
-              // Add click handler to close when clicking the card
+              // Pan map to ensure card is fully visible
+              // Calculate offset to move marker up so card doesn't go off screen
+              const projection = map.getProjection();
+              const zoom = map.getZoom();
+              const scale = Math.pow(2, zoom);
+              
+              // Card height is about 320px, so we need to move the center up by ~160px
+              const cardOffsetPixels = 160;
+              const cardOffsetLat = cardOffsetPixels / (scale * 256) * 360;
+              
+              const newCenter = new window.google.maps.LatLng(
+                position.lat() + cardOffsetLat,
+                position.lng()
+              );
+              
+              map.panTo(newCenter);
+              
+              // Create new overlay for this marker after a short delay for panning
               setTimeout(() => {
-                if (currentOverlay && currentOverlay.div) {
-                  currentOverlay.div.addEventListener('click', (e: Event) => {
-                    e.stopPropagation();
-                    currentOverlay.setMap(null);
-                    currentOverlay = null;
-                    setHoverOverlay(null);
-                  });
-                }
-              }, 100);
+                currentOverlay = new CustomOverlay(position, project);
+                currentOverlay.setMap(map);
+                setHoverOverlay(currentOverlay);
+
+                // Add click handler to close when clicking the card
+                setTimeout(() => {
+                  if (currentOverlay && currentOverlay.div) {
+                    currentOverlay.div.addEventListener('click', (e: Event) => {
+                      e.stopPropagation();
+                      currentOverlay.setMap(null);
+                      currentOverlay = null;
+                      setHoverOverlay(null);
+                    });
+                  }
+                }, 100);
+              }, 300); // Wait for pan animation to complete
             });
 
             // Once all markers are created, fit bounds
