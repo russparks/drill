@@ -651,7 +651,7 @@ export default function Locations() {
       </div>
 
       {/* Google Maps */}
-      <div className="mb-8 mt-6">
+      <div className="mb-8 mt-11">
         <Card className="material-shadow">
           <CardHeader className="pb-4">
             <div className="flex items-center justify-between">
@@ -705,11 +705,12 @@ export default function Locations() {
                       <div key={phase} className="relative">
                         {/* Value Tab - positioned behind button */}
                         <div 
-                          className={`absolute bg-white border border-gray-200 rounded-b-lg px-2 py-1 text-xs font-medium ${colors.text} z-0 text-center`}
+                          className={`absolute bg-white border border-gray-200 rounded-b-lg px-2 py-1 font-medium ${colors.text} z-0 text-center`}
                           style={{
-                            top: '21px', // -3px from button height
+                            top: '25px', // moved down 4px
                             left: '5%',
-                            width: '90%'
+                            width: '90%',
+                            fontSize: '0.625rem' // 15% smaller than text-xs (0.75rem)
                           }}
                         >
                           {formatValue(totalValue)}
