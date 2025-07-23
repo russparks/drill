@@ -304,10 +304,10 @@ export default function Locations() {
               icon: {
                 path: window.google.maps.SymbolPath.CIRCLE,
                 scale: 12,
-                fillColor: getPhaseColor(mostAdvancedPhase),
+                fillColor: '#333333',
                 fillOpacity: 0.9,
-                strokeColor: 'white',
-                strokeWeight: 3,
+                strokeColor: getPhaseColor(mostAdvancedPhase),
+                strokeWeight: 4,
               },
             });
 
@@ -395,8 +395,8 @@ export default function Locations() {
           <CardContent>
             <div 
               ref={mapRef} 
-              className="w-full h-96 rounded-lg"
-              style={{ minHeight: '400px' }}
+              className="w-full rounded-lg"
+              style={{ height: '500px' }}
             >
               {!mapLoaded && (
                 <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-lg">
