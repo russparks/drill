@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { Plus, Edit, Trash2, LayoutDashboard, FileText } from "lucide-react";
+import { Plus, Edit, Trash2, LayoutDashboard, FileText, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -28,6 +28,9 @@ export default function Setup({ onTabChange }: SetupProps) {
 
   // State for active tab
   const [activeTab, setActiveTab] = useState("projects");
+  
+  // State for phase filters
+  const [activeFilters, setActiveFilters] = useState<string[]>([]);
 
   // Listen for modal open events from navbar
   useEffect(() => {
@@ -323,6 +326,103 @@ export default function Setup({ onTabChange }: SetupProps) {
           </TabsTrigger>
         </TabsList>
 
+        {/* Phase Filter Buttons - only show on projects tab */}
+        {activeTab === "projects" && (
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="flex items-center gap-2 relative">
+              {['tender', 'precon', 'construction', 'aftercare'].map((phase) => {
+                const isActive = activeFilters.includes(phase);
+                const phaseProjects = projects.filter(p => p.status === phase);
+                const phaseColors = {
+                  tender: { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-200', circle: 'bg-blue-600' },
+                  precon: { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-200', circle: 'bg-green-600' },
+                  construction: { bg: 'bg-yellow-100', text: 'text-yellow-800', border: 'border-yellow-200', circle: 'bg-yellow-600' },
+                  aftercare: { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200', circle: 'bg-gray-600' }
+                };
+                const colors = phaseColors[phase as keyof typeof phaseColors];
+                
+                // Calculate total value for this phase
+                const totalValue = phaseProjects.reduce((sum, project) => {
+                  let valueStr = project.value || '0';
+                  
+                  // For aftercare phase, use retention value instead
+                  if (phase === 'aftercare' && project.retention) {
+                    valueStr = project.retention;
+                  }
+                  
+                  // Clean the value string and parse
+                  const cleanValue = valueStr.replace(/[£,\s]/g, '');
+                  const value = parseFloat(cleanValue) || 0;
+                  // Use absolute value to handle negative tender values
+                  return sum + Math.abs(value);
+                }, 0);
+                
+                // Format value
+                const formatFilterValue = (value: number) => {
+                  if (value === 0) {
+                    return '£0.0k';
+                  }
+                  if (value >= 1000000) {
+                    return `£${(value / 1000000).toFixed(1)}m`;
+                  } else if (value >= 1000) {
+                    return `£${(value / 1000).toFixed(1)}k`;
+                  }
+                  return `£${value.toFixed(1)}`;
+                };
+                
+                return (
+                  <div key={phase} className="relative">
+                    {/* Value Tab - positioned behind button */}
+                    <div 
+                      className={`absolute bg-white border border-gray-200 rounded-b-lg py-1 font-medium ${colors.text} z-0 text-center`}
+                      style={{
+                        top: '25px', // moved down 4px
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        width: '60px', // 8 characters * ~6px + 6px padding
+                        fontSize: '0.625rem' // 15% smaller than text-xs (0.75rem)
+                      }}
+                    >
+                      {formatFilterValue(totalValue)}
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setActiveFilters(prev => 
+                          isActive 
+                            ? prev.filter(f => f !== phase)
+                            : [...prev, phase]
+                        );
+                      }}
+                      className={`text-xs px-2 py-0.5 transition-all duration-300 rounded-lg h-7 flex items-center gap-2 relative z-10 shadow-sm ${
+                        isActive 
+                          ? `${colors.bg} ${colors.text} ${colors.border} border-2` 
+                          : 'bg-gray-50 text-gray-400 border-gray-200'
+                      }`}
+                    >
+                      <span>{phase.toUpperCase()}</span>
+                      <div className={`w-5 h-5 rounded-full ${colors.circle} flex items-center justify-center`}>
+                        <span className="text-xs font-bold text-white">{phaseProjects.length}</span>
+                      </div>
+                    </Button>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="relative">
+              <Filter 
+                className="h-4 w-4 text-gray-400" 
+              />
+              {activeFilters.length > 0 && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-5 h-0.5 bg-gray-400 rotate-45"></div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         <TabsContent value="projects" className="space-y-6" style={{ marginTop: '40px' }}>
           <Dialog open={isProjectDialogOpen} onOpenChange={setIsProjectDialogOpen}>
             <DialogContent className="max-w-lg">
@@ -514,6 +614,12 @@ export default function Setup({ onTabChange }: SetupProps) {
               <div>Loading projects...</div>
             ) : (
               projects
+                .filter(project => {
+                  // If no filters are active, show all projects
+                  if (activeFilters.length === 0) return true;
+                  // Otherwise, only show projects that match at least one active filter
+                  return activeFilters.includes(project.status);
+                })
                 .sort((a, b) => {
                   // Helper function to determine if a project is completed
                   const isProjectCompleted = (project: Project) => {
