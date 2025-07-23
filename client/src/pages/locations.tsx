@@ -639,68 +639,14 @@ export default function Locations() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-20 md:pb-8">
-      {/* Phase Statistics Tiles */}
-      <div className="mb-6 flex justify-center">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-          {['tender', 'precon', 'construction', 'aftercare'].map((phase) => {
-            const phaseProjects = projects.filter(p => p.status === phase);
-            const phaseColors = {
-              tender: { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-800', number: 'text-blue-800' },
-              precon: { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-800', number: 'text-green-800' },
-              construction: { bg: 'bg-yellow-100', text: 'text-yellow-800', border: 'border-yellow-800', number: 'text-yellow-800' },
-              aftercare: { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-800', number: 'text-gray-800' }
-            };
-            const colors = phaseColors[phase as keyof typeof phaseColors];
-            
-            // Calculate total value for this phase
-            const totalValue = phaseProjects.reduce((sum, project) => {
-              let valueStr = project.value || '0';
-              
-              // For aftercare phase, use retention value instead
-              if (phase === 'aftercare' && project.retention) {
-                valueStr = project.retention;
-              }
-              
-              // Clean the value string and parse
-              const cleanValue = valueStr.replace(/[£,\s]/g, '');
-              const value = parseFloat(cleanValue) || 0;
-              // Use absolute value to handle negative tender values
-              return sum + Math.abs(value);
-            }, 0);
-            
-            // Format value
-            const formatValue = (value: number) => {
-              if (value === 0) {
-                return '£0.0k';
-              }
-              if (value >= 1000000) {
-                return `£${(value / 1000000).toFixed(1)}m`;
-              } else if (value >= 1000) {
-                return `£${(value / 1000).toFixed(1)}k`;
-              }
-              return `£${value.toFixed(1)}`;
-            };
-            
-            return (
-              <Card key={phase} className="bg-white border-gray-200 border shadow-sm h-20 w-32 rounded-2xl">
-                <CardContent className="p-2 h-full">
-                  <div className="flex flex-col items-center justify-between text-center h-full">
-                    <div className="flex items-center justify-center gap-2 mt-1">
-                      <span className="text-xl font-bold text-gray-900">
-                        {phaseProjects.length}
-                      </span>
-                      <span className="text-xs font-medium text-gray-600">
-                        {formatValue(totalValue)}
-                      </span>
-                    </div>
-                    <span className={`text-xs font-bold ${colors.text} uppercase mb-1`}>
-                      {phase}
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
+      {/* Header */}
+      <div className="mb-6">
+        <div className="flex items-center gap-3">
+          <MapPin className="h-8 w-8 text-blue-600" />
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Project Locations</h1>
+            <p className="text-gray-600">Interactive map view of all projects</p>
+          </div>
         </div>
       </div>
 
@@ -714,37 +660,82 @@ export default function Locations() {
                 Project Locations
               </CardTitle>
               <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 relative">
                   {['tender', 'precon', 'construction', 'aftercare'].map((phase) => {
                     const isActive = activeFilters.includes(phase);
+                    const phaseProjects = projects.filter(p => p.status === phase);
                     const phaseColors = {
-                      tender: { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-200' },
-                      precon: { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-200' },
-                      construction: { bg: 'bg-yellow-100', text: 'text-yellow-800', border: 'border-yellow-200' },
-                      aftercare: { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200' }
+                      tender: { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-200', circle: 'bg-blue-600' },
+                      precon: { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-200', circle: 'bg-green-600' },
+                      construction: { bg: 'bg-yellow-100', text: 'text-yellow-800', border: 'border-yellow-200', circle: 'bg-yellow-600' },
+                      aftercare: { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200', circle: 'bg-gray-600' }
                     };
                     const colors = phaseColors[phase as keyof typeof phaseColors];
                     
+                    // Calculate total value for this phase
+                    const totalValue = phaseProjects.reduce((sum, project) => {
+                      let valueStr = project.value || '0';
+                      
+                      // For aftercare phase, use retention value instead
+                      if (phase === 'aftercare' && project.retention) {
+                        valueStr = project.retention;
+                      }
+                      
+                      // Clean the value string and parse
+                      const cleanValue = valueStr.replace(/[£,\s]/g, '');
+                      const value = parseFloat(cleanValue) || 0;
+                      // Use absolute value to handle negative tender values
+                      return sum + Math.abs(value);
+                    }, 0);
+                    
+                    // Format value
+                    const formatValue = (value: number) => {
+                      if (value === 0) {
+                        return '£0.0k';
+                      }
+                      if (value >= 1000000) {
+                        return `£${(value / 1000000).toFixed(1)}m`;
+                      } else if (value >= 1000) {
+                        return `£${(value / 1000).toFixed(1)}k`;
+                      }
+                      return `£${value.toFixed(1)}`;
+                    };
+                    
                     return (
-                      <Button
-                        key={phase}
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                          setActiveFilters(prev => 
+                      <div key={phase} className="relative">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setActiveFilters(prev => 
+                              isActive 
+                                ? prev.filter(f => f !== phase)
+                                : [...prev, phase]
+                            );
+                          }}
+                          className={`text-xs px-2 py-0.5 transition-all duration-300 rounded-lg h-7 flex items-center gap-2 ${
                             isActive 
-                              ? prev.filter(f => f !== phase)
-                              : [...prev, phase]
-                          );
-                        }}
-                        className={`text-xs px-2 py-0.5 transition-all duration-300 rounded-lg h-7 ${
-                          isActive 
-                            ? `${colors.bg} ${colors.text} ${colors.border} border-2` 
-                            : 'bg-gray-50 text-gray-400 border-gray-200'
-                        }`}
-                      >
-                        {phase.toUpperCase()}
-                      </Button>
+                              ? `${colors.bg} ${colors.text} ${colors.border} border-2` 
+                              : 'bg-gray-50 text-gray-400 border-gray-200'
+                          }`}
+                        >
+                          <span>{phase.toUpperCase()}</span>
+                          <div className={`w-5 h-5 rounded-full ${colors.circle} flex items-center justify-center`}>
+                            <span className="text-xs font-bold text-white">{phaseProjects.length}</span>
+                          </div>
+                        </Button>
+                        {/* Value Tab */}
+                        <div 
+                          className="absolute bg-white border border-gray-200 rounded-b-lg px-2 py-1 text-xs font-medium text-gray-600 z-10"
+                          style={{
+                            top: '24px', // -3px from button height
+                            left: '5%',
+                            width: '90%'
+                          }}
+                        >
+                          {formatValue(totalValue)}
+                        </div>
+                      </div>
                     );
                   })}
                 </div>
