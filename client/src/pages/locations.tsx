@@ -484,11 +484,11 @@ export default function Locations() {
                 setHoverOverlay(null);
               }
               
-              // Pan slightly upward to ensure card visibility (small, fixed amount)
+              // Pan upward to ensure card visibility 
               const currentCenter = map.getCenter();
-              const smallOffset = 0.01; // Very small latitude offset for minimal panning
+              const offset = 0.05; // Moderate latitude offset for noticeable but not excessive panning
               const newCenter = new window.google.maps.LatLng(
-                currentCenter.lat() - smallOffset,
+                currentCenter.lat() - offset,
                 currentCenter.lng()
               );
               map.panTo(newCenter);
