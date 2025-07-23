@@ -28,7 +28,7 @@ export default function Locations() {
     'LS1 4DT': 'Leeds',
     'LS6 3HG': 'Leeds',
     'S1 2HE': 'Sheffield', 
-    'S70 2YW': 'Barnsley',
+    'YO19 5LJ': 'York',
     'BD1 1DB': 'Bradford',
     'BD18 3SE': 'Shipley',
     'YO1 7PR': 'York',
