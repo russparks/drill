@@ -1,4 +1,4 @@
-import { Calendar, MapPin, Clock, Pound } from "lucide-react";
+import { Calendar, MapPin, Clock, DollarSign } from "lucide-react";
 
 interface ProjectHeaderProps {
   project: {
@@ -81,7 +81,7 @@ export default function ProjectHeader({ project }: ProjectHeaderProps) {
           <span>Complete: {formatDate(project.constructionCompletionDate)}</span>
         </div>
         <div className="flex items-center gap-2 text-sm text-gray-600">
-          <Pound className="h-4 w-4" />
+          <DollarSign className="h-4 w-4" />
           <span>Value: {formatCurrency(project.value)}</span>
         </div>
         <div className="flex items-center gap-2 text-sm text-gray-600">

@@ -12,6 +12,7 @@ import Dashboard from "@/pages/dashboard";
 import Setup from "@/pages/setup";
 import People from "@/pages/people";
 import Locations from "@/pages/locations";
+import Components from "@/pages/components";
 import NotFound from "@/pages/not-found";
 import ActionForm from "@/components/action-form";
 
@@ -63,6 +64,7 @@ function Router() {
         </Route>
         <Route path="/people" component={People} />
         <Route path="/locations" component={Locations} />
+        <Route path="/components" component={Components} />
         <Route path="/W0013">
           {() => (
             <Suspense fallback={<div>Loading...</div>}>
