@@ -1,6 +1,14 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Edit, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import ConfirmDialog from "@/components/confirm-dialog";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 
 interface TimelineCardProps {
   project: {
@@ -14,12 +22,128 @@ interface TimelineCardProps {
     startOnSiteDate?: string;
     contractCompletionDate?: string;
     constructionCompletionDate?: string;
+    description?: string;
   };
-  onEdit?: (project: any) => void;
-  onDelete?: (project: any) => void;
 }
 
-export default function TimelineCard({ project, onEdit, onDelete }: TimelineCardProps) {
+export default function TimelineCard({ project }: TimelineCardProps) {
+  const [isProjectDialogOpen, setIsProjectDialogOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [selectedPhase, setSelectedPhase] = useState<"tender" | "precon" | "construction" | "aftercare">("tender");
+  const [workingWeeks, setWorkingWeeks] = useState({ startToContract: 0, startToAnticipated: 0, anticipatedToContract: 0 });
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<{ type: 'project', id: number, name: string } | null>(null);
+  const { toast } = useToast();
+
+  // Update project mutation
+  const updateProjectMutation = useMutation({
+    mutationFn: async (data: any) => {
+      return apiRequest(`/api/projects/${data.id}`, {
+        method: "PATCH",
+        body: JSON.stringify(data),
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/projects"] });
+      toast({ title: "Success", description: "Project updated successfully" });
+      setIsProjectDialogOpen(false);
+    },
+    onError: (error: any) => {
+      toast({ title: "Error", description: error.message || "Failed to update project", variant: "destructive" });
+    },
+  });
+
+  // Delete project mutation
+  const deleteProjectMutation = useMutation({
+    mutationFn: async (id: number) => {
+      return apiRequest(`/api/projects/${id}`, { method: "DELETE" });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/projects"] });
+      toast({ title: "Success", description: "Project deleted successfully" });
+    },
+    onError: (error: any) => {
+      toast({ title: "Error", description: error.message || "Failed to delete project", variant: "destructive" });
+    },
+  });
+
+  const calculateWorkingWeeks = () => {
+    setTimeout(() => {
+      const startDate = (document.getElementById('startOnSiteDate') as HTMLInputElement)?.value;
+      const contractDate = (document.getElementById('contractCompletionDate') as HTMLInputElement)?.value;
+      const constructionDate = (document.getElementById('constructionCompletionDate') as HTMLInputElement)?.value;
+
+      if (startDate && contractDate && constructionDate) {
+        const start = new Date(startDate);
+        const contract = new Date(contractDate);
+        const construction = new Date(constructionDate);
+
+        const startToContract = Math.ceil((contract.getTime() - start.getTime()) / (1000 * 60 * 60 * 24 * 7));
+        const startToAnticipated = Math.ceil((construction.getTime() - start.getTime()) / (1000 * 60 * 60 * 24 * 7));
+        const anticipatedToContract = Math.ceil((contract.getTime() - construction.getTime()) / (1000 * 60 * 60 * 24 * 7));
+
+        setWorkingWeeks({
+          startToContract: Math.max(0, startToContract),
+          startToAnticipated: Math.max(0, startToAnticipated),
+          anticipatedToContract: Math.max(0, anticipatedToContract)
+        });
+      }
+    }, 100);
+  };
+
+  const handleProjectSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    
+    const projectNumber = formData.get("projectNumber") as string;
+    const value = formData.get("value") as string;
+    const name = formData.get("name") as string;
+    const description = formData.get("description") as string;
+
+    // Validate project number format
+    if (!/^[A-Z]\d{4}$/.test(projectNumber)) {
+      toast({ title: "Error", description: "Project number must be in format X0000 (e.g. A1234)", variant: "destructive" });
+      return;
+    }
+
+    // Validate description word count
+    const wordCount = description.trim().split(/\s+/).filter(word => word.length > 0).length;
+    if (wordCount < 25 || wordCount > 100) {
+      toast({ title: "Error", description: "Description must be between 25 and 100 words", variant: "destructive" });
+      return;
+    }
+
+    // Format value
+    const numericValue = parseFloat(value) || 0;
+    let formattedValue = '';
+    if (numericValue >= 1000) {
+      formattedValue = `£${(numericValue / 1000).toFixed(1)}m`;
+    } else {
+      formattedValue = `£${numericValue.toFixed(1)}k`;
+    }
+
+    // Calculate retention (1% of total value for aftercare projects)
+    let formattedRetention = '';
+    if (selectedPhase === "aftercare") {
+      const retentionValue = numericValue * 10;
+      formattedRetention = `£${retentionValue.toFixed(1)}`;
+    }
+
+    const projectData = {
+      id: selectedProject?.id,
+      projectNumber,
+      name,
+      description,
+      status: selectedPhase,
+      value: formattedValue,
+      retention: formattedRetention,
+      startOnSiteDate: formData.get("startOnSiteDate") as string,
+      contractCompletionDate: formData.get("contractCompletionDate") as string,
+      constructionCompletionDate: formData.get("constructionCompletionDate") as string,
+    };
+
+    updateProjectMutation.mutate(projectData);
+  };
   // Helper functions copied from setup.tsx
   const isZeroOrNegativeValue = (value?: string) => {
     if (!value) return false;
@@ -155,7 +279,11 @@ export default function TimelineCard({ project, onEdit, onDelete }: TimelineCard
                       variant="ghost"
                       size="icon"
                       className="h-7 w-7"
-                      onClick={() => onEdit?.(project)}
+                      onClick={() => {
+                        setSelectedProject(project);
+                        setSelectedPhase(project.status as "tender" | "precon" | "construction" | "aftercare");
+                        setIsProjectDialogOpen(true);
+                      }}
                     >
                       <Edit className="h-3 w-3" />
                     </Button>
@@ -163,7 +291,10 @@ export default function TimelineCard({ project, onEdit, onDelete }: TimelineCard
                       variant="ghost"
                       size="icon"
                       className="h-7 w-7"
-                      onClick={() => onDelete?.(project)}
+                      onClick={() => {
+                        setItemToDelete({ type: 'project', id: project.id, name: project.name });
+                        setIsConfirmDialogOpen(true);
+                      }}
                     >
                       <Trash2 className="h-3 w-3" />
                     </Button>
@@ -544,6 +675,209 @@ export default function TimelineCard({ project, onEdit, onDelete }: TimelineCard
           </div>
         </div>
       )}
+
+      {/* Edit Project Dialog */}
+      <Dialog open={isProjectDialogOpen} onOpenChange={setIsProjectDialogOpen}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Edit Project</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleProjectSubmit} className="space-y-3">
+            {/* Row 1: Project Number (15%) | Value (15%) | Project Name (70%) */}
+            <div className="grid grid-cols-12 gap-4">
+              <div className="col-span-2">
+                <Label htmlFor="projectNumber" className="text-xs">Number</Label>
+                <Input
+                  id="projectNumber"
+                  name="projectNumber"
+                  placeholder="X0000"
+                  className="h-7 px-1.5 py-1"
+                  style={{ fontSize: '11px' }}
+                  defaultValue={selectedProject?.projectNumber || ""}
+                  required
+                />
+              </div>
+              <div className="col-span-2">
+                <Label htmlFor="value" className="text-xs">Value</Label>
+                <Input
+                  id="value"
+                  name="value"
+                  placeholder="23.5"
+                  className="h-7 px-1.5 py-1"
+                  style={{ fontSize: '11px' }}
+                  defaultValue={selectedProject?.value?.replace('£', '') || ""}
+                  required
+                />
+              </div>
+              <div className="col-span-8">
+                <Label htmlFor="name" className="text-xs">Name</Label>
+                <Input
+                  id="name"
+                  name="name"
+                  className="h-7 px-1.5 py-1"
+                  style={{ fontSize: '11px' }}
+                  defaultValue={selectedProject?.name}
+                  required
+                />
+              </div>
+            </div>
+            
+            {/* Row 2: Project Description (100%) - multiline */}
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <Label htmlFor="description" className="text-xs">Description</Label>
+                <span className="text-xs text-gray-500" id="description-counter">0/25-100 words</span>
+              </div>
+              <textarea
+                id="description"
+                name="description"
+                className="w-full min-h-[68px] px-1.5 py-1 text-xs bg-white border border-gray-300 rounded-md resize-y focus:outline-none focus:ring-2 focus:ring-[#cc3333] focus:border-transparent"
+                defaultValue={selectedProject?.description || ""}
+                placeholder="Enter project description (minimum 25 words)..."
+                required
+                onChange={(e) => {
+                  const wordCount = e.target.value.trim().split(/\s+/).filter(word => word.length > 0).length;
+                  const counter = document.getElementById('description-counter');
+                  if (counter) {
+                    counter.textContent = `${wordCount}/25-100 words`;
+                    if (wordCount < 25) {
+                      counter.className = "text-xs text-red-500";
+                    } else if (wordCount > 100) {
+                      counter.className = "text-xs text-red-500";
+                    } else {
+                      counter.className = "text-xs text-green-600";
+                    }
+                  }
+                }}
+              />
+            </div>
+
+            {/* Row 3: Process buttons (100%) - styled exactly like action form */}
+            <div>
+              <div className="flex justify-between gap-2">
+                {[
+                  { value: "tender", label: "TENDER", activeColor: "bg-blue-500 border-blue-600 text-white", inactiveColor: "bg-blue-50 border-blue-200 text-blue-700" },
+                  { value: "precon", label: "PRECON", activeColor: "bg-green-500 border-green-600 text-white", inactiveColor: "bg-green-50 border-green-200 text-green-700" },
+                  { value: "construction", label: "CONSTRUCTION", activeColor: "bg-yellow-500 border-yellow-600 text-white", inactiveColor: "bg-yellow-50 border-yellow-200 text-yellow-700" },
+                  { value: "aftercare", label: "AFTERCARE", activeColor: "bg-gray-500 border-gray-600 text-white", inactiveColor: "bg-gray-50 border-gray-200 text-gray-700" }
+                ].map((phase) => (
+                  <button
+                    key={phase.value}
+                    type="button"
+                    onClick={() => setSelectedPhase(phase.value as "tender" | "precon" | "construction" | "aftercare")}
+                    className={`flex-1 px-3 py-1.5 text-xs font-medium uppercase rounded-full border transition-colors ${
+                      selectedPhase === phase.value
+                        ? phase.activeColor
+                        : phase.inactiveColor
+                    }`}
+                  >
+                    {phase.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <hr className="border-gray-200 mt-3" />
+
+            {/* Row 4: Start Date (33%) | Contract PC (33%) | Anticipated PC (33%) */}
+            <div className="flex gap-4">
+              <div className="flex-1">
+                <Label htmlFor="startOnSiteDate" className="text-xs text-center block mb-1.5">Start Date</Label>
+                <Input
+                  id="startOnSiteDate"
+                  name="startOnSiteDate"
+                  type="date"
+                  className="h-6 w-full"
+                  style={{ fontSize: '10px', textAlign: 'right', paddingRight: '8px' }}
+                  defaultValue={selectedProject?.startOnSiteDate ? new Date(selectedProject.startOnSiteDate).toISOString().split('T')[0] : ""}
+                  onChange={() => calculateWorkingWeeks()}
+                  required
+                />
+              </div>
+              <div className="flex-1">
+                <Label htmlFor="contractCompletionDate" className="text-xs text-center block mb-1.5">Contract PC</Label>
+                <Input
+                  id="contractCompletionDate"
+                  name="contractCompletionDate"
+                  type="date"
+                  className="h-6 w-full"
+                  style={{ fontSize: '10px', textAlign: 'right', paddingRight: '8px' }}
+                  defaultValue={selectedProject?.contractCompletionDate ? new Date(selectedProject.contractCompletionDate).toISOString().split('T')[0] : ""}
+                  onChange={() => calculateWorkingWeeks()}
+                  required
+                />
+              </div>
+              <div className="flex-1">
+                <Label htmlFor="constructionCompletionDate" className="text-xs text-center block mb-1.5">Anticipated PC</Label>
+                <Input
+                  id="constructionCompletionDate"
+                  name="constructionCompletionDate"
+                  type="date"
+                  className="h-6 w-full"
+                  style={{ fontSize: '10px', textAlign: 'right', paddingRight: '8px' }}
+                  defaultValue={selectedProject?.constructionCompletionDate ? new Date(selectedProject.constructionCompletionDate).toISOString().split('T')[0] : ""}
+                  onChange={() => calculateWorkingWeeks()}
+                  required
+                />
+              </div>
+            </div>
+
+            <hr className="border-gray-200 mt-3 mb-4" />
+            <div className="flex justify-between items-end">
+              <div className="flex items-center gap-1" style={{ fontSize: '10px' }}>
+                {workingWeeks.startToContract > 0 && (
+                  <>
+                    <div className="w-6 h-6 text-gray-400 flex items-center justify-center text-xs">ℹ️</div>
+                    <div className="leading-tight font-mono">
+                      <div className="flex">
+                        <div className="w-8 text-center text-black">{workingWeeks.startToContract}w</div>
+                        <div className="flex-1 text-gray-500 italic ml-2">Start → Contract</div>
+                      </div>
+                      <div className="flex">
+                        <div className="w-8 text-center text-black">{workingWeeks.startToAnticipated}w</div>
+                        <div className="flex-1 text-gray-500 italic ml-2">Start → Anticipated</div>
+                      </div>
+                      <div className="flex">
+                        <div className="w-8 text-center text-black">{workingWeeks.anticipatedToContract}w</div>
+                        <div className={`flex-1 italic ml-2 ${workingWeeks.anticipatedToContract < (workingWeeks.startToContract * 0.1) ? 'text-amber-500' : 'text-gray-500'}`}>Float / Buffer</div>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+              <div className="flex space-x-2">
+                <Button type="button" variant="outline" className="rounded-full" onClick={() => {
+                  setIsProjectDialogOpen(false);
+                  setSelectedPhase("tender");
+                  setWorkingWeeks({ startToContract: 0, startToAnticipated: 0, anticipatedToContract: 0 });
+                }}>
+                  Cancel
+                </Button>
+                <Button type="submit" className="rounded-full">
+                  Update
+                </Button>
+              </div>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmDialog
+        open={isConfirmDialogOpen}
+        onOpenChange={setIsConfirmDialogOpen}
+        title="Delete Project"
+        description={`Are you sure you want to delete "${itemToDelete?.name}"? This action cannot be undone.`}
+        onConfirm={() => {
+          if (itemToDelete) {
+            deleteProjectMutation.mutate(itemToDelete.id);
+          }
+          setItemToDelete(null);
+          setIsConfirmDialogOpen(false);
+        }}
+        confirmText="Delete"
+        cancelText="Cancel"
+      />
     </div>
   );
 }
