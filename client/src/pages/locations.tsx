@@ -447,7 +447,10 @@ export default function Locations() {
             let currentOverlay: any = null;
 
             // Add click listener for individual markers
-            marker.addListener('click', () => {
+            marker.addListener('click', (e: any) => {
+              // Stop event propagation to prevent map click
+              e.stop();
+              
               // If this marker already has an overlay, remove it
               if (currentOverlay) {
                 currentOverlay.setMap(null);
@@ -547,7 +550,9 @@ export default function Locations() {
         clusterMarkersRef.current.push(clusterMarker);
 
         // Add click listener to expand cluster
-        clusterMarker.addListener('click', () => {
+        clusterMarker.addListener('click', (e: any) => {
+          // Stop event propagation to prevent map click
+          e.stop();
           // Hide all cluster markers
           clusterMarkersRef.current.forEach(marker => marker.setMap(null));
           
