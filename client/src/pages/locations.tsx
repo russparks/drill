@@ -1,10 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { MapPin, Plus, Building2, Navigation, Map } from "lucide-react";
+import { MapPin, Plus, Building2, Navigation, Map, Calendar, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Project } from "@shared/schema";
 import { Skeleton } from "@/components/ui/skeleton";
+import { createRoot } from "react-dom/client";
+import { format } from "date-fns";
 
 // Declare global google variable for TypeScript
 declare global {
@@ -267,18 +270,90 @@ export default function Locations() {
   useEffect(() => {
     if (!map || !projects.length) return;
 
+    // React component for hover card content
+    const HoverCardComponent = ({ project }: { project: Project }) => {
+      const statusColors = {
+        'tender': 'bg-amber-100 text-amber-800 border-amber-200',
+        'precon': 'bg-blue-100 text-blue-800 border-blue-200', 
+        'construction': 'bg-green-100 text-green-800 border-green-200',
+        'aftercare': 'bg-purple-100 text-purple-800 border-purple-200'
+      };
+
+      const statusIcons = {
+        'tender': Building2,
+        'precon': MapPin,
+        'construction': Navigation,
+        'aftercare': Map
+      };
+
+      const StatusIcon = statusIcons[project.status as keyof typeof statusIcons] || Building2;
+      const duration = project.startOnSiteDate && project.contractCompletionDate 
+        ? Math.ceil((new Date(project.contractCompletionDate).getTime() - new Date(project.startOnSiteDate).getTime()) / (1000 * 60 * 60 * 24))
+        : null;
+
+      // Get city from postcode
+      const city = project.postcode ? postcodeToCity[project.postcode] || project.postcode : 'Unknown Location';
+
+      return (
+        <Card className="w-80 shadow-lg border-2">
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2">
+              <StatusIcon className="h-4 w-4" />
+              <CardTitle className="text-lg font-semibold">{project.name}</CardTitle>
+            </div>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <MapPin className="h-3 w-3" />
+              {city}
+            </div>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <div className="space-y-3">
+              <Badge 
+                variant="secondary" 
+                className={statusColors[project.status as keyof typeof statusColors] || 'bg-gray-100 text-gray-800'}
+              >
+                {project.status.charAt(0).toUpperCase() + project.status.slice(1)}
+              </Badge>
+              
+              <div className="flex flex-wrap gap-4 text-sm">
+                <div className="flex items-center gap-1">
+                  <Building2 className="h-3 w-3 text-muted-foreground" />
+                  <span className="font-medium">{project.projectNumber}</span>
+                </div>
+                
+                {duration && (
+                  <div className="flex items-center gap-1">
+                    <Calendar className="h-3 w-3 text-muted-foreground" />
+                    <span>{duration} days</span>
+                  </div>
+                )}
+                
+                {project.value && (
+                  <div className="flex items-center gap-1">
+                    <DollarSign className="h-3 w-3 text-muted-foreground" />
+                    <span>£{parseInt(project.value).toLocaleString()}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      );
+    };
+
     // Custom overlay class for hover cards
     class CustomOverlay extends window.google.maps.OverlayView {
       private position: any;
-      private content: string;
+      private project: Project;
       public div: HTMLDivElement | null = null;
+      private root: any = null;
       private mouseEnterHandler: (() => void) | null = null;
       private mouseLeaveHandler: (() => void) | null = null;
 
-      constructor(position: any, content: string) {
+      constructor(position: any, project: Project) {
         super();
         this.position = position;
-        this.content = content;
+        this.project = project;
       }
 
       onAdd() {
@@ -287,7 +362,10 @@ export default function Locations() {
         this.div.style.pointerEvents = 'auto';
         this.div.style.zIndex = '1000';
         this.div.style.cursor = 'default';
-        this.div.innerHTML = this.content;
+        
+        // Create React root and render component
+        this.root = createRoot(this.div);
+        this.root.render(<HoverCardComponent project={this.project} />);
         
         const panes = this.getPanes();
         panes?.overlayLayer.appendChild(this.div);
@@ -310,7 +388,7 @@ export default function Locations() {
         
         if (position) {
           this.div.style.left = (position.x - 160) + 'px'; // Center horizontally
-          this.div.style.top = (position.y - 135) + 'px'; // Position further above marker to reduce overlap
+          this.div.style.top = (position.y - 140) + 'px'; // Position above marker
         }
       }
 
@@ -322,6 +400,12 @@ export default function Locations() {
           }
           if (this.mouseLeaveHandler) {
             this.div.removeEventListener('mouseleave', this.mouseLeaveHandler);
+          }
+          
+          // Unmount React component
+          if (this.root) {
+            this.root.unmount();
+            this.root = null;
           }
           
           this.div.parentNode.removeChild(this.div);
@@ -395,130 +479,8 @@ export default function Locations() {
               </div>
             `;
 
-            // Create custom hover info window content (for first project in city)
+            // Use the first project in the city for the hover card
             const primaryProject = cityProjects[0];
-            const phaseColors = {
-              tender: '#3b82f6',
-              precon: '#10b981', 
-              construction: '#f59e0b',
-              aftercare: '#6b7280'
-            };
-            const phaseIcons = {
-              tender: '📋',
-              precon: '🔧', 
-              construction: '🏗️',
-              aftercare: '✅'
-            };
-            
-            // Calculate project duration (stable based on project ID)
-            const durationWeeks = Math.floor((primaryProject.id * 7) % 48) + 8; // Stable calculation based on project ID
-            
-            const hoverContent = `
-              <div style="
-                background: white;
-                border-radius: 12px;
-                box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-                padding: 16px;
-                min-width: 280px;
-                max-width: 320px;
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                border: 3px solid ${phaseColors[primaryProject.status] || '#6b7280'};
-              ">
-                <!-- Header -->
-                <div style="margin-bottom: 16px;">
-                  <div style="font-size: 18px; font-weight: 700; color: #1f2937; margin-bottom: 4px;">
-                    ${primaryProject.name}
-                  </div>
-                  <div style="color: #6b7280; font-size: 14px;">
-                    ${city}, ${primaryProject.postcode || 'Unknown'}
-                  </div>
-                </div>
-                
-                <!-- Main content area -->
-                <div style="display: flex; align-items: center; gap: 12px;">
-                  <!-- Phase icon -->
-                  <div style="
-                    width: 48px;
-                    height: 48px;
-                    border-radius: 12px;
-                    background: ${phaseColors[primaryProject.status] || '#6b7280'};
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 24px;
-                  ">
-                    ${phaseIcons[primaryProject.status] || '📋'}
-                  </div>
-                  
-                  <!-- Action buttons -->
-                  <div style="display: flex; gap: 8px; flex: 1;">
-                    <!-- Project Number -->
-                    <div style="
-                      background: #f3f4f6;
-                      border-radius: 8px;
-                      padding: 8px 10px;
-                      display: flex;
-                      align-items: center;
-                      gap: 4px;
-                      flex: 1;
-                      min-width: 0;
-                    ">
-                      <span style="font-size: 12px;">ℹ️</span>
-                      <span style="font-size: 11px; font-weight: 600; color: #374151; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                        ${primaryProject.projectNumber}
-                      </span>
-                    </div>
-                    
-                    <!-- Duration -->
-                    <div style="
-                      background: #f3f4f6;
-                      border-radius: 8px;
-                      padding: 8px 10px;
-                      display: flex;
-                      align-items: center;
-                      gap: 4px;
-                      flex: 1;
-                      min-width: 0;
-                    ">
-                      <span style="font-size: 12px;">📅</span>
-                      <span style="font-size: 11px; font-weight: 600; color: #374151;">
-                        ${durationWeeks}w
-                      </span>
-                    </div>
-                    
-                    <!-- Value -->
-                    <div style="
-                      background: #f3f4f6;
-                      border-radius: 8px;
-                      padding: 8px 10px;
-                      display: flex;
-                      align-items: center;
-                      gap: 4px;
-                      flex: 1;
-                      min-width: 0;
-                    ">
-                      <span style="font-size: 12px;">💷</span>
-                      <span style="font-size: 11px; font-weight: 600; color: #374151;">
-                        ${primaryProject.value ? Math.round(Number(primaryProject.value)/1000) + 'k' : '2.4M'}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                
-                ${cityProjects.length > 1 ? `
-                <div style="
-                  border-top: 1px solid #e5e7eb;
-                  padding: 12px 0 0 0;
-                  margin-top: 12px;
-                  font-size: 11px;
-                  color: #6b7280;
-                  text-align: center;
-                ">
-                  +${cityProjects.length - 1} more project${cityProjects.length > 2 ? 's' : ''} in ${city}
-                </div>
-                ` : ''}
-              </div>
-            `;
 
             // Store overlay reference and timeout for this specific marker
             let currentOverlay: any = null;
@@ -539,7 +501,7 @@ export default function Locations() {
               
               // Create new overlay for this marker if it doesn't exist
               if (!currentOverlay) {
-                currentOverlay = new CustomOverlay(position, hoverContent);
+                currentOverlay = new CustomOverlay(position, primaryProject);
                 currentOverlay.setMap(map);
                 setHoverOverlay(currentOverlay);
 
