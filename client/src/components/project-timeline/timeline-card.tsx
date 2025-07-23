@@ -515,45 +515,58 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
                             })()}`
                           }}>{weekInfo.contractDate.toUpperCase()}</span>
                         </div>
+                      </div>
+                    </div>
 
-                        {/* RET indicator for aftercare projects with retention - positioned last and conditionally greyed */}
-                        {currentProject.status === 'aftercare' && currentProject.retention && (() => {
-                          const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
-                          // Only show RET indicator if retention is positive (red) or exactly zero (green)
-                          return retentionValue >= 0;
-                        })() && (
-                          <div className="flex items-center" title="Retention">
-                            <span className="text-white border px-0.5 py-0.5 rounded-l-sm" style={{ 
-                              fontSize: '9px',
-                              backgroundColor: (() => {
-                                const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
-                                return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)'; // red for positive, green for zero
-                              })(),
-                              borderColor: (() => {
-                                const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
-                                return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
-                              })(),
-                              borderWidth: '2px',
-                              borderStyle: 'solid'
-                            }}>RET</span>
-                            <span className="bg-white text-black px-0.5 py-0.5 rounded-r-sm" style={{ 
-                              fontSize: '9px',
-                              borderTop: `1px solid ${(() => {
-                                const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
-                                return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
-                              })()}`,
-                              borderRight: `1px solid ${(() => {
-                                const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
-                                return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
-                              })()}`,
-                              borderBottom: `1px solid ${(() => {
-                                const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
-                                return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
-                              })()}`
-                            }}>{formatValue(currentProject.retention).replace(/M/g, 'm').replace(/K/g, 'k').toUpperCase()}</span>
-                          </div>
-                        )}
+                    {/* RET indicator for aftercare projects with retention - positioned outside greyed wrapper */}
+                    {currentProject.status === 'aftercare' && currentProject.retention && (() => {
+                      const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+                      // Only show RET indicator if retention is positive (red) or exactly zero (green)
+                      return retentionValue >= 0;
+                    })() && (
+                      <div className={`flex items-center ${(() => {
+                        const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+                        // Only grey out green RET (zero retention), never red RET (positive retention)
+                        return retentionValue === 0 ? 'opacity-60' : '';
+                      })()}`} title="Retention">
+                        <span className="text-white border px-0.5 py-0.5 rounded-l-sm" style={{ 
+                          fontSize: '9px',
+                          backgroundColor: (() => {
+                            const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+                            return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)'; // red for positive, green for zero
+                          })(),
+                          borderColor: (() => {
+                            const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+                            return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
+                          })(),
+                          borderWidth: '2px',
+                          borderStyle: 'solid'
+                        }}>RET</span>
+                        <span className="bg-white text-black px-0.5 py-0.5 rounded-r-sm" style={{ 
+                          fontSize: '9px',
+                          borderTop: `1px solid ${(() => {
+                            const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+                            return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
+                          })()}`,
+                          borderRight: `1px solid ${(() => {
+                            const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+                            return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
+                          })()}`,
+                          borderBottom: `1px solid ${(() => {
+                            const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+                            return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
+                          })()}`
+                        }}>{formatValue(currentProject.retention).replace(/M/g, 'm').replace(/K/g, 'k').toUpperCase()}</span>
+                      </div>
+                    )}
 
+                    <div className={(() => {
+                      // Check if we should grey out EEV indicator
+                      const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+                      const hasPositiveRetention = retentionValue > 0 && currentProject.status === 'aftercare';
+                      return hasPositiveRetention ? 'opacity-60' : '';
+                    })()}>
+                      <div className="flex items-center gap-[10px]">
                         {/* EEV indicator for construction projects */}
                         {currentProject.status !== 'aftercare' && weekInfo && !weekInfo.hideWeekIndicator && !isZeroOrNegativeValue(currentProject.value) && (
                           <div className="flex items-center" title="Estimated Earned Value">
