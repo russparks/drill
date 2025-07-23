@@ -196,9 +196,9 @@ export default function TimelineCard({ project }: TimelineCardProps) {
       hasPositiveRetention,
       hideWeekIndicator,
       isGreyedOut,
-      startDate: startDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }).replace(' ', ''),
-      anticipatedDate: constructionDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }).replace(' ', ''),
-      contractDate: contractDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }).replace(' ', '')
+      startDate: startDate.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' }).replace(/\//g, ' '),
+      anticipatedDate: constructionDate.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' }).replace(/\//g, ' '),
+      contractDate: contractDate.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' }).replace(/\//g, ' ')
     };
   };
 
@@ -207,7 +207,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
   return (
     <div className={weekInfo?.isGreyedOut ? 'opacity-60' : ''}>
       <Card className="material-shadow" style={{ zIndex: 1, position: 'relative' }}>
-        <CardContent className="p-2.5 pb-8">
+        <CardContent className="p-2.5" style={{ paddingBottom: '17px' }}>
           <div className="flex justify-between items-start">
             <div className="flex-1">
               {/* Header with project number, name, location, value and status */}
@@ -248,8 +248,8 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                   }}>{project.name}</span>
                 </div>
                 {project.value && (
-                  <span className="text-action-text-secondary ml-2" style={{ fontSize: '0.85rem' }}>
-                    (<span className={isZeroOrNegativeValue(project.value) ? 'text-red-400' : ''}>{formatValue(project.value)}</span>)
+                  <span className="text-action-text-secondary ml-2" style={{ fontSize: '0.7225rem' }}>
+                    (<span className={isZeroOrNegativeValue(project.value) ? 'text-red-400' : ''}>{formatValue(project.value).replace(/M/g, 'm').replace(/K/g, 'k')}</span>)
                   </span>
                 )}
                 {/* Process indicator and action buttons */}
@@ -326,7 +326,8 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                                 case 'aftercare': return 'rgb(209, 213, 219)';
                                 default: return 'rgb(156, 163, 175)';
                               }
-                            })()
+                            })(),
+                            borderWidth: '1px'
                           }}>SOS</span>
                           <span className="bg-white text-black px-1 py-0.5 rounded-r-sm" style={{ 
                             fontSize: '10px',
