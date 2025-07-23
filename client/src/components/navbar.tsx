@@ -15,7 +15,7 @@ export default function Navbar({ onCreateAction, onCreateProject, onCreatePerson
 
   // Determine which button to show based on current location and active tab
   const getCreateButton = () => {
-    if (location === "/") {
+    if (location === "/actions") {
       return (
         <Button size="sm" onClick={onCreateAction} style={{ backgroundColor: '#333333', borderColor: '#333333', borderRadius: '9999px' }}>
           <Plus className="h-4 w-4 mr-0.5" />
@@ -68,6 +68,15 @@ export default function Navbar({ onCreateAction, onCreateProject, onCreatePerson
                     : "text-action-text-secondary hover:text-action-text-primary"
                 }`} style={location === "/" ? { color: '#333333', borderColor: '#333333' } : {}}>
                   Home
+                </span>
+              </Link>
+              <Link href="/actions">
+                <span className={`px-3 py-2 text-sm font-medium cursor-pointer ${
+                  location === "/actions" 
+                    ? "border-b-2" 
+                    : "text-action-text-secondary hover:text-action-text-primary"
+                }`} style={location === "/actions" ? { color: '#333333', borderColor: '#333333' } : {}}>
+                  Actions
                 </span>
               </Link>
               <Link href="/setup">

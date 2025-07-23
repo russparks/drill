@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Navbar from "@/components/navbar";
 import MobileNav from "@/components/mobile-nav";
+import Home from "@/pages/home";
 import Dashboard from "@/pages/dashboard";
 import Setup from "@/pages/setup";
 import People from "@/pages/people";
@@ -50,7 +51,8 @@ function Router() {
       />
       
       <Switch>
-        <Route path="/" component={Dashboard} />
+        <Route path="/" component={Home} />
+        <Route path="/actions" component={Dashboard} />
         <Route path="/setup">
           <Setup onTabChange={setActiveTab} />
         </Route>
