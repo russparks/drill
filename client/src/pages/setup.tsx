@@ -252,6 +252,13 @@ export default function Setup({ onTabChange }: SetupProps) {
         setActiveTab(value);
         onTabChange?.(value);
       }}>
+        <style>
+          {`
+            [role="tablist"] {
+              display: none !important;
+            }
+          `}
+        </style>
         <TabsList className="grid w-full bg-transparent" style={{ gridTemplateColumns: '20% 60% 20%' }}>
           <TabsTrigger value="projects" className="flex flex-col items-center gap-1 data-[state=active]:bg-transparent data-[state=active]:shadow-none text-gray-400 data-[state=active]:text-gray-700 group">
             <FileText className="h-6 w-6 text-gray-400 group-data-[state=active]:text-[#333333]" />
