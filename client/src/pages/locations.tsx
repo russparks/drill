@@ -639,14 +639,57 @@ export default function Locations() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-20 md:pb-8">
-      {/* Header */}
+      {/* Phase Statistics Tiles */}
       <div className="mb-6">
-        <div className="flex items-center gap-3">
-          <MapPin className="h-8 w-8 text-blue-600" />
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Projects</h1>
-            <p className="text-gray-600">Project locations across the UK</p>
-          </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {['tender', 'precon', 'construction', 'aftercare'].map((phase) => {
+            const phaseProjects = projects.filter(p => p.status === phase);
+            const phaseColors = {
+              tender: { bg: 'bg-blue-100', text: 'text-blue-800', badge: 'bg-blue-200' },
+              precon: { bg: 'bg-green-100', text: 'text-green-800', badge: 'bg-green-200' },
+              construction: { bg: 'bg-yellow-100', text: 'text-yellow-800', badge: 'bg-yellow-200' },
+              aftercare: { bg: 'bg-gray-100', text: 'text-gray-800', badge: 'bg-gray-200' }
+            };
+            const colors = phaseColors[phase as keyof typeof phaseColors];
+            
+            // Calculate total value for this phase
+            const totalValue = phaseProjects.reduce((sum, project) => {
+              const value = parseFloat(project.value.replace(/[£,]/g, ''));
+              return sum + value;
+            }, 0);
+            
+            // Format value
+            const formatValue = (value: number) => {
+              if (value >= 1000000) {
+                return `£${(value / 1000000).toFixed(1)}m`;
+              } else if (value >= 1000) {
+                return `£${(value / 1000).toFixed(1)}k`;
+              }
+              return `£${value.toFixed(1)}`;
+            };
+            
+            return (
+              <Card key={phase} className={`${colors.bg} border-0 shadow-sm`}>
+                <CardContent className="p-4">
+                  <div className="space-y-3">
+                    <div className={`inline-block px-3 py-1 rounded-full ${colors.badge}`}>
+                      <span className={`text-xs font-medium ${colors.text} uppercase`}>
+                        {phase === 'construction' ? 'CONSTR' : phase}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-3xl font-bold text-gray-900">
+                        {phaseProjects.length}
+                      </span>
+                    </div>
+                    <div className="text-sm font-semibold text-gray-700">
+                      {formatValue(totalValue)}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </div>
 
