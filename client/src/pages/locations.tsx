@@ -559,10 +559,10 @@ export default function Locations() {
     if (markersCreated > 0) {
       map.fitBounds(bounds);
       
-      // Set reasonable zoom level (decreased by 10% from 9 to 8.1)
+      // Set reasonable zoom level (decreased by 5% from 9 to 8.55)
       const listener = window.google.maps.event.addListener(map, 'idle', () => {
-        if (map.getZoom() > 8.1) {
-          map.setZoom(8.1);
+        if (map.getZoom() > 8.55) {
+          map.setZoom(8.55);
         }
         window.google.maps.event.removeListener(listener);
       });
