@@ -29,6 +29,7 @@ export default function Locations() {
   const [clusteredView, setClusteredView] = useState(true);
   const allMarkersRef = useRef<any[]>([]);
   const clusterMarkersRef = useRef<any[]>([]);
+  const markerClickingRef = useRef(false);
 
   // Group projects by city (Yorkshire postcodes)
   const postcodeToCity: { [key: string]: string } = {
@@ -448,8 +449,13 @@ export default function Locations() {
 
             // Add click listener for individual markers
             marker.addListener('click', (e: any) => {
-              // Stop event propagation to prevent map click
-              e.stop();
+              // Set flag to prevent map click handler
+              markerClickingRef.current = true;
+              
+              // Reset flag after a short delay
+              setTimeout(() => {
+                markerClickingRef.current = false;
+              }, 200);
               
               // If this marker already has an overlay, remove it
               if (currentOverlay) {
@@ -565,17 +571,19 @@ export default function Locations() {
           
           // Add map click listener to return to clustered view
           const returnToClusterListener = map.addListener('click', (e: any) => {
-            // Check if click was on map (not marker)
-            if (e.placeId === undefined) {
-              // Hide individual markers
-              allMarkersRef.current.forEach(marker => marker.setMap(null));
-              // Show cluster markers
-              clusterMarkersRef.current.forEach(marker => marker.setMap(map));
-              // Remove this listener
-              window.google.maps.event.removeListener(returnToClusterListener);
-              // Zoom back out to show all clusters
-              map.fitBounds(bounds);
+            // Don't trigger if a marker was just clicked
+            if (markerClickingRef.current) {
+              return;
             }
+            
+            // Hide individual markers
+            allMarkersRef.current.forEach(marker => marker.setMap(null));
+            // Show cluster markers
+            clusterMarkersRef.current.forEach(marker => marker.setMap(map));
+            // Remove this listener
+            window.google.maps.event.removeListener(returnToClusterListener);
+            // Zoom back out to show all clusters
+            map.fitBounds(bounds);
           });
         });
       });
