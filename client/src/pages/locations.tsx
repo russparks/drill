@@ -491,10 +491,10 @@ export default function Locations() {
               
               // No automatic zoom-based clustering - only manual cluster expansion
               
-              // Add some padding to the bounds and prevent over-zooming
+              // Set initial zoom level without restrictions
               const listener = window.google.maps.event.addListener(map, 'idle', () => {
-                if (map.getZoom() > 12) {
-                  map.setZoom(12);
+                if (map.getZoom() > 10) {
+                  map.setZoom(10);
                 }
                 window.google.maps.event.removeListener(listener);
               });
@@ -555,7 +555,7 @@ export default function Locations() {
           cityMarkers.forEach(marker => marker.setMap(map));
           
           // Zoom in to show the area better
-          map.setZoom(12);
+          map.setZoom(14);
           map.panTo(clusterPosition);
           
           // Add map click listener to return to clustered view
@@ -568,8 +568,8 @@ export default function Locations() {
               clusterMarkersRef.current.forEach(marker => marker.setMap(map));
               // Remove this listener
               window.google.maps.event.removeListener(returnToClusterListener);
-              // Zoom back out
-              map.setZoom(8);
+              // Zoom back out to show all clusters
+              map.fitBounds(bounds);
             }
           });
         });
