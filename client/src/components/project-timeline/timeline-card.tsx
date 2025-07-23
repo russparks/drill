@@ -716,7 +716,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
           </button>
           
           {isDropdownOpen && (
-            <div className="absolute left-0 top-full mt-1 w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto">
+            <div className="absolute left-0 top-full mt-1 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto">
               <div className="py-1">
                 {projects.map((proj: any) => (
                   <button
@@ -725,40 +725,27 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                       navigate(`/W0013?project=${proj.projectNumber}`);
                       setIsDropdownOpen(false);
                     }}
-                    className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition-colors border-l-4 ${
+                    className={`w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors border-l-4 ${
                       proj.id === project.id ? 'bg-blue-50 border-l-blue-500' : 'border-l-transparent'
                     }`}
+                    style={{ fontSize: '11.05px' }}
                   >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <span className="font-semibold text-gray-700" style={{ minWidth: '60px' }}>
-                          {proj.projectNumber}
-                        </span>
-                        <span className="text-gray-600 truncate">
-                          {proj.name}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        {proj.value && (
-                          <span className="text-xs text-gray-500">
-                            ({proj.value.replace(/M/g, 'm').replace(/K/g, 'k')})
-                          </span>
-                        )}
-                        <span className={`
-                          text-xs px-2 py-0.5 rounded-full font-medium
-                          ${proj.status === "tender" ? "bg-blue-100 text-blue-800" : ""}
-                          ${proj.status === "precon" ? "bg-green-100 text-green-800" : ""}
-                          ${proj.status === "construction" ? "bg-yellow-100 text-yellow-800" : ""}
-                          ${proj.status === "aftercare" ? "bg-gray-100 text-gray-800" : ""}
-                        `}>
-                          {proj.status === "tender" && "TEN"}
-                          {proj.status === "precon" && "PRE"}
-                          {proj.status === "construction" && "CON"}
-                          {proj.status === "aftercare" && "AFT"}
-                          {!proj.status && "UNK"}
-                        </span>
-                      </div>
-                    </div>
+                    <span 
+                      className="font-medium truncate block"
+                      style={{
+                        color: (() => {
+                          switch (proj.status) {
+                            case 'tender': return 'rgb(59, 130, 246)'; // blue
+                            case 'precon': return 'rgb(34, 197, 94)'; // green
+                            case 'construction': return 'rgb(234, 179, 8)'; // yellow
+                            case 'aftercare': return 'rgb(107, 114, 128)'; // grey
+                            default: return 'rgb(75, 85, 99)'; // default gray
+                          }
+                        })()
+                      }}
+                    >
+                      {proj.name}
+                    </span>
                   </button>
                 ))}
               </div>
