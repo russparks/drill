@@ -555,37 +555,7 @@ export default function Locations() {
       });
     });
 
-    // Add Yorkshire and the Humber boundary with more accurate coordinates
-    const yorkshireBoundary = [
-      { lat: 54.8, lng: -3.1 },   // Far northwest (Cumbria border)
-      { lat: 54.8, lng: -2.0 },   // North Pennines
-      { lat: 54.6, lng: -1.0 },   // Northeast coast
-      { lat: 54.3, lng: -0.2 },   // East coast near Scarborough
-      { lat: 53.7, lng: 0.0 },    // Humber estuary
-      { lat: 53.3, lng: -0.5 },   // South Lincolnshire border
-      { lat: 53.3, lng: -1.8 },   // South Yorkshire/Derbyshire border
-      { lat: 53.4, lng: -2.2 },   // Greater Manchester border
-      { lat: 53.8, lng: -2.8 },   // Lancashire border
-      { lat: 54.2, lng: -3.0 },   // Cumbria border
-      { lat: 54.8, lng: -3.1 }    // Close the polygon
-    ];
 
-    const yorkshirePolyline = new window.google.maps.Polyline({
-      path: yorkshireBoundary,
-      strokeColor: '#6b7280',
-      strokeOpacity: 0.7,
-      strokeWeight: 2,
-      icons: [{
-        icon: {
-          path: 'M 0,-1 0,1',
-          strokeOpacity: 1,
-          scale: 4
-        },
-        offset: '0',
-        repeat: '20px'
-      }],
-      map: map
-    });
 
     // Fit bounds after all markers are processed
     if (markersCreated > 0) {
@@ -618,10 +588,6 @@ export default function Locations() {
       // Clean up markers on unmount
       markersRef.current.forEach(marker => marker.setMap(null));
       markersRef.current = [];
-      // Clean up Yorkshire boundary polyline
-      if (yorkshirePolyline) {
-        yorkshirePolyline.setMap(null);
-      }
     };
   }, [map, projects, activeFilters]);
 
