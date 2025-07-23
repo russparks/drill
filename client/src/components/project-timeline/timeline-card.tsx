@@ -45,7 +45,18 @@ export default function TimelineCard({ project }: TimelineCardProps) {
     queryFn: async () => {
       const response = await fetch("/api/projects");
       if (!response.ok) throw new Error("Failed to fetch projects");
-      return response.json();
+      const data = await response.json();
+      // Sort projects by status (tender, precon, construction, aftercare) then by project number
+      return data.sort((a: any, b: any) => {
+        const statusOrder = { tender: 1, precon: 2, construction: 3, aftercare: 4 };
+        const aOrder = statusOrder[a.status as keyof typeof statusOrder] || 5;
+        const bOrder = statusOrder[b.status as keyof typeof statusOrder] || 5;
+        
+        if (aOrder !== bOrder) {
+          return aOrder - bOrder;
+        }
+        return a.projectNumber.localeCompare(b.projectNumber);
+      });
     },
   });
 
@@ -725,7 +736,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                       navigate(`/W0013?project=${proj.projectNumber}`);
                       setIsDropdownOpen(false);
                     }}
-                    className={`w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors border-l-4 ${
+                    className={`w-full text-left px-2 py-1 hover:bg-gray-100 transition-colors border-l-4 ${
                       proj.id === project.id ? 'bg-blue-50 border-l-blue-500' : 'border-l-transparent'
                     }`}
                     style={{ fontSize: '11.05px' }}
