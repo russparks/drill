@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { Plus, Edit, Trash2, LayoutDashboard, FileText, Filter } from "lucide-react";
+import { Plus, Edit, Trash2, Search, FileText, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -258,71 +258,11 @@ export default function Setup({ onTabChange }: SetupProps) {
             <span className="text-base">Projects</span>
           </TabsTrigger>
           <TabsTrigger value="live" className="flex items-center justify-center cursor-not-allowed text-xs !opacity-100" disabled>
-            {(() => {
-              const tenderProjects = projects.filter(p => p.status === 'tender');
-              const preconProjects = projects.filter(p => p.status === 'precon');
-              const constructionProjects = projects.filter(p => p.status === 'construction');
-              const aftercareProjects = projects.filter(p => p.status === 'aftercare');
-              
-              const tenderValue = tenderProjects.reduce((sum, p) => {
-                const value = p.value?.replace(/[£,-]/g, '') || '0';
-                return sum + parseFloat(value);
-              }, 0);
-              
-              const preconValue = preconProjects.reduce((sum, p) => {
-                const value = p.value?.replace(/[£,-]/g, '') || '0';
-                return sum + parseFloat(value);
-              }, 0);
-              
-              const constructionValue = constructionProjects.reduce((sum, p) => {
-                const value = p.value?.replace(/[£,-]/g, '') || '0';
-                return sum + parseFloat(value);
-              }, 0);
-              
-              const aftercareValue = aftercareProjects.reduce((sum, p) => {
-                const value = p.retention?.replace(/[£,-]/g, '') || '0';
-                return sum + parseFloat(value);
-              }, 0);
-
-              return (
-                <div className="flex flex-col items-center gap-2 text-xs">
-                  {/* First row: TENDER and PRECON */}
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2">
-                      <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
-                        TENDER
-                      </span>
-                      <span className="text-base font-bold">{tenderProjects.length} <span className="text-sm font-normal italic">({formatValue(`£${Math.abs(tenderValue)}`)?.replace('£', '-£')})</span></span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
-                        PRECON
-                      </span>
-                      <span className="text-base font-bold">{preconProjects.length} <span className="text-sm font-normal italic">({formatValue(`£${preconValue}`)})</span></span>
-                    </div>
-                  </div>
-                  {/* Second row: CONSTRUCTION and AFTERCARE */}
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2">
-                      <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-medium">
-                        CONSTR
-                      </span>
-                      <span className="text-base font-bold">{constructionProjects.length} <span className="text-sm font-normal italic">({formatValue(`£${constructionValue}`)})</span></span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs font-medium">
-                        AFTER
-                      </span>
-                      <span className="text-base font-bold">{aftercareProjects.length} <span className="text-sm font-normal italic">({formatValue(`£${aftercareValue}`)})</span></span>
-                    </div>
-                  </div>
-                </div>
-              );
-            })()}
+            <span className="text-base text-gray-400">Live</span>
           </TabsTrigger>
           <TabsTrigger value="users" className="flex flex-col items-center gap-1 data-[state=active]:bg-transparent data-[state=active]:shadow-none text-gray-400 data-[state=active]:text-gray-700 group">
-            <LayoutDashboard className="h-6 w-6 text-gray-400 group-data-[state=active]:text-[#333333]" />
-            <span className="text-base">Dash</span>
+            <Search className="h-6 w-6 text-gray-400 group-data-[state=active]:text-[#333333]" />
+            <span className="text-base">Packages</span>
           </TabsTrigger>
         </TabsList>
 
@@ -1501,7 +1441,7 @@ export default function Setup({ onTabChange }: SetupProps) {
         </TabsContent>
 
         <TabsContent value="users" className="space-y-6">
-          <DetailCharts />
+          {/* Empty content for Packages tab */}
         </TabsContent>
       </Tabs>
 
