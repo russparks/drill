@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { Plus, AlertCircle, ChevronLeft, ChevronRight, Filter, X, TrendingUp, BarChart3, PieChart, Activity } from "lucide-react";
+import { Plus, AlertCircle, ChevronLeft, ChevronRight, Filter, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -12,7 +12,7 @@ import ConfirmDialog from "@/components/confirm-dialog";
 import { ActionWithRelations, Project } from "@shared/schema";
 import { Skeleton } from "@/components/ui/skeleton";
 import { apiRequest, queryClient } from "@/lib/queryClient";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart as RechartsPieChart, Cell, AreaChart, Area } from 'recharts';
+
 
 export default function Dashboard() {
   const [isActionFormOpen, setIsActionFormOpen] = useState(false);
@@ -395,128 +395,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Charts Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          {/* Chart 1: Weekly Action Trends - Line Chart */}
-          <Card className="material-shadow">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <TrendingUp className="h-4 w-4 text-blue-600" />
-                Weekly Trends
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <ResponsiveContainer width="100%" height={120}>
-                <LineChart data={(() => {
-                  const weeks = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
-                  return weeks.map((week, idx) => ({
-                    week,
-                    opened: Math.floor(Math.random() * 10) + 5,
-                    closed: Math.floor(Math.random() * 8) + 3,
-                  }));
-                })()}>
-                  <XAxis dataKey="week" axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
-                  <YAxis hide />
-                  <Tooltip contentStyle={{ fontSize: '12px' }} />
-                  <Line type="monotone" dataKey="opened" stroke="#3b82f6" strokeWidth={2} dot={{ r: 3 }} />
-                  <Line type="monotone" dataKey="closed" stroke="#10b981" strokeWidth={2} dot={{ r: 3 }} />
-                </LineChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
 
-          {/* Chart 2: Actions by Discipline - Bar Chart */}
-          <Card className="material-shadow">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <BarChart3 className="h-4 w-4 text-purple-600" />
-                By Discipline
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <ResponsiveContainer width="100%" height={120}>
-                <BarChart data={(() => {
-                  const disciplines = ['Ops', 'Comm', 'Des', 'SHE', 'QA'];
-                  return disciplines.map(disc => ({
-                    name: disc,
-                    count: (allActions as ActionWithRelations[]).filter((action: ActionWithRelations) => 
-                      action.discipline === disc.toLowerCase() || 
-                      (disc === 'Ops' && action.discipline === 'operations') ||
-                      (disc === 'Comm' && action.discipline === 'commercial') ||
-                      (disc === 'Des' && action.discipline === 'design') ||
-                      (disc === 'SHE' && action.discipline === 'she') ||
-                      (disc === 'QA' && action.discipline === 'qa')
-                    ).length
-                  }));
-                })()}>
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
-                  <YAxis hide />
-                  <Tooltip contentStyle={{ fontSize: '12px' }} />
-                  <Bar dataKey="count" fill="#8b5cf6" radius={[2, 2, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-
-          {/* Chart 3: Project Status Distribution - Stacked Bar Chart */}
-          <Card className="material-shadow">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <PieChart className="h-4 w-4 text-orange-600" />
-                Project Status
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <ResponsiveContainer width="100%" height={120}>
-                <BarChart layout="horizontal" data={(() => {
-                  const statuses = ['tender', 'precon', 'construction', 'aftercare'];
-                  const colors = ['#3b82f6', '#10b981', '#f59e0b', '#6b7280'];
-                  return [{
-                    name: 'Projects',
-                    tender: (projects || []).filter(p => p.status === 'tender').length,
-                    precon: (projects || []).filter(p => p.status === 'precon').length,
-                    construction: (projects || []).filter(p => p.status === 'construction').length,
-                    aftercare: (projects || []).filter(p => p.status === 'aftercare').length,
-                  }];
-                })()}>
-                  <XAxis type="number" hide />
-                  <YAxis type="category" dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
-                  <Tooltip contentStyle={{ fontSize: '12px' }} />
-                  <Bar dataKey="tender" stackId="a" fill="#3b82f6" />
-                  <Bar dataKey="precon" stackId="a" fill="#10b981" />
-                  <Bar dataKey="construction" stackId="a" fill="#f59e0b" />
-                  <Bar dataKey="aftercare" stackId="a" fill="#6b7280" />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-
-          {/* Chart 4: Action Completion Rate - Area Chart */}
-          <Card className="material-shadow">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Activity className="h-4 w-4 text-green-600" />
-                Completion Rate
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <ResponsiveContainer width="100%" height={120}>
-                <AreaChart data={(() => {
-                  const months = ['Jan', 'Feb', 'Mar', 'Apr'];
-                  return months.map((month, idx) => ({
-                    month,
-                    rate: Math.floor(Math.random() * 30) + 60 + (idx * 5), // Trending upward
-                  }));
-                })()}>
-                  <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
-                  <YAxis hide />
-                  <Tooltip contentStyle={{ fontSize: '12px' }} formatter={(value) => [`${value}%`, 'Rate']} />
-                  <Area type="monotone" dataKey="rate" stroke="#10b981" fill="#10b981" fillOpacity={0.3} />
-                </AreaChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </div>
 
       </div>
 
