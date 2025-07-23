@@ -641,14 +641,14 @@ export default function Locations() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-20 md:pb-8">
       {/* Phase Statistics Tiles */}
       <div className="mb-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {['tender', 'precon', 'construction', 'aftercare'].map((phase) => {
             const phaseProjects = projects.filter(p => p.status === phase);
             const phaseColors = {
-              tender: { bg: 'bg-blue-100', text: 'text-blue-800', badge: 'bg-blue-200' },
-              precon: { bg: 'bg-green-100', text: 'text-green-800', badge: 'bg-green-200' },
-              construction: { bg: 'bg-yellow-100', text: 'text-yellow-800', badge: 'bg-yellow-200' },
-              aftercare: { bg: 'bg-gray-100', text: 'text-gray-800', badge: 'bg-gray-200' }
+              tender: { bg: 'bg-blue-100', text: 'text-blue-800', badge: 'bg-blue-200', number: 'text-blue-800' },
+              precon: { bg: 'bg-green-100', text: 'text-green-800', badge: 'bg-green-200', number: 'text-green-800' },
+              construction: { bg: 'bg-yellow-100', text: 'text-yellow-800', badge: 'bg-yellow-200', number: 'text-yellow-800' },
+              aftercare: { bg: 'bg-gray-100', text: 'text-gray-800', badge: 'bg-gray-200', number: 'text-gray-800' }
             };
             const colors = phaseColors[phase as keyof typeof phaseColors];
             
@@ -665,24 +665,22 @@ export default function Locations() {
               } else if (value >= 1000) {
                 return `£${(value / 1000).toFixed(1)}k`;
               }
-              return `£${value.toFixed(1)}`;
+              return `£${value.toFixed(1)}k`;
             };
             
             return (
-              <Card key={phase} className={`${colors.bg} border-0 shadow-sm`}>
-                <CardContent className="p-4">
-                  <div className="space-y-3">
-                    <div className={`inline-block px-3 py-1 rounded-full ${colors.badge}`}>
+              <Card key={phase} className={`${colors.bg} border-0 shadow-sm h-24`}>
+                <CardContent className="p-3 h-full">
+                  <div className="flex flex-col items-center justify-center text-center h-full space-y-1">
+                    <div className={`px-2 py-0.5 rounded-full ${colors.badge}`}>
                       <span className={`text-xs font-medium ${colors.text} uppercase`}>
-                        {phase === 'construction' ? 'CONSTR' : phase}
+                        {phase}
                       </span>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-3xl font-bold text-gray-900">
-                        {phaseProjects.length}
-                      </span>
+                    <div className={`text-xl font-bold ${colors.number}`}>
+                      {phaseProjects.length}
                     </div>
-                    <div className="text-sm font-semibold text-gray-700">
+                    <div className="text-xs font-medium text-gray-600">
                       {formatValue(totalValue)}
                     </div>
                   </div>
