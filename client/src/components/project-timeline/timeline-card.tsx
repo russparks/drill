@@ -196,9 +196,9 @@ export default function TimelineCard({ project }: TimelineCardProps) {
       hasPositiveRetention,
       hideWeekIndicator,
       isGreyedOut,
-      startDate: startDate.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' }).replace(/\//g, ' '),
-      anticipatedDate: constructionDate.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' }).replace(/\//g, ' '),
-      contractDate: contractDate.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' }).replace(/\//g, ' ')
+      startDate: startDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }).replace(/\s/g, '-'),
+      anticipatedDate: constructionDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }).replace(/\s/g, '-'),
+      contractDate: contractDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }).replace(/\s/g, '-')
     };
   };
 
@@ -211,7 +211,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
           <div className="flex justify-between items-start">
             <div className="flex-1">
               {/* Header with project number, name, location, value and status */}
-              <div className={`flex items-center gap-2 mb-0.5 ${weekInfo?.hasPositiveRetention && project.status === 'aftercare' ? 'opacity-60' : ''}`}>
+              <div className={`flex items-end gap-1 mb-0.5 ${weekInfo?.hasPositiveRetention && project.status === 'aftercare' ? 'opacity-60' : ''}`}>
                 <div className="text-lg flex items-center">
                   <span className="font-normal text-sm" style={{
                     color: (() => {
@@ -248,7 +248,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                   }}>{project.name}</span>
                 </div>
                 {project.value && (
-                  <span className="text-action-text-secondary ml-2" style={{ fontSize: '0.7225rem' }}>
+                  <span className="text-action-text-secondary" style={{ fontSize: '0.7225rem' }}>
                     (<span className={isZeroOrNegativeValue(project.value) ? 'text-red-400' : ''}>{formatValue(project.value).replace(/M/g, 'm').replace(/K/g, 'k')}</span>)
                   </span>
                 )}
@@ -484,7 +484,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                                 }
                                 
                                 const percentComplete = Math.min((weekInfo.currentWeek / weekInfo.totalWeeksToContract) * 100, 100);
-                                return `${formatValue(`£${evaValue}`)} (${percentComplete.toFixed(0)}%)`;
+                                return `${formatValue(`£${evaValue}`).replace(/M/g, 'm').replace(/K/g, 'k')} (${percentComplete.toFixed(0)}%)`;
                               })()}
                             </span>
                           </div>
