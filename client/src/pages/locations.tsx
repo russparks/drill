@@ -26,6 +26,9 @@ export default function Locations() {
   const [mapLoaded, setMapLoaded] = useState(false);
   const [map, setMap] = useState<any>(null);
   const [hoverOverlay, setHoverOverlay] = useState<any>(null);
+  const [clusteredView, setClusteredView] = useState(true);
+  const allMarkersRef = useRef<any[]>([]);
+  const clusterMarkersRef = useRef<any[]>([]);
 
   // Group projects by city (Yorkshire postcodes)
   const postcodeToCity: { [key: string]: string } = {
@@ -404,18 +407,14 @@ export default function Locations() {
     const geocoder = new window.google.maps.Geocoder();
     const bounds = new window.google.maps.LatLngBounds();
     let markersCreated = 0;
-    const totalCities = Object.keys(projectsByCity).filter(city => city !== 'Unknown').length;
-
-    // Group projects by city to avoid duplicate markers
-    Object.entries(projectsByCity).forEach(([city, cityProjects]) => {
-      if (city === 'Unknown') return;
-      
-      // Use first project's postcode for geocoding
-      const representativeProject = cityProjects[0];
-      if (!representativeProject.postcode) return;
+    const totalProjects = projects.filter(p => p.postcode).length;
+    
+    // Create individual markers for each project
+    projects.forEach((project) => {
+      if (!project.postcode) return;
 
       geocoder.geocode(
-        { address: `${representativeProject.postcode}, UK` },
+        { address: `${project.postcode}, UK` },
         (results: any[], status: string) => {
           if (status === 'OK' && results[0]) {
             const position = results[0].geometry.location;
@@ -424,39 +423,30 @@ export default function Locations() {
             bounds.extend(position);
             markersCreated++;
             
-            // Get the most advanced phase for marker color (construction is highest priority)
-            const phaseOrder = { 'tender': 1, 'precon': 2, 'construction': 4, 'aftercare': 3 };
-            const mostAdvancedPhase = cityProjects.reduce((advanced, project) => {
-              const currentPriority = phaseOrder[project.status as keyof typeof phaseOrder] || 0;
-              const advancedPriority = phaseOrder[advanced as keyof typeof phaseOrder] || 0;
-              return currentPriority > advancedPriority ? project.status : advanced;
-            }, 'tender');
-
-
-
-            // Create marker with Google pin style
+            // Create individual project marker
             const marker = new window.google.maps.Marker({
               position,
-              map,
-              title: `${city} (${cityProjects.length} projects)`,
+              map: null, // Initially hidden, will be shown by cluster click
+              title: project.name,
               icon: {
                 path: "M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z M -2,-30 a 2,2 0 1,1 4,0 2,2 0 1,1 -4,0",
                 fillColor: '#706f6f',
                 fillOpacity: 0.9,
-                strokeColor: getPhaseColor(mostAdvancedPhase),
+                strokeColor: getPhaseColor(project.status),
                 strokeWeight: 2.8,
-                scale: 1.2,
+                scale: 1.0,
                 anchor: new window.google.maps.Point(0, 0),
               },
             });
 
-            // Use the first project in the city for the custom card
-            const primaryProject = cityProjects[0];
+            // Store project data with marker
+            (marker as any).projectData = project;
+            allMarkersRef.current.push(marker);
 
             // Store overlay reference for this specific marker
             let currentOverlay: any = null;
 
-            // Add click listener for toggle behavior
+            // Add click listener for individual markers
             marker.addListener('click', () => {
               // If this marker already has an overlay, remove it
               if (currentOverlay) {
@@ -475,7 +465,7 @@ export default function Locations() {
               }
               
               // Create new overlay for this marker
-              currentOverlay = new CustomOverlay(position, primaryProject);
+              currentOverlay = new CustomOverlay(position, project);
               currentOverlay.setMap(map);
               setHoverOverlay(currentOverlay);
 
@@ -492,14 +482,19 @@ export default function Locations() {
               }, 100);
             });
 
-            // Once all markers are created, fit the map to show all markers
-            if (markersCreated === totalCities) {
+            // Once all markers are created, set up clustering
+            if (markersCreated === totalProjects) {
+              // Create city clusters initially
+              createCityClusters();
+              
               map.fitBounds(bounds);
+              
+              // No automatic zoom-based clustering - only manual cluster expansion
               
               // Add some padding to the bounds and prevent over-zooming
               const listener = window.google.maps.event.addListener(map, 'idle', () => {
-                if (map.getZoom() > 10) { // Prevent over-zooming for very close markers
-                  map.setZoom(10);
+                if (map.getZoom() > 12) {
+                  map.setZoom(12);
                 }
                 window.google.maps.event.removeListener(listener);
               });
@@ -508,6 +503,80 @@ export default function Locations() {
         }
       );
     });
+
+    // Function to create city-based cluster markers
+    function createCityClusters() {
+      Object.entries(projectsByCity).forEach(([city, cityProjects]) => {
+        if (city === 'Unknown' || cityProjects.length === 0) return;
+        
+        // Get the most advanced phase for cluster color
+        const phaseOrder = { 'tender': 1, 'precon': 2, 'construction': 4, 'aftercare': 3 };
+        const mostAdvancedPhase = cityProjects.reduce((advanced, project) => {
+          const currentPriority = phaseOrder[project.status as keyof typeof phaseOrder] || 0;
+          const advancedPriority = phaseOrder[advanced as keyof typeof phaseOrder] || 0;
+          return currentPriority > advancedPriority ? project.status : advanced;
+        }, 'tender');
+
+        // Calculate center position of projects in this city
+        const cityMarkers = allMarkersRef.current.filter(marker => {
+          const project = (marker as any).projectData;
+          return project.postcode && postcodeToCity[project.postcode] === city;
+        });
+
+        if (cityMarkers.length === 0) return;
+
+        // Use first project's position for cluster
+        const clusterPosition = cityMarkers[0].getPosition();
+        
+        // Create cluster marker
+        const clusterMarker = new window.google.maps.Marker({
+          position: clusterPosition,
+          map: map,
+          title: `${city} (${cityProjects.length} projects)`,
+          icon: {
+            path: "M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z M -2,-30 a 2,2 0 1,1 4,0 2,2 0 1,1 -4,0",
+            fillColor: '#706f6f',
+            fillOpacity: 0.9,
+            strokeColor: getPhaseColor(mostAdvancedPhase),
+            strokeWeight: 2.8,
+            scale: cityProjects.length > 1 ? 1.3 : 1.0,
+            anchor: new window.google.maps.Point(0, 0),
+          },
+        });
+
+        clusterMarkersRef.current.push(clusterMarker);
+
+        // Add click listener to expand cluster
+        clusterMarker.addListener('click', () => {
+          // Hide all cluster markers
+          clusterMarkersRef.current.forEach(marker => marker.setMap(null));
+          
+          // Show individual markers for this city
+          cityMarkers.forEach(marker => marker.setMap(map));
+          
+          // Zoom in to show the area better
+          map.setZoom(12);
+          map.panTo(clusterPosition);
+          
+          // Add map click listener to return to clustered view
+          const returnToClusterListener = map.addListener('click', (e: any) => {
+            // Check if click was on map (not marker)
+            if (e.placeId === undefined) {
+              // Hide individual markers
+              allMarkersRef.current.forEach(marker => marker.setMap(null));
+              // Show cluster markers
+              clusterMarkersRef.current.forEach(marker => marker.setMap(map));
+              // Remove this listener
+              window.google.maps.event.removeListener(returnToClusterListener);
+              // Zoom back out
+              map.setZoom(8);
+            }
+          });
+        });
+      });
+    }
+
+
 
     // Cleanup function
     return () => {
