@@ -275,52 +275,114 @@ export default function Setup({ onTabChange }: SetupProps) {
 
         {/* Phase Filter Buttons - only show on projects tab */}
         {activeTab === "projects" && (
-          <div className="flex flex-col items-center gap-3 mb-6">
-            <div className="text-sm font-medium text-gray-700">Process:</div>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg px-4 py-3 flex items-center gap-3">
-              {['tender', 'precon', 'construction', 'aftercare'].map((phase) => {
-                const isActive = activeFilters.includes(phase);
-                const phaseProjects = projects.filter(p => p.status === phase);
-                const phaseColors = {
-                  tender: { bg: 'bg-blue-100', text: 'text-blue-700', border: 'border-blue-300' },
-                  precon: { bg: 'bg-green-100', text: 'text-green-700', border: 'border-green-300' },
-                  construction: { bg: 'bg-yellow-100', text: 'text-yellow-700', border: 'border-yellow-300' },
-                  aftercare: { bg: 'bg-gray-100', text: 'text-gray-700', border: 'border-gray-300' }
-                };
-                const colors = phaseColors[phase as keyof typeof phaseColors];
+          <div className="mb-6">
+            <div className="flex items-center gap-4">
+              <div className="text-sm text-gray-500 font-medium w-20 pl-4">Process:</div>
+              <div className="border border-dotted border-gray-200 rounded px-3 py-2 flex flex-wrap items-center gap-3" style={{"borderWidth": "1px", "borderStyle": "dotted"}}>
+                <button
+                  onClick={() => {
+                    setActiveFilters(prev => 
+                      prev.includes("tender") 
+                        ? prev.filter(f => f !== "tender")
+                        : [...prev, "tender"]
+                    );
+                  }}
+                  className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
+                    activeFilters.includes("tender") 
+                      ? "bg-blue-400 text-white border-blue-600" 
+                      : "bg-blue-50 text-blue-700 border-blue-300 hover:bg-blue-100"
+                  }`}
+                >
+                  TENDER
+                  {activeFilters.includes("tender") && <span className="text-xs">×</span>}
+                </button>
+                <button
+                  onClick={() => {
+                    setActiveFilters(prev => 
+                      prev.includes("precon") 
+                        ? prev.filter(f => f !== "precon")
+                        : [...prev, "precon"]
+                    );
+                  }}
+                  className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
+                    activeFilters.includes("precon") 
+                      ? "bg-green-400 text-white border-green-600" 
+                      : "bg-green-50 text-green-700 border-green-300 hover:bg-green-100"
+                  }`}
+                >
+                  PRECON
+                  {activeFilters.includes("precon") && <span className="text-xs">×</span>}
+                </button>
+                <button
+                  onClick={() => {
+                    setActiveFilters(prev => 
+                      prev.includes("construction") 
+                        ? prev.filter(f => f !== "construction")
+                        : [...prev, "construction"]
+                    );
+                  }}
+                  className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
+                    activeFilters.includes("construction") 
+                      ? "bg-yellow-500 text-white border-yellow-700" 
+                      : "bg-yellow-50 text-yellow-800 border-yellow-400 hover:bg-yellow-100"
+                  }`}
+                >
+                  CONSTRUCTION
+                  {activeFilters.includes("construction") && <span className="text-xs">×</span>}
+                </button>
+                <button
+                  onClick={() => {
+                    setActiveFilters(prev => 
+                      prev.includes("aftercare") 
+                        ? prev.filter(f => f !== "aftercare")
+                        : [...prev, "aftercare"]
+                    );
+                  }}
+                  className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
+                    activeFilters.includes("aftercare") 
+                      ? "bg-gray-500 text-white border-gray-700" 
+                      : "bg-gray-50 text-gray-700 border-gray-300 hover:bg-gray-100"
+                  }`}
+                >
+                  AFTERCARE
+                  {activeFilters.includes("aftercare") && <span className="text-xs">×</span>}
+                </button>
                 
-                return (
-                  <Button
-                    key={phase}
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      setActiveFilters(prev => 
-                        isActive 
-                          ? prev.filter(f => f !== phase)
-                          : [...prev, phase]
-                      );
-                    }}
-                    className={`text-xs px-3 py-1 transition-all duration-200 rounded-full border ${
-                      isActive 
-                        ? `${colors.bg} ${colors.text} ${colors.border}` 
-                        : 'bg-white text-gray-400 border-gray-300 hover:border-gray-400'
-                    }`}
-                  >
-                    {phase.toUpperCase()}
-                  </Button>
-                );
-              })}
-              
-              {/* Live Total - unselectable */}
-              <div className="ml-4 px-3 py-1 bg-gray-50 text-gray-600 text-xs rounded-full border border-gray-200 font-medium cursor-default">
-                {(() => {
-                  const filteredProjects = projects.filter(project => {
-                    if (activeFilters.length === 0) return true;
-                    return activeFilters.includes(project.status);
-                  });
-                  return `${filteredProjects.length} TOTAL`;
-                })()}
+                {/* Live Total Value - unselectable */}
+                <div className="ml-4 px-2 py-0.5 bg-gray-50 text-gray-600 text-xs rounded-full border border-gray-200 font-medium cursor-default">
+                  {(() => {
+                    const filteredProjects = projects.filter(project => {
+                      if (activeFilters.length === 0) return true;
+                      return activeFilters.includes(project.status);
+                    });
+                    
+                    const totalValue = filteredProjects.reduce((sum, project) => {
+                      let valueStr = project.value || '0';
+                      
+                      // For aftercare phase, use retention value instead
+                      if (project.status === 'aftercare' && project.retention) {
+                        valueStr = project.retention;
+                      }
+                      
+                      // Clean the value string and parse
+                      const cleanValue = valueStr.replace(/[£,\s]/g, '');
+                      const value = parseFloat(cleanValue) || 0;
+                      // Use absolute value to handle negative tender values
+                      return sum + Math.abs(value);
+                    }, 0);
+                    
+                    // Format value
+                    if (totalValue === 0) {
+                      return '£0.0k TOTAL';
+                    }
+                    if (totalValue >= 1000000) {
+                      return `£${(totalValue / 1000000).toFixed(1)}m TOTAL`;
+                    } else if (totalValue >= 1000) {
+                      return `£${(totalValue / 1000).toFixed(1)}k TOTAL`;
+                    }
+                    return `£${totalValue.toFixed(1)} TOTAL`;
+                  })()}
+                </div>
               </div>
             </div>
           </div>
