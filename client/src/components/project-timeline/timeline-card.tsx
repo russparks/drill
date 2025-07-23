@@ -529,33 +529,15 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
                         // Only grey out green RET (zero retention), never red RET (positive retention)
                         return retentionValue === 0 ? 'opacity-60' : '';
                       })()}`} title="Retention">
-                        <span className="text-white border px-0.5 py-0.5 rounded-l-sm" style={{ 
+                        <span className="text-white px-0.5 py-0.5 rounded-l-sm" style={{ 
                           fontSize: '9px',
                           backgroundColor: (() => {
                             const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
                             return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)'; // red for positive, green for zero
-                          })(),
-                          borderColor: (() => {
-                            const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
-                            return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
-                          })(),
-                          borderWidth: '2px',
-                          borderStyle: 'solid'
+                          })()
                         }}>RET</span>
                         <span className="bg-white text-black px-0.5 py-0.5 rounded-r-sm" style={{ 
-                          fontSize: '9px',
-                          borderTop: `1px solid ${(() => {
-                            const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
-                            return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
-                          })()}`,
-                          borderRight: `1px solid ${(() => {
-                            const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
-                            return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
-                          })()}`,
-                          borderBottom: `1px solid ${(() => {
-                            const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
-                            return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
-                          })()}`
+                          fontSize: '9px'
                         }}>{formatValue(currentProject.retention).replace(/M/g, 'm').replace(/K/g, 'k').toUpperCase()}</span>
                       </div>
                     )}
