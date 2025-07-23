@@ -654,11 +654,16 @@ export default function Locations() {
       <div className="mb-8">
         <Card className="material-shadow">
           <CardHeader className="pb-4">
-            <div className="flex items-center justify-between">
-              <CardTitle className="flex items-center gap-2">
-                <Map className="h-5 w-5 text-blue-600" />
-                Project Locations
-              </CardTitle>
+            <div className="flex items-start justify-between">
+              <div>
+                <CardTitle className="flex items-center gap-2">
+                  <Map className="h-5 w-5 text-blue-600" />
+                  Project Locations
+                </CardTitle>
+                <p className="text-sm text-gray-500 mt-1 uppercase font-medium">
+                  {Object.keys(projectsByCity).length} Cities / Towns | {projects.length} Projects
+                </p>
+              </div>
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-2 relative">
                   {['tender', 'precon', 'construction', 'aftercare'].map((phase) => {
@@ -708,8 +713,8 @@ export default function Locations() {
                           className={`absolute bg-white border border-gray-200 rounded-b-lg px-2 py-1 font-medium ${colors.text} z-0 text-center`}
                           style={{
                             top: '25px', // moved down 4px
-                            left: '5%',
-                            width: '90%',
+                            left: '15%',
+                            width: '70%',
                             fontSize: '0.625rem' // 15% smaller than text-xs (0.75rem)
                           }}
                         >
@@ -768,11 +773,6 @@ export default function Locations() {
                     </div>
                   </div>
                 )}
-              </div>
-              <div className="flex justify-end">
-                <span className="text-sm text-gray-500">
-                  {Object.keys(projectsByCity).length} Cities | {projects.length} Projects
-                </span>
               </div>
             </div>
           </CardContent>
