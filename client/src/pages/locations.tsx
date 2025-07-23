@@ -459,10 +459,33 @@ export default function Locations() {
               infoWindow.setContent(hoverContent);
               infoWindow.setOptions({
                 pixelOffset: new window.google.maps.Size(0, -10),
-                disableAutoPan: false,
+                disableAutoPan: true,
                 maxWidth: 340
               });
               infoWindow.open(map, marker);
+              
+              // Remove default InfoWindow styling after opening
+              setTimeout(() => {
+                const infoWindowElement = document.querySelector('.gm-style-iw') as HTMLElement;
+                if (infoWindowElement) {
+                  const parent = infoWindowElement.parentElement as HTMLElement;
+                  if (parent) {
+                    parent.style.background = 'transparent';
+                    parent.style.border = 'none';
+                    parent.style.boxShadow = 'none';
+                  }
+                  infoWindowElement.style.background = 'transparent';
+                  infoWindowElement.style.border = 'none';
+                  infoWindowElement.style.boxShadow = 'none';
+                  infoWindowElement.style.padding = '0';
+                }
+                
+                // Hide the close button
+                const closeButton = document.querySelector('.gm-ui-hover-effect') as HTMLElement;
+                if (closeButton) {
+                  closeButton.style.display = 'none';
+                }
+              }, 10);
             });
 
             marker.addListener('mouseout', () => {
