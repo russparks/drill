@@ -28,8 +28,10 @@ export default function Locations() {
   const [hoverOverlay, setHoverOverlay] = useState<any>(null);
   const markersRef = useRef<any[]>([]);
   const currentOverlayRef = useRef<any>(null);
-  const [activeFilters, setActiveFilters] = useState<string[]>(['tender', 'precon', 'construction', 'aftercare']);
+  const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [hasInitializedZoom, setHasInitializedZoom] = useState(false);
+  const [isDemoMode, setIsDemoMode] = useState(true);
+  const [demoStep, setDemoStep] = useState(0);
 
 
   // Group projects by city (Yorkshire postcodes)
@@ -68,6 +70,36 @@ export default function Locations() {
       default: return 'rgb(107, 114, 128)';
     }
   };
+
+  // Demo sequence effect
+  useEffect(() => {
+    if (!isDemoMode || !map || !projects.length) return;
+
+    const phases = ['tender', 'precon', 'construction', 'aftercare'];
+    
+    const runDemo = async () => {
+      // Wait for initial load
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Show each phase one by one
+      for (let i = 0; i < phases.length; i++) {
+        setActiveFilters([phases[i]]);
+        setDemoStep(i + 1);
+        await new Promise(resolve => setTimeout(resolve, 1200));
+      }
+      
+      // Show all phases together
+      await new Promise(resolve => setTimeout(resolve, 500));
+      setActiveFilters(['tender', 'precon', 'construction', 'aftercare']);
+      
+      // End demo mode
+      await new Promise(resolve => setTimeout(resolve, 800));
+      setIsDemoMode(false);
+      setDemoStep(0);
+    };
+
+    runDemo();
+  }, [map, projects.length]);
 
 
 
@@ -635,6 +667,11 @@ export default function Locations() {
                 Project Locations Map
               </CardTitle>
               <div className="flex items-center gap-2">
+                {isDemoMode && (
+                  <span className="text-xs text-blue-600 animate-pulse mr-2">
+                    Filter demo in progress...
+                  </span>
+                )}
                 {['tender', 'precon', 'construction', 'aftercare'].map((phase) => {
                   const isActive = activeFilters.includes(phase);
                   const phaseColors = {
@@ -650,18 +687,21 @@ export default function Locations() {
                       key={phase}
                       variant="outline"
                       size="sm"
+                      disabled={isDemoMode}
                       onClick={() => {
-                        setActiveFilters(prev => 
-                          isActive 
-                            ? prev.filter(f => f !== phase)
-                            : [...prev, phase]
-                        );
+                        if (!isDemoMode) {
+                          setActiveFilters(prev => 
+                            isActive 
+                              ? prev.filter(f => f !== phase)
+                              : [...prev, phase]
+                          );
+                        }
                       }}
-                      className={`text-xs px-3 py-1 ${
+                      className={`text-xs px-3 py-1 transition-all duration-300 ${
                         isActive 
-                          ? `${colors.bg} ${colors.text} ${colors.border} border-2` 
+                          ? `${colors.bg} ${colors.text} ${colors.border} border-2 ${isDemoMode ? 'ring-2 ring-blue-300' : ''}` 
                           : 'bg-gray-50 text-gray-400 border-gray-200'
-                      }`}
+                      } ${isDemoMode ? 'cursor-not-allowed' : ''}`}
                     >
                       {phase.charAt(0).toUpperCase() + phase.slice(1)}
                     </Button>
