@@ -271,7 +271,9 @@ export default function Locations() {
     class CustomOverlay extends window.google.maps.OverlayView {
       private position: any;
       private content: string;
-      private div: HTMLDivElement | null = null;
+      public div: HTMLDivElement | null = null;
+      private mouseEnterHandler: (() => void) | null = null;
+      private mouseLeaveHandler: (() => void) | null = null;
 
       constructor(position: any, content: string) {
         super();
@@ -282,11 +284,21 @@ export default function Locations() {
       onAdd() {
         this.div = document.createElement('div');
         this.div.style.position = 'absolute';
-        this.div.style.pointerEvents = 'none';
+        this.div.style.pointerEvents = 'auto';
+        this.div.style.zIndex = '1000';
         this.div.innerHTML = this.content;
         
         const panes = this.getPanes();
         panes?.overlayMouseTarget.appendChild(this.div);
+      }
+
+      addHoverHandlers(onMouseEnter: () => void, onMouseLeave: () => void) {
+        if (this.div) {
+          this.mouseEnterHandler = onMouseEnter;
+          this.mouseLeaveHandler = onMouseLeave;
+          this.div.addEventListener('mouseenter', onMouseEnter);
+          this.div.addEventListener('mouseleave', onMouseLeave);
+        }
       }
 
       draw() {
@@ -303,6 +315,14 @@ export default function Locations() {
 
       onRemove() {
         if (this.div && this.div.parentNode) {
+          // Remove event listeners
+          if (this.mouseEnterHandler) {
+            this.div.removeEventListener('mouseenter', this.mouseEnterHandler);
+          }
+          if (this.mouseLeaveHandler) {
+            this.div.removeEventListener('mouseleave', this.mouseLeaveHandler);
+          }
+          
           this.div.parentNode.removeChild(this.div);
           this.div = null;
         }
@@ -499,30 +519,63 @@ export default function Locations() {
               </div>
             `;
 
-            // Store overlay reference for this specific marker
+            // Store overlay reference and timeout for this specific marker
             let currentOverlay: any = null;
+            let hideTimeout: NodeJS.Timeout | null = null;
 
             // Add hover listeners with custom overlay
             marker.addListener('mouseover', () => {
+              // Clear any pending hide timeout
+              if (hideTimeout) {
+                clearTimeout(hideTimeout);
+                hideTimeout = null;
+              }
+
               // Clean up any existing global overlay
-              if (hoverOverlay) {
+              if (hoverOverlay && hoverOverlay !== currentOverlay) {
                 hoverOverlay.setMap(null);
-                setHoverOverlay(null);
               }
               
-              // Create new overlay for this marker
-              currentOverlay = new CustomOverlay(position, hoverContent);
-              currentOverlay.setMap(map);
-              setHoverOverlay(currentOverlay);
+              // Create new overlay for this marker if it doesn't exist
+              if (!currentOverlay) {
+                currentOverlay = new CustomOverlay(position, hoverContent);
+                currentOverlay.setMap(map);
+                setHoverOverlay(currentOverlay);
+
+                // Add mouse events to the overlay itself after a brief delay to ensure DOM is ready
+                setTimeout(() => {
+                  currentOverlay.addHoverHandlers(
+                    () => {
+                      // Mouse enters overlay - cancel any pending hide
+                      if (hideTimeout) {
+                        clearTimeout(hideTimeout);
+                        hideTimeout = null;
+                      }
+                    },
+                    () => {
+                      // Mouse leaves overlay - hide after delay
+                      hideTimeout = setTimeout(() => {
+                        if (currentOverlay) {
+                          currentOverlay.setMap(null);
+                          currentOverlay = null;
+                          setHoverOverlay(null);
+                        }
+                      }, 100);
+                    }
+                  );
+                }, 50);
+              }
             });
 
             marker.addListener('mouseout', () => {
-              // Clean up this marker's overlay
-              if (currentOverlay) {
-                currentOverlay.setMap(null);
-                currentOverlay = null;
-                setHoverOverlay(null);
-              }
+              // Set a timeout to hide the overlay, allowing time to move to the card
+              hideTimeout = setTimeout(() => {
+                if (currentOverlay) {
+                  currentOverlay.setMap(null);
+                  currentOverlay = null;
+                  setHoverOverlay(null);
+                }
+              }, 200); // 200ms delay to allow mouse to move to card
             });
 
             marker.addListener('click', () => {
