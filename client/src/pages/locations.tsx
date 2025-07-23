@@ -640,8 +640,8 @@ export default function Locations() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-20 md:pb-8">
       {/* Phase Statistics Tiles */}
-      <div className="mb-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-2xl">
+      <div className="mb-6 flex justify-center">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
           {['tender', 'precon', 'construction', 'aftercare'].map((phase) => {
             const phaseProjects = projects.filter(p => p.status === phase);
             const phaseColors = {
@@ -682,17 +682,19 @@ export default function Locations() {
             };
             
             return (
-              <Card key={phase} className={`${colors.bg} ${colors.border} border-2 shadow-sm h-24 w-32 rounded-2xl`}>
+              <Card key={phase} className={`${colors.bg} ${colors.border} border shadow-sm h-20 w-32 rounded-2xl`}>
                 <CardContent className="p-3 h-full">
-                  <div className="flex flex-col items-center justify-center text-center h-full space-y-1">
+                  <div className="flex flex-col items-center justify-center text-center h-full space-y-2">
                     <span className={`text-xs font-medium ${colors.text} uppercase`}>
                       {phase}
                     </span>
-                    <div className={`text-xl font-bold ${colors.number}`}>
-                      {phaseProjects.length}
-                    </div>
-                    <div className="text-xs font-medium text-gray-600">
-                      {formatValue(totalValue)}
+                    <div className="flex items-center justify-center gap-2">
+                      <span className={`text-xl font-bold ${colors.number}`}>
+                        {phaseProjects.length}
+                      </span>
+                      <span className="text-xs font-medium text-gray-600">
+                        {formatValue(totalValue)}
+                      </span>
                     </div>
                   </div>
                 </CardContent>
