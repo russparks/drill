@@ -660,7 +660,7 @@ export default function Locations() {
                   <Map className="h-5 w-5 text-blue-600" />
                   Project Locations
                 </CardTitle>
-                <p className="text-gray-500 mt-1 uppercase font-medium" style={{ fontSize: '0.525rem' }}>
+                <p className="text-gray-500 mt-1 uppercase font-medium" style={{ fontSize: '0.7rem' }}>
                   {Object.keys(projectsByCity).length} Cities / Towns | {projects.length} Projects
                 </p>
               </div>
