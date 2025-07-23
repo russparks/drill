@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { ProjectHeader, PhaseFilters } from "@/components/project-timeline";
+import { ProjectHeader, PhaseFilters, TimelineCard } from "@/components/project-timeline";
 
 const sampleProject1 = {
+  id: 19,
   projectNumber: "W0013",
   name: "Municipal Water Treatment",
   status: "construction",
@@ -15,9 +16,10 @@ const sampleProject1 = {
 };
 
 const sampleProject2 = {
+  id: 17,
   projectNumber: "L0011",
   name: "Luxury Hotel Development",
-  status: "precon",
+  status: "construction",
   startOnSiteDate: "2024-05-01T00:00:00.000Z",
   contractCompletionDate: "2027-06-15T00:00:00.000Z",
   constructionCompletionDate: "2027-05-10T00:00:00.000Z",
@@ -82,6 +84,23 @@ export default function Components() {
             <div>
               <h3 className="text-lg font-medium text-gray-700 mb-4">Example 2: Precon Phase Project</h3>
               <ProjectHeader project={sampleProject2} />
+            </div>
+          </div>
+        </section>
+
+        {/* Timeline Card Examples */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6">Timeline Card Component</h2>
+          
+          <div className="space-y-8">
+            <div>
+              <h3 className="text-lg font-medium text-gray-700 mb-4">Example 1: Construction Phase Timeline</h3>
+              <TimelineCard project={sampleProject1} />
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-medium text-gray-700 mb-4">Example 2: Construction Phase Timeline (Large Project)</h3>
+              <TimelineCard project={sampleProject2} />
             </div>
           </div>
         </section>
