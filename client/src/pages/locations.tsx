@@ -481,6 +481,16 @@ export default function Locations() {
       bounds.extend(position);
       markersCreated++;
       
+      // Phase-based color coding for pins
+      const phaseColors = {
+        tender: '#0ea5e9',    // Blue
+        precon: '#10b981',    // Green
+        construction: '#f59e0b', // Yellow
+        aftercare: '#6b7280'  // Gray
+      };
+
+      const pinColor = phaseColors[project.status as keyof typeof phaseColors] || '#6b7280';
+
       // Create individual project marker
       const marker = new window.google.maps.Marker({
         position,
@@ -488,10 +498,9 @@ export default function Locations() {
         title: project.name,
         icon: {
           path: "M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z M -2,-30 a 2,2 0 1,1 4,0 2,2 0 1,1 -4,0",
-          fillColor: '#706f6f',
-          fillOpacity: 0.9,
-          strokeColor: getPhaseColor(project.status),
-          strokeWeight: 2.8,
+          fillColor: pinColor,
+          fillOpacity: 1.0,
+          strokeWeight: 0,
           scale: 1.0,
           anchor: new window.google.maps.Point(0, 0),
         },
