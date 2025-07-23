@@ -24,6 +24,8 @@ export const projects = pgTable("projects", {
   value: text("value"),
   retention: text("retention"),
   postcode: text("postcode"),
+  latitude: text("latitude"),
+  longitude: text("longitude"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

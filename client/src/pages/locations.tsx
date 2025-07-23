@@ -413,122 +413,109 @@ export default function Locations() {
       }
     }
 
-    const geocoder = new window.google.maps.Geocoder();
     const bounds = new window.google.maps.LatLngBounds();
     let markersCreated = 0;
-    const totalProjects = projects.filter(p => p.postcode).length;
+    const totalProjects = projects.filter(p => p.latitude && p.longitude).length;
     
-    // Create individual markers for each project - one marker per project
+    // Create individual markers for each project using stored coordinates
     projects.forEach((project, index) => {
-      if (!project.postcode) return;
+      if (!project.latitude || !project.longitude) return;
 
-      geocoder.geocode(
-        { address: `${project.postcode}, UK` },
-        (results: any[], status: string) => {
-          if (status === 'OK' && results[0]) {
-            const basePosition = results[0].geometry.location;
-            
-            // Add small deterministic offset based on project index to spread out markers
-            const offsetRadius = 0.005; // Small offset radius
-            const angle = (index * 137.5) % 360; // Golden angle spacing for even distribution
-            const offsetLat = offsetRadius * Math.cos(angle * Math.PI / 180);
-            const offsetLng = offsetRadius * Math.sin(angle * Math.PI / 180);
-            
-            const position = new window.google.maps.LatLng(
-              basePosition.lat() + offsetLat,
-              basePosition.lng() + offsetLng
-            );
-            
-            // Add position to bounds
-            bounds.extend(position);
-            markersCreated++;
-            
-            // Create individual project marker
-            const marker = new window.google.maps.Marker({
-              position,
-              map: map, // Show all markers immediately
-              title: project.name,
-              icon: {
-                path: "M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z M -2,-30 a 2,2 0 1,1 4,0 2,2 0 1,1 -4,0",
-                fillColor: '#706f6f',
-                fillOpacity: 0.9,
-                strokeColor: getPhaseColor(project.status),
-                strokeWeight: 2.8,
-                scale: 1.0,
-                anchor: new window.google.maps.Point(0, 0),
-              },
-            });
-
-            // Store marker reference for cleanup
-            markersRef.current.push(marker);
-
-            // Store overlay reference for this specific marker
-            let currentOverlay: any = null;
-
-            // Add click listener for individual markers
-            marker.addListener('click', () => {
-              // If this marker already has an overlay, remove it
-              if (currentOverlay) {
-                currentOverlay.setMap(null);
-                currentOverlay = null;
-                if (hoverOverlay === currentOverlay) {
-                  setHoverOverlay(null);
-                }
-                return;
-              }
-
-              // Clean up any existing global overlay
-              if (hoverOverlay) {
-                hoverOverlay.setMap(null);
-                setHoverOverlay(null);
-              }
-              
-              // Simple pan to ensure card visibility
-              // Pan the map down by a reasonable amount to show the card
-              const currentCenter = map.getCenter();
-              const panOffset = 0.03; // About 3km at this zoom level
-              const newCenter = new window.google.maps.LatLng(
-                currentCenter.lat() - panOffset,
-                currentCenter.lng()
-              );
-              map.panTo(newCenter);
-              
-              // Create new overlay for this marker after a short delay for panning
-              setTimeout(() => {
-                currentOverlay = new CustomOverlay(position, project);
-                currentOverlay.setMap(map);
-                setHoverOverlay(currentOverlay);
-
-                // Add click handler to close when clicking the card
-                setTimeout(() => {
-                  if (currentOverlay && currentOverlay.div) {
-                    currentOverlay.div.addEventListener('click', (e: Event) => {
-                      e.stopPropagation();
-                      currentOverlay.setMap(null);
-                      currentOverlay = null;
-                      setHoverOverlay(null);
-                    });
-                  }
-                }, 100);
-              }, 300); // Wait for pan animation to complete
-            });
-
-            // Once all markers are created, fit bounds
-            if (markersCreated === totalProjects) {
-              map.fitBounds(bounds);
-              
-              // Set reasonable zoom level
-              const listener = window.google.maps.event.addListener(map, 'idle', () => {
-                if (map.getZoom() > 9) {
-                  map.setZoom(9);
-                }
-                window.google.maps.event.removeListener(listener);
-              });
-            }
-          }
-        }
+      // Use stored coordinates directly
+      const basePosition = new window.google.maps.LatLng(
+        parseFloat(project.latitude),
+        parseFloat(project.longitude)
       );
+      
+      // Add small deterministic offset based on project index to spread out markers
+      const offsetRadius = 0.005; // Small offset radius
+      const angle = (index * 137.5) % 360; // Golden angle spacing for even distribution
+      const offsetLat = offsetRadius * Math.cos(angle * Math.PI / 180);
+      const offsetLng = offsetRadius * Math.sin(angle * Math.PI / 180);
+      
+      const position = new window.google.maps.LatLng(
+        basePosition.lat() + offsetLat,
+        basePosition.lng() + offsetLng
+      );
+      
+      // Add position to bounds
+      bounds.extend(position);
+      markersCreated++;
+      
+      // Create individual project marker
+      const marker = new window.google.maps.Marker({
+        position,
+        map: map, // Show all markers immediately
+        title: project.name,
+        icon: {
+          path: "M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z M -2,-30 a 2,2 0 1,1 4,0 2,2 0 1,1 -4,0",
+          fillColor: '#706f6f',
+          fillOpacity: 0.9,
+          strokeColor: getPhaseColor(project.status),
+          strokeWeight: 2.8,
+          scale: 1.0,
+          anchor: new window.google.maps.Point(0, 0),
+        },
+      });
+
+      // Store marker reference for cleanup
+      markersRef.current.push(marker);
+
+      // Store overlay reference for this specific marker
+      let currentOverlay: any = null;
+
+      // Add click listener for individual markers
+      marker.addListener('click', () => {
+        // If this marker already has an overlay, remove it
+        if (currentOverlay) {
+          currentOverlay.setMap(null);
+          currentOverlay = null;
+          if (hoverOverlay === currentOverlay) {
+            setHoverOverlay(null);
+          }
+          return;
+        }
+
+        // Clean up any existing global overlay
+        if (hoverOverlay) {
+          hoverOverlay.setMap(null);
+          setHoverOverlay(null);
+        }
+        
+        // Center map on the clicked project's exact coordinates (not the offset position)
+        map.setCenter(basePosition);
+        
+        // Create new overlay for this marker immediately
+        currentOverlay = new CustomOverlay(position, project);
+        currentOverlay.setMap(map);
+        setHoverOverlay(currentOverlay);
+
+        // Add click handler to close when clicking the card
+        setTimeout(() => {
+          if (currentOverlay && currentOverlay.div) {
+            currentOverlay.div.addEventListener('click', (e: Event) => {
+              e.stopPropagation();
+              currentOverlay.setMap(null);
+              currentOverlay = null;
+              setHoverOverlay(null);
+            });
+          }
+        }, 100);
+      });
     });
+
+    // Fit bounds after all markers are processed
+    if (markersCreated > 0) {
+      map.fitBounds(bounds);
+      
+      // Set reasonable zoom level
+      const listener = window.google.maps.event.addListener(map, 'idle', () => {
+        if (map.getZoom() > 9) {
+          map.setZoom(9);
+        }
+        window.google.maps.event.removeListener(listener);
+      });
+    }
 
 
 
