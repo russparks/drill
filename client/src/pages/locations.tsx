@@ -482,25 +482,27 @@ export default function Locations() {
           setHoverOverlay(null);
         }
         
-        // Center map on the clicked project's exact coordinates (not the offset position)
-        map.setCenter(basePosition);
+        // Smoothly pan to the clicked project's exact coordinates
+        map.panTo(basePosition);
         
-        // Create new overlay for this marker immediately
-        currentOverlay = new CustomOverlay(position, project);
-        currentOverlay.setMap(map);
-        setHoverOverlay(currentOverlay);
-
-        // Add click handler to close when clicking the card
+        // Create new overlay for this marker after pan animation
         setTimeout(() => {
-          if (currentOverlay && currentOverlay.div) {
-            currentOverlay.div.addEventListener('click', (e: Event) => {
-              e.stopPropagation();
-              currentOverlay.setMap(null);
-              currentOverlay = null;
-              setHoverOverlay(null);
-            });
-          }
-        }, 100);
+          currentOverlay = new CustomOverlay(position, project);
+          currentOverlay.setMap(map);
+          setHoverOverlay(currentOverlay);
+
+          // Add click handler to close when clicking the card
+          setTimeout(() => {
+            if (currentOverlay && currentOverlay.div) {
+              currentOverlay.div.addEventListener('click', (e: Event) => {
+                e.stopPropagation();
+                currentOverlay.setMap(null);
+                currentOverlay = null;
+                setHoverOverlay(null);
+              });
+            }
+          }, 100);
+        }, 400); // Wait for pan animation to complete
       });
     });
 
