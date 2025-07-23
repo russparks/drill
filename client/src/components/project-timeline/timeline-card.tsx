@@ -342,7 +342,12 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
               {weekInfo && (
                 <div className="flex items-center justify-between mb-2" style={{ fontSize: '10px' }}>
                   <div className="flex items-center" style={{ gap: '10px' }}>
-                    <div className={weekInfo.hasPositiveRetention && currentProject.status === 'aftercare' ? 'opacity-60' : ''}>
+                    <div className={(() => {
+                      // Check if we should grey out indicators
+                      const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+                      const hasZeroRetention = retentionValue === 0 && currentProject.status === 'aftercare';
+                      return hasZeroRetention ? 'opacity-60' : '';
+                    })()}>
                       <div className="flex items-center gap-[10px]">
                         <div className="flex items-center" title="Start on Site Date">
                           <span className="border px-0.5 py-0.5 rounded-l-sm" style={{ 
@@ -448,44 +453,6 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
                           </div>
                         )}
 
-                        {/* RET indicator for aftercare projects with retention */}
-                        {currentProject.status === 'aftercare' && currentProject.retention && (() => {
-                          const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
-                          // Only show RET indicator if retention is positive (red) or exactly zero (green)
-                          return retentionValue >= 0;
-                        })() && (
-                          <div className="flex items-center" title="Retention">
-                            <span className="text-white border px-0.5 py-0.5 rounded-l-sm" style={{ 
-                              fontSize: '9px',
-                              backgroundColor: (() => {
-                                const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
-                                return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)'; // red for positive, green for zero
-                              })(),
-                              borderColor: (() => {
-                                const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
-                                return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
-                              })(),
-                              borderWidth: '2px',
-                              borderStyle: 'solid'
-                            }}>RET</span>
-                            <span className="bg-white text-black px-0.5 py-0.5 rounded-r-sm" style={{ 
-                              fontSize: '9px',
-                              borderTop: `1px solid ${(() => {
-                                const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
-                                return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
-                              })()}`,
-                              borderRight: `1px solid ${(() => {
-                                const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
-                                return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
-                              })()}`,
-                              borderBottom: `1px solid ${(() => {
-                                const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
-                                return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
-                              })()}`
-                            }}>{formatValue(currentProject.retention).replace(/M/g, 'm').replace(/K/g, 'k').toUpperCase()}</span>
-                          </div>
-                        )}
-
                         <div className="flex items-center" title="Contract Practical Completion Date">
                           <span className="text-white border px-0.5 py-0.5 rounded-l-sm" style={{ 
                             fontSize: '9px',
@@ -539,6 +506,48 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
                             })()}`
                           }}>{weekInfo.contractDate.toUpperCase()}</span>
                         </div>
+
+                        {/* RET indicator for aftercare projects with retention - positioned last and conditionally greyed */}
+                        {currentProject.status === 'aftercare' && currentProject.retention && (() => {
+                          const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+                          // Only show RET indicator if retention is positive (red) or exactly zero (green)
+                          return retentionValue >= 0;
+                        })() && (
+                          <div className={`flex items-center ${(() => {
+                            const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+                            // Green RET (zero retention) should be greyed out, red RET (positive retention) should not
+                            return retentionValue === 0 ? 'opacity-60' : '';
+                          })()}`} title="Retention">
+                            <span className="text-white border px-0.5 py-0.5 rounded-l-sm" style={{ 
+                              fontSize: '9px',
+                              backgroundColor: (() => {
+                                const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+                                return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)'; // red for positive, green for zero
+                              })(),
+                              borderColor: (() => {
+                                const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+                                return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
+                              })(),
+                              borderWidth: '2px',
+                              borderStyle: 'solid'
+                            }}>RET</span>
+                            <span className="bg-white text-black px-0.5 py-0.5 rounded-r-sm" style={{ 
+                              fontSize: '9px',
+                              borderTop: `1px solid ${(() => {
+                                const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+                                return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
+                              })()}`,
+                              borderRight: `1px solid ${(() => {
+                                const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+                                return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
+                              })()}`,
+                              borderBottom: `1px solid ${(() => {
+                                const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
+                                return retentionValue > 0 ? 'rgb(239, 68, 68)' : 'rgb(34, 197, 94)';
+                              })()}`
+                            }}>{formatValue(currentProject.retention).replace(/M/g, 'm').replace(/K/g, 'k').toUpperCase()}</span>
+                          </div>
+                        )}
 
                         {/* EEV indicator for construction projects */}
                         {currentProject.status !== 'aftercare' && weekInfo && !weekInfo.hideWeekIndicator && !isZeroOrNegativeValue(currentProject.value) && (
