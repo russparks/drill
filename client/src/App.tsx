@@ -54,7 +54,7 @@ function Router() {
       />
       
       <Switch>
-        <Route path="/" component={Home} />
+        <Route path="/" component={Dashboard} />
         <Route path="/actions" component={Dashboard} />
         <Route path="/projects">
           <Setup onTabChange={setActiveTab} />

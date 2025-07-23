@@ -61,15 +61,6 @@ export default function Navbar({ onCreateAction, onCreateProject, onCreatePerson
               <img src={logo} alt="Drill Logo" className="h-8" />
             </div>
             <nav className="hidden md:ml-8 md:flex md:space-x-8">
-              <Link href="/">
-                <span className={`px-3 py-2 text-sm font-medium cursor-pointer ${
-                  location === "/" 
-                    ? "border-b-2" 
-                    : "text-action-text-secondary hover:text-action-text-primary"
-                }`} style={location === "/" ? { color: '#333333', borderColor: '#333333' } : {}}>
-                  Home
-                </span>
-              </Link>
               <Link href="/actions">
                 <span className={`px-3 py-2 text-sm font-medium cursor-pointer ${
                   location === "/actions" 
@@ -121,6 +112,15 @@ export default function Navbar({ onCreateAction, onCreateProject, onCreatePerson
                     : "text-action-text-secondary hover:text-action-text-primary"
                 }`} style={location === "/locations" ? { color: '#333333', borderColor: '#333333' } : {}}>
                   Locations
+                </span>
+              </Link>
+              <Link href="/components">
+                <span className={`px-3 py-2 text-sm font-medium cursor-pointer ${
+                  location === "/components" 
+                    ? "border-b-2" 
+                    : "text-action-text-secondary hover:text-action-text-primary"
+                }`} style={location === "/components" ? { color: '#333333', borderColor: '#333333' } : {}}>
+                  Components
                 </span>
               </Link>
             </nav>
