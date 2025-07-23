@@ -29,8 +29,8 @@ export default function Setup({ onTabChange }: SetupProps) {
   // State for active tab
   const [activeTab, setActiveTab] = useState("projects");
   
-  // State for phase filters
-  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  // State for phase filters - all phases active by default
+  const [activeFilters, setActiveFilters] = useState<string[]>(['tender', 'precon', 'construction', 'aftercare']);
 
   // Listen for modal open events from navbar
   useEffect(() => {
