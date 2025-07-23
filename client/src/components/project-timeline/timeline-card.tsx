@@ -594,7 +594,7 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
               )}
 
               {/* Progress bar */}
-              {weekInfo && !weekInfo.isProjectCompleted && (
+              {weekInfo && (
                 <div className={`mt-2 relative flex items-center ${weekInfo.hasPositiveRetention && currentProject.status === 'aftercare' ? 'opacity-60' : ''}`}>
                   <div className={`h-1 rounded-sm overflow-hidden flex ${
                     currentProject.status === 'aftercare' ? 'bg-gray-200' : 'bg-gray-100'
