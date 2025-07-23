@@ -323,10 +323,12 @@ export default function Locations() {
       return (
         <Card className="w-80 shadow-lg border-2">
           <CardHeader className="pb-3">
-            <CardTitle className="text-lg font-semibold">
-              {project.name} <span className="text-xs font-normal opacity-70">[{project.projectNumber}]</span>
-            </CardTitle>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="flex items-center justify-center">
+              <CardTitle className="text-lg font-semibold text-center">
+                {project.name} <span className="text-xs font-normal opacity-70">({project.projectNumber})</span>
+              </CardTitle>
+            </div>
+            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
               <MapPin className="h-3 w-3" />
               {city}
             </div>
