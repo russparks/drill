@@ -226,7 +226,12 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
     const retentionValue = parseFloat(currentProject.retention?.replace(/[£,]/g, '') || '0');
     const hasPositiveRetention = retentionValue > 0;
     const hasZeroRetention = retentionValue === 0;
-    const isProjectCompleted = hasZeroRetention && currentProject.status === 'aftercare';
+    
+    // Check if project is completed - either aftercare with zero retention OR past contract completion date
+    const isPastContractDate = currentDate > contractDate;
+    const isProjectCompleted = (hasZeroRetention && currentProject.status === 'aftercare') || 
+                              (isPastContractDate && currentProject.status !== 'aftercare');
+    
     const hideWeekIndicator = hasPositiveRetention && currentProject.status === 'aftercare';
     const isGreyedOut = (hasPositiveRetention || hasZeroRetention) && currentProject.status === 'aftercare';
 
@@ -604,8 +609,8 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
                       const totalWeeksToAnticipated = weekInfo.totalWeeksToAnticipated;
                       const totalWeeksToContract = weekInfo.totalWeeksToContract;
                       
-                      // Grey out completed projects (aftercare with zero retention) or projects with positive retention
-                      if ((weekInfo.isProjectCompleted || weekInfo.hasPositiveRetention) && currentProject.status === 'aftercare') {
+                      // Grey out completed projects or projects with positive retention in aftercare
+                      if (weekInfo.isProjectCompleted || (weekInfo.hasPositiveRetention && currentProject.status === 'aftercare')) {
                         return (
                           <div 
                             className="bg-gray-400 h-full opacity-40" 
@@ -756,7 +761,7 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
               }
             })()}`
           }}>
-            {(weekInfo.hasPositiveRetention || weekInfo.isProjectCompleted) && currentProject.status === 'aftercare' ? (
+            {weekInfo.isProjectCompleted || (weekInfo.hasPositiveRetention && currentProject.status === 'aftercare') ? (
               <span className="text-gray-500 font-medium">Project Completed</span>
             ) : (
               <>
