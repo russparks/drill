@@ -484,39 +484,46 @@ export default function Locations() {
                 setHoverOverlay(null);
               }
               
-              // Calculate proper pan amount to show card in full
-              const mapDiv = map.getDiv();
-              const mapHeight = mapDiv.clientHeight;
+              // Check if card would be cut off and pan only if needed
+              // Use a simpler approach: create a temporary overlay to get exact pixel position
+              const tempOverlay = new window.google.maps.OverlayView();
+              tempOverlay.setMap(map);
               
-              // Get the marker's current screen position
-              const projection = map.getProjection();
-              const scale = Math.pow(2, map.getZoom());
-              const worldCoordinate = projection.fromLatLngToPoint(position);
-              const currentCenter = map.getCenter();
-              const centerWorldCoordinate = projection.fromLatLngToPoint(currentCenter);
-              
-              // Calculate marker's pixel position relative to map center
-              const pixelOffset = {
-                x: (worldCoordinate.x - centerWorldCoordinate.x) * scale,
-                y: (worldCoordinate.y - centerWorldCoordinate.y) * scale
+              tempOverlay.onAdd = function() {
+                const projection = this.getProjection();
+                if (projection) {
+                  const markerPixel = projection.fromLatLngToContainerPixel(position);
+                  if (markerPixel) {
+                    // Card is positioned 180px above marker and is ~320px tall
+                    const cardTop = markerPixel.y - 180 - 320;
+                    
+                    console.log(`Marker at pixel Y: ${markerPixel.y}, Card top would be at: ${cardTop}`);
+                    
+                    // Only pan if card would be cut off at top of screen
+                    if (cardTop < 20) { // 20px buffer
+                      const pixelsToPan = 20 - cardTop;
+                      console.log(`Need to pan ${pixelsToPan} pixels down`);
+                      
+                      // Convert pixels to lat/lng offset
+                      const currentCenter = map.getCenter();
+                      const zoom = map.getZoom();
+                      const scale = Math.pow(2, zoom);
+                      const degreesPerPixel = 360 / (256 * scale);
+                      const latOffset = pixelsToPan * degreesPerPixel;
+                      
+                      const newCenter = new window.google.maps.LatLng(
+                        currentCenter.lat() - latOffset, // Pan south (down) to show card
+                        currentCenter.lng()
+                      );
+                      map.panTo(newCenter);
+                    } else {
+                      console.log('Card position is fine, no panning needed');
+                    }
+                  }
+                }
+                // Clean up temp overlay
+                tempOverlay.setMap(null);
               };
-              
-              const markerScreenY = mapHeight / 2 + pixelOffset.y;
-              
-              // Card height is about 300px and positioned 180px above marker
-              const cardTopY = markerScreenY - 180 - 300;
-              
-              // If card would be cut off at top, pan down to show it
-              if (cardTopY < 20) { // 20px buffer from top
-                const panPixels = 20 - cardTopY;
-                const panLatDegrees = panPixels / scale / 256 * 360;
-                
-                const newCenter = new window.google.maps.LatLng(
-                  currentCenter.lat() - panLatDegrees,
-                  currentCenter.lng()
-                );
-                map.panTo(newCenter);
-              }
               
               // Create new overlay for this marker after a short delay for panning
               setTimeout(() => {
