@@ -535,7 +535,15 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                               className="h-full opacity-60" 
                               style={{ 
                                 width: `${lightBluePercent}%`,
-                                backgroundColor: 'rgb(249, 115, 22)' // construction orange
+                                backgroundColor: (() => {
+                                  switch (project.status) {
+                                    case 'tender': return 'rgb(59, 130, 246)'; // blue
+                                    case 'precon': return 'rgb(34, 197, 94)'; // green
+                                    case 'construction': return 'rgb(234, 179, 8)'; // yellow
+                                    case 'aftercare': return 'rgb(107, 114, 128)'; // grey
+                                    default: return 'rgb(147, 197, 253)';
+                                  }
+                                })()
                               }}
                               title={`Remaining to anticipated: ${Math.max(0, totalWeeksToAnticipated - currentWeek)} weeks`}
                             />
