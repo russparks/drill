@@ -756,8 +756,8 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
               }
             })()}`
           }}>
-            {weekInfo.hasPositiveRetention && currentProject.status === 'aftercare' ? (
-              <span className="text-gray-500 font-medium">Project Complete</span>
+            {(weekInfo.hasPositiveRetention || weekInfo.isProjectCompleted) && currentProject.status === 'aftercare' ? (
+              <span className="text-gray-500 font-medium">Project Completed</span>
             ) : (
               <>
                 {currentProject.status === 'tender' || currentProject.status === 'precon' ? (
