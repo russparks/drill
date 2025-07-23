@@ -515,51 +515,34 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                         );
                       }
                       
-                      // Progress bar segments: light grey from start to current, construction orange from current to anticipated, dark grey from anticipated to end
-                      const currentPercent = Math.min((currentWeek / totalWeeksToContract) * 100, 100);
-                      const anticipatedPercent = Math.min((totalWeeksToAnticipated / totalWeeksToContract) * 100, 100);
-                      const remainingPercent = Math.max(0, 100 - anticipatedPercent);
-                      
-                      // Segment widths
-                      const lightGreyWidth = currentPercent;
-                      const orangeWidth = Math.max(0, anticipatedPercent - currentPercent);
-                      const darkGreyWidth = remainingPercent;
+                      // Use the exact same progress bar logic as setup page
+                      const greyPercent = Math.min((currentWeek / totalWeeksToContract) * 100, 100);
+                      const lightBluePercent = Math.max(0, Math.min(((totalWeeksToAnticipated - currentWeek) / totalWeeksToContract) * 100, 100 - greyPercent));
+                      const amberPercent = Math.max(0, ((totalWeeksToContract - totalWeeksToAnticipated) / totalWeeksToContract) * 100);
                       
                       return (
                         <>
-                          {/* Light grey from start to current position */}
-                          {lightGreyWidth > 0 && (
+                          {greyPercent > 0 && (
                             <div 
-                              className="h-full" 
-                              style={{ 
-                                width: `${lightGreyWidth}%`,
-                                backgroundColor: 'rgb(209, 213, 219)', // light grey
-                                opacity: 0.8
-                              }}
+                              className="bg-gray-400 h-full opacity-60" 
+                              style={{ width: `${greyPercent}%` }}
                               title={`Elapsed: ${currentWeek} weeks`}
                             />
                           )}
-                          {/* Construction orange from current to anticipated */}
-                          {orangeWidth > 0 && (
+                          {lightBluePercent > 0 && (
                             <div 
-                              className="h-full" 
+                              className="h-full opacity-60" 
                               style={{ 
-                                width: `${orangeWidth}%`,
-                                backgroundColor: 'rgb(249, 115, 22)', // construction orange
-                                opacity: 0.8
+                                width: `${lightBluePercent}%`,
+                                backgroundColor: 'rgb(249, 115, 22)' // construction orange
                               }}
                               title={`Remaining to anticipated: ${Math.max(0, totalWeeksToAnticipated - currentWeek)} weeks`}
                             />
                           )}
-                          {/* Dark grey from anticipated to end */}
-                          {darkGreyWidth > 0 && (
+                          {amberPercent > 0 && (
                             <div 
-                              className="h-full" 
-                              style={{ 
-                                width: `${darkGreyWidth}%`,
-                                backgroundColor: 'rgb(75, 85, 99)', // dark grey
-                                opacity: 0.8
-                              }}
+                              className="bg-gray-800 h-full opacity-60" 
+                              style={{ width: `${amberPercent}%` }}
                               title={`Buffer to contract: ${totalWeeksToContract - totalWeeksToAnticipated} weeks`}
                             />
                           )}
