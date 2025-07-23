@@ -1,4 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Edit, Trash2 } from "lucide-react";
 
 interface TimelineCardProps {
   project: {
@@ -121,40 +123,14 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                       }
                     })()
                   }}>{project.name}</span>
-                  {project.postcode && (
-                    <span style={{ 
-                      fontSize: '0.7em',
-                      color: (() => {
-                        switch (project.status) {
-                          case 'tender': return 'rgb(59, 130, 246)'; // blue
-                          case 'precon': return 'rgb(34, 197, 94)'; // green
-                          case 'construction': return 'rgb(234, 179, 8)'; // yellow
-                          case 'aftercare': return 'rgb(107, 114, 128)'; // grey
-                          default: return 'inherit';
-                        }
-                      })(),
-                      opacity: 0.8
-                    }}>
-                      {`, ${(() => {
-                        const postcodeToCity: { [key: string]: string } = {
-                          'DN4 5HT': 'UK',
-                          'YO31 0UR': 'UK',
-                          'LS6 3HG': 'UK',
-                          'YO19 5LJ': 'UK',
-                          'WF2 6SE': 'UK'
-                        };
-                        return postcodeToCity[project.postcode] || 'UK';
-                      })()}`}
-                    </span>
-                  )}
                 </div>
                 {project.value && (
-                  <span className="text-sm text-action-text-secondary ml-2">
+                  <span className="text-action-text-secondary ml-2" style={{ fontSize: '0.85rem' }}>
                     (<span className={isZeroOrNegativeValue(project.value) ? 'text-red-400' : ''}>{formatValue(project.value)}</span>)
                   </span>
                 )}
-                {/* Process indicator */}
-                <div className="ml-auto">
+                {/* Process indicator and action buttons */}
+                <div className="ml-auto flex items-center gap-2">
                   <button
                     className={`
                       rounded-full px-2 py-0.5 text-xs font-medium border transition-colors
@@ -171,6 +147,23 @@ export default function TimelineCard({ project }: TimelineCardProps) {
                     {project.status === "aftercare" && "AFT"}
                     {!project.status && "UNK"}
                   </button>
+                  
+                  <div className={`flex space-x-1 ${weekInfo?.hasPositiveRetention && project.status === 'aftercare' ? 'opacity-60' : ''}`}>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7"
+                    >
+                      <Edit className="h-3 w-3" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7"
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  </div>
                 </div>
               </div>
 
