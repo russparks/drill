@@ -29,6 +29,7 @@ export default function Locations() {
   const markersRef = useRef<any[]>([]);
   const currentOverlayRef = useRef<any>(null);
   const [activeFilters, setActiveFilters] = useState<string[]>(['tender', 'precon', 'construction', 'aftercare']);
+  const [hasInitializedZoom, setHasInitializedZoom] = useState(false);
 
 
   // Group projects by city (Yorkshire postcodes)
@@ -557,8 +558,8 @@ export default function Locations() {
 
 
 
-    // Fit bounds after all markers are processed
-    if (markersCreated > 0) {
+    // Only fit bounds and set zoom on initial load, not when filters change
+    if (markersCreated > 0 && !hasInitializedZoom) {
       map.fitBounds(bounds);
       
       // Set reasonable zoom level (decreased by 5% from 9 to 8.55)
@@ -566,6 +567,7 @@ export default function Locations() {
         if (map.getZoom() > 8.55) {
           map.setZoom(8.55);
         }
+        setHasInitializedZoom(true);
         window.google.maps.event.removeListener(listener);
       });
     }
