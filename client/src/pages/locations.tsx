@@ -484,14 +484,39 @@ export default function Locations() {
                 setHoverOverlay(null);
               }
               
-              // Pan upward to ensure card visibility 
+              // Calculate proper pan amount to show card in full
+              const mapDiv = map.getDiv();
+              const mapHeight = mapDiv.clientHeight;
+              
+              // Get the marker's current screen position
+              const projection = map.getProjection();
+              const scale = Math.pow(2, map.getZoom());
+              const worldCoordinate = projection.fromLatLngToPoint(position);
               const currentCenter = map.getCenter();
-              const offset = 0.05; // Moderate latitude offset for noticeable but not excessive panning
-              const newCenter = new window.google.maps.LatLng(
-                currentCenter.lat() - offset,
-                currentCenter.lng()
-              );
-              map.panTo(newCenter);
+              const centerWorldCoordinate = projection.fromLatLngToPoint(currentCenter);
+              
+              // Calculate marker's pixel position relative to map center
+              const pixelOffset = {
+                x: (worldCoordinate.x - centerWorldCoordinate.x) * scale,
+                y: (worldCoordinate.y - centerWorldCoordinate.y) * scale
+              };
+              
+              const markerScreenY = mapHeight / 2 + pixelOffset.y;
+              
+              // Card height is about 300px and positioned 180px above marker
+              const cardTopY = markerScreenY - 180 - 300;
+              
+              // If card would be cut off at top, pan down to show it
+              if (cardTopY < 20) { // 20px buffer from top
+                const panPixels = 20 - cardTopY;
+                const panLatDegrees = panPixels / scale / 256 * 360;
+                
+                const newCenter = new window.google.maps.LatLng(
+                  currentCenter.lat() - panLatDegrees,
+                  currentCenter.lng()
+                );
+                map.panTo(newCenter);
+              }
               
               // Create new overlay for this marker after a short delay for panning
               setTimeout(() => {
