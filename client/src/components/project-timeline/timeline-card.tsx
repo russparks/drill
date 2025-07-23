@@ -206,7 +206,7 @@ export default function TimelineCard({ project }: TimelineCardProps) {
 
   return (
     <div className={weekInfo?.isGreyedOut ? 'opacity-60' : ''}>
-      <Card className="material-shadow">
+      <Card className="material-shadow" style={{ zIndex: 1, position: 'relative' }}>
         <CardContent className="p-2.5 pb-8">
           <div className="flex justify-between items-start">
             <div className="flex-1">
