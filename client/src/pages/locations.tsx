@@ -698,7 +698,7 @@ export default function Locations() {
                   <Filter 
                     className="h-4 w-4 text-gray-400" 
                   />
-                  {activeFilters.length === 4 && (
+                  {activeFilters.length > 0 && (
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="w-5 h-0.5 bg-gray-400 rotate-45"></div>
                     </div>
