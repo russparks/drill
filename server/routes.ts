@@ -1,5 +1,6 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
+import path from "path";
 import { storage } from "./storage";
 import { insertActionSchema, updateActionSchema, insertProjectSchema, insertUserSchema } from "@shared/schema";
 import { z } from "zod";
@@ -256,6 +257,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       res.status(500).json({ message: "Failed to get API key" });
     }
+  });
+
+  // Sitemap endpoint
+  app.get("/sitemap.xml", (req, res) => {
+    res.sendFile(path.resolve(import.meta.dirname, "..", "client", "public", "sitemap.xml"));
   });
 
   const httpServer = createServer(app);
