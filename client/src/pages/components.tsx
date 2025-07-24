@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FileText, Search } from "lucide-react";
 import { ProjectHeader, PhaseFilters, TimelineCard } from "@/components/project-timeline";
 
 const sampleProject1 = {
@@ -66,15 +67,21 @@ export default function Components() {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header Section */}
-        <div className="mb-12">
-          <div className="flex items-baseline justify-between mb-4">
-            <div>
-              <h1 className="text-3xl font-light text-gray-900 mb-1">Component Library</h1>
-              <p className="text-base text-gray-500">Reusable components for project timeline pages</p>
+        {/* Header Section - Similar to projects page */}
+        <div className="mb-9">
+          <div className="grid w-full bg-transparent" style={{ gridTemplateColumns: '20% 60% 20%' }}>
+            <div className="flex flex-col items-center gap-1 text-gray-700 group">
+              <FileText className="h-6 w-6 text-[#333333]" />
+              <span className="text-base">Components</span>
+            </div>
+            <div className="flex items-center justify-center">
+              <span className="text-base text-gray-400">Library</span>
+            </div>
+            <div className="flex flex-col items-center gap-1 text-gray-400 group">
+              <Search className="h-6 w-6 text-gray-400" />
+              <span className="text-base">Examples</span>
             </div>
           </div>
-          <hr className="border-0 h-px bg-gradient-to-r from-gray-300 via-gray-200 to-transparent" />
         </div>
 
         {/* Timeline Card Examples */}
