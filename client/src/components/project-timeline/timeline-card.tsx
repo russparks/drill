@@ -769,7 +769,7 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
         <div className="relative inline-block" ref={dropdownRef}>
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="flex items-center bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 transition-colors pt-[2px] pb-[2px] pl-[12px] pr-[12px] mt-[-5px] mb-[-5px]"
+            className="flex items-center bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 transition-colors mt-[-5px] mb-[-5px] pt-[5px] pb-[5px] pl-[8px] pr-[8px] text-[#5e5e5e]"
             style={{ padding: '6px 10px', fontSize: '13px' }}
           >
             <ChevronDown className={`h-4 w-4 text-gray-500 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
