@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FileText, Search } from "lucide-react";
+import { FileText, Search, Settings, Layers, Code, Package } from "lucide-react";
 import { ProjectHeader, PhaseFilters, TimelineCard } from "@/components/project-timeline";
 
 const sampleProject1 = {
@@ -45,6 +45,7 @@ const samplePhases2 = [
 ];
 
 export default function Components() {
+  const [activeTab, setActiveTab] = useState("timeline");
   const [activePhases1, setActivePhases1] = useState(['tender', 'precon', 'construction', 'aftercare']);
   const [activePhases2, setActivePhases2] = useState(['precon', 'construction']);
 
@@ -67,133 +68,159 @@ export default function Components() {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header Section - Similar to projects page */}
+        {/* Header Section - 5 Tab Navigation */}
         <div className="mb-9">
-          <div className="grid w-full bg-transparent" style={{ gridTemplateColumns: '20% 60% 20%' }}>
-            <div className="flex flex-col items-center gap-1 text-gray-700 group">
-              <FileText className="h-6 w-6 text-[#333333]" />
-              <span className="text-base">Components</span>
+          <div className="grid w-full bg-transparent" style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
+            <div 
+              className={`flex flex-col items-center gap-1 cursor-pointer group ${
+                activeTab === "timeline" ? "text-gray-700" : "text-gray-400"
+              }`}
+              onClick={() => setActiveTab("timeline")}
+            >
+              <Layers className={`h-6 w-6 ${activeTab === "timeline" ? "text-[#333333]" : "text-gray-400"}`} />
+              <span className="text-base">Timeline</span>
             </div>
-            <div className="flex items-center justify-center">
-              <span className="text-base text-gray-400">Library</span>
+            <div 
+              className={`flex flex-col items-center gap-1 cursor-pointer group ${
+                activeTab === "widgets" ? "text-gray-700" : "text-gray-400"
+              }`}
+              onClick={() => setActiveTab("widgets")}
+            >
+              <Package className={`h-6 w-6 ${activeTab === "widgets" ? "text-[#333333]" : "text-gray-400"}`} />
+              <span className="text-base">Widgets</span>
             </div>
-            <div className="flex flex-col items-center gap-1 text-gray-400 group">
-              <Search className="h-6 w-6 text-gray-400" />
-              <span className="text-base">Examples</span>
+            <div 
+              className={`flex flex-col items-center gap-1 cursor-pointer group ${
+                activeTab === "forms" ? "text-gray-700" : "text-gray-400"
+              }`}
+              onClick={() => setActiveTab("forms")}
+            >
+              <FileText className={`h-6 w-6 ${activeTab === "forms" ? "text-[#333333]" : "text-gray-400"}`} />
+              <span className="text-base">Forms</span>
+            </div>
+            <div 
+              className={`flex flex-col items-center gap-1 cursor-pointer group ${
+                activeTab === "utilities" ? "text-gray-700" : "text-gray-400"
+              }`}
+              onClick={() => setActiveTab("utilities")}
+            >
+              <Code className={`h-6 w-6 ${activeTab === "utilities" ? "text-[#333333]" : "text-gray-400"}`} />
+              <span className="text-base">Utilities</span>
+            </div>
+            <div 
+              className={`flex flex-col items-center gap-1 cursor-pointer group ${
+                activeTab === "settings" ? "text-gray-700" : "text-gray-400"
+              }`}
+              onClick={() => setActiveTab("settings")}
+            >
+              <Settings className={`h-6 w-6 ${activeTab === "settings" ? "text-[#333333]" : "text-gray-400"}`} />
+              <span className="text-base">Settings</span>
             </div>
           </div>
         </div>
 
-        {/* Timeline Card Examples */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">Timeline Card Component</h2>
-          
-          <div className="space-y-8">
-            <div>
-              <h3 className="text-lg font-medium text-gray-700 mb-4">Example 1: Construction Phase Timeline</h3>
-              <TimelineCard project={sampleProject1} />
-            </div>
-            
-            {/* <div>
-              <h3 className="text-lg font-medium text-gray-700 mb-4">Example 2: Construction Phase Timeline (Large Project)</h3>
-              <TimelineCard project={sampleProject2} />
-            </div> */}
-          </div>
-        </section>
-
-        {/* Project Header Examples */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">Project Header Component</h2>
-          
-          <div className="space-y-8">
-            <div>
-              <h3 className="text-lg font-medium text-gray-700 mb-4">Example 1: Construction Phase Project</h3>
-              <ProjectHeader project={sampleProject1} />
-            </div>
-            
-            {/* <div>
-              <h3 className="text-lg font-medium text-gray-700 mb-4">Example 2: Precon Phase Project</h3>
-              <ProjectHeader project={sampleProject2} />
-            </div> */}
-          </div>
-        </section>
-
-        {/* Phase Filters Examples */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">Phase Filters Component</h2>
-          
-          <div className="space-y-8">
-            <div>
-              <h3 className="text-lg font-medium text-gray-700 mb-4">Example 1: All Phases Active</h3>
-              <PhaseFilters 
-                activePhases={activePhases1}
-                onPhaseToggle={handlePhaseToggle1}
-                phases={samplePhases1}
-              />
-              <div className="mt-4 p-4 bg-white rounded-lg border">
-                <p className="text-sm text-gray-600">
-                  Active phases: {activePhases1.join(', ')}
-                </p>
+        {/* Tab Content */}
+        {activeTab === "timeline" && (
+          <>
+            {/* Timeline Card Examples */}
+            <section className="mb-12">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Timeline Card Component</h2>
+              
+              <div className="space-y-8">
+                <div>
+                  <h3 className="text-lg font-medium text-gray-700 mb-4">Example 1: Construction Phase Timeline</h3>
+                  <TimelineCard project={sampleProject1} />
+                </div>
+                
+                {/* <div>
+                  <h3 className="text-lg font-medium text-gray-700 mb-4">Example 2: Construction Phase Timeline (Large Project)</h3>
+                  <TimelineCard project={sampleProject2} />
+                </div> */}
               </div>
-            </div>
-            
-            <div>
-              <h3 className="text-lg font-medium text-gray-700 mb-4">Example 2: Selective Phase Filtering</h3>
-              <PhaseFilters 
-                activePhases={activePhases2}
-                onPhaseToggle={handlePhaseToggle2}
-                phases={samplePhases2}
-              />
-              <div className="mt-4 p-4 bg-white rounded-lg border">
-                <p className="text-sm text-gray-600">
-                  Active phases: {activePhases2.join(', ')}
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+            </section>
 
-        {/* Usage Instructions */}
-        <section className="bg-white rounded-lg p-6 border">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">Usage Instructions</h2>
-          
-          <div className="space-y-4 text-sm">
-            <div>
-              <h3 className="font-medium text-gray-900 mb-2">Import Components:</h3>
-              <pre className="bg-gray-100 p-3 rounded text-xs overflow-x-auto">
-{`import { ProjectHeader, PhaseFilters } from "@/components/project-timeline";`}
-              </pre>
-            </div>
-            
-            <div>
-              <h3 className="font-medium text-gray-900 mb-2">ProjectHeader Props:</h3>
-              <ul className="list-disc list-inside text-gray-600 space-y-1">
-                <li>project: Object with projectNumber, name, status, dates, value, retention, postcode, description</li>
-                <li>Automatically handles status colors and formatting</li>
-              </ul>
-            </div>
-            
-            <div>
-              <h3 className="font-medium text-gray-900 mb-2">PhaseFilters Props:</h3>
-              <ul className="list-disc list-inside text-gray-600 space-y-1">
-                <li>activePhases: Array of currently active phase keys</li>
-                <li>onPhaseToggle: Function to handle phase toggle (phase: string) =&gt; void</li>
-                <li>phases: Array of phase objects with key, label, count, value</li>
-              </ul>
-            </div>
-            
-            <div>
-              <h3 className="font-medium text-gray-900 mb-2">Available Utility Functions:</h3>
-              <ul className="list-disc list-inside text-gray-600 space-y-1">
-                <li>getStatusColor(status) - Returns color for project status</li>
-                <li>getStatusBackgroundColor(status) - Returns background color</li>
-                <li>formatCurrency(value) - Formats currency values</li>
-                <li>formatDate(dateString) - Formats dates to GB locale</li>
-                <li>calculateWeekInfo(project) - Calculates week progression</li>
-              </ul>
-            </div>
+            {/* Project Header Examples */}
+            <section className="mb-12">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Project Header Component</h2>
+              
+              <div className="space-y-8">
+                <div>
+                  <h3 className="text-lg font-medium text-gray-700 mb-4">Example 1: Construction Phase Project</h3>
+                  <ProjectHeader project={sampleProject1} />
+                </div>
+                
+                {/* <div>
+                  <h3 className="text-lg font-medium text-gray-700 mb-4">Example 2: Precon Phase Project</h3>
+                  <ProjectHeader project={sampleProject2} />
+                </div> */}
+              </div>
+            </section>
+
+            {/* Phase Filters Examples */}
+            <section className="mb-12">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Phase Filters Component</h2>
+              
+              <div className="space-y-8">
+                <div>
+                  <h3 className="text-lg font-medium text-gray-700 mb-4">Example 1: All Phases Active</h3>
+                  <PhaseFilters 
+                    activePhases={activePhases1}
+                    onPhaseToggle={handlePhaseToggle1}
+                    phases={samplePhases1}
+                  />
+                  <div className="mt-4 p-4 bg-white rounded-lg border">
+                    <p className="text-sm text-gray-600">
+                      Active phases: {activePhases1.join(', ')}
+                    </p>
+                  </div>
+                </div>
+                
+                <div>
+                  <h3 className="text-lg font-medium text-gray-700 mb-4">Example 2: Selective Phase Filtering</h3>
+                  <PhaseFilters 
+                    activePhases={activePhases2}
+                    onPhaseToggle={handlePhaseToggle2}
+                    phases={samplePhases2}
+                  />
+                  <div className="mt-4 p-4 bg-white rounded-lg border">
+                    <p className="text-sm text-gray-600">
+                      Active phases: {activePhases2.join(', ')}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </>
+        )}
+
+        {/* Other tab content placeholders */}
+        {activeTab === "widgets" && (
+          <div className="text-center py-12 text-gray-500">
+            <Package className="h-12 w-12 mx-auto mb-4 text-gray-400" />
+            <p>Widgets content coming soon...</p>
           </div>
-        </section>
+        )}
+
+        {activeTab === "forms" && (
+          <div className="text-center py-12 text-gray-500">
+            <FileText className="h-12 w-12 mx-auto mb-4 text-gray-400" />
+            <p>Forms content coming soon...</p>
+          </div>
+        )}
+
+        {activeTab === "utilities" && (
+          <div className="text-center py-12 text-gray-500">
+            <Code className="h-12 w-12 mx-auto mb-4 text-gray-400" />
+            <p>Utilities content coming soon...</p>
+          </div>
+        )}
+
+        {activeTab === "settings" && (
+          <div className="text-center py-12 text-gray-500">
+            <Settings className="h-12 w-12 mx-auto mb-4 text-gray-400" />
+            <p>Settings content coming soon...</p>
+          </div>
+        )}
       </div>
     </div>
   );
