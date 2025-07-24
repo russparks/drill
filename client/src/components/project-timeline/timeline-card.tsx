@@ -765,7 +765,7 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
         </div>
       )}
       {/* Project Navigation Dropdown */}
-      <div className="relative" style={{ marginTop: '10px', marginLeft: '25px' }}>
+      <div className="relative text-[12px] ml-[11.5px] mr-[11.5px] mt-[0px] mb-[0px] font-thin" style={{ marginTop: '10px', marginLeft: '25px' }}>
         <div className="relative inline-block" ref={dropdownRef}>
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
