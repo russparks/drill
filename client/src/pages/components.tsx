@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FileText, Search, Settings, Layers, Code, Package } from "lucide-react";
+import { FileText, Search, Settings, Layers, Code, Package, MapPin } from "lucide-react";
 import { ProjectHeader, PhaseFilters, TimelineCard } from "@/components/project-timeline";
 
 const sampleProject1 = {
@@ -68,7 +68,18 @@ export default function Components() {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header Section - 5 Tab Navigation */}
+        {/* Option 1: Primary Header (Projects page style) */}
+        <div className="mb-8">
+          <div className="flex items-center gap-3 mb-1">
+            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+              <MapPin className="h-4 w-4 text-blue-600" />
+            </div>
+            <h1 className="text-2xl font-semibold text-gray-900">Component Library</h1>
+          </div>
+          <p className="text-gray-600 ml-11">Interactive showcase of reusable UI components</p>
+        </div>
+
+        {/* Option 2: Subtle Sub-page Header */}
         <div className="mb-9">
           <div className="grid w-full bg-transparent" style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
             <div 
@@ -123,46 +134,70 @@ export default function Components() {
         {activeTab === "timeline" && (
           <>
             {/* Timeline Card Examples */}
-            <section className="mb-12">
-              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Timeline Card Component</h2>
+            <section className="mb-16">
+              <div className="border-b-2 border-gray-300 pb-4 mb-8">
+                <h2 className="text-2xl font-semibold text-gray-900">Timeline Card Component</h2>
+                <p className="text-sm text-gray-500 mt-1">Interactive project timeline with progress indicators</p>
+              </div>
               
-              <div className="space-y-8">
+              <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-medium text-gray-700 mb-4">Example 1: Construction Phase Timeline</h3>
+                  <div className="border-l-4 border-gray-200 pl-4 mb-4">
+                    <h3 className="text-lg font-medium text-gray-700">Example 1: Construction Phase Timeline</h3>
+                    <p className="text-sm text-gray-500">Standard timeline card with project details</p>
+                  </div>
                   <TimelineCard project={sampleProject1} />
                 </div>
                 
                 {/* <div>
-                  <h3 className="text-lg font-medium text-gray-700 mb-4">Example 2: Construction Phase Timeline (Large Project)</h3>
+                  <div className="border-l-4 border-gray-200 pl-4 mb-4">
+                    <h3 className="text-lg font-medium text-gray-700">Example 2: Construction Phase Timeline (Large Project)</h3>
+                    <p className="text-sm text-gray-500">Timeline for larger scale projects</p>
+                  </div>
                   <TimelineCard project={sampleProject2} />
                 </div> */}
               </div>
             </section>
 
             {/* Project Header Examples */}
-            <section className="mb-12">
-              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Project Header Component</h2>
+            <section className="mb-16">
+              <div className="border-b-2 border-gray-300 pb-4 mb-8">
+                <h2 className="text-2xl font-semibold text-gray-900">Project Header Component</h2>
+                <p className="text-sm text-gray-500 mt-1">Compact project information display with status indicators</p>
+              </div>
               
-              <div className="space-y-8">
+              <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-medium text-gray-700 mb-4">Example 1: Construction Phase Project</h3>
+                  <div className="border-l-4 border-gray-200 pl-4 mb-4">
+                    <h3 className="text-lg font-medium text-gray-700">Example 1: Construction Phase Project</h3>
+                    <p className="text-sm text-gray-500">Standard header with project metadata</p>
+                  </div>
                   <ProjectHeader project={sampleProject1} />
                 </div>
                 
                 {/* <div>
-                  <h3 className="text-lg font-medium text-gray-700 mb-4">Example 2: Precon Phase Project</h3>
+                  <div className="border-l-4 border-gray-200 pl-4 mb-4">
+                    <h3 className="text-lg font-medium text-gray-700">Example 2: Precon Phase Project</h3>
+                    <p className="text-sm text-gray-500">Header for precon phase projects</p>
+                  </div>
                   <ProjectHeader project={sampleProject2} />
                 </div> */}
               </div>
             </section>
 
             {/* Phase Filters Examples */}
-            <section className="mb-12">
-              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Phase Filters Component</h2>
+            <section className="mb-16">
+              <div className="border-b-2 border-gray-300 pb-4 mb-8">
+                <h2 className="text-2xl font-semibold text-gray-900">Phase Filters Component</h2>
+                <p className="text-sm text-gray-500 mt-1">Interactive phase filtering with statistics</p>
+              </div>
               
-              <div className="space-y-8">
+              <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-medium text-gray-700 mb-4">Example 1: All Phases Active</h3>
+                  <div className="border-l-4 border-gray-200 pl-4 mb-4">
+                    <h3 className="text-lg font-medium text-gray-700">Example 1: All Phases Active</h3>
+                    <p className="text-sm text-gray-500">Filter with all project phases enabled</p>
+                  </div>
                   <PhaseFilters 
                     activePhases={activePhases1}
                     onPhaseToggle={handlePhaseToggle1}
@@ -176,7 +211,10 @@ export default function Components() {
                 </div>
                 
                 <div>
-                  <h3 className="text-lg font-medium text-gray-700 mb-4">Example 2: Selective Phase Filtering</h3>
+                  <div className="border-l-4 border-gray-200 pl-4 mb-4">
+                    <h3 className="text-lg font-medium text-gray-700">Example 2: Selective Phase Filtering</h3>
+                    <p className="text-sm text-gray-500">Filter with selective phase activation</p>
+                  </div>
                   <PhaseFilters 
                     activePhases={activePhases2}
                     onPhaseToggle={handlePhaseToggle2}
