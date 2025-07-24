@@ -776,7 +776,7 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
           </button>
           
           {isDropdownOpen && (
-            <div className="absolute left-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto">
+            <div className="absolute left-0 top-full w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto mt-[-22px] mb-[-22px] ml-[28px] mr-[28px] pt-[3px] pb-[3px]">
               <div className="py-1">
                 {(() => {
                   // Sort projects: live projects first (tender, precon, construction), then completed projects (tender complete, precon complete, aftercare)
