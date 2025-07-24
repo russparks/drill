@@ -31,6 +31,7 @@ export default function Setup({ onTabChange }: SetupProps) {
   
   // State for phase filters - all phases active by default
   const [activeFilters, setActiveFilters] = useState<string[]>(['tender', 'precon', 'construction', 'aftercare']);
+  const [showFilterMessage, setShowFilterMessage] = useState(false);
 
   // Listen for modal open events from navbar
   useEffect(() => {
@@ -284,7 +285,11 @@ export default function Setup({ onTabChange }: SetupProps) {
                     setActiveFilters(prev => {
                       if (prev.includes("tender")) {
                         // Don't allow deselecting if it's the only active filter
-                        if (prev.length === 1) return prev;
+                        if (prev.length === 1) {
+                          setShowFilterMessage(true);
+                          setTimeout(() => setShowFilterMessage(false), 3000);
+                          return prev;
+                        }
                         return prev.filter(f => f !== "tender");
                       } else {
                         return [...prev, "tender"];
@@ -305,7 +310,11 @@ export default function Setup({ onTabChange }: SetupProps) {
                     setActiveFilters(prev => {
                       if (prev.includes("precon")) {
                         // Don't allow deselecting if it's the only active filter
-                        if (prev.length === 1) return prev;
+                        if (prev.length === 1) {
+                          setShowFilterMessage(true);
+                          setTimeout(() => setShowFilterMessage(false), 3000);
+                          return prev;
+                        }
                         return prev.filter(f => f !== "precon");
                       } else {
                         return [...prev, "precon"];
@@ -326,7 +335,11 @@ export default function Setup({ onTabChange }: SetupProps) {
                     setActiveFilters(prev => {
                       if (prev.includes("construction")) {
                         // Don't allow deselecting if it's the only active filter
-                        if (prev.length === 1) return prev;
+                        if (prev.length === 1) {
+                          setShowFilterMessage(true);
+                          setTimeout(() => setShowFilterMessage(false), 3000);
+                          return prev;
+                        }
                         return prev.filter(f => f !== "construction");
                       } else {
                         return [...prev, "construction"];
@@ -347,7 +360,11 @@ export default function Setup({ onTabChange }: SetupProps) {
                     setActiveFilters(prev => {
                       if (prev.includes("aftercare")) {
                         // Don't allow deselecting if it's the only active filter
-                        if (prev.length === 1) return prev;
+                        if (prev.length === 1) {
+                          setShowFilterMessage(true);
+                          setTimeout(() => setShowFilterMessage(false), 3000);
+                          return prev;
+                        }
                         return prev.filter(f => f !== "aftercare");
                       } else {
                         return [...prev, "aftercare"];
@@ -401,6 +418,11 @@ export default function Setup({ onTabChange }: SetupProps) {
                 </div>
               </div>
             </div>
+            {showFilterMessage && (
+              <div className="mt-2 ml-24 text-xs text-gray-500 italic">
+                At least one filter must be selected.
+              </div>
+            )}
           </div>
         )}
 
