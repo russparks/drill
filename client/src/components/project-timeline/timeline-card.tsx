@@ -765,7 +765,7 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
         </div>
       )}
       {/* Project Navigation Dropdown */}
-      <div className="relative text-[12px] ml-[11.5px] mr-[11.5px] mt-[0px] mb-[0px] font-thin" style={{ marginTop: '10px', marginLeft: '25px' }}>
+      <div className="relative text-[12px] ml-[11.5px] mr-[11.5px] mt-[0px] mb-[0px] font-thin" style={{ marginTop: '2px', marginLeft: '25px' }}>
         <div className="relative inline-block" ref={dropdownRef}>
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -782,7 +782,7 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
                 {(() => {
                   // Sort projects: live projects first (tender, precon, construction), then completed projects (tender complete, precon complete, aftercare)
                   const sortedProjects = [...projects].sort((a, b) => {
-                    const getProjectInfo = (project) => {
+                    const getProjectInfo = (project: any) => {
                       const retentionValue = parseFloat(project.retention?.replace(/[£,]/g, '') || '0');
                       const contractDate = new Date(project.contractCompletionDate);
                       const currentDate = new Date();
@@ -797,7 +797,7 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
                     const bInfo = getProjectInfo(b);
                     
                     // Define order values
-                    const getOrderValue = (info) => {
+                    const getOrderValue = (info: any) => {
                       if (!info.isCompleted) {
                         // Live projects
                         switch (info.status) {
