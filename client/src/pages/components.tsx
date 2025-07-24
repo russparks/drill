@@ -66,9 +66,15 @@ export default function Components() {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Component Library</h1>
-          <p className="text-gray-600">Reusable components for project timeline pages</p>
+        {/* Header Section */}
+        <div className="mb-12">
+          <div className="flex items-baseline justify-between mb-4">
+            <div>
+              <h1 className="text-4xl font-light text-gray-900 mb-1">Component Library</h1>
+              <p className="text-lg text-gray-500">Reusable components for project timeline pages</p>
+            </div>
+          </div>
+          <hr className="border-0 h-px bg-gradient-to-r from-gray-300 via-gray-200 to-transparent" />
         </div>
 
         {/* Timeline Card Examples */}
