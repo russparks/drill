@@ -277,6 +277,14 @@ export default function Setup({ onTabChange }: SetupProps) {
         {/* Phase Filter Buttons - only show on projects tab */}
         {activeTab === "projects" && (
           <div className="mb-6">
+            {/* Fixed height container for message to prevent layout shift */}
+            <div className="h-4 mb-2 ml-24">
+              {showFilterMessage && (
+                <div className="text-xs text-gray-500 italic">
+                  At least one filter must be selected.
+                </div>
+              )}
+            </div>
             <div className="flex items-center gap-4">
               <div className="text-sm text-gray-500 font-medium w-20 pl-4">Process:</div>
               <div className="border border-dotted border-gray-200 rounded px-3 py-2 flex flex-wrap items-center gap-3" style={{"borderWidth": "1px", "borderStyle": "dotted"}}>
@@ -418,11 +426,6 @@ export default function Setup({ onTabChange }: SetupProps) {
                 </div>
               </div>
             </div>
-            {showFilterMessage && (
-              <div className="mt-2 ml-24 text-xs text-gray-500 italic">
-                At least one filter must be selected.
-              </div>
-            )}
           </div>
         )}
 
