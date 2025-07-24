@@ -765,7 +765,7 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
         </div>
       )}
       {/* Project Navigation Dropdown */}
-      <div className="relative text-[12px] ml-[11.5px] mr-[11.5px] mt-[0px] mb-[0px] font-thin" style={{ marginTop: '-5px', marginLeft: '25px' }}>
+      <div className="relative text-[12px] font-thin" style={{ marginTop: '-15px', marginLeft: '25px', width: 'fit-content' }}>
         <div className="relative inline-block" ref={dropdownRef}>
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -777,7 +777,7 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
           </button>
           
           {isDropdownOpen && (
-            <div className="absolute left-0 top-full mt-1 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto">
+            <div className="absolute left-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto">
               <div className="py-1">
                 {(() => {
                   // Sort projects: live projects first (tender, precon, construction), then completed projects (tender complete, precon complete, aftercare)
