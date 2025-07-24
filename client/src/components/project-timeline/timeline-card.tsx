@@ -769,7 +769,7 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
         <div className="relative inline-block" ref={dropdownRef}>
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="flex items-center bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 transition-colors pt-[6px] pb-[2px] pl-[7px] pr-[7px] mt-[-5px] mb-[-5px]"
+            className="flex items-center bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 transition-colors pt-[2px] pb-[2px] pl-[12px] pr-[12px] mt-[-5px] mb-[-5px]"
             style={{ padding: '6px 10px', fontSize: '13px' }}
           >
             <span className="font-medium text-gray-700 text-[12px] text-left">SELECT</span>
