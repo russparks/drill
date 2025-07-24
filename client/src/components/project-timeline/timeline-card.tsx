@@ -725,7 +725,6 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
           </div>
         </CardContent>
       </Card>
-      
       {/* Bottom tab with remaining weeks */}
       {weekInfo && (
         <div className="flex justify-end relative" style={{ marginTop: '-3px', marginRight: '25px' }}>
@@ -765,13 +764,12 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
           </div>
         </div>
       )}
-
       {/* Project Navigation Dropdown */}
       <div className="relative" style={{ marginTop: '10px', marginLeft: '25px' }}>
         <div className="relative inline-block" ref={dropdownRef}>
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 transition-colors pl-[10px] pr-[10px] pt-[0px] pb-[0px]"
             style={{ fontSize: '13px' }}
           >
             <span className="font-medium text-gray-700">Projects</span>
@@ -859,7 +857,6 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
           )}
         </div>
       </div>
-
       {/* Edit Project Dialog */}
       <Dialog open={isProjectDialogOpen} onOpenChange={setIsProjectDialogOpen}>
         <DialogContent className="max-w-lg">
@@ -1045,7 +1042,6 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
           </form>
         </DialogContent>
       </Dialog>
-
       {/* Delete Confirmation Dialog */}
       <ConfirmDialog
         open={isConfirmDialogOpen}
