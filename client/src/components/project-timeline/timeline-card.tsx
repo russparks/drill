@@ -765,12 +765,12 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
         </div>
       )}
       {/* Project Navigation Dropdown */}
-      <div className="relative text-[12px] ml-[11.5px] mr-[11.5px] mt-[0px] mb-[0px] font-thin" style={{ marginTop: '2px', marginLeft: '25px' }}>
+      <div className="relative text-[12px] ml-[11.5px] mr-[11.5px] mt-[0px] mb-[0px] font-thin" style={{ marginTop: '-5px', marginLeft: '25px' }}>
         <div className="relative inline-block" ref={dropdownRef}>
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 transition-colors pl-[10px] pr-[10px] pt-[0px] pb-[0px]"
-            style={{ fontSize: '13px' }}
+            className="flex items-center gap-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 transition-colors"
+            style={{ padding: '6px 10px', fontSize: '13px' }}
           >
             <span className="font-medium text-gray-700 text-[12px] text-left">SELECT</span>
             <ChevronDown className={`h-4 w-4 text-gray-500 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
