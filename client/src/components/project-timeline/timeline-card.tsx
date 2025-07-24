@@ -772,7 +772,7 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
             className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 transition-colors pl-[10px] pr-[10px] pt-[0px] pb-[0px]"
             style={{ fontSize: '13px' }}
           >
-            <span className="font-medium text-gray-700">Projects</span>
+            <span className="font-medium text-gray-700 text-[12px]">SELECT</span>
             <ChevronDown className={`h-4 w-4 text-gray-500 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
           </button>
           
