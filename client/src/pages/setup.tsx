@@ -281,11 +281,15 @@ export default function Setup({ onTabChange }: SetupProps) {
               <div className="border border-dotted border-gray-200 rounded px-3 py-2 flex flex-wrap items-center gap-3" style={{"borderWidth": "1px", "borderStyle": "dotted"}}>
                 <button
                   onClick={() => {
-                    setActiveFilters(prev => 
-                      prev.includes("tender") 
-                        ? prev.filter(f => f !== "tender")
-                        : [...prev, "tender"]
-                    );
+                    setActiveFilters(prev => {
+                      if (prev.includes("tender")) {
+                        // Don't allow deselecting if it's the only active filter
+                        if (prev.length === 1) return prev;
+                        return prev.filter(f => f !== "tender");
+                      } else {
+                        return [...prev, "tender"];
+                      }
+                    });
                   }}
                   className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
                     activeFilters.includes("tender") 
@@ -298,11 +302,15 @@ export default function Setup({ onTabChange }: SetupProps) {
                 </button>
                 <button
                   onClick={() => {
-                    setActiveFilters(prev => 
-                      prev.includes("precon") 
-                        ? prev.filter(f => f !== "precon")
-                        : [...prev, "precon"]
-                    );
+                    setActiveFilters(prev => {
+                      if (prev.includes("precon")) {
+                        // Don't allow deselecting if it's the only active filter
+                        if (prev.length === 1) return prev;
+                        return prev.filter(f => f !== "precon");
+                      } else {
+                        return [...prev, "precon"];
+                      }
+                    });
                   }}
                   className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
                     activeFilters.includes("precon") 
@@ -315,11 +323,15 @@ export default function Setup({ onTabChange }: SetupProps) {
                 </button>
                 <button
                   onClick={() => {
-                    setActiveFilters(prev => 
-                      prev.includes("construction") 
-                        ? prev.filter(f => f !== "construction")
-                        : [...prev, "construction"]
-                    );
+                    setActiveFilters(prev => {
+                      if (prev.includes("construction")) {
+                        // Don't allow deselecting if it's the only active filter
+                        if (prev.length === 1) return prev;
+                        return prev.filter(f => f !== "construction");
+                      } else {
+                        return [...prev, "construction"];
+                      }
+                    });
                   }}
                   className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
                     activeFilters.includes("construction") 
@@ -332,11 +344,15 @@ export default function Setup({ onTabChange }: SetupProps) {
                 </button>
                 <button
                   onClick={() => {
-                    setActiveFilters(prev => 
-                      prev.includes("aftercare") 
-                        ? prev.filter(f => f !== "aftercare")
-                        : [...prev, "aftercare"]
-                    );
+                    setActiveFilters(prev => {
+                      if (prev.includes("aftercare")) {
+                        // Don't allow deselecting if it's the only active filter
+                        if (prev.length === 1) return prev;
+                        return prev.filter(f => f !== "aftercare");
+                      } else {
+                        return [...prev, "aftercare"];
+                      }
+                    });
                   }}
                   className={`px-2 py-0.5 rounded-full text-xs font-medium transition-colors border flex items-center gap-1 ${
                     activeFilters.includes("aftercare") 
