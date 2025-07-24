@@ -70,9 +70,13 @@ export default function Components() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Option 1: Primary Header (Projects page style) */}
         <div className="mb-8">
-          <h1 className="text-2xl font-semibold text-gray-900 mb-1">Component Library</h1>
-          <p className="text-gray-600 mb-4">Interactive showcase of reusable UI components</p>
-          <hr className="border-0 h-px bg-gradient-to-r from-gray-300 via-gray-200 to-transparent" />
+          <div className="flex items-center gap-3 mb-1">
+            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+              <MapPin className="h-4 w-4 text-blue-600" />
+            </div>
+            <h1 className="text-2xl font-semibold text-gray-900">Component Library</h1>
+          </div>
+          <p className="text-gray-600 ml-11">Interactive showcase of reusable UI components</p>
         </div>
 
         {/* Option 2: Subtle Sub-page Header */}
@@ -131,9 +135,9 @@ export default function Components() {
           <>
             {/* Timeline Card Examples */}
             <section className="mb-16">
-              <div className="bg-white rounded-lg p-6 mb-8 border shadow-sm">
+              <div className="border-b-2 border-gray-300 pb-4 mb-8">
                 <h2 className="text-2xl font-semibold text-gray-900">Timeline Card Component</h2>
-                <p className="text-gray-500 mt-1">Interactive project timeline with progress indicators</p>
+                <p className="text-sm text-gray-500 mt-1">Interactive project timeline with progress indicators</p>
               </div>
               
               <div className="space-y-6">
@@ -157,9 +161,9 @@ export default function Components() {
 
             {/* Project Header Examples */}
             <section className="mb-16">
-              <div className="bg-white rounded-lg p-6 mb-8 border shadow-sm">
+              <div className="border-b-2 border-gray-300 pb-4 mb-8">
                 <h2 className="text-2xl font-semibold text-gray-900">Project Header Component</h2>
-                <p className="text-gray-500 mt-1">Compact project information display with status indicators</p>
+                <p className="text-sm text-gray-500 mt-1">Compact project information display with status indicators</p>
               </div>
               
               <div className="space-y-6">
@@ -183,9 +187,9 @@ export default function Components() {
 
             {/* Phase Filters Examples */}
             <section className="mb-16">
-              <div className="bg-white rounded-lg p-6 mb-8 border shadow-sm">
+              <div className="border-b-2 border-gray-300 pb-4 mb-8">
                 <h2 className="text-2xl font-semibold text-gray-900">Phase Filters Component</h2>
-                <p className="text-gray-500 mt-1">Interactive phase filtering with statistics</p>
+                <p className="text-sm text-gray-500 mt-1">Interactive phase filtering with statistics</p>
               </div>
               
               <div className="space-y-6">
