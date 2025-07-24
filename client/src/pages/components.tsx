@@ -81,10 +81,10 @@ export default function Components() {
               <TimelineCard project={sampleProject1} />
             </div>
             
-            <div>
+            {/* <div>
               <h3 className="text-lg font-medium text-gray-700 mb-4">Example 2: Construction Phase Timeline (Large Project)</h3>
               <TimelineCard project={sampleProject2} />
-            </div>
+            </div> */}
           </div>
         </section>
 
@@ -98,10 +98,10 @@ export default function Components() {
               <ProjectHeader project={sampleProject1} />
             </div>
             
-            <div>
+            {/* <div>
               <h3 className="text-lg font-medium text-gray-700 mb-4">Example 2: Precon Phase Project</h3>
               <ProjectHeader project={sampleProject2} />
-            </div>
+            </div> */}
           </div>
         </section>
 
