@@ -142,10 +142,7 @@ export default function Components() {
               
               <div className="space-y-6">
                 <div>
-                  <div className="border-l-4 border-gray-200 pl-4 mb-4">
-                    <h3 className="text-lg font-medium text-gray-700">Example 1: Construction Phase Timeline</h3>
-                    <p className="text-sm text-gray-500">Standard timeline card with project details</p>
-                  </div>
+                  <h3 className="text-lg font-medium text-gray-700 mb-4">Example 1: Construction Phase Timeline</h3>
                   <TimelineCard project={sampleProject1} />
                 </div>
                 
@@ -168,10 +165,7 @@ export default function Components() {
               
               <div className="space-y-6">
                 <div>
-                  <div className="border-l-4 border-gray-200 pl-4 mb-4">
-                    <h3 className="text-lg font-medium text-gray-700">Example 1: Construction Phase Project</h3>
-                    <p className="text-sm text-gray-500">Standard header with project metadata</p>
-                  </div>
+                  <h3 className="text-lg font-medium text-gray-700 mb-4">Example 1: Construction Phase Project</h3>
                   <ProjectHeader project={sampleProject1} />
                 </div>
                 
@@ -194,10 +188,7 @@ export default function Components() {
               
               <div className="space-y-6">
                 <div>
-                  <div className="border-l-4 border-gray-200 pl-4 mb-4">
-                    <h3 className="text-lg font-medium text-gray-700">Example 1: All Phases Active</h3>
-                    <p className="text-sm text-gray-500">Filter with all project phases enabled</p>
-                  </div>
+                  <h3 className="text-lg font-medium text-gray-700 mb-4">Example 1: All Phases Active</h3>
                   <PhaseFilters 
                     activePhases={activePhases1}
                     onPhaseToggle={handlePhaseToggle1}
@@ -211,10 +202,7 @@ export default function Components() {
                 </div>
                 
                 <div>
-                  <div className="border-l-4 border-gray-200 pl-4 mb-4">
-                    <h3 className="text-lg font-medium text-gray-700">Example 2: Selective Phase Filtering</h3>
-                    <p className="text-sm text-gray-500">Filter with selective phase activation</p>
-                  </div>
+                  <h3 className="text-lg font-medium text-gray-700 mb-4">Example 2: Selective Phase Filtering</h3>
                   <PhaseFilters 
                     activePhases={activePhases2}
                     onPhaseToggle={handlePhaseToggle2}
