@@ -278,12 +278,15 @@ export default function Setup({ onTabChange }: SetupProps) {
         {activeTab === "projects" && (
           <div className="mb-6">
             {/* Fixed height container for message to prevent layout shift */}
-            <div className="h-4 mb-2 ml-24">
-              {showFilterMessage && (
-                <div className="text-xs text-gray-500 italic">
-                  At least one filter must be selected.
-                </div>
-              )}
+            <div className="h-4 mb-2 flex items-center gap-4">
+              <div className="w-20 pl-4"></div>
+              <div className="flex-1">
+                {showFilterMessage && (
+                  <div className="text-xs text-gray-500 italic text-center">
+                    At least one filter must be selected.
+                  </div>
+                )}
+              </div>
             </div>
             <div className="flex items-center gap-4">
               <div className="text-sm text-gray-500 font-medium w-20 pl-4">Process:</div>
