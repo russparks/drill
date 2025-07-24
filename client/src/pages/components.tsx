@@ -135,10 +135,7 @@ export default function Components() {
           <>
             {/* Timeline Card Examples */}
             <section className="mb-16">
-              <div className="border-b-2 border-gray-300 pb-4 mb-8">
-                <h2 className="text-2xl font-semibold text-gray-900">Timeline Card Component</h2>
-                <p className="text-sm text-gray-500 mt-1">Interactive project timeline with progress indicators</p>
-              </div>
+
               
               <div className="space-y-6">
                 <div>
