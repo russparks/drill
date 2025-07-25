@@ -127,6 +127,8 @@ export default function Components() {
             </div>
           </div>
         </div>
+        
+        <hr className="border-gray-200 mb-8" />
 
         {/* Tab Content */}
         {activeTab === "timeline" && (
