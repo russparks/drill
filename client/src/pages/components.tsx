@@ -235,12 +235,8 @@ export default function Components() {
                       
                       {/* Weekly markers */}
                       {(() => {
-                        // Calculate project duration in weeks
-                        const startDate = new Date(selectedPackageProject.startOnSiteDate);
-                        const endDate = new Date(selectedPackageProject.contractCompletionDate);
-                        const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
-                        const diffWeeks = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 7));
-                        const markerCount = Math.min(diffWeeks + 1, 52); // Cap at 52 weeks (1 year)
+                        // Fixed 74-week timeline
+                        const markerCount = 75; // 74 weeks + 1 for end marker (0-74)
                         
                         return Array.from({ length: markerCount }, (_, i) => (
                           <div
@@ -248,7 +244,7 @@ export default function Components() {
                             className="absolute bg-gray-400"
                             style={{
                               left: `${(i / (markerCount - 1)) * 100}%`,
-                              bottom: '0px', // Changed from top to bottom
+                              bottom: '0px',
                               width: '1px',
                               height: '5px',
                               transform: 'translateX(-0.5px)'
