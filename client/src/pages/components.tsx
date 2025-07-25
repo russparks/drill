@@ -338,88 +338,108 @@ export default function Components() {
                     </div>
                   </div>
                 </div>
-                <hr className="border-gray-200 mt-[5px] mb-[5px]" />
-                <div className="flex flex-col gap-2">
-                  {(() => {
-                    // Calculate total project weeks for positioning
-                    const startDate = new Date(selectedPackageProject.startOnSiteDate);
-                    const contractDate = new Date(selectedPackageProject.contractCompletionDate);
-                    const totalWeeks = Math.ceil((contractDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
-                    
-                    // Calculate construction completion week (anticipated completion)
-                    const constructionDate = new Date(selectedPackageProject.constructionCompletionDate);
-                    const constructionWeeks = Math.ceil((constructionDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
-                    
-                    // Define package durations with realistic construction sequencing
-                    const packages = [
-                      { name: 'Foundations', startWeek: 2, duration: 12, color: 'rgb(139, 69, 19)' }, // brown - weeks 2-14
-                      { name: 'Envelope', startWeek: 8, duration: 18, color: 'rgb(34, 197, 94)' }, // green - weeks 8-26
-                      { name: 'Internals', startWeek: 20, duration: Math.max(16, constructionWeeks - 24), color: 'rgb(59, 130, 246)' }, // blue - overlapping with envelope
-                      { name: 'MEP', startWeek: 25, duration: Math.max(12, constructionWeeks - 29), color: 'rgb(234, 179, 8)' }, // yellow - overlapping with internals
-                      { name: 'Externals', startWeek: Math.max(30, constructionWeeks - 8), duration: 8, color: 'rgb(168, 85, 247)' } // purple - finishes around 2 weeks before construction completion
-                    ];
-                    
-                    return packages.map((pkg, index) => (
-                      <div key={index} className="flex items-center h-[11px]">
-                        {/* Package title */}
-                        <div className="flex items-center justify-end w-24 text-right" style={{ marginRight: '6px' }}>
-                          <span className="text-xs font-medium text-gray-700">{pkg.name}</span>
+                
+                {/* Package Timeline Layout */}
+                {(() => {
+                  // Calculate total project weeks for positioning
+                  const startDate = new Date(selectedPackageProject.startOnSiteDate);
+                  const contractDate = new Date(selectedPackageProject.contractCompletionDate);
+                  const totalWeeks = Math.ceil((contractDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
+                  
+                  // Calculate construction completion week (anticipated completion)
+                  const constructionDate = new Date(selectedPackageProject.constructionCompletionDate);
+                  const constructionWeeks = Math.ceil((constructionDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
+                  
+                  // Define package durations with realistic construction sequencing
+                  const packages = [
+                    { name: 'Foundations', startWeek: 2, duration: 12, color: 'rgb(139, 69, 19)' }, // brown - weeks 2-14
+                    { name: 'Envelope', startWeek: 8, duration: 18, color: 'rgb(34, 197, 94)' }, // green - weeks 8-26
+                    { name: 'Internals', startWeek: 20, duration: Math.max(16, constructionWeeks - 24), color: 'rgb(59, 130, 246)' }, // blue - overlapping with envelope
+                    { name: 'MEP', startWeek: 25, duration: Math.max(12, constructionWeeks - 29), color: 'rgb(234, 179, 8)' }, // yellow - overlapping with internals
+                    { name: 'Externals', startWeek: Math.max(30, constructionWeeks - 8), duration: 8, color: 'rgb(168, 85, 247)' } // purple - finishes around 2 weeks before construction completion
+                  ];
+                  
+                  return (
+                    <div className="flex mt-[5px]">
+                      {/* Package titles column */}
+                      <div className="flex flex-col gap-2" style={{ marginRight: '6px' }}>
+                        {packages.map((pkg, index) => (
+                          <div key={index} className="flex items-center justify-end w-24 text-right h-[11px]">
+                            <span className="text-xs font-medium text-gray-700">{pkg.name}</span>
+                          </div>
+                        ))}
+                      </div>
+                      
+                      {/* Timeline container with all dashed lines and progress bars */}
+                      <div className="flex-1 relative">
+                        {/* All dashed lines in one container for perfect alignment */}
+                        <div className="absolute inset-0">
+                          {packages.map((_, index) => (
+                            <div key={index} className="absolute flex items-center" style={{ 
+                              top: `${(index * 13) + 6}px`, // 11px height + 2px gap between items
+                              left: '0px', 
+                              right: '10px',
+                              height: '5px'
+                            }}>
+                              <div className="w-full h-px border-t border-dashed border-gray-400" style={{ opacity: 0.5 }}></div>
+                            </div>
+                          ))}
                         </div>
                         
-                        {/* Progress bar container with dashed line and diamonds */}
-                        <div className="flex-1 h-[5px] relative">
-                          {/* Left diamond aligned with Main Project progress bar */}
-                          <div className="absolute z-10" style={{ left: '12px', top: '50%', transform: 'translateY(-50%)' }}>
-                            <Diamond size={8} fill="black" color="black" />
-                          </div>
-                          {/* Horizontal dashed line behind progress bars */}
-                          <div className="absolute flex items-center z-0" style={{ top: '1px', left: '0px', right: '10px' }}>
-                            <div className="w-full h-px border-t border-dashed border-gray-400" style={{ opacity: 0.5 }}></div>
-                          </div>
-                          {/* Diamond at end aligned with contract completion */}
-                          <div className="absolute top-1/2 transform -translate-y-1/2 z-5" style={{ right: '-4px' }}>
-                            <Diamond size={8} fill="black" color="black" />
-                          </div>
-                          {/* Package duration bar */}
-                          <div
-                            className="h-full absolute z-20 rounded"
-                            style={{
-                              top: '1px',
-                              backgroundColor: (() => {
-                                const baseColor = (() => {
-                                  switch (selectedPackageProject.status) {
-                                    case 'tender': return 'rgb(59, 130, 246)'; // blue base
-                                    case 'precon': return 'rgb(34, 197, 94)'; // green base
-                                    case 'construction': return 'rgb(234, 179, 8)'; // yellow base
-                                    case 'aftercare': return 'rgb(107, 114, 128)'; // grey base
-                                    default: return 'rgb(59, 130, 246)';
-                                  }
-                                })();
-                                
-                                // Create variations for each package
-                                switch (index) {
-                                  case 0: return baseColor; // Foundations - base color
-                                  case 1: return baseColor.replace(/rgb\((\d+), (\d+), (\d+)\)/, (match, r, g, b) => 
-                                    `rgb(${Math.max(0, parseInt(r) - 20)}, ${Math.max(0, parseInt(g) - 10)}, ${Math.min(255, parseInt(b) + 20)})`); // Envelope - darker/bluer
-                                  case 2: return baseColor.replace(/rgb\((\d+), (\d+), (\d+)\)/, (match, r, g, b) => 
-                                    `rgb(${Math.min(255, parseInt(r) + 20)}, ${Math.max(0, parseInt(g) - 20)}, ${Math.max(0, parseInt(b) - 10)})`); // Internals - redder
-                                  case 3: return baseColor.replace(/rgb\((\d+), (\d+), (\d+)\)/, (match, r, g, b) => 
-                                    `rgb(${Math.max(0, parseInt(r) - 10)}, ${Math.min(255, parseInt(g) + 20)}, ${Math.max(0, parseInt(b) - 20)})`); // MEP - greener
-                                  case 4: return baseColor.replace(/rgb\((\d+), (\d+), (\d+)\)/, (match, r, g, b) => 
-                                    `rgb(${Math.min(255, parseInt(r) + 10)}, ${Math.max(0, parseInt(g) - 15)}, ${Math.min(255, parseInt(b) + 30)})`); // Externals - purple-ish
-                                  default: return baseColor;
-                                }
-                              })(),
-                              left: `${(pkg.startWeek / totalWeeks) * 100}%`,
-                              width: `${(pkg.duration / totalWeeks) * 100}%`
-                            }}
-                            title={`${pkg.name}: Week ${pkg.startWeek} to ${pkg.startWeek + pkg.duration} (${pkg.duration} weeks)`}
-                          />
+                        {/* Package progress bars and diamonds */}
+                        <div className="flex flex-col gap-2">
+                          {packages.map((pkg, index) => (
+                            <div key={index} className="h-[11px] relative">
+                              {/* Left diamond aligned with Main Project progress bar */}
+                              <div className="absolute z-10" style={{ left: '12px', top: '50%', transform: 'translateY(-50%)' }}>
+                                <Diamond size={8} fill="black" color="black" />
+                              </div>
+                              {/* Diamond at end aligned with contract completion */}
+                              <div className="absolute top-1/2 transform -translate-y-1/2 z-5" style={{ right: '-4px' }}>
+                                <Diamond size={8} fill="black" color="black" />
+                              </div>
+                              {/* Package duration bar */}
+                              <div
+                                className="h-[5px] absolute z-20 rounded"
+                                style={{
+                                  top: '3px',
+                                  backgroundColor: (() => {
+                                    const baseColor = (() => {
+                                      switch (selectedPackageProject.status) {
+                                        case 'tender': return 'rgb(59, 130, 246)'; // blue base
+                                        case 'precon': return 'rgb(34, 197, 94)'; // green base
+                                        case 'construction': return 'rgb(234, 179, 8)'; // yellow base
+                                        case 'aftercare': return 'rgb(107, 114, 128)'; // grey base
+                                        default: return 'rgb(59, 130, 246)';
+                                      }
+                                    })();
+                                    
+                                    // Create variations for each package
+                                    switch (index) {
+                                      case 0: return baseColor; // Foundations - base color
+                                      case 1: return baseColor.replace(/rgb\((\d+), (\d+), (\d+)\)/, (match, r, g, b) => 
+                                        `rgb(${Math.max(0, parseInt(r) - 20)}, ${Math.max(0, parseInt(g) - 10)}, ${Math.min(255, parseInt(b) + 20)})`); // Envelope - darker/bluer
+                                      case 2: return baseColor.replace(/rgb\((\d+), (\d+), (\d+)\)/, (match, r, g, b) => 
+                                        `rgb(${Math.min(255, parseInt(r) + 20)}, ${Math.max(0, parseInt(g) - 20)}, ${Math.max(0, parseInt(b) - 10)})`); // Internals - redder
+                                      case 3: return baseColor.replace(/rgb\((\d+), (\d+), (\d+)\)/, (match, r, g, b) => 
+                                        `rgb(${Math.max(0, parseInt(r) - 10)}, ${Math.min(255, parseInt(g) + 20)}, ${Math.max(0, parseInt(b) - 20)})`); // MEP - greener
+                                      case 4: return baseColor.replace(/rgb\((\d+), (\d+), (\d+)\)/, (match, r, g, b) => 
+                                        `rgb(${Math.min(255, parseInt(r) + 10)}, ${Math.max(0, parseInt(g) - 15)}, ${Math.min(255, parseInt(b) + 30)})`); // Externals - purple-ish
+                                      default: return baseColor;
+                                    }
+                                  })(),
+                                  left: `${(pkg.startWeek / totalWeeks) * 100}%`,
+                                  width: `${(pkg.duration / totalWeeks) * 100}%`
+                                }}
+                                title={`${pkg.name}: Week ${pkg.startWeek} to ${pkg.startWeek + pkg.duration} (${pkg.duration} weeks)`}
+                              />
+                            </div>
+                          ))}
                         </div>
                       </div>
-                    ));
-                  })()}
-                </div>
+                    </div>
+                  );
+                })()}
               </div>
               
               {/* Package Timeline Dropdown */}
