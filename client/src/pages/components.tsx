@@ -170,17 +170,40 @@ export default function Components() {
                   <span className="text-sm text-gray-600">Key Package Timelines</span>
                 </div>
                 
-                <div className="flex items-center gap-4 mb-1">
+                <div className="flex items-end gap-4 mb-1">
                   <div className="flex items-center justify-end gap-1 w-24">
                     <span className="text-xs font-medium text-gray-700">Main Project</span>
                     <Diamond size={8} fill="none" color="black" />
                   </div>
                   
-                  {/* Main Project progress bar */}
-                  <div className="flex-1 h-4 bg-gray-100 rounded-sm overflow-hidden flex">
-                    <div className="bg-gray-400 h-full opacity-60" style={{ width: '45%' }} />
-                    <div className="bg-yellow-500 h-full opacity-60" style={{ width: '35%' }} />
-                    <div className="bg-gray-800 h-full opacity-60" style={{ width: '20%' }} />
+                  <div className="flex-1 flex flex-col">
+                    {/* Timeline bar with week markers */}
+                    <div className="relative h-2 mb-1">
+                      {/* Horizontal timeline line */}
+                      <div className="absolute top-1/2 w-full h-px bg-gray-400"></div>
+                      
+                      {/* Weekly markers */}
+                      {Array.from({ length: 21 }, (_, i) => (
+                        <div
+                          key={i}
+                          className="absolute bg-gray-400"
+                          style={{
+                            left: `${(i / 20) * 100}%`,
+                            top: '0px',
+                            width: '1px',
+                            height: '5px',
+                            transform: 'translateX(-0.5px)'
+                          }}
+                        />
+                      ))}
+                    </div>
+                    
+                    {/* Main Project progress bar */}
+                    <div className="h-4 bg-gray-100 rounded-sm overflow-hidden flex">
+                      <div className="bg-gray-400 h-full opacity-60" style={{ width: '45%' }} />
+                      <div className="bg-yellow-500 h-full opacity-60" style={{ width: '35%' }} />
+                      <div className="bg-gray-800 h-full opacity-60" style={{ width: '20%' }} />
+                    </div>
                   </div>
                 </div>
                 <hr className="border-gray-200 mt-[5px] mb-[5px]" />
