@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FileText, Search, Settings, Layers, Code, Package, MapPin, Diamond } from "lucide-react";
+import { FileText, Search, Settings, Layers, Code, Package, MapPin, Diamond, ChevronDown } from "lucide-react";
 import { ProjectHeader, PhaseFilters, TimelineCard } from "@/components/project-timeline";
 
 const sampleProject1 = {
@@ -48,6 +48,8 @@ export default function Components() {
   const [activeTab, setActiveTab] = useState("timeline");
   const [activePhases1, setActivePhases1] = useState(['tender', 'precon', 'construction', 'aftercare']);
   const [activePhases2, setActivePhases2] = useState(['precon', 'construction']);
+  const [isPackageDropdownOpen, setIsPackageDropdownOpen] = useState(false);
+  const [selectedPackageProject, setSelectedPackageProject] = useState(sampleProject1);
 
   const handlePhaseToggle1 = (phase: string) => {
     setActivePhases1(prev => 
@@ -232,6 +234,84 @@ export default function Components() {
                   </div>
                 </div>
               </div>
+              
+              {/* Package Timeline Dropdown */}
+              <div className="relative text-[12px] font-thin" style={{ marginTop: '-10px', marginLeft: '25px', width: 'fit-content', zIndex: 0 }}>
+                <div className="relative inline-block">
+                  <button
+                    onClick={() => setIsPackageDropdownOpen(!isPackageDropdownOpen)}
+                    className="flex items-center bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 transition-colors mt-[-5px] mb-[-5px] pt-[5px] pb-[5px] pl-[8px] pr-[8px] text-[#5e5e5e]"
+                    style={{ padding: '6px 10px', fontSize: '13px' }}
+                  >
+                    <ChevronDown 
+                      className={`h-4 w-4 transition-transform ${isPackageDropdownOpen ? 'rotate-180' : ''}`}
+                      style={{
+                        color: (() => {
+                          switch (selectedPackageProject.status) {
+                            case 'tender': return 'rgb(59, 130, 246)'; // blue
+                            case 'precon': return 'rgb(34, 197, 94)'; // green
+                            case 'construction': return 'rgb(234, 179, 8)'; // yellow
+                            case 'aftercare': return 'rgb(107, 114, 128)'; // grey
+                            default: return 'rgb(107, 114, 128)'; // default gray
+                          }
+                        })()
+                      }}
+                    />
+                  </button>
+                  
+                  {isPackageDropdownOpen && (
+                    <div className="absolute left-0 top-full w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto mt-[-22px] mb-[-22px] ml-[28px] mr-[28px] pt-[3px] pb-[3px]">
+                      <div className="py-1">
+                        {[sampleProject1, sampleProject2].map((proj) => {
+                          const getPhaseColors = (status: string) => {
+                            switch (status) {
+                              case 'tender': return { bg: 'bg-blue-50', border: 'border-l-blue-500' };
+                              case 'precon': return { bg: 'bg-green-50', border: 'border-l-green-500' };
+                              case 'construction': return { bg: 'bg-yellow-50', border: 'border-l-yellow-500' };
+                              case 'aftercare': return { bg: 'bg-gray-50', border: 'border-l-gray-500' };
+                              default: return { bg: 'bg-gray-50', border: 'border-l-gray-500' };
+                            }
+                          };
+                          
+                          const colors = getPhaseColors(proj.status);
+                          
+                          return (
+                            <button
+                              key={proj.id}
+                              onClick={() => {
+                                setSelectedPackageProject(proj);
+                                setIsPackageDropdownOpen(false);
+                              }}
+                              className={`w-full text-left px-2 py-1 hover:bg-gray-100 transition-colors border-l-4 ${
+                                proj.id === selectedPackageProject.id ? `${colors.bg} ${colors.border}` : 'border-l-transparent'
+                              }`}
+                              style={{ fontSize: '11.05px' }}
+                            >
+                              <span 
+                                className="font-medium truncate block"
+                                style={{
+                                  color: (() => {
+                                    switch (proj.status) {
+                                      case 'tender': return 'rgb(59, 130, 246)'; // blue
+                                      case 'precon': return 'rgb(34, 197, 94)'; // green
+                                      case 'construction': return 'rgb(234, 179, 8)'; // yellow
+                                      case 'aftercare': return 'rgb(107, 114, 128)'; // grey
+                                      default: return 'rgb(75, 85, 99)'; // default gray
+                                    }
+                                  })()
+                                }}
+                              >
+                                {proj.name}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+              
               <hr className="border-gray-200 mt-[20px] mb-[20px]" />
             </div>
 
