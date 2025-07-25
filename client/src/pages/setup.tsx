@@ -419,7 +419,7 @@ export default function Setup({ onTabChange }: SetupProps) {
               </div>
               {/* Message positioned to the right of the filter container */}
               {showFilterMessage && (
-                <div className="ml-4 text-xs text-gray-500 italic flex items-center">
+                <div className="ml-2 text-xs text-gray-500 italic flex items-center">
                   At least one filter must be selected.
                 </div>
               )}
