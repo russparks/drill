@@ -384,8 +384,12 @@ export default function Components() {
                       
                       return packages.map((pkg, index) => (
                         <div key={index} className="h-[11px] rounded-sm overflow-hidden flex relative" style={{ paddingTop: '3px', paddingBottom: '3px' }}>
+                          {/* Horizontal dashed line behind progress bars */}
+                          <div className="absolute inset-0 flex items-center z-0">
+                            <div className="w-full h-px border-t border-dashed border-gray-400"></div>
+                          </div>
                           {/* Full timeline background */}
-                          <div className="w-full h-full relative">
+                          <div className="w-full h-full relative z-10">
                             {/* Package duration bar */}
                             <div
                               className="h-full opacity-65 absolute top-0"
