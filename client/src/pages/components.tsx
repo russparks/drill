@@ -166,6 +166,18 @@ export default function Components() {
                   >
                     {sampleProject1.projectNumber}
                   </span>
+                  <span className="text-gray-400 mx-2">|</span>
+                  <span className="text-sm text-gray-600">Key Package Timelines</span>
+                </div>
+                
+                <div className="flex">
+                  <div className="flex flex-col gap-2 w-24">
+                    <span className="text-xs font-medium text-gray-700">Foundations</span>
+                    <span className="text-xs font-medium text-gray-700">Envelope</span>
+                    <span className="text-xs font-medium text-gray-700">Internals</span>
+                    <span className="text-xs font-medium text-gray-700">MEP</span>
+                    <span className="text-xs font-medium text-gray-700">Externals</span>
+                  </div>
                 </div>
               </div>
               <hr className="border-gray-200 mt-[20px] mb-[20px]" />
