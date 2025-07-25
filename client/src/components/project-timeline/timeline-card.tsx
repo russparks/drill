@@ -816,7 +816,25 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
                       }
                     };
                     
-                    return getOrderValue(aInfo) - getOrderValue(bInfo);
+                    const orderDiff = getOrderValue(aInfo) - getOrderValue(bInfo);
+                    
+                    // If same order value (same phase and completion status), sort by most recent first
+                    if (orderDiff === 0) {
+                      // For completed projects in same phase, sort by most recent completion date
+                      if (aInfo.isCompleted && bInfo.isCompleted) {
+                        const aDate = new Date(a.contractCompletionDate);
+                        const bDate = new Date(b.contractCompletionDate);
+                        return bDate.getTime() - aDate.getTime(); // Most recent first
+                      }
+                      // For live projects in same phase, sort by start date (most recent first)
+                      else {
+                        const aStart = new Date(a.startOnSiteDate);
+                        const bStart = new Date(b.startOnSiteDate);
+                        return bStart.getTime() - aStart.getTime(); // Most recent first
+                      }
+                    }
+                    
+                    return orderDiff;
                   });
                   
                   return sortedProjects.map((proj: any) => (
