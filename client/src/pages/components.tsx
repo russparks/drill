@@ -369,7 +369,7 @@ export default function Components() {
                         {/* Progress bar container with dashed line and diamonds */}
                         <div className="flex-1 h-[5px] relative">
                           {/* Left diamond aligned with Main Project progress bar */}
-                          <div className="absolute z-10" style={{ left: '16px', top: '50%', transform: 'translateY(-50%)' }}>
+                          <div className="absolute z-10" style={{ left: '12px', top: '50%', transform: 'translateY(-50%)' }}>
                             <Diamond size={8} fill="black" color="black" />
                           </div>
                           {/* Horizontal dashed line behind progress bars */}
