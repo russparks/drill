@@ -189,7 +189,7 @@ export default function Components() {
                   >
                     {selectedPackageProject.projectNumber}
                   </span>
-                  <span className="text-gray-400 mx-2">|</span>
+                  <span className="mx-2 text-[eab308]">|</span>
                   <span 
                     className="text-sm font-medium"
                     style={{
