@@ -170,12 +170,15 @@ export default function Components() {
                   <span className="text-sm text-gray-600">Key Package Timelines</span>
                 </div>
                 
+                <div className="flex flex-col gap-2 w-24 text-right">
+                  <div className="flex items-center justify-end gap-1 mb-1">
+                    <span className="text-xs font-medium text-gray-700">Main Project</span>
+                    <Diamond size={8} fill="none" color="black" />
+                  </div>
+                </div>
+                <hr className="border-gray-200 mb-2" />
                 <div className="flex">
                   <div className="flex flex-col gap-2 w-24 text-right">
-                    <div className="flex items-center justify-end gap-1 mb-1">
-                      <span className="text-xs font-medium text-gray-700">Main Project</span>
-                      <Diamond size={8} fill="none" color="black" />
-                    </div>
                     <div className="flex items-center justify-end gap-1">
                       <span className="text-xs font-medium text-gray-700">Foundations</span>
                       <Diamond size={8} fill="black" color="black" />
