@@ -221,7 +221,7 @@ export default function Components() {
                   </span>
                 </div>
                 
-                <div className="flex items-end gap-4 mb-1">
+                <div className="flex items-end gap-4 mb-1" style={{ marginTop: '-5px' }}>
                   <div className="flex items-center justify-end gap-1 w-24">
                     <span className="text-xs font-medium text-gray-700">Main Project</span>
                     <Diamond size={8} fill="none" color="black" />
@@ -229,7 +229,7 @@ export default function Components() {
                   
                   <div className="flex-1 flex flex-col">
                     {/* Timeline bar with week markers */}
-                    <div className="relative mb-1" style={{ marginTop: '-21px', height: '11px' }}>
+                    <div className="relative h-2 mb-1" style={{ marginTop: '-16px' }}>
                       {/* Horizontal timeline line */}
                       <div className="absolute top-1/2 w-full h-px bg-gray-400"></div>
                       
