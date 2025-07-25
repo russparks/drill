@@ -261,66 +261,74 @@ export default function Components() {
                     {/* Main Project progress bar */}
                     <div className="h-4 bg-gray-100 rounded-sm overflow-hidden flex">
                       {(() => {
-                        // Calculate progress percentages based on selected project's phase
-                        let tenderWidth = 0, preconWidth = 0, constructionWidth = 0, aftercareWidth = 0;
-                        
-                        switch (selectedPackageProject.status) {
-                          case 'tender':
-                            tenderWidth = 30; // Active tender phase
-                            break;
-                          case 'precon':
-                            tenderWidth = 25; // Completed tender
-                            preconWidth = 35; // Active precon phase
-                            break;
-                          case 'construction':
-                            tenderWidth = 20; // Completed tender
-                            preconWidth = 25; // Completed precon
-                            constructionWidth = 40; // Active construction phase
-                            break;
-                          case 'aftercare':
-                            tenderWidth = 15; // Completed tender
-                            preconWidth = 20; // Completed precon
-                            constructionWidth = 50; // Completed construction
-                            aftercareWidth = 15; // Active aftercare phase
-                            break;
+                        // Use the same progress bar logic as Phase Timeline card
+                        if (!selectedPackageProject.startOnSiteDate || !selectedPackageProject.contractCompletionDate || !selectedPackageProject.constructionCompletionDate) {
+                          return <div className="bg-gray-300 h-full opacity-60" style={{ width: '100%' }} />;
                         }
+
+                        const startDate = new Date(selectedPackageProject.startOnSiteDate);
+                        const contractDate = new Date(selectedPackageProject.contractCompletionDate);
+                        const constructionDate = new Date(selectedPackageProject.constructionCompletionDate);
+                        const currentDate = new Date();
+
+                        const totalWeeksToContract = Math.ceil((contractDate.getTime() - startDate.getTime()) / (7 * 24 * 60 * 60 * 1000));
+                        const totalWeeksToAnticipated = Math.ceil((constructionDate.getTime() - startDate.getTime()) / (7 * 24 * 60 * 60 * 1000));
+                        const currentWeek = Math.ceil((currentDate.getTime() - startDate.getTime()) / (7 * 24 * 60 * 60 * 1000));
+
+                        const retentionValue = parseFloat(selectedPackageProject.retention?.replace(/[£,]/g, '') || '0');
+                        const isPastContractDate = currentDate > contractDate;
+                        const isProjectCompleted = (retentionValue === 0 && selectedPackageProject.status === 'aftercare') || 
+                                                 (isPastContractDate && selectedPackageProject.status !== 'aftercare');
+                        const hasPositiveRetention = retentionValue > 0;
+
+                        // Grey out completed projects or projects with positive retention in aftercare
+                        if (isProjectCompleted || (hasPositiveRetention && selectedPackageProject.status === 'aftercare')) {
+                          return (
+                            <div 
+                              className="bg-gray-400 h-full opacity-40" 
+                              style={{ width: '100%' }}
+                              title="Project finished"
+                            />
+                          );
+                        }
+                        
+                        // Use the exact same progress bar logic as timeline card
+                        const greyPercent = Math.min((Math.max(1, currentWeek) / totalWeeksToContract) * 100, 100);
+                        const lightBluePercent = Math.max(0, Math.min(((totalWeeksToAnticipated - Math.max(1, currentWeek)) / totalWeeksToContract) * 100, 100 - greyPercent));
+                        const amberPercent = Math.max(0, ((totalWeeksToContract - totalWeeksToAnticipated) / totalWeeksToContract) * 100);
                         
                         return (
                           <>
-                            {tenderWidth > 0 && (
+                            {greyPercent > 0 && (
                               <div 
-                                className="h-full opacity-60" 
-                                style={{ 
-                                  width: `${tenderWidth}%`,
-                                  backgroundColor: 'rgb(59, 130, 246)' // blue for tender
-                                }} 
+                                className="bg-gray-400 h-full opacity-60" 
+                                style={{ width: `${greyPercent}%` }}
+                                title={`Elapsed: ${Math.max(1, currentWeek)} weeks`}
                               />
                             )}
-                            {preconWidth > 0 && (
+                            {lightBluePercent > 0 && (
                               <div 
                                 className="h-full opacity-60" 
                                 style={{ 
-                                  width: `${preconWidth}%`,
-                                  backgroundColor: 'rgb(34, 197, 94)' // green for precon
-                                }} 
+                                  width: `${lightBluePercent}%`,
+                                  backgroundColor: (() => {
+                                    switch (selectedPackageProject.status) {
+                                      case 'tender': return 'rgb(59, 130, 246)'; // blue
+                                      case 'precon': return 'rgb(34, 197, 94)'; // green
+                                      case 'construction': return 'rgb(234, 179, 8)'; // yellow
+                                      case 'aftercare': return 'rgb(107, 114, 128)'; // grey
+                                      default: return 'rgb(147, 197, 253)';
+                                    }
+                                  })()
+                                }}
+                                title={`Remaining to anticipated: ${Math.max(0, totalWeeksToAnticipated - Math.max(1, currentWeek))} weeks`}
                               />
                             )}
-                            {constructionWidth > 0 && (
+                            {amberPercent > 0 && (
                               <div 
-                                className="h-full opacity-60" 
-                                style={{ 
-                                  width: `${constructionWidth}%`,
-                                  backgroundColor: 'rgb(234, 179, 8)' // yellow for construction
-                                }} 
-                              />
-                            )}
-                            {aftercareWidth > 0 && (
-                              <div 
-                                className="h-full opacity-60" 
-                                style={{ 
-                                  width: `${aftercareWidth}%`,
-                                  backgroundColor: 'rgb(107, 114, 128)' // gray for aftercare
-                                }} 
+                                className="bg-gray-800 h-full opacity-60" 
+                                style={{ width: `${amberPercent}%` }}
+                                title={`Buffer to contract: ${totalWeeksToContract - totalWeeksToAnticipated} weeks`}
                               />
                             )}
                           </>
