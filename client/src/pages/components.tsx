@@ -79,7 +79,7 @@ export default function Components() {
 
         {/* Navigation Title */}
         <div className="mb-4">
-          <h2 className="text-lg font-medium text-gray-900">Component Categories</h2>
+          <h2 className="text-lg font-medium text-gray-900">Tabbed Navigation</h2>
         </div>
 
         {/* Tab Navigation with subtle background */}
