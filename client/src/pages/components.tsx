@@ -68,20 +68,21 @@ export default function Components() {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Option 1: Primary Header (Projects page style) */}
+        {/* Component Library Header */}
         <div className="mb-8">
-          <div className="flex items-center gap-3 mb-1">
+          <div className="flex items-center gap-3 mb-2">
             <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-              <MapPin className="h-4 w-4 text-blue-600" />
+              <Layers className="h-4 w-4 text-blue-600" />
             </div>
             <h1 className="text-2xl font-semibold text-gray-900">Component Library</h1>
           </div>
-          <p className="text-gray-600 ml-11">Interactive showcase of reusable UI components</p>
+          <p className="text-gray-600 ml-11 mb-4">Interactive showcase of reusable UI components for project management</p>
+          <hr className="border-gray-200" />
         </div>
 
-        {/* Option 2: Subtle Sub-page Header */}
-        <div className="mb-9">
-          <div className="grid w-full bg-transparent" style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
+        {/* Tab Navigation with subtle background */}
+        <div className="mb-9 bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+          <div className="grid w-full" style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
             <div 
               className={`flex flex-col items-center gap-1 cursor-pointer group ${
                 activeTab === "timeline" ? "text-gray-700" : "text-gray-400"
