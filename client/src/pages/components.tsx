@@ -190,7 +190,7 @@ export default function Components() {
                     {selectedPackageProject.projectNumber}
                   </span>
                   <span 
-                    className="mx-2"
+                    className="mx-2 text-[14px]"
                     style={{
                       color: (() => {
                         switch (selectedPackageProject.status) {
