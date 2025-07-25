@@ -235,8 +235,11 @@ export default function Components() {
                       
                       {/* Weekly markers */}
                       {(() => {
-                        // Fixed 74-week timeline
-                        const markerCount = 75; // 74 weeks + 1 for end marker (0-74)
+                        // Calculate total project duration from start to contract completion
+                        const startDate = new Date(selectedPackageProject.startOnSiteDate);
+                        const contractDate = new Date(selectedPackageProject.contractCompletionDate);
+                        const totalWeeks = Math.ceil((contractDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
+                        const markerCount = totalWeeks + 1; // Total weeks + 1 for end marker
                         
                         return Array.from({ length: markerCount }, (_, i) => (
                           <div
