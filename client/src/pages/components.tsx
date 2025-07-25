@@ -77,9 +77,9 @@ export default function Components() {
           <hr className="border-gray-200" />
         </div>
 
-        {/* Navigation Title */}
+        {/* Component Title */}
         <div className="mb-4">
-          <h2 className="text-lg font-medium text-[#374151]">Tabbed Navigation</h2>
+          <h3 className="text-lg font-medium text-gray-700">Tabbed Navigation</h3>
         </div>
 
         {/* Tab Navigation with subtle background */}
