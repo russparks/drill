@@ -363,7 +363,7 @@ export default function Components() {
                     return packages.map((pkg, index) => (
                       <div key={index} className="flex items-center h-[11px]">
                         {/* Package title and diamond */}
-                        <div className="flex items-center justify-end gap-1 w-24 text-right">
+                        <div className="flex items-center justify-end gap-1 w-24 text-right" style={{ marginRight: '6px' }}>
                           <span className="text-xs font-medium text-gray-700">{pkg.name}</span>
                           <Diamond size={8} fill="black" color="black" />
                         </div>
