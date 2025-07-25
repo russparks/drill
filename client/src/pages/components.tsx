@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FileText, Search, Settings, Layers, Code, Package, MapPin } from "lucide-react";
+import { FileText, Search, Settings, Layers, Code, Package, MapPin, Diamond } from "lucide-react";
 import { ProjectHeader, PhaseFilters, TimelineCard } from "@/components/project-timeline";
 
 const sampleProject1 = {
@@ -172,12 +172,27 @@ export default function Components() {
                 
                 <div className="flex">
                   <div className="flex flex-col gap-2 w-24 text-right">
-                    <span className="text-xs font-medium text-gray-700 mb-1">PROJECT:</span>
-                    <span className="text-xs font-medium text-gray-700">Foundations</span>
-                    <span className="text-xs font-medium text-gray-700">Envelope</span>
-                    <span className="text-xs font-medium text-gray-700">Internals</span>
-                    <span className="text-xs font-medium text-gray-700">MEP</span>
-                    <span className="text-xs font-medium text-gray-700">Externals</span>
+                    <span className="text-xs font-medium text-gray-700 mb-1">PROJECT TIMELINE</span>
+                    <div className="flex items-center justify-end gap-1">
+                      <span className="text-xs font-medium text-gray-700">Foundations</span>
+                      <Diamond size={8} fill="black" color="black" />
+                    </div>
+                    <div className="flex items-center justify-end gap-1">
+                      <span className="text-xs font-medium text-gray-700">Envelope</span>
+                      <Diamond size={8} fill="black" color="black" />
+                    </div>
+                    <div className="flex items-center justify-end gap-1">
+                      <span className="text-xs font-medium text-gray-700">Internals</span>
+                      <Diamond size={8} fill="black" color="black" />
+                    </div>
+                    <div className="flex items-center justify-end gap-1">
+                      <span className="text-xs font-medium text-gray-700">MEP</span>
+                      <Diamond size={8} fill="black" color="black" />
+                    </div>
+                    <div className="flex items-center justify-end gap-1">
+                      <span className="text-xs font-medium text-gray-700">Externals</span>
+                      <Diamond size={8} fill="black" color="black" />
+                    </div>
                   </div>
                 </div>
               </div>
