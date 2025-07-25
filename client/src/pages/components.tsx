@@ -200,6 +200,41 @@ export default function Components() {
                       <Diamond size={8} fill="black" color="black" />
                     </div>
                   </div>
+                  
+                  {/* Progress bars */}
+                  <div className="flex-1 ml-4 flex flex-col gap-2">
+                    {/* Foundations progress bar */}
+                    <div className="h-4 bg-gray-100 rounded-sm overflow-hidden flex">
+                      <div className="bg-gray-400 h-full opacity-60" style={{ width: '30%' }} />
+                      <div className="bg-yellow-500 h-full opacity-60" style={{ width: '40%' }} />
+                      <div className="bg-gray-800 h-full opacity-60" style={{ width: '30%' }} />
+                    </div>
+                    
+                    {/* Envelope progress bar */}
+                    <div className="h-4 bg-gray-100 rounded-sm overflow-hidden flex">
+                      <div className="bg-gray-400 h-full opacity-60" style={{ width: '10%' }} />
+                      <div className="bg-yellow-500 h-full opacity-60" style={{ width: '60%' }} />
+                      <div className="bg-gray-800 h-full opacity-60" style={{ width: '30%' }} />
+                    </div>
+                    
+                    {/* Internals progress bar */}
+                    <div className="h-4 bg-gray-100 rounded-sm overflow-hidden flex">
+                      <div className="bg-yellow-500 h-full opacity-60" style={{ width: '70%' }} />
+                      <div className="bg-gray-800 h-full opacity-60" style={{ width: '30%' }} />
+                    </div>
+                    
+                    {/* MEP progress bar */}
+                    <div className="h-4 bg-gray-100 rounded-sm overflow-hidden flex">
+                      <div className="bg-yellow-500 h-full opacity-60" style={{ width: '45%' }} />
+                      <div className="bg-gray-800 h-full opacity-60" style={{ width: '55%' }} />
+                    </div>
+                    
+                    {/* Externals progress bar */}
+                    <div className="h-4 bg-gray-100 rounded-sm overflow-hidden flex">
+                      <div className="bg-yellow-500 h-full opacity-60" style={{ width: '20%' }} />
+                      <div className="bg-gray-800 h-full opacity-60" style={{ width: '80%' }} />
+                    </div>
+                  </div>
                 </div>
               </div>
               <hr className="border-gray-200 mt-[20px] mb-[20px]" />
