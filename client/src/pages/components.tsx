@@ -188,11 +188,6 @@ export default function Components() {
                     onPhaseToggle={handlePhaseToggle2}
                     phases={samplePhases2}
                   />
-                  <div className="mt-4 p-4 bg-white rounded-lg border">
-                    <p className="text-sm text-gray-600">
-                      Active phases: {activePhases2.join(', ')}
-                    </p>
-                  </div>
                 </div>
               </div>
             </section>
