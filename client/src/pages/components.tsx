@@ -145,12 +145,7 @@ export default function Components() {
               <hr className="border-gray-200 mt-[20px] mb-[20px]" />
             </div>
 
-            {/* Project Header Examples */}
-            <div>
-              <h3 className="text-lg font-medium text-gray-700 mb-4">Project Header</h3>
-              <ProjectHeader project={sampleProject1} />
-              <hr className="border-gray-200 mt-[20px] mb-[20px]" />
-            </div>
+            
 
             
           </>
