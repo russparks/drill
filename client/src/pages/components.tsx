@@ -149,7 +149,7 @@ export default function Components() {
             <div>
               <h3 className="text-lg font-medium text-gray-700 mb-4">Package Timeline</h3>
               <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center mb-4">
                   <span 
                     className="text-sm font-medium"
                     style={{
@@ -166,6 +166,41 @@ export default function Components() {
                   >
                     {sampleProject1.projectNumber}
                   </span>
+                  <span className="text-gray-400 mx-2">|</span>
+                  <div className="flex items-center gap-3">
+                    <span 
+                      className="text-xs font-medium"
+                      style={{
+                        color: (() => {
+                          switch (sampleProject1.status) {
+                            case 'tender': return 'rgb(59, 130, 246)'; // blue
+                            case 'precon': return 'rgb(34, 197, 94)'; // green
+                            case 'construction': return 'rgb(234, 179, 8)'; // yellow
+                            case 'aftercare': return 'rgb(107, 114, 128)'; // grey
+                            default: return 'rgb(75, 85, 99)'; // default gray
+                          }
+                        })()
+                      }}
+                    >
+                      SOS: 15 Mar 2024
+                    </span>
+                    <span 
+                      className="text-xs font-medium"
+                      style={{
+                        color: (() => {
+                          switch (sampleProject1.status) {
+                            case 'tender': return 'rgb(59, 130, 246)'; // blue
+                            case 'precon': return 'rgb(34, 197, 94)'; // green
+                            case 'construction': return 'rgb(234, 179, 8)'; // yellow
+                            case 'aftercare': return 'rgb(107, 114, 128)'; // grey
+                            default: return 'rgb(75, 85, 99)'; // default gray
+                          }
+                        })()
+                      }}
+                    >
+                      SOS: 22 Jun 2024
+                    </span>
+                  </div>
                 </div>
                 <div className="text-gray-600">
                   Package timeline content will be added here
