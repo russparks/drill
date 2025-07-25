@@ -181,20 +181,6 @@ export default function Components() {
               
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-medium text-gray-700 mb-4">Example 1: All Phases Active</h3>
-                  <PhaseFilters 
-                    activePhases={activePhases1}
-                    onPhaseToggle={handlePhaseToggle1}
-                    phases={samplePhases1}
-                  />
-                  <div className="mt-4 p-4 bg-white rounded-lg border">
-                    <p className="text-sm text-gray-600">
-                      Active phases: {activePhases1.join(', ')}
-                    </p>
-                  </div>
-                </div>
-                
-                <div>
                   <h3 className="text-lg font-medium text-gray-700 mb-4">Example 2: Selective Phase Filtering</h3>
                   <PhaseFilters 
                     activePhases={activePhases2}
