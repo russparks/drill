@@ -854,19 +854,32 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
                     return orderDiff;
                   });
                   
-                  return sortedProjects.map((proj: any) => (
-                    <button
-                      key={proj.id}
-                      onClick={() => {
-                        setCurrentProject(proj);
-                        onProjectChange?.(proj);
-                        setIsDropdownOpen(false);
-                      }}
-                      className={`w-full text-left px-2 py-1 hover:bg-gray-100 transition-colors border-l-4 ${
-                        proj.id === currentProject.id ? 'bg-blue-50 border-l-blue-500' : 'border-l-transparent'
-                      }`}
-                      style={{ fontSize: '11.05px' }}
-                    >
+                  return sortedProjects.map((proj: any) => {
+                    const getPhaseColors = (status: string) => {
+                      switch (status) {
+                        case 'tender': return { bg: 'bg-blue-50', border: 'border-l-blue-500' };
+                        case 'precon': return { bg: 'bg-green-50', border: 'border-l-green-500' };
+                        case 'construction': return { bg: 'bg-yellow-50', border: 'border-l-yellow-500' };
+                        case 'aftercare': return { bg: 'bg-gray-50', border: 'border-l-gray-500' };
+                        default: return { bg: 'bg-gray-50', border: 'border-l-gray-500' };
+                      }
+                    };
+                    
+                    const colors = getPhaseColors(proj.status);
+                    
+                    return (
+                      <button
+                        key={proj.id}
+                        onClick={() => {
+                          setCurrentProject(proj);
+                          onProjectChange?.(proj);
+                          setIsDropdownOpen(false);
+                        }}
+                        className={`w-full text-left px-2 py-1 hover:bg-gray-100 transition-colors border-l-4 ${
+                          proj.id === currentProject.id ? `${colors.bg} ${colors.border}` : 'border-l-transparent'
+                        }`}
+                        style={{ fontSize: '11.05px' }}
+                      >
                       <span 
                         className="font-medium truncate block"
                         style={{
@@ -884,7 +897,8 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
                         {proj.name}
                       </span>
                     </button>
-                  ));
+                    );
+                  });
                 })()}
               </div>
             </div>
