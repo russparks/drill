@@ -77,6 +77,11 @@ export default function Components() {
           <hr className="border-gray-200" />
         </div>
 
+        {/* Navigation Title */}
+        <div className="mb-4">
+          <h2 className="text-lg font-medium text-gray-900">Component Categories</h2>
+        </div>
+
         {/* Tab Navigation with subtle background */}
         <div className="mb-9 bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
           <div className="grid w-full" style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
