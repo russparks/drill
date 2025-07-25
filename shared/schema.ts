@@ -26,6 +26,37 @@ export const projects = pgTable("projects", {
   postcode: text("postcode"),
   latitude: text("latitude"),
   longitude: text("longitude"),
+  
+  // Package 1
+  packageOneNumber: text("package_one_number"),
+  packageOneStartDate: timestamp("package_one_start_date"),
+  packageOneEndDate: timestamp("package_one_end_date"),
+  packageOneCompany: text("package_one_company"),
+  
+  // Package 2
+  packageTwoNumber: text("package_two_number"),
+  packageTwoStartDate: timestamp("package_two_start_date"),
+  packageTwoEndDate: timestamp("package_two_end_date"),
+  packageTwoCompany: text("package_two_company"),
+  
+  // Package 3
+  packageThreeNumber: text("package_three_number"),
+  packageThreeStartDate: timestamp("package_three_start_date"),
+  packageThreeEndDate: timestamp("package_three_end_date"),
+  packageThreeCompany: text("package_three_company"),
+  
+  // Package 4
+  packageFourNumber: text("package_four_number"),
+  packageFourStartDate: timestamp("package_four_start_date"),
+  packageFourEndDate: timestamp("package_four_end_date"),
+  packageFourCompany: text("package_four_company"),
+  
+  // Package 5
+  packageFiveNumber: text("package_five_number"),
+  packageFiveStartDate: timestamp("package_five_start_date"),
+  packageFiveEndDate: timestamp("package_five_end_date"),
+  packageFiveCompany: text("package_five_company"),
+  
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -75,6 +106,18 @@ export const insertProjectSchema = createInsertSchema(projects).omit({
   startOnSiteDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
   contractCompletionDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
   constructionCompletionDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
+  
+  // Package date transformations
+  packageOneStartDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
+  packageOneEndDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
+  packageTwoStartDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
+  packageTwoEndDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
+  packageThreeStartDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
+  packageThreeEndDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
+  packageFourStartDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
+  packageFourEndDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
+  packageFiveStartDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
+  packageFiveEndDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
 });
 
 export const insertActionSchema = createInsertSchema(actions).omit({
