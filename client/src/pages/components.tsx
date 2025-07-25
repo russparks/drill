@@ -229,7 +229,7 @@ export default function Components() {
                   
                   <div className="flex-1 flex flex-col">
                     {/* Timeline bar with week markers */}
-                    <div className="relative h-2 mb-1">
+                    <div className="relative h-2 mb-1" style={{ marginTop: '-6px' }}>
                       {/* Horizontal timeline line */}
                       <div className="absolute top-1/2 w-full h-px bg-gray-400"></div>
                       
@@ -335,10 +335,7 @@ export default function Components() {
                         );
                       })()}
                       </div>
-                      {/* Dot at end of main progress bar aligned with contract completion */}
-                      <div className="absolute top-1/2 transform -translate-y-1/2 z-10" style={{ right: '0%' }}>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                      </div>
+
                     </div>
                   </div>
                 </div>
@@ -378,12 +375,12 @@ export default function Components() {
                             <div className="w-full h-px border-t border-dashed border-gray-400" style={{ opacity: 0.5 }}></div>
                           </div>
                           {/* Dot at end aligned with contract completion */}
-                          <div className="absolute top-1/2 transform -translate-y-1/2 z-5" style={{ right: '0%' }}>
-                            <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                          <div className="absolute top-1/2 transform -translate-y-1/2 z-5" style={{ right: '-2px' }}>
+                            <div className="w-1 h-1 bg-black rounded-full"></div>
                           </div>
                           {/* Package duration bar */}
                           <div
-                            className="h-full absolute z-20"
+                            className="h-full absolute z-20 rounded"
                             style={{
                               top: '1px',
                               backgroundColor: (() => {
