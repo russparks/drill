@@ -362,14 +362,17 @@ export default function Components() {
                     
                     return packages.map((pkg, index) => (
                       <div key={index} className="flex items-center h-[11px]">
-                        {/* Package title and diamond */}
-                        <div className="flex items-center justify-end gap-1 w-24 text-right" style={{ marginRight: '6px' }}>
+                        {/* Package title */}
+                        <div className="flex items-center justify-end w-24 text-right" style={{ marginRight: '6px' }}>
                           <span className="text-xs font-medium text-gray-700">{pkg.name}</span>
-                          <Diamond size={8} fill="black" color="black" />
                         </div>
                         
-                        {/* Progress bar container with dashed line */}
-                        <div className="flex-1 ml-4 h-[5px] relative">
+                        {/* Progress bar container with dashed line and diamonds */}
+                        <div className="flex-1 h-[5px] relative">
+                          {/* Left diamond aligned with Main Project progress bar */}
+                          <div className="absolute left-0 z-10" style={{ top: '50%', transform: 'translateY(-50%)' }}>
+                            <Diamond size={8} fill="black" color="black" />
+                          </div>
                           {/* Horizontal dashed line behind progress bars */}
                           <div className="absolute inset-0 flex items-center z-0" style={{ top: '1px', right: '10px' }}>
                             <div className="w-full h-px border-t border-dashed border-gray-400" style={{ opacity: 0.5 }}></div>
