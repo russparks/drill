@@ -145,7 +145,34 @@ export default function Components() {
               <hr className="border-gray-200 mt-[20px] mb-[20px]" />
             </div>
 
-            
+            {/* Package Timeline Examples */}
+            <div>
+              <h3 className="text-lg font-medium text-gray-700 mb-4">Package Timeline</h3>
+              <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+                <div className="flex items-center justify-between mb-4">
+                  <span 
+                    className="text-sm font-medium"
+                    style={{
+                      color: (() => {
+                        switch (sampleProject1.status) {
+                          case 'tender': return 'rgb(59, 130, 246)'; // blue
+                          case 'precon': return 'rgb(34, 197, 94)'; // green
+                          case 'construction': return 'rgb(234, 179, 8)'; // yellow
+                          case 'aftercare': return 'rgb(107, 114, 128)'; // grey
+                          default: return 'rgb(75, 85, 99)'; // default gray
+                        }
+                      })()
+                    }}
+                  >
+                    {sampleProject1.projectNumber}
+                  </span>
+                </div>
+                <div className="text-gray-600">
+                  Package timeline content will be added here
+                </div>
+              </div>
+              <hr className="border-gray-200 mt-[20px] mb-[20px]" />
+            </div>
 
             
           </>
