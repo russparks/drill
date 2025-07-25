@@ -373,7 +373,7 @@ export default function Components() {
                             <Diamond size={8} fill="black" color="black" />
                           </div>
                           {/* Horizontal dashed line behind progress bars */}
-                          <div className="absolute inset-0 flex items-center z-0" style={{ top: '1px', right: '10px' }}>
+                          <div className="absolute flex items-center z-0" style={{ top: '1px', left: '0px', right: '10px' }}>
                             <div className="w-full h-px border-t border-dashed border-gray-400" style={{ opacity: 0.5 }}></div>
                           </div>
                           {/* Diamond at end aligned with contract completion */}
