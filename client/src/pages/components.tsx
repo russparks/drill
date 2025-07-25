@@ -191,7 +191,7 @@ export default function Components() {
                   </span>
                   <span className="mx-2 text-[eab308]">|</span>
                   <span 
-                    className="text-sm font-medium"
+                    className="font-medium text-[16px]"
                     style={{
                       color: (() => {
                         switch (selectedPackageProject.status) {
