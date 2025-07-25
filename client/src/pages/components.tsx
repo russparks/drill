@@ -360,6 +360,43 @@ export default function Components() {
                       <Diamond size={8} fill="black" color="black" />
                     </div>
                   </div>
+                  
+                  {/* Package progress bars */}
+                  <div className="flex-1 flex flex-col gap-2 ml-4">
+                    {(() => {
+                      // Calculate total project weeks for positioning
+                      const startDate = new Date(selectedPackageProject.startOnSiteDate);
+                      const contractDate = new Date(selectedPackageProject.contractCompletionDate);
+                      const totalWeeks = Math.ceil((contractDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
+                      
+                      // Define package durations and start weeks (example data - should come from database)
+                      const packages = [
+                        { name: 'Foundations', startWeek: 1, duration: 8, color: 'rgb(139, 69, 19)' }, // brown
+                        { name: 'Envelope', startWeek: 6, duration: 12, color: 'rgb(34, 197, 94)' }, // green  
+                        { name: 'Internals', startWeek: 15, duration: 16, color: 'rgb(59, 130, 246)' }, // blue
+                        { name: 'MEP', startWeek: 20, duration: 14, color: 'rgb(234, 179, 8)' }, // yellow
+                        { name: 'Externals', startWeek: 30, duration: 6, color: 'rgb(168, 85, 247)' } // purple
+                      ];
+                      
+                      return packages.map((pkg, index) => (
+                        <div key={index} className="h-[20px] bg-gray-100 rounded-sm overflow-hidden flex relative">
+                          {/* Full timeline background */}
+                          <div className="w-full h-full relative">
+                            {/* Package duration bar */}
+                            <div
+                              className="h-full opacity-65 absolute top-0"
+                              style={{
+                                backgroundColor: pkg.color,
+                                left: `${(pkg.startWeek / totalWeeks) * 100}%`,
+                                width: `${(pkg.duration / totalWeeks) * 100}%`
+                              }}
+                              title={`${pkg.name}: Week ${pkg.startWeek} to ${pkg.startWeek + pkg.duration} (${pkg.duration} weeks)`}
+                            />
+                          </div>
+                        </div>
+                      ));
+                    })()}
+                  </div>
                 </div>
               </div>
               
