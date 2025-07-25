@@ -259,11 +259,11 @@ export default function Components() {
                     </div>
                     
                     {/* Main Project progress bar */}
-                    <div className="h-4 bg-gray-100 rounded-sm overflow-hidden flex">
+                    <div className="h-[5px] bg-gray-100 rounded-sm overflow-hidden flex">
                       {(() => {
                         // Use the same progress bar logic as Phase Timeline card
                         if (!selectedPackageProject.startOnSiteDate || !selectedPackageProject.contractCompletionDate || !selectedPackageProject.constructionCompletionDate) {
-                          return <div className="bg-gray-300 h-full opacity-60" style={{ width: '100%' }} />;
+                          return <div className="bg-gray-300 h-full opacity-65" style={{ width: '100%' }} />;
                         }
 
                         const startDate = new Date(selectedPackageProject.startOnSiteDate);
@@ -285,7 +285,7 @@ export default function Components() {
                         if (isProjectCompleted || (hasPositiveRetention && selectedPackageProject.status === 'aftercare')) {
                           return (
                             <div 
-                              className="bg-gray-400 h-full opacity-40" 
+                              className="bg-gray-400 h-full opacity-65" 
                               style={{ width: '100%' }}
                               title="Project finished"
                             />
@@ -301,14 +301,14 @@ export default function Components() {
                           <>
                             {greyPercent > 0 && (
                               <div 
-                                className="bg-gray-400 h-full opacity-60" 
+                                className="bg-gray-400 h-full opacity-65" 
                                 style={{ width: `${greyPercent}%` }}
                                 title={`Elapsed: ${Math.max(1, currentWeek)} weeks`}
                               />
                             )}
                             {lightBluePercent > 0 && (
                               <div 
-                                className="h-full opacity-60" 
+                                className="h-full opacity-65" 
                                 style={{ 
                                   width: `${lightBluePercent}%`,
                                   backgroundColor: (() => {
@@ -326,7 +326,7 @@ export default function Components() {
                             )}
                             {amberPercent > 0 && (
                               <div 
-                                className="bg-gray-800 h-full opacity-60" 
+                                className="bg-gray-800 h-full opacity-65" 
                                 style={{ width: `${amberPercent}%` }}
                                 title={`Buffer to contract: ${totalWeeksToContract - totalWeeksToAnticipated} weeks`}
                               />
