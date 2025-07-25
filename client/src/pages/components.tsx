@@ -251,9 +251,72 @@ export default function Components() {
                     
                     {/* Main Project progress bar */}
                     <div className="h-4 bg-gray-100 rounded-sm overflow-hidden flex">
-                      <div className="bg-gray-400 h-full opacity-60" style={{ width: '45%' }} />
-                      <div className="bg-yellow-500 h-full opacity-60" style={{ width: '35%' }} />
-                      <div className="bg-gray-800 h-full opacity-60" style={{ width: '20%' }} />
+                      {(() => {
+                        // Calculate progress percentages based on selected project's phase
+                        let tenderWidth = 0, preconWidth = 0, constructionWidth = 0, aftercareWidth = 0;
+                        
+                        switch (selectedPackageProject.status) {
+                          case 'tender':
+                            tenderWidth = 30; // Active tender phase
+                            break;
+                          case 'precon':
+                            tenderWidth = 25; // Completed tender
+                            preconWidth = 35; // Active precon phase
+                            break;
+                          case 'construction':
+                            tenderWidth = 20; // Completed tender
+                            preconWidth = 25; // Completed precon
+                            constructionWidth = 40; // Active construction phase
+                            break;
+                          case 'aftercare':
+                            tenderWidth = 15; // Completed tender
+                            preconWidth = 20; // Completed precon
+                            constructionWidth = 50; // Completed construction
+                            aftercareWidth = 15; // Active aftercare phase
+                            break;
+                        }
+                        
+                        return (
+                          <>
+                            {tenderWidth > 0 && (
+                              <div 
+                                className="h-full opacity-60" 
+                                style={{ 
+                                  width: `${tenderWidth}%`,
+                                  backgroundColor: 'rgb(59, 130, 246)' // blue for tender
+                                }} 
+                              />
+                            )}
+                            {preconWidth > 0 && (
+                              <div 
+                                className="h-full opacity-60" 
+                                style={{ 
+                                  width: `${preconWidth}%`,
+                                  backgroundColor: 'rgb(34, 197, 94)' // green for precon
+                                }} 
+                              />
+                            )}
+                            {constructionWidth > 0 && (
+                              <div 
+                                className="h-full opacity-60" 
+                                style={{ 
+                                  width: `${constructionWidth}%`,
+                                  backgroundColor: 'rgb(234, 179, 8)' // yellow for construction
+                                }} 
+                              />
+                            )}
+                            {aftercareWidth > 0 && (
+                              <div 
+                                className="h-full opacity-60" 
+                                style={{ 
+                                  width: `${aftercareWidth}%`,
+                                  backgroundColor: 'rgb(107, 114, 128)' // gray for aftercare
+                                }} 
+                              />
+                            )}
+                          </>
+                        );
+                      })()}
                     </div>
                   </div>
                 </div>
