@@ -71,12 +71,9 @@ export default function Components() {
         {/* Component Library Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-              <Layers className="h-4 w-4 text-blue-600" />
-            </div>
             <h1 className="text-2xl font-semibold text-gray-900">Component Library</h1>
           </div>
-          <p className="text-gray-600 ml-11 mb-4">Interactive showcase of reusable UI components for project management</p>
+          <p className="text-gray-600 mb-4">Interactive showcase of reusable UI components for project management</p>
           <hr className="border-gray-200" />
         </div>
 
