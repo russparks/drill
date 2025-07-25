@@ -144,7 +144,7 @@ export default function Components() {
               
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-medium text-gray-700 mb-4">Example 1: Construction Phase Timeline</h3>
+                  <h3 className="text-lg font-medium text-gray-700 mb-4">Phase Timeline</h3>
                   <TimelineCard project={sampleProject1} />
                 </div>
                 
