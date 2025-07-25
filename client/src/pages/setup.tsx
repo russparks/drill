@@ -247,8 +247,6 @@ export default function Setup({ onTabChange }: SetupProps) {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-8">
-
-
       <Tabs value={activeTab} className="space-y-9" onValueChange={(value) => {
         setActiveTab(value);
         onTabChange?.(value);
@@ -419,7 +417,7 @@ export default function Setup({ onTabChange }: SetupProps) {
               </div>
               {/* Message positioned to the right of the filter container */}
               {showFilterMessage && (
-                <div className="ml-2 text-xs text-gray-500 italic flex items-center">
+                <div className="text-xs text-gray-500 italic flex items-center ml-[0px] mr-[0px]">
                   At least one filter must be selected.
                 </div>
               )}
@@ -1198,48 +1196,47 @@ export default function Setup({ onTabChange }: SetupProps) {
                         )}
                     </CardContent>
                   </Card>
-                  
-                  {/* Remaining weeks display - tab behind project card */}
-                  {weekInfo && (
-                    <div className={`flex justify-end relative ${weekInfo.hasPositiveRetention ? 'opacity-60' : ''}`} style={{ marginTop: '-3px', marginRight: '25px' }}>
-                      <div className="bg-white rounded-b-lg px-3 py-1.5 text-gray-600 inline-block italic flex justify-center" style={{ 
-                        fontSize: '11.73px', 
-                        zIndex: -1,
-                        border: `1px solid ${(() => {
-                          if (weekInfo.isGreyedOut || weekInfo.hasPositiveRetention) return 'rgba(204, 204, 204, 0.5)';
-                          switch (project.status) {
-                            case 'tender': return 'rgba(59, 130, 246, 0.5)'; // blue
-                            case 'precon': return 'rgba(34, 197, 94, 0.5)'; // green
-                            case 'construction': return 'rgba(249, 115, 22, 0.5)'; // orange
-                            case 'aftercare': return 'rgba(168, 85, 247, 0.5)'; // purple
-                            default: return 'rgba(107, 114, 128, 0.5)'; // gray
-                          }
-                        })()}`
-                      }}>
-                        {weekInfo.isGreyedOut || weekInfo.hasPositiveRetention ? (
-                          <span className="text-gray-500 font-medium">Project Complete</span>
-                        ) : (
-                          <>
-                            {project.status === 'tender' || project.status === 'precon' ? (
-                              <>Weeks to Completion <span className="font-bold" style={{ 
-                                marginLeft: '3px', 
-                                marginRight: '3px',
-                                color: project.status === 'tender' ? 'rgb(59, 130, 246)' : 'rgb(34, 197, 94)'
-                              }}>{Math.max(0, weekInfo.totalWeeksToContract - weekInfo.currentWeek)}</span></>
-                            ) : (
-                              <>Weeks to Construction <span className="font-bold" style={{ 
-                                marginLeft: '3px', 
-                                marginRight: '3px',
-                                color: project.status === 'construction' ? 'rgb(234, 179, 8)' : project.status === 'aftercare' ? 'rgb(107, 114, 128)' : 'rgb(59, 130, 246)'
-                              }}>{Math.max(0, weekInfo.totalWeeksToAnticipated - weekInfo.currentWeek)}</span> Contract <span className="font-bold text-gray-800" style={{ marginLeft: '3px', marginRight: '3px' }}>{Math.max(0, weekInfo.totalWeeksToContract - weekInfo.currentWeek)}</span></>
-                            )}
-                          </>
-                        )}
+                    {/* Remaining weeks display - tab behind project card */}
+                    {weekInfo && (
+                      <div className={`flex justify-end relative ${weekInfo.hasPositiveRetention ? 'opacity-60' : ''}`} style={{ marginTop: '-3px', marginRight: '25px' }}>
+                        <div className="bg-white rounded-b-lg px-3 py-1.5 text-gray-600 inline-block italic flex justify-center" style={{ 
+                          fontSize: '11.73px', 
+                          zIndex: -1,
+                          border: `1px solid ${(() => {
+                            if (weekInfo.isGreyedOut || weekInfo.hasPositiveRetention) return 'rgba(204, 204, 204, 0.5)';
+                            switch (project.status) {
+                              case 'tender': return 'rgba(59, 130, 246, 0.5)'; // blue
+                              case 'precon': return 'rgba(34, 197, 94, 0.5)'; // green
+                              case 'construction': return 'rgba(249, 115, 22, 0.5)'; // orange
+                              case 'aftercare': return 'rgba(168, 85, 247, 0.5)'; // purple
+                              default: return 'rgba(107, 114, 128, 0.5)'; // gray
+                            }
+                          })()}`
+                        }}>
+                          {weekInfo.isGreyedOut || weekInfo.hasPositiveRetention ? (
+                            <span className="text-gray-500 font-medium">Project Complete</span>
+                          ) : (
+                            <>
+                              {project.status === 'tender' || project.status === 'precon' ? (
+                                <>Weeks to Completion <span className="font-bold" style={{ 
+                                  marginLeft: '3px', 
+                                  marginRight: '3px',
+                                  color: project.status === 'tender' ? 'rgb(59, 130, 246)' : 'rgb(34, 197, 94)'
+                                }}>{Math.max(0, weekInfo.totalWeeksToContract - weekInfo.currentWeek)}</span></>
+                              ) : (
+                                <>Weeks to Construction <span className="font-bold" style={{ 
+                                  marginLeft: '3px', 
+                                  marginRight: '3px',
+                                  color: project.status === 'construction' ? 'rgb(234, 179, 8)' : project.status === 'aftercare' ? 'rgb(107, 114, 128)' : 'rgb(59, 130, 246)'
+                                }}>{Math.max(0, weekInfo.totalWeeksToAnticipated - weekInfo.currentWeek)}</span> Contract <span className="font-bold text-gray-800" style={{ marginLeft: '3px', marginRight: '3px' }}>{Math.max(0, weekInfo.totalWeeksToContract - weekInfo.currentWeek)}</span></>
+                              )}
+                            </>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </div>
-              );
+                    )}
+                  </div>
+                );
             })
             )}
           </div>
@@ -1508,7 +1505,6 @@ export default function Setup({ onTabChange }: SetupProps) {
           {/* Empty content for Packages tab */}
         </TabsContent>
       </Tabs>
-
       <ConfirmDialog
         open={isConfirmDialogOpen}
         onOpenChange={setIsConfirmDialogOpen}
