@@ -133,7 +133,7 @@ export default function Components() {
           </div>
         </div>
         
-        <hr className="border-gray-200 mb-8" />
+        <hr className="border-gray-200 mt-[20px] mb-[20px]" />
 
         {/* Tab Content */}
         {activeTab === "timeline" && (
