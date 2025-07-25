@@ -337,74 +337,54 @@ export default function Components() {
                   </div>
                 </div>
                 <hr className="border-gray-200 mt-[5px] mb-[5px]" />
-                <div className="flex">
-                  <div className="flex flex-col gap-2 w-24 text-right">
-                    <div className="flex items-center justify-end gap-1">
-                      <span className="text-xs font-medium text-gray-700">Foundations</span>
-                      <Diamond size={8} fill="black" color="black" />
-                    </div>
-                    <div className="flex items-center justify-end gap-1">
-                      <span className="text-xs font-medium text-gray-700">Envelope</span>
-                      <Diamond size={8} fill="black" color="black" />
-                    </div>
-                    <div className="flex items-center justify-end gap-1">
-                      <span className="text-xs font-medium text-gray-700">Internals</span>
-                      <Diamond size={8} fill="black" color="black" />
-                    </div>
-                    <div className="flex items-center justify-end gap-1">
-                      <span className="text-xs font-medium text-gray-700">MEP</span>
-                      <Diamond size={8} fill="black" color="black" />
-                    </div>
-                    <div className="flex items-center justify-end gap-1">
-                      <span className="text-xs font-medium text-gray-700">Externals</span>
-                      <Diamond size={8} fill="black" color="black" />
-                    </div>
-                  </div>
-                  
-                  {/* Package progress bars */}
-                  <div className="flex-1 flex flex-col gap-2 ml-4" style={{ paddingTop: '4px' }}>
-                    {(() => {
-                      // Calculate total project weeks for positioning
-                      const startDate = new Date(selectedPackageProject.startOnSiteDate);
-                      const contractDate = new Date(selectedPackageProject.contractCompletionDate);
-                      const totalWeeks = Math.ceil((contractDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
-                      
-                      // Calculate construction completion week (anticipated completion)
-                      const constructionDate = new Date(selectedPackageProject.constructionCompletionDate);
-                      const constructionWeeks = Math.ceil((constructionDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
-                      
-                      // Define package durations with realistic construction sequencing
-                      const packages = [
-                        { name: 'Foundations', startWeek: 2, duration: 12, color: 'rgb(139, 69, 19)' }, // brown - weeks 2-14
-                        { name: 'Envelope', startWeek: 8, duration: 18, color: 'rgb(34, 197, 94)' }, // green - weeks 8-26
-                        { name: 'Internals', startWeek: 20, duration: Math.max(16, constructionWeeks - 24), color: 'rgb(59, 130, 246)' }, // blue - overlapping with envelope
-                        { name: 'MEP', startWeek: 25, duration: Math.max(12, constructionWeeks - 29), color: 'rgb(234, 179, 8)' }, // yellow - overlapping with internals
-                        { name: 'Externals', startWeek: Math.max(30, constructionWeeks - 8), duration: 8, color: 'rgb(168, 85, 247)' } // purple - finishes around 2 weeks before construction completion
-                      ];
-                      
-                      return packages.map((pkg, index) => (
-                        <div key={index} className="h-[11px] rounded-sm overflow-hidden flex relative" style={{ paddingTop: '3px', paddingBottom: '3px' }}>
+                <div className="flex flex-col gap-2">
+                  {(() => {
+                    // Calculate total project weeks for positioning
+                    const startDate = new Date(selectedPackageProject.startOnSiteDate);
+                    const contractDate = new Date(selectedPackageProject.contractCompletionDate);
+                    const totalWeeks = Math.ceil((contractDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
+                    
+                    // Calculate construction completion week (anticipated completion)
+                    const constructionDate = new Date(selectedPackageProject.constructionCompletionDate);
+                    const constructionWeeks = Math.ceil((constructionDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
+                    
+                    // Define package durations with realistic construction sequencing
+                    const packages = [
+                      { name: 'Foundations', startWeek: 2, duration: 12, color: 'rgb(139, 69, 19)' }, // brown - weeks 2-14
+                      { name: 'Envelope', startWeek: 8, duration: 18, color: 'rgb(34, 197, 94)' }, // green - weeks 8-26
+                      { name: 'Internals', startWeek: 20, duration: Math.max(16, constructionWeeks - 24), color: 'rgb(59, 130, 246)' }, // blue - overlapping with envelope
+                      { name: 'MEP', startWeek: 25, duration: Math.max(12, constructionWeeks - 29), color: 'rgb(234, 179, 8)' }, // yellow - overlapping with internals
+                      { name: 'Externals', startWeek: Math.max(30, constructionWeeks - 8), duration: 8, color: 'rgb(168, 85, 247)' } // purple - finishes around 2 weeks before construction completion
+                    ];
+                    
+                    return packages.map((pkg, index) => (
+                      <div key={index} className="flex items-center h-[11px]">
+                        {/* Package title and diamond */}
+                        <div className="flex items-center justify-end gap-1 w-24 text-right">
+                          <span className="text-xs font-medium text-gray-700">{pkg.name}</span>
+                          <Diamond size={8} fill="black" color="black" />
+                        </div>
+                        
+                        {/* Progress bar container with dashed line */}
+                        <div className="flex-1 ml-4 h-[5px] relative">
                           {/* Horizontal dashed line behind progress bars */}
                           <div className="absolute inset-0 flex items-center z-0">
                             <div className="w-full h-px border-t border-dashed border-gray-400"></div>
                           </div>
-                          {/* Full timeline background */}
-                          <div className="w-full h-full relative z-10">
-                            {/* Package duration bar */}
-                            <div
-                              className="h-full opacity-65 absolute top-0"
-                              style={{
-                                backgroundColor: pkg.color,
-                                left: `${(pkg.startWeek / totalWeeks) * 100}%`,
-                                width: `${(pkg.duration / totalWeeks) * 100}%`
-                              }}
-                              title={`${pkg.name}: Week ${pkg.startWeek} to ${pkg.startWeek + pkg.duration} (${pkg.duration} weeks)`}
-                            />
-                          </div>
+                          {/* Package duration bar */}
+                          <div
+                            className="h-full opacity-65 absolute top-0 z-10"
+                            style={{
+                              backgroundColor: pkg.color,
+                              left: `${(pkg.startWeek / totalWeeks) * 100}%`,
+                              width: `${(pkg.duration / totalWeeks) * 100}%`
+                            }}
+                            title={`${pkg.name}: Week ${pkg.startWeek} to ${pkg.startWeek + pkg.duration} (${pkg.duration} weeks)`}
+                          />
                         </div>
-                      ));
-                    })()}
-                  </div>
+                      </div>
+                    ));
+                  })()}
                 </div>
               </div>
               
