@@ -786,8 +786,12 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
                       const contractDate = new Date(project.contractCompletionDate);
                       const currentDate = new Date();
                       const isPastContractDate = currentDate > contractDate;
-                      const isCompleted = (retentionValue === 0 && project.status === 'aftercare') || 
-                                        (isPastContractDate && project.status !== 'aftercare');
+                      
+                      // A project is completed if:
+                      // 1. It's in aftercare with zero retention, OR
+                      // 2. It's past contract completion date (regardless of status)
+                      const isCompleted = (project.status === 'aftercare' && retentionValue === 0) || 
+                                        isPastContractDate;
                       
                       return { isCompleted, status: project.status };
                     };
