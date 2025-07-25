@@ -177,7 +177,7 @@ export default function Components() {
                     className="text-sm font-medium"
                     style={{
                       color: (() => {
-                        switch (sampleProject1.status) {
+                        switch (selectedPackageProject.status) {
                           case 'tender': return 'rgb(59, 130, 246)'; // blue
                           case 'precon': return 'rgb(34, 197, 94)'; // green
                           case 'construction': return 'rgb(234, 179, 8)'; // yellow
@@ -187,10 +187,25 @@ export default function Components() {
                       })()
                     }}
                   >
-                    {sampleProject1.projectNumber}
+                    {selectedPackageProject.projectNumber}
                   </span>
                   <span className="text-gray-400 mx-2">|</span>
-                  <span className="text-sm text-gray-600">Key Package Timelines</span>
+                  <span 
+                    className="text-sm font-medium"
+                    style={{
+                      color: (() => {
+                        switch (selectedPackageProject.status) {
+                          case 'tender': return 'rgb(59, 130, 246)'; // blue
+                          case 'precon': return 'rgb(34, 197, 94)'; // green
+                          case 'construction': return 'rgb(234, 179, 8)'; // yellow
+                          case 'aftercare': return 'rgb(107, 114, 128)'; // grey
+                          default: return 'rgb(75, 85, 99)'; // default gray
+                        }
+                      })()
+                    }}
+                  >
+                    {selectedPackageProject.name}
+                  </span>
                 </div>
                 
                 <div className="flex items-end gap-4 mb-1">
