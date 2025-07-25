@@ -764,7 +764,7 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
           </div>
         </div>
       )}
-      {/* Project Navigation Dropdown */}
+      {/* Timeline Dropdown */}
       <div className="relative text-[12px] font-thin" style={{ marginTop: '-30px', marginLeft: '25px', width: 'fit-content', zIndex: 0 }}>
         <div className="relative inline-block" ref={dropdownRef}>
           <button

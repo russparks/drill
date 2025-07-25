@@ -179,17 +179,12 @@ export default function Components() {
 
             {/* Phase Filters Examples */}
             <section className="mb-16">
-              
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-lg font-medium text-gray-700 mb-4">Phase Filters</h3>
-                  <PhaseFilters 
-                    activePhases={activePhases2}
-                    onPhaseToggle={handlePhaseToggle2}
-                    phases={samplePhases2}
-                  />
-                </div>
-              </div>
+              <h3 className="text-lg font-medium text-gray-700 mb-4">Phase Filters</h3>
+              <PhaseFilters 
+                activePhases={activePhases2}
+                onPhaseToggle={handlePhaseToggle2}
+                phases={samplePhases2}
+              />
             </section>
           </>
         )}
