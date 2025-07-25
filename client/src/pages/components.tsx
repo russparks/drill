@@ -362,7 +362,7 @@ export default function Components() {
                   </div>
                   
                   {/* Package progress bars */}
-                  <div className="flex-1 flex flex-col gap-2 ml-4">
+                  <div className="flex-1 flex flex-col gap-2 ml-4" style={{ paddingTop: '1.5px' }}>
                     {(() => {
                       // Calculate total project weeks for positioning
                       const startDate = new Date(selectedPackageProject.startOnSiteDate);
