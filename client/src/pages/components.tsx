@@ -369,13 +369,17 @@ export default function Components() {
                       const contractDate = new Date(selectedPackageProject.contractCompletionDate);
                       const totalWeeks = Math.ceil((contractDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
                       
-                      // Define package durations and start weeks (example data - should come from database)
+                      // Calculate construction completion week (anticipated completion)
+                      const constructionDate = new Date(selectedPackageProject.constructionCompletionDate);
+                      const constructionWeeks = Math.ceil((constructionDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
+                      
+                      // Define package durations with realistic construction sequencing
                       const packages = [
-                        { name: 'Foundations', startWeek: 1, duration: 8, color: 'rgb(139, 69, 19)' }, // brown
-                        { name: 'Envelope', startWeek: 6, duration: 12, color: 'rgb(34, 197, 94)' }, // green  
-                        { name: 'Internals', startWeek: 15, duration: 16, color: 'rgb(59, 130, 246)' }, // blue
-                        { name: 'MEP', startWeek: 20, duration: 14, color: 'rgb(234, 179, 8)' }, // yellow
-                        { name: 'Externals', startWeek: 30, duration: 6, color: 'rgb(168, 85, 247)' } // purple
+                        { name: 'Foundations', startWeek: 2, duration: 12, color: 'rgb(139, 69, 19)' }, // brown - weeks 2-14
+                        { name: 'Envelope', startWeek: 8, duration: 18, color: 'rgb(34, 197, 94)' }, // green - weeks 8-26
+                        { name: 'Internals', startWeek: 20, duration: Math.max(16, constructionWeeks - 24), color: 'rgb(59, 130, 246)' }, // blue - overlapping with envelope
+                        { name: 'MEP', startWeek: 25, duration: Math.max(12, constructionWeeks - 29), color: 'rgb(234, 179, 8)' }, // yellow - overlapping with internals
+                        { name: 'Externals', startWeek: Math.max(30, constructionWeeks - 8), duration: 8, color: 'rgb(168, 85, 247)' } // purple - finishes around 2 weeks before construction completion
                       ];
                       
                       return packages.map((pkg, index) => (
