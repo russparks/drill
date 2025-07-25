@@ -156,6 +156,7 @@ export default function Components() {
                   <TimelineCard project={sampleProject2} />
                 </div> */}
               </div>
+              <hr className="border-gray-200 mt-8" />
             </section>
 
             {/* Project Header Examples */}
