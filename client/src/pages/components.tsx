@@ -171,7 +171,7 @@ export default function Components() {
             {/* Package Timeline Examples */}
             <div>
               <h3 className="text-lg font-medium text-gray-700 mb-4">Package Timeline</h3>
-              <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+              <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm relative z-10">
                 <div className="flex items-center mb-4">
                   <span 
                     className="text-sm font-medium"
@@ -257,7 +257,7 @@ export default function Components() {
               </div>
               
               {/* Package Timeline Dropdown */}
-              <div className="relative text-[12px] font-thin" style={{ marginTop: '-5px', marginLeft: '25px', width: 'fit-content', zIndex: -1 }}>
+              <div className="relative text-[12px] font-thin" style={{ marginTop: '-5px', marginLeft: '25px', width: 'fit-content', zIndex: 0 }}>
                 <div className="relative inline-block" ref={dropdownRef}>
                   <button
                     onClick={() => setIsPackageDropdownOpen(!isPackageDropdownOpen)}
