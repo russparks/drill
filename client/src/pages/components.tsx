@@ -258,8 +258,9 @@ export default function Components() {
                     </div>
                     
                     {/* Main Project progress bar */}
-                    <div className="h-[5px] bg-gray-100 rounded-sm overflow-hidden flex">
-                      {(() => {
+                    <div className="h-[5px] relative">
+                      <div className="h-full bg-gray-100 rounded-sm overflow-hidden flex">
+                        {(() => {
                         // Use the same progress bar logic as Phase Timeline card
                         if (!selectedPackageProject.startOnSiteDate || !selectedPackageProject.contractCompletionDate || !selectedPackageProject.constructionCompletionDate) {
                           return <div className="bg-gray-300 h-full opacity-65" style={{ width: '100%' }} />;
@@ -333,6 +334,11 @@ export default function Components() {
                           </>
                         );
                       })()}
+                      </div>
+                      {/* Diamond at end of main progress bar */}
+                      <div className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10">
+                        <Diamond size={6} fill="gray" color="gray" />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -369,13 +375,41 @@ export default function Components() {
                         <div className="flex-1 ml-4 h-[5px] relative">
                           {/* Horizontal dashed line behind progress bars */}
                           <div className="absolute inset-0 flex items-center z-0">
-                            <div className="w-full h-px border-t border-dashed border-gray-400"></div>
+                            <div className="w-full h-px border-t border-dashed border-gray-400" style={{ opacity: 0.5 }}></div>
+                          </div>
+                          {/* Diamond at end of dashed line */}
+                          <div className="absolute right-0 top-1/2 transform -translate-y-1/2 z-5">
+                            <Diamond size={6} fill="gray" color="gray" />
                           </div>
                           {/* Package duration bar */}
                           <div
-                            className="h-full opacity-65 absolute top-0 z-10"
+                            className="h-full opacity-65 absolute top-0 z-20"
                             style={{
-                              backgroundColor: pkg.color,
+                              backgroundColor: (() => {
+                                const baseColor = (() => {
+                                  switch (selectedPackageProject.status) {
+                                    case 'tender': return 'rgb(59, 130, 246)'; // blue base
+                                    case 'precon': return 'rgb(34, 197, 94)'; // green base
+                                    case 'construction': return 'rgb(234, 179, 8)'; // yellow base
+                                    case 'aftercare': return 'rgb(107, 114, 128)'; // grey base
+                                    default: return 'rgb(59, 130, 246)';
+                                  }
+                                })();
+                                
+                                // Create variations for each package
+                                switch (index) {
+                                  case 0: return baseColor; // Foundations - base color
+                                  case 1: return baseColor.replace(/rgb\((\d+), (\d+), (\d+)\)/, (match, r, g, b) => 
+                                    `rgb(${Math.max(0, parseInt(r) - 20)}, ${Math.max(0, parseInt(g) - 10)}, ${Math.min(255, parseInt(b) + 20)})`); // Envelope - darker/bluer
+                                  case 2: return baseColor.replace(/rgb\((\d+), (\d+), (\d+)\)/, (match, r, g, b) => 
+                                    `rgb(${Math.min(255, parseInt(r) + 20)}, ${Math.max(0, parseInt(g) - 20)}, ${Math.max(0, parseInt(b) - 10)})`); // Internals - redder
+                                  case 3: return baseColor.replace(/rgb\((\d+), (\d+), (\d+)\)/, (match, r, g, b) => 
+                                    `rgb(${Math.max(0, parseInt(r) - 10)}, ${Math.min(255, parseInt(g) + 20)}, ${Math.max(0, parseInt(b) - 20)})`); // MEP - greener
+                                  case 4: return baseColor.replace(/rgb\((\d+), (\d+), (\d+)\)/, (match, r, g, b) => 
+                                    `rgb(${Math.min(255, parseInt(r) + 10)}, ${Math.max(0, parseInt(g) - 15)}, ${Math.min(255, parseInt(b) + 30)})`); // Externals - purple-ish
+                                  default: return baseColor;
+                                }
+                              })(),
                               left: `${(pkg.startWeek / totalWeeks) * 100}%`,
                               width: `${(pkg.duration / totalWeeks) * 100}%`
                             }}
