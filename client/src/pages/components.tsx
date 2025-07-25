@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { FileText, Search, Settings, Layers, Code, Package, MapPin, Diamond, ChevronDown } from "lucide-react";
 import { ProjectHeader, PhaseFilters, TimelineCard } from "@/components/project-timeline";
+import { useQuery } from "@tanstack/react-query";
 
 const sampleProject1 = {
   id: 19,
@@ -50,6 +51,26 @@ export default function Components() {
   const [activePhases2, setActivePhases2] = useState(['precon', 'construction']);
   const [isPackageDropdownOpen, setIsPackageDropdownOpen] = useState(false);
   const [selectedPackageProject, setSelectedPackageProject] = useState(sampleProject1);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Fetch all projects for the dropdown
+  const { data: projects = [] } = useQuery({
+    queryKey: ['/api/projects']
+  });
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsPackageDropdownOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handlePhaseToggle1 = (phase: string) => {
     setActivePhases1(prev => 
@@ -237,7 +258,7 @@ export default function Components() {
               
               {/* Package Timeline Dropdown */}
               <div className="relative text-[12px] font-thin" style={{ marginTop: '-10px', marginLeft: '25px', width: 'fit-content', zIndex: 0 }}>
-                <div className="relative inline-block">
+                <div className="relative inline-block" ref={dropdownRef}>
                   <button
                     onClick={() => setIsPackageDropdownOpen(!isPackageDropdownOpen)}
                     className="flex items-center bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 transition-colors mt-[-5px] mb-[-5px] pt-[5px] pb-[5px] pl-[8px] pr-[8px] text-[#5e5e5e]"
@@ -262,50 +283,114 @@ export default function Components() {
                   {isPackageDropdownOpen && (
                     <div className="absolute left-0 top-full w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto mt-[-22px] mb-[-22px] ml-[28px] mr-[28px] pt-[3px] pb-[3px]">
                       <div className="py-1">
-                        {[sampleProject1, sampleProject2].map((proj) => {
-                          const getPhaseColors = (status: string) => {
-                            switch (status) {
-                              case 'tender': return { bg: 'bg-blue-50', border: 'border-l-blue-500' };
-                              case 'precon': return { bg: 'bg-green-50', border: 'border-l-green-500' };
-                              case 'construction': return { bg: 'bg-yellow-50', border: 'border-l-yellow-500' };
-                              case 'aftercare': return { bg: 'bg-gray-50', border: 'border-l-gray-500' };
-                              default: return { bg: 'bg-gray-50', border: 'border-l-gray-500' };
+                        {(() => {
+                          // Sort projects: live projects first (tender, precon, construction), then completed projects (tender complete, precon complete, aftercare)
+                          const sortedProjects = [...(projects as any[])].sort((a, b) => {
+                            const getProjectInfo = (project: any) => {
+                              const retentionValue = parseFloat(project.retention?.replace(/[£,]/g, '') || '0');
+                              const contractDate = new Date(project.contractCompletionDate);
+                              const currentDate = new Date();
+                              const isPastContractDate = currentDate > contractDate;
+                              
+                              // A project is completed if:
+                              // 1. It's in aftercare with zero retention, OR
+                              // 2. It's past contract completion date (regardless of status)
+                              const isCompleted = (project.status === 'aftercare' && retentionValue === 0) || 
+                                                isPastContractDate;
+                              
+                              return { isCompleted, status: project.status };
+                            };
+                            
+                            const aInfo = getProjectInfo(a);
+                            const bInfo = getProjectInfo(b);
+                            
+                            // Define order values
+                            const getOrderValue = (info: any) => {
+                              if (!info.isCompleted) {
+                                // Live projects
+                                switch (info.status) {
+                                  case 'tender': return 1;
+                                  case 'precon': return 2;
+                                  case 'construction': return 3;
+                                  default: return 4;
+                                }
+                              } else {
+                                // Completed projects
+                                switch (info.status) {
+                                  case 'tender': return 5; // tender complete
+                                  case 'precon': return 6; // precon complete
+                                  case 'aftercare': return 7; // aftercare
+                                  default: return 8;
+                                }
+                              }
+                            };
+                            
+                            const orderDiff = getOrderValue(aInfo) - getOrderValue(bInfo);
+                            
+                            // If same order value (same phase and completion status), sort by most recent first
+                            if (orderDiff === 0) {
+                              // For completed projects in same phase, sort by most recent completion date
+                              if (aInfo.isCompleted && bInfo.isCompleted) {
+                                const aDate = new Date(a.contractCompletionDate);
+                                const bDate = new Date(b.contractCompletionDate);
+                                return bDate.getTime() - aDate.getTime(); // Most recent first
+                              }
+                              // For live projects in same phase, sort by start date (most recent first)
+                              else {
+                                const aStart = new Date(a.startOnSiteDate);
+                                const bStart = new Date(b.startOnSiteDate);
+                                return bStart.getTime() - aStart.getTime(); // Most recent first
+                              }
                             }
-                          };
+                            
+                            return orderDiff;
+                          });
                           
-                          const colors = getPhaseColors(proj.status);
-                          
-                          return (
-                            <button
-                              key={proj.id}
-                              onClick={() => {
-                                setSelectedPackageProject(proj);
-                                setIsPackageDropdownOpen(false);
-                              }}
-                              className={`w-full text-left px-2 py-1 hover:bg-gray-100 transition-colors border-l-4 ${
-                                proj.id === selectedPackageProject.id ? `${colors.bg} ${colors.border}` : 'border-l-transparent'
-                              }`}
-                              style={{ fontSize: '11.05px' }}
-                            >
-                              <span 
-                                className="font-medium truncate block"
-                                style={{
-                                  color: (() => {
-                                    switch (proj.status) {
-                                      case 'tender': return 'rgb(59, 130, 246)'; // blue
-                                      case 'precon': return 'rgb(34, 197, 94)'; // green
-                                      case 'construction': return 'rgb(234, 179, 8)'; // yellow
-                                      case 'aftercare': return 'rgb(107, 114, 128)'; // grey
-                                      default: return 'rgb(75, 85, 99)'; // default gray
-                                    }
-                                  })()
+                          return sortedProjects.map((proj: any) => {
+                            const getPhaseColors = (status: string) => {
+                              switch (status) {
+                                case 'tender': return { bg: 'bg-blue-50', border: 'border-l-blue-500' };
+                                case 'precon': return { bg: 'bg-green-50', border: 'border-l-green-500' };
+                                case 'construction': return { bg: 'bg-yellow-50', border: 'border-l-yellow-500' };
+                                case 'aftercare': return { bg: 'bg-gray-50', border: 'border-l-gray-500' };
+                                default: return { bg: 'bg-gray-50', border: 'border-l-gray-500' };
+                              }
+                            };
+                            
+                            const colors = getPhaseColors(proj.status);
+                            
+                            return (
+                              <button
+                                key={proj.id}
+                                onClick={() => {
+                                  setSelectedPackageProject(proj);
+                                  setIsPackageDropdownOpen(false);
                                 }}
+                                className={`w-full text-left px-2 py-1 hover:bg-gray-100 transition-colors border-l-4 ${
+                                  proj.id === selectedPackageProject.id ? `${colors.bg} ${colors.border}` : 'border-l-transparent'
+                                }`}
+                                style={{ fontSize: '11.05px' }}
                               >
-                                {proj.name}
-                              </span>
-                            </button>
-                          );
-                        })}
+                                <span 
+                                  className="font-medium truncate block"
+                                  style={{
+                                    color: (() => {
+                                      switch (proj.status) {
+                                        case 'tender': return 'rgb(59, 130, 246)'; // blue
+                                        case 'precon': return 'rgb(34, 197, 94)'; // green
+                                        case 'construction': return 'rgb(234, 179, 8)'; // yellow
+                                        case 'aftercare': return 'rgb(107, 114, 128)'; // grey
+                                        default: return 'rgb(75, 85, 99)'; // default gray
+                                      }
+                                    })()
+                                  }}
+                                >
+                                  {proj.name}
+                                </span>
+                              </button>
+                            );
+                          });
+                        })()}
                       </div>
                     </div>
                   )}
