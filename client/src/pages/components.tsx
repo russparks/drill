@@ -335,9 +335,9 @@ export default function Components() {
                         );
                       })()}
                       </div>
-                      {/* Diamond at end of main progress bar */}
-                      <div className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10">
-                        <Diamond size={16} fill="gray" color="gray" />
+                      {/* Dot at end of main progress bar aligned with contract completion */}
+                      <div className="absolute top-1/2 transform -translate-y-1/2 z-10" style={{ right: '0%' }}>
+                        <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
                       </div>
                     </div>
                   </div>
@@ -377,15 +377,15 @@ export default function Components() {
                           <div className="absolute inset-0 flex items-center z-0" style={{ top: '1px', right: '10px' }}>
                             <div className="w-full h-px border-t border-dashed border-gray-400" style={{ opacity: 0.5 }}></div>
                           </div>
-                          {/* Diamond at end of dashed line */}
-                          <div className="absolute right-0 top-1/2 transform -translate-y-1/2 z-5">
-                            <Diamond size={16} fill="gray" color="gray" />
+                          {/* Dot at end aligned with contract completion */}
+                          <div className="absolute top-1/2 transform -translate-y-1/2 z-5" style={{ right: '0%' }}>
+                            <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
                           </div>
                           {/* Package duration bar */}
                           <div
                             className="h-full absolute z-20"
                             style={{
-                              top: '2px',
+                              top: '1px',
                               backgroundColor: (() => {
                                 const baseColor = (() => {
                                   switch (selectedPackageProject.status) {
