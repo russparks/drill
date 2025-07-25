@@ -168,38 +168,118 @@ export default function Components() {
                   </span>
                   <span className="text-gray-400 mx-2">|</span>
                   <div className="flex items-center gap-3">
-                    <span 
-                      className="text-xs font-medium"
-                      style={{
-                        color: (() => {
+                    <div className="flex items-center" title="Start on Site Date">
+                      <span className="border px-0.5 py-0.5 rounded-l-sm" style={{ 
+                        fontSize: '9px',
+                        color: sampleProject1.status === 'construction' ? 'rgb(31, 41, 55)' : 'white',
+                        backgroundColor: (() => {
                           switch (sampleProject1.status) {
-                            case 'tender': return 'rgb(59, 130, 246)'; // blue
-                            case 'precon': return 'rgb(34, 197, 94)'; // green
-                            case 'construction': return 'rgb(234, 179, 8)'; // yellow
-                            case 'aftercare': return 'rgb(107, 114, 128)'; // grey
-                            default: return 'rgb(75, 85, 99)'; // default gray
+                            case 'tender': return 'rgb(147, 197, 253)'; // light blue
+                            case 'precon': return 'rgb(134, 239, 172)'; // light green
+                            case 'construction': return 'rgb(254, 240, 138)'; // light yellow
+                            case 'aftercare': return 'rgb(209, 213, 219)'; // light grey
+                            default: return 'rgb(156, 163, 175)';
                           }
-                        })()
-                      }}
-                    >
-                      SOS: 15 Mar 2024
-                    </span>
-                    <span 
-                      className="text-xs font-medium"
-                      style={{
-                        color: (() => {
+                        })(),
+                        borderColor: (() => {
                           switch (sampleProject1.status) {
-                            case 'tender': return 'rgb(59, 130, 246)'; // blue
-                            case 'precon': return 'rgb(34, 197, 94)'; // green
-                            case 'construction': return 'rgb(234, 179, 8)'; // yellow
-                            case 'aftercare': return 'rgb(107, 114, 128)'; // grey
-                            default: return 'rgb(75, 85, 99)'; // default gray
+                            case 'tender': return 'rgb(147, 197, 253)';
+                            case 'precon': return 'rgb(134, 239, 172)';
+                            case 'construction': return 'rgb(254, 240, 138)';
+                            case 'aftercare': return 'rgb(209, 213, 219)';
+                            default: return 'rgb(156, 163, 175)';
                           }
-                        })()
-                      }}
-                    >
-                      SOS: 22 Jun 2024
-                    </span>
+                        })(),
+                        borderWidth: '2px',
+                        borderStyle: 'solid'
+                      }}>SOS</span>
+                      <span className="bg-white text-black px-1 py-0.5 rounded-r-sm" style={{ 
+                        fontSize: '10px',
+                        borderTop: `1px solid ${(() => {
+                          switch (sampleProject1.status) {
+                            case 'tender': return 'rgb(147, 197, 253)';
+                            case 'precon': return 'rgb(134, 239, 172)';
+                            case 'construction': return 'rgb(254, 240, 138)';
+                            case 'aftercare': return 'rgb(209, 213, 219)';
+                            default: return 'rgb(156, 163, 175)';
+                          }
+                        })()}`,
+                        borderRight: `1px solid ${(() => {
+                          switch (sampleProject1.status) {
+                            case 'tender': return 'rgb(147, 197, 253)';
+                            case 'precon': return 'rgb(134, 239, 172)';
+                            case 'construction': return 'rgb(254, 240, 138)';
+                            case 'aftercare': return 'rgb(209, 213, 219)';
+                            default: return 'rgb(156, 163, 175)';
+                          }
+                        })()}`,
+                        borderBottom: `1px solid ${(() => {
+                          switch (sampleProject1.status) {
+                            case 'tender': return 'rgb(147, 197, 253)';
+                            case 'precon': return 'rgb(134, 239, 172)';
+                            case 'construction': return 'rgb(254, 240, 138)';
+                            case 'aftercare': return 'rgb(209, 213, 219)';
+                            default: return 'rgb(156, 163, 175)';
+                          }
+                        })()}`
+                      }}>15 MAR 24</span>
+                    </div>
+                    <div className="flex items-center" title="Start on Site Date">
+                      <span className="border px-0.5 py-0.5 rounded-l-sm" style={{ 
+                        fontSize: '9px',
+                        color: sampleProject1.status === 'construction' ? 'rgb(31, 41, 55)' : 'white',
+                        backgroundColor: (() => {
+                          switch (sampleProject1.status) {
+                            case 'tender': return 'rgb(147, 197, 253)'; // light blue
+                            case 'precon': return 'rgb(134, 239, 172)'; // light green
+                            case 'construction': return 'rgb(254, 240, 138)'; // light yellow
+                            case 'aftercare': return 'rgb(209, 213, 219)'; // light grey
+                            default: return 'rgb(156, 163, 175)';
+                          }
+                        })(),
+                        borderColor: (() => {
+                          switch (sampleProject1.status) {
+                            case 'tender': return 'rgb(147, 197, 253)';
+                            case 'precon': return 'rgb(134, 239, 172)';
+                            case 'construction': return 'rgb(254, 240, 138)';
+                            case 'aftercare': return 'rgb(209, 213, 219)';
+                            default: return 'rgb(156, 163, 175)';
+                          }
+                        })(),
+                        borderWidth: '2px',
+                        borderStyle: 'solid'
+                      }}>SOS</span>
+                      <span className="bg-white text-black px-1 py-0.5 rounded-r-sm" style={{ 
+                        fontSize: '10px',
+                        borderTop: `1px solid ${(() => {
+                          switch (sampleProject1.status) {
+                            case 'tender': return 'rgb(147, 197, 253)';
+                            case 'precon': return 'rgb(134, 239, 172)';
+                            case 'construction': return 'rgb(254, 240, 138)';
+                            case 'aftercare': return 'rgb(209, 213, 219)';
+                            default: return 'rgb(156, 163, 175)';
+                          }
+                        })()}`,
+                        borderRight: `1px solid ${(() => {
+                          switch (sampleProject1.status) {
+                            case 'tender': return 'rgb(147, 197, 253)';
+                            case 'precon': return 'rgb(134, 239, 172)';
+                            case 'construction': return 'rgb(254, 240, 138)';
+                            case 'aftercare': return 'rgb(209, 213, 219)';
+                            default: return 'rgb(156, 163, 175)';
+                          }
+                        })()}`,
+                        borderBottom: `1px solid ${(() => {
+                          switch (sampleProject1.status) {
+                            case 'tender': return 'rgb(147, 197, 253)';
+                            case 'precon': return 'rgb(134, 239, 172)';
+                            case 'construction': return 'rgb(254, 240, 138)';
+                            case 'aftercare': return 'rgb(209, 213, 219)';
+                            default: return 'rgb(156, 163, 175)';
+                          }
+                        })()}`
+                      }}>22 JUN 24</span>
+                    </div>
                   </div>
                 </div>
                 <div className="text-gray-600">
