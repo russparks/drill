@@ -163,6 +163,7 @@ export default function Components() {
               
               <div className="space-y-6">
                 <div>
+                  <h3 className="text-lg font-medium text-gray-700 mb-4">Project Header</h3>
                   <ProjectHeader project={sampleProject1} />
                 </div>
                 
@@ -181,7 +182,7 @@ export default function Components() {
               
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-medium text-gray-700 mb-4">Example 2: Selective Phase Filtering</h3>
+                  <h3 className="text-lg font-medium text-gray-700 mb-4">Phase Filters</h3>
                   <PhaseFilters 
                     activePhases={activePhases2}
                     onPhaseToggle={handlePhaseToggle2}
