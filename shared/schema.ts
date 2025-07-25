@@ -27,35 +27,35 @@ export const projects = pgTable("projects", {
   latitude: text("latitude"),
   longitude: text("longitude"),
   
-  // Package 1
-  packageOneNumber: text("package_one_number"),
-  packageOneStartDate: timestamp("package_one_start_date"),
-  packageOneEndDate: timestamp("package_one_end_date"),
-  packageOneCompany: text("package_one_company"),
+  // Package Foundations
+  packageFoundations: text("package_foundations"),
+  packageFoundationsStart: timestamp("package_foundations_start"),
+  packageFoundationsFinish: timestamp("package_foundations_finish"),
+  packageFoundationsCompany: text("package_foundations_company"),
   
-  // Package 2
-  packageTwoNumber: text("package_two_number"),
-  packageTwoStartDate: timestamp("package_two_start_date"),
-  packageTwoEndDate: timestamp("package_two_end_date"),
-  packageTwoCompany: text("package_two_company"),
+  // Package Frame
+  packageFrame: text("package_frame"),
+  packageFrameStart: timestamp("package_frame_start"),
+  packageFrameFinish: timestamp("package_frame_finish"),
+  packageFrameCompany: text("package_frame_company"),
   
-  // Package 3
-  packageThreeNumber: text("package_three_number"),
-  packageThreeStartDate: timestamp("package_three_start_date"),
-  packageThreeEndDate: timestamp("package_three_end_date"),
-  packageThreeCompany: text("package_three_company"),
+  // Package Envelope
+  packageEnvelope: text("package_envelope"),
+  packageEnvelopeStart: timestamp("package_envelope_start"),
+  packageEnvelopeFinish: timestamp("package_envelope_finish"),
+  packageEnvelopeCompany: text("package_envelope_company"),
   
-  // Package 4
-  packageFourNumber: text("package_four_number"),
-  packageFourStartDate: timestamp("package_four_start_date"),
-  packageFourEndDate: timestamp("package_four_end_date"),
-  packageFourCompany: text("package_four_company"),
+  // Package Internals
+  packageInternals: text("package_internals"),
+  packageInternalsStart: timestamp("package_internals_start"),
+  packageInternalsFinish: timestamp("package_internals_finish"),
+  packageInternalsCompany: text("package_internals_company"),
   
-  // Package 5
-  packageFiveNumber: text("package_five_number"),
-  packageFiveStartDate: timestamp("package_five_start_date"),
-  packageFiveEndDate: timestamp("package_five_end_date"),
-  packageFiveCompany: text("package_five_company"),
+  // Package MEP
+  packageMep: text("package_mep"),
+  packageMepStart: timestamp("package_mep_start"),
+  packageMepFinish: timestamp("package_mep_finish"),
+  packageMepCompany: text("package_mep_company"),
   
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
@@ -108,16 +108,16 @@ export const insertProjectSchema = createInsertSchema(projects).omit({
   constructionCompletionDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
   
   // Package date transformations
-  packageOneStartDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
-  packageOneEndDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
-  packageTwoStartDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
-  packageTwoEndDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
-  packageThreeStartDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
-  packageThreeEndDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
-  packageFourStartDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
-  packageFourEndDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
-  packageFiveStartDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
-  packageFiveEndDate: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
+  packageFoundationsStart: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
+  packageFoundationsFinish: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
+  packageFrameStart: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
+  packageFrameFinish: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
+  packageEnvelopeStart: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
+  packageEnvelopeFinish: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
+  packageInternalsStart: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
+  packageInternalsFinish: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
+  packageMepStart: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
+  packageMepFinish: z.string().optional().nullable().transform((val) => val ? new Date(val) : null),
 });
 
 export const insertActionSchema = createInsertSchema(actions).omit({
