@@ -369,7 +369,7 @@ export default function Components() {
                         </div>
                         
                         {/* Progress bar container with dashed line */}
-                        <div className="flex-1 ml-4 h-[5px] relative">
+                        <div className="flex-1 h-[5px] relative ml-[7px] mr-[7px]">
                           {/* Horizontal dashed line behind progress bars */}
                           <div className="absolute inset-0 flex items-center z-0" style={{ top: '1px', right: '10px' }}>
                             <div className="w-full h-px border-t border-dashed border-gray-400" style={{ opacity: 0.5 }}></div>
