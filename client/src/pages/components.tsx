@@ -383,7 +383,7 @@ export default function Components() {
                       ];
                       
                       return packages.map((pkg, index) => (
-                        <div key={index} className="h-[5px] rounded-sm overflow-hidden flex relative" style={{ paddingTop: '3px', paddingBottom: '3px' }}>
+                        <div key={index} className="h-[11px] rounded-sm overflow-hidden flex relative" style={{ paddingTop: '3px', paddingBottom: '3px' }}>
                           {/* Full timeline background */}
                           <div className="w-full h-full relative">
                             {/* Package duration bar */}
