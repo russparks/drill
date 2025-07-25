@@ -772,7 +772,20 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
             className="flex items-center bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 transition-colors mt-[-5px] mb-[-5px] pt-[5px] pb-[5px] pl-[8px] pr-[8px] text-[#5e5e5e]"
             style={{ padding: '6px 10px', fontSize: '13px' }}
           >
-            <ChevronDown className={`h-4 w-4 text-gray-500 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+            <ChevronDown 
+              className={`h-4 w-4 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`}
+              style={{
+                color: (() => {
+                  switch (currentProject.status) {
+                    case 'tender': return 'rgb(59, 130, 246)'; // blue
+                    case 'precon': return 'rgb(34, 197, 94)'; // green
+                    case 'construction': return 'rgb(234, 179, 8)'; // yellow
+                    case 'aftercare': return 'rgb(107, 114, 128)'; // grey
+                    default: return 'rgb(107, 114, 128)'; // default gray
+                  }
+                })()
+              }}
+            />
           </button>
           
           {isDropdownOpen && (
