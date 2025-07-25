@@ -285,7 +285,7 @@ export default function Components() {
                         if (isProjectCompleted || (hasPositiveRetention && selectedPackageProject.status === 'aftercare')) {
                           return (
                             <div 
-                              className="bg-gray-400 h-full opacity-65" 
+                              className="bg-gray-400 h-full" 
                               style={{ width: '100%' }}
                               title="Project finished"
                             />
@@ -301,14 +301,14 @@ export default function Components() {
                           <>
                             {greyPercent > 0 && (
                               <div 
-                                className="bg-gray-400 h-full opacity-65" 
+                                className="bg-gray-400 h-full" 
                                 style={{ width: `${greyPercent}%` }}
                                 title={`Elapsed: ${Math.max(1, currentWeek)} weeks`}
                               />
                             )}
                             {lightBluePercent > 0 && (
                               <div 
-                                className="h-full opacity-65" 
+                                className="h-full" 
                                 style={{ 
                                   width: `${lightBluePercent}%`,
                                   backgroundColor: (() => {
@@ -326,7 +326,7 @@ export default function Components() {
                             )}
                             {amberPercent > 0 && (
                               <div 
-                                className="bg-gray-800 h-full opacity-65" 
+                                className="bg-gray-800 h-full" 
                                 style={{ width: `${amberPercent}%` }}
                                 title={`Buffer to contract: ${totalWeeksToContract - totalWeeksToAnticipated} weeks`}
                               />
@@ -337,7 +337,7 @@ export default function Components() {
                       </div>
                       {/* Diamond at end of main progress bar */}
                       <div className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10">
-                        <Diamond size={6} fill="gray" color="gray" />
+                        <Diamond size={8} fill="gray" color="gray" />
                       </div>
                     </div>
                   </div>
@@ -379,12 +379,13 @@ export default function Components() {
                           </div>
                           {/* Diamond at end of dashed line */}
                           <div className="absolute right-0 top-1/2 transform -translate-y-1/2 z-5">
-                            <Diamond size={6} fill="gray" color="gray" />
+                            <Diamond size={8} fill="gray" color="gray" />
                           </div>
                           {/* Package duration bar */}
                           <div
-                            className="h-full opacity-65 absolute top-0 z-20"
+                            className="h-full absolute z-20 border-[3px] border-white"
                             style={{
+                              top: '2px',
                               backgroundColor: (() => {
                                 const baseColor = (() => {
                                   switch (selectedPackageProject.status) {
