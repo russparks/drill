@@ -374,9 +374,9 @@ export default function Components() {
                           <div className="absolute inset-0 flex items-center z-0" style={{ top: '1px', right: '10px' }}>
                             <div className="w-full h-px border-t border-dashed border-gray-400" style={{ opacity: 0.5 }}></div>
                           </div>
-                          {/* Dot at end aligned with contract completion */}
+                          {/* Diamond at end aligned with contract completion */}
                           <div className="absolute top-1/2 transform -translate-y-1/2 z-5" style={{ right: '-2px' }}>
-                            <div className="w-2 h-2 bg-black rounded-full"></div>
+                            <Diamond size={8} fill="black" color="black" />
                           </div>
                           {/* Package duration bar */}
                           <div
