@@ -172,7 +172,10 @@ export default function Components() {
                 
                 <div className="flex">
                   <div className="flex flex-col gap-2 w-24 text-right">
-                    <span className="text-xs font-medium text-gray-700 mb-1">Main Project</span>
+                    <div className="flex items-center justify-end gap-1 mb-1">
+                      <span className="text-xs font-medium text-gray-700">Main Project</span>
+                      <Diamond size={8} fill="none" color="black" />
+                    </div>
                     <div className="flex items-center justify-end gap-1">
                       <span className="text-xs font-medium text-gray-700">Foundations</span>
                       <Diamond size={8} fill="black" color="black" />
