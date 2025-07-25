@@ -257,7 +257,7 @@ export default function Components() {
               </div>
               
               {/* Package Timeline Dropdown */}
-              <div className="relative text-[12px] font-thin" style={{ marginTop: '-10px', marginLeft: '25px', width: 'fit-content', zIndex: 0 }}>
+              <div className="relative text-[12px] font-thin" style={{ marginTop: '-5px', marginLeft: '25px', width: 'fit-content', zIndex: -1 }}>
                 <div className="relative inline-block" ref={dropdownRef}>
                   <button
                     onClick={() => setIsPackageDropdownOpen(!isPackageDropdownOpen)}
