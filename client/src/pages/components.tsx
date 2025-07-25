@@ -170,10 +170,17 @@ export default function Components() {
                   <span className="text-sm text-gray-600">Key Package Timelines</span>
                 </div>
                 
-                <div className="flex flex-col gap-2 w-24 text-right">
-                  <div className="flex items-center justify-end gap-1 mb-1">
+                <div className="flex items-center gap-4 mb-1">
+                  <div className="flex items-center justify-end gap-1 w-24">
                     <span className="text-xs font-medium text-gray-700">Main Project</span>
                     <Diamond size={8} fill="none" color="black" />
+                  </div>
+                  
+                  {/* Main Project progress bar */}
+                  <div className="flex-1 h-4 bg-gray-100 rounded-sm overflow-hidden flex">
+                    <div className="bg-gray-400 h-full opacity-60" style={{ width: '45%' }} />
+                    <div className="bg-yellow-500 h-full opacity-60" style={{ width: '35%' }} />
+                    <div className="bg-gray-800 h-full opacity-60" style={{ width: '20%' }} />
                   </div>
                 </div>
                 <hr className="border-gray-200 mt-[5px] mb-[5px]" />
@@ -198,41 +205,6 @@ export default function Components() {
                     <div className="flex items-center justify-end gap-1">
                       <span className="text-xs font-medium text-gray-700">Externals</span>
                       <Diamond size={8} fill="black" color="black" />
-                    </div>
-                  </div>
-                  
-                  {/* Progress bars */}
-                  <div className="flex-1 ml-4 flex flex-col gap-2">
-                    {/* Foundations progress bar */}
-                    <div className="h-4 bg-gray-100 rounded-sm overflow-hidden flex">
-                      <div className="bg-gray-400 h-full opacity-60" style={{ width: '30%' }} />
-                      <div className="bg-yellow-500 h-full opacity-60" style={{ width: '40%' }} />
-                      <div className="bg-gray-800 h-full opacity-60" style={{ width: '30%' }} />
-                    </div>
-                    
-                    {/* Envelope progress bar */}
-                    <div className="h-4 bg-gray-100 rounded-sm overflow-hidden flex">
-                      <div className="bg-gray-400 h-full opacity-60" style={{ width: '10%' }} />
-                      <div className="bg-yellow-500 h-full opacity-60" style={{ width: '60%' }} />
-                      <div className="bg-gray-800 h-full opacity-60" style={{ width: '30%' }} />
-                    </div>
-                    
-                    {/* Internals progress bar */}
-                    <div className="h-4 bg-gray-100 rounded-sm overflow-hidden flex">
-                      <div className="bg-yellow-500 h-full opacity-60" style={{ width: '70%' }} />
-                      <div className="bg-gray-800 h-full opacity-60" style={{ width: '30%' }} />
-                    </div>
-                    
-                    {/* MEP progress bar */}
-                    <div className="h-4 bg-gray-100 rounded-sm overflow-hidden flex">
-                      <div className="bg-yellow-500 h-full opacity-60" style={{ width: '45%' }} />
-                      <div className="bg-gray-800 h-full opacity-60" style={{ width: '55%' }} />
-                    </div>
-                    
-                    {/* Externals progress bar */}
-                    <div className="h-4 bg-gray-100 rounded-sm overflow-hidden flex">
-                      <div className="bg-yellow-500 h-full opacity-60" style={{ width: '20%' }} />
-                      <div className="bg-gray-800 h-full opacity-60" style={{ width: '80%' }} />
                     </div>
                   </div>
                 </div>
