@@ -171,7 +171,7 @@ export default function Components() {
                 </div>
                 
                 <div className="flex">
-                  <div className="flex flex-col gap-2 w-24">
+                  <div className="flex flex-col gap-2 w-24 text-right">
                     <span className="text-xs font-medium text-gray-700">Foundations</span>
                     <span className="text-xs font-medium text-gray-700">Envelope</span>
                     <span className="text-xs font-medium text-gray-700">Internals</span>
