@@ -337,7 +337,7 @@ export default function Components() {
                       </div>
                       {/* Diamond at end of main progress bar */}
                       <div className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10">
-                        <Diamond size={8} fill="gray" color="gray" />
+                        <Diamond size={16} fill="gray" color="gray" />
                       </div>
                     </div>
                   </div>
@@ -374,16 +374,16 @@ export default function Components() {
                         {/* Progress bar container with dashed line */}
                         <div className="flex-1 ml-4 h-[5px] relative">
                           {/* Horizontal dashed line behind progress bars */}
-                          <div className="absolute inset-0 flex items-center z-0" style={{ top: '1px' }}>
+                          <div className="absolute inset-0 flex items-center z-0" style={{ top: '1px', right: '10px' }}>
                             <div className="w-full h-px border-t border-dashed border-gray-400" style={{ opacity: 0.5 }}></div>
                           </div>
                           {/* Diamond at end of dashed line */}
                           <div className="absolute right-0 top-1/2 transform -translate-y-1/2 z-5">
-                            <Diamond size={8} fill="gray" color="gray" />
+                            <Diamond size={16} fill="gray" color="gray" />
                           </div>
                           {/* Package duration bar */}
                           <div
-                            className="h-full absolute z-20 border-[3px] border-white"
+                            className="h-full absolute z-20"
                             style={{
                               top: '2px',
                               backgroundColor: (() => {
