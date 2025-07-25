@@ -160,14 +160,9 @@ export default function Components() {
 
             {/* Project Header Examples */}
             <section className="mb-16">
-              <div className="border-b-2 border-gray-300 pb-4 mb-8">
-                <h2 className="text-2xl font-semibold text-gray-900">Project Header Component</h2>
-                <p className="text-sm text-gray-500 mt-1">Compact project information display with status indicators</p>
-              </div>
               
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-medium text-gray-700 mb-4">Example 1: Construction Phase Project</h3>
                   <ProjectHeader project={sampleProject1} />
                 </div>
                 
@@ -183,10 +178,6 @@ export default function Components() {
 
             {/* Phase Filters Examples */}
             <section className="mb-16">
-              <div className="border-b-2 border-gray-300 pb-4 mb-8">
-                <h2 className="text-2xl font-semibold text-gray-900">Phase Filters Component</h2>
-                <p className="text-sm text-gray-500 mt-1">Interactive phase filtering with statistics</p>
-              </div>
               
               <div className="space-y-6">
                 <div>
