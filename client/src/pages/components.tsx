@@ -383,7 +383,7 @@ export default function Components() {
                       ];
                       
                       return packages.map((pkg, index) => (
-                        <div key={index} className="h-[20px] bg-gray-100 rounded-sm overflow-hidden flex relative">
+                        <div key={index} className="h-[5px] rounded-sm overflow-hidden flex relative">
                           {/* Full timeline background */}
                           <div className="w-full h-full relative">
                             {/* Package duration bar */}
