@@ -139,54 +139,28 @@ export default function Components() {
         {activeTab === "timeline" && (
           <>
             {/* Timeline Card Examples */}
-            <section className="mb-16">
-
-              
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-lg font-medium text-gray-700 mb-4">Phase Timeline</h3>
-                  <TimelineCard project={sampleProject1} />
-                </div>
-                
-                {/* <div>
-                  <div className="border-l-4 border-gray-200 pl-4 mb-4">
-                    <h3 className="text-lg font-medium text-gray-700">Example 2: Construction Phase Timeline (Large Project)</h3>
-                    <p className="text-sm text-gray-500">Timeline for larger scale projects</p>
-                  </div>
-                  <TimelineCard project={sampleProject2} />
-                </div> */}
-              </div>
-              <hr className="border-gray-200 mt-8" />
-            </section>
+            <div>
+              <h3 className="text-lg font-medium text-gray-700 mb-4">Phase Timeline</h3>
+              <TimelineCard project={sampleProject1} />
+              <hr className="border-gray-200 mt-8 mb-8" />
+            </div>
 
             {/* Project Header Examples */}
-            <section className="mb-16">
-              
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-lg font-medium text-gray-700 mb-4">Project Header</h3>
-                  <ProjectHeader project={sampleProject1} />
-                </div>
-                
-                {/* <div>
-                  <div className="border-l-4 border-gray-200 pl-4 mb-4">
-                    <h3 className="text-lg font-medium text-gray-700">Example 2: Precon Phase Project</h3>
-                    <p className="text-sm text-gray-500">Header for precon phase projects</p>
-                  </div>
-                  <ProjectHeader project={sampleProject2} />
-                </div> */}
-              </div>
-            </section>
+            <div>
+              <h3 className="text-lg font-medium text-gray-700 mb-4">Project Header</h3>
+              <ProjectHeader project={sampleProject1} />
+              <hr className="border-gray-200 mt-8 mb-8" />
+            </div>
 
             {/* Phase Filters Examples */}
-            <section className="mb-16">
+            <div>
               <h3 className="text-lg font-medium text-gray-700 mb-4">Phase Filters</h3>
               <PhaseFilters 
                 activePhases={activePhases2}
                 onPhaseToggle={handlePhaseToggle2}
                 phases={samplePhases2}
               />
-            </section>
+            </div>
           </>
         )}
 
