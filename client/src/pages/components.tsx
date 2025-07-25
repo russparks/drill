@@ -229,7 +229,7 @@ export default function Components() {
                   
                   <div className="flex-1 flex flex-col">
                     {/* Timeline bar with week markers */}
-                    <div className="relative h-2 mb-1" style={{ marginTop: '-6px' }}>
+                    <div className="relative h-2 mb-1" style={{ marginTop: '-11px' }}>
                       {/* Horizontal timeline line */}
                       <div className="absolute top-1/2 w-full h-px bg-gray-400"></div>
                       
