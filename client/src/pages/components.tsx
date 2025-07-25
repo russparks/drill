@@ -176,7 +176,7 @@ export default function Components() {
                     <Diamond size={8} fill="none" color="black" />
                   </div>
                 </div>
-                <hr className="border-gray-200 mb-2" />
+                <hr className="border-gray-200 mt-[5px] mb-[5px]" />
                 <div className="flex">
                   <div className="flex flex-col gap-2 w-24 text-right">
                     <div className="flex items-center justify-end gap-1">
