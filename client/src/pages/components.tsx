@@ -222,7 +222,7 @@ export default function Components() {
                 </div>
                 
                 <div className="flex items-end gap-4 mb-1">
-                  <div className="flex items-center justify-end gap-1 w-24">
+                  <div className="flex items-center justify-end w-24 text-right" style={{ marginRight: '6px' }}>
                     <span className="text-xs font-medium text-gray-700">Main Project</span>
                     <Diamond size={8} fill="none" color="black" />
                   </div>
