@@ -234,19 +234,28 @@ export default function Components() {
                       <div className="absolute top-1/2 w-full h-px bg-gray-400"></div>
                       
                       {/* Weekly markers */}
-                      {Array.from({ length: 21 }, (_, i) => (
-                        <div
-                          key={i}
-                          className="absolute bg-gray-400"
-                          style={{
-                            left: `${(i / 20) * 100}%`,
-                            top: '0px',
-                            width: '1px',
-                            height: '5px',
-                            transform: 'translateX(-0.5px)'
-                          }}
-                        />
-                      ))}
+                      {(() => {
+                        // Calculate project duration in weeks
+                        const startDate = new Date(selectedPackageProject.startOnSiteDate);
+                        const endDate = new Date(selectedPackageProject.contractCompletionDate);
+                        const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
+                        const diffWeeks = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 7));
+                        const markerCount = Math.min(diffWeeks + 1, 52); // Cap at 52 weeks (1 year)
+                        
+                        return Array.from({ length: markerCount }, (_, i) => (
+                          <div
+                            key={i}
+                            className="absolute bg-gray-400"
+                            style={{
+                              left: `${(i / (markerCount - 1)) * 100}%`,
+                              bottom: '0px', // Changed from top to bottom
+                              width: '1px',
+                              height: '5px',
+                              transform: 'translateX(-0.5px)'
+                            }}
+                          />
+                        ));
+                      })()}
                     </div>
                     
                     {/* Main Project progress bar */}
