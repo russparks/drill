@@ -189,7 +189,20 @@ export default function Components() {
                   >
                     {selectedPackageProject.projectNumber}
                   </span>
-                  <span className="mx-2 text-[eab308]">|</span>
+                  <span 
+                    className="mx-2"
+                    style={{
+                      color: (() => {
+                        switch (selectedPackageProject.status) {
+                          case 'tender': return 'rgb(59, 130, 246)'; // blue
+                          case 'precon': return 'rgb(34, 197, 94)'; // green
+                          case 'construction': return 'rgb(234, 179, 8)'; // yellow
+                          case 'aftercare': return 'rgb(107, 114, 128)'; // grey
+                          default: return 'rgb(75, 85, 99)'; // default gray
+                        }
+                      })()
+                    }}
+                  >|</span>
                   <span 
                     className="font-medium text-[16px]"
                     style={{
