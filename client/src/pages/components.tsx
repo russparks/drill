@@ -339,26 +339,86 @@ export default function Components() {
                 <hr className="border-gray-200 mt-[5px] mb-[5px]" />
                 <div className="flex">
                   <div className="flex flex-col gap-2 w-24 text-right">
-                    <div className="flex items-center justify-end gap-1">
-                      <span className="text-xs font-medium text-gray-700">Foundations</span>
-                      <Diamond size={8} fill="black" color="black" />
-                    </div>
-                    <div className="flex items-center justify-end gap-1">
-                      <span className="text-xs font-medium text-gray-700">Envelope</span>
-                      <Diamond size={8} fill="black" color="black" />
-                    </div>
-                    <div className="flex items-center justify-end gap-1">
-                      <span className="text-xs font-medium text-gray-700">Internals</span>
-                      <Diamond size={8} fill="black" color="black" />
-                    </div>
-                    <div className="flex items-center justify-end gap-1">
-                      <span className="text-xs font-medium text-gray-700">MEP</span>
-                      <Diamond size={8} fill="black" color="black" />
-                    </div>
-                    <div className="flex items-center justify-end gap-1">
-                      <span className="text-xs font-medium text-gray-700">Externals</span>
-                      <Diamond size={8} fill="black" color="black" />
-                    </div>
+                    {(() => {
+                      const project = selectedPackageProject as any;
+                      const packages = [
+                        { name: 'Foundations', start: project.foundationsStart, finish: project.foundationsFinish },
+                        { name: 'Envelope', start: project.envelopeStart, finish: project.envelopeFinish },
+                        { name: 'Internals', start: project.internalsStart, finish: project.internalsFinish },
+                        { name: 'MEP', start: project.mepStart, finish: project.mepFinish },
+                        { name: 'Externals', start: project.externalsStart, finish: project.externalsFinish }
+                      ];
+
+                      // Calculate project timeline for positioning
+                      const projectStart = new Date(selectedPackageProject.startOnSiteDate);
+                      const projectEnd = new Date(selectedPackageProject.contractCompletionDate);
+                      const totalProjectDuration = projectEnd.getTime() - projectStart.getTime();
+
+                      return packages.map((pkg, index) => (
+                        <div key={index} className="flex items-center justify-end gap-1">
+                          <span className="text-xs font-medium text-gray-700">{pkg.name}</span>
+                          <Diamond size={8} fill="black" color="black" />
+                        </div>
+                      ));
+                    })()}
+                  </div>
+                  <div className="flex-1 flex flex-col gap-2 ml-4">
+                    {(() => {
+                      const project = selectedPackageProject as any;
+                      const packages = [
+                        { name: 'Foundations', start: project.foundationsStart, finish: project.foundationsFinish },
+                        { name: 'Envelope', start: project.envelopeStart, finish: project.envelopeFinish },
+                        { name: 'Internals', start: project.internalsStart, finish: project.internalsFinish },
+                        { name: 'MEP', start: project.mepStart, finish: project.mepFinish },
+                        { name: 'Externals', start: project.externalsStart, finish: project.externalsFinish }
+                      ];
+
+                      // Calculate project timeline for positioning
+                      const projectStart = new Date(selectedPackageProject.startOnSiteDate);
+                      const projectEnd = new Date(selectedPackageProject.contractCompletionDate);
+                      const totalProjectDuration = projectEnd.getTime() - projectStart.getTime();
+
+                      return packages.map((pkg, index) => {
+                        if (!pkg.start || !pkg.finish) {
+                          // No package data - show empty white bar
+                          return (
+                            <div key={index} className="h-[5px] bg-white border border-gray-300 rounded-sm"></div>
+                          );
+                        }
+
+                        const packageStart = new Date(pkg.start);
+                        const packageEnd = new Date(pkg.finish);
+                        
+                        // Calculate percentages for positioning
+                        const startPercent = Math.max(0, (packageStart.getTime() - projectStart.getTime()) / totalProjectDuration * 100);
+                        const packageDuration = (packageEnd.getTime() - packageStart.getTime()) / totalProjectDuration * 100;
+                        const endPercent = 100 - (startPercent + packageDuration);
+
+                        return (
+                          <div key={index} className="h-[5px] bg-white border border-gray-300 rounded-sm overflow-hidden flex">
+                            {/* White section before package start */}
+                            {startPercent > 0 && (
+                              <div 
+                                className="bg-white h-full" 
+                                style={{ width: `${startPercent}%` }}
+                              />
+                            )}
+                            {/* Black section during package duration */}
+                            <div 
+                              className="bg-black h-full" 
+                              style={{ width: `${packageDuration}%` }}
+                            />
+                            {/* White section after package finish */}
+                            {endPercent > 0 && (
+                              <div 
+                                className="bg-white h-full" 
+                                style={{ width: `${endPercent}%` }}
+                              />
+                            )}
+                          </div>
+                        );
+                      });
+                    })()}
                   </div>
                 </div>
               </div>
