@@ -658,16 +658,7 @@ export default function Locations() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-20 md:pb-8">
-      {/* Header */}
-      <div className="mb-6">
-        <div className="flex items-center gap-3">
-          <MapPin className="h-8 w-8 text-blue-600" />
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Project Locations</h1>
-            <p className="text-gray-600">Interactive map view of all projects</p>
-          </div>
-        </div>
-      </div>
+      
 
       {/* Google Maps */}
       <div className="mb-8">
