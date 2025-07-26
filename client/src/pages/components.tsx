@@ -230,8 +230,12 @@ export default function Components() {
                         // Add week 1
                         weekPositions.push({ week: 1, position: 0 });
                         
-                        // Add interim weeks every 4 weeks
+                        // Add interim weeks every 4 weeks, but omit the last one to avoid clashing with final week
                         for (let week = 4; week < totalWeeks; week += 4) {
+                          // Skip if this interim week is too close to the final week
+                          if (week >= totalWeeks - 3) {
+                            break;
+                          }
                           const position = (week / totalWeeks) * 100;
                           weekPositions.push({ week, position });
                         }
