@@ -224,31 +224,15 @@ export default function Components() {
                         const contractDate = new Date(selectedPackageProject.contractCompletionDate);
                         const totalWeeks = Math.ceil((contractDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
                         
-                        // Calculate week positions: week 1, interim weeks (4 or 5 based on even/odd), and last week
-                        const isEven = totalWeeks % 2 === 0;
-                        const interimCount = isEven ? 5 : 4;
-                        const totalPositions = interimCount + 2; // +2 for first and last week
-                        
+                        // Calculate week positions: week 1, interim weeks every 4 weeks, and last week
                         const weekPositions = [];
                         
                         // Add week 1
                         weekPositions.push({ week: 1, position: 0 });
                         
-                        // Add interim weeks (always even numbers)
-                        for (let i = 1; i <= interimCount; i++) {
-                          const position = (i / (totalPositions - 1)) * 100;
-                          let week = Math.round((position / 100) * totalWeeks);
-                          // Ensure interim weeks are always even
-                          if (week % 2 !== 0) {
-                            week = week + 1;
-                          }
-                          // Make sure we don't exceed totalWeeks
-                          if (week >= totalWeeks) {
-                            week = totalWeeks - 1;
-                            if (week % 2 !== 0) {
-                              week = week - 1;
-                            }
-                          }
+                        // Add interim weeks every 4 weeks
+                        for (let week = 4; week < totalWeeks; week += 4) {
+                          const position = (week / totalWeeks) * 100;
                           weekPositions.push({ week, position });
                         }
                         
