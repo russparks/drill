@@ -218,6 +218,38 @@ export default function Components() {
                   <div className="flex-1 flex flex-col">
                     {/* Timeline bar with week markers */}
                     <div className="relative h-2 mb-3" style={{ marginTop: '-16px' }}>
+                      {/* Week numbers above timeline */}
+                      {(() => {
+                        const startDate = new Date(selectedPackageProject.startOnSiteDate);
+                        const contractDate = new Date(selectedPackageProject.contractCompletionDate);
+                        const totalWeeks = Math.ceil((contractDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
+                        
+                        // Calculate 6 week positions: week 1, 4 equally spaced weeks, and last week
+                        const weekPositions = [
+                          { week: 1, position: 0 },
+                          { week: Math.round(totalWeeks * 0.2), position: 20 },
+                          { week: Math.round(totalWeeks * 0.4), position: 40 },
+                          { week: Math.round(totalWeeks * 0.6), position: 60 },
+                          { week: Math.round(totalWeeks * 0.8), position: 80 },
+                          { week: totalWeeks, position: 100 }
+                        ];
+                        
+                        return weekPositions.map((item, i) => (
+                          <div
+                            key={i}
+                            className="absolute text-gray-400"
+                            style={{
+                              left: `${item.position}%`,
+                              top: '-12px',
+                              fontSize: '8px',
+                              transform: 'translateX(-50%)'
+                            }}
+                          >
+                            w{item.week}
+                          </div>
+                        ));
+                      })()}
+                      
                       {/* Horizontal timeline line */}
                       <div className="absolute top-1/2 w-full h-px bg-gray-400"></div>
                       
