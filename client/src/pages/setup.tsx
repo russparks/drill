@@ -718,8 +718,8 @@ export default function Setup({ onTabChange }: SetupProps) {
                     {/* Header section with title, phase indicator, and action buttons */}
                     <div className={`flex items-center justify-between gap-2 mb-0.5 ${weekInfo?.hasPositiveRetention ? 'opacity-60' : ''}`}>
                       <div className="flex items-center gap-2 flex-1">
-                        <CardTitle className="text-lg flex items-center">
-                          <span className="font-normal text-sm" style={{
+                        <CardTitle className="text-lg flex items-baseline">
+                          <span className="font-normal text-lg" style={{
                             color: (() => {
                               switch (project.status) {
                                 case 'tender': return 'rgb(59, 130, 246)'; // blue
