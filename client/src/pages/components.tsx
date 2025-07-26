@@ -223,6 +223,7 @@ export default function Components() {
                 
                 <div className="flex items-end gap-4 mb-1" style={{ marginTop: '-5px' }}>
                   <div className="flex items-center justify-end gap-1 w-24">
+                    <span className="text-xs font-medium text-gray-700">Main Project</span>
                   </div>
                   
                   <div className="flex-1 flex flex-col">
