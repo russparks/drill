@@ -388,7 +388,7 @@ export default function Components() {
                 <div className="relative inline-block" ref={dropdownRef}>
                   <button
                     onClick={() => setIsPackageDropdownOpen(!isPackageDropdownOpen)}
-                    className="flex items-center bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 transition-colors pt-[5px] pb-[5px] text-[#5e5e5e] mt-[0px] mb-[0px] pl-[9px] pr-[9px]"
+                    className="flex items-center bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 transition-colors text-[#5e5e5e] pl-[9px] pr-[9px] pt-[3px] pb-[3px] mt-[-9px] mb-[-9px]"
                     style={{ padding: '6px 10px', fontSize: '13px' }}
                   >
                     <ChevronDown 
