@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { FileText, Search, Settings, Layers, Code, Package, MapPin, Diamond, ChevronDown } from "lucide-react";
+import { FileText, Search, Settings, Layers, Code, Package, MapPin, ChevronDown } from "lucide-react";
 import { ProjectHeader, PhaseFilters, TimelineCard } from "@/components/project-timeline";
 import { useQuery } from "@tanstack/react-query";
 
@@ -224,7 +224,6 @@ export default function Components() {
                 <div className="flex items-end gap-4 mb-1" style={{ marginTop: '-5px' }}>
                   <div className="flex items-center justify-end gap-1 w-24">
                     <span className="text-xs font-medium text-gray-700">Main Project</span>
-                    <Diamond size={8} fill="none" color="black" />
                   </div>
                   
                   <div className="flex-1 flex flex-col">
@@ -233,13 +232,16 @@ export default function Components() {
                       {/* Horizontal timeline line */}
                       <div className="absolute top-1/2 w-full h-px bg-gray-400"></div>
                       
-                      {/* Weekly markers */}
+                      {/* Week markers */}
                       {(() => {
                         // Calculate total project duration from start to contract completion
                         const startDate = new Date(selectedPackageProject.startOnSiteDate);
                         const contractDate = new Date(selectedPackageProject.contractCompletionDate);
                         const totalWeeks = Math.ceil((contractDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
-                        const markerCount = totalWeeks + 1; // Total weeks + 1 for end marker
+                        
+                        // Use 2-week intervals if project duration > 70 weeks, otherwise 1-week
+                        const weekInterval = totalWeeks > 70 ? 2 : 1;
+                        const markerCount = Math.ceil(totalWeeks / weekInterval) + 1; // Total markers + 1 for end marker
                         
                         return Array.from({ length: markerCount }, (_, i) => (
                           <div
@@ -362,10 +364,9 @@ export default function Components() {
                     
                     return packages.map((pkg, index) => (
                       <div key={index} className="flex items-center h-[11px]">
-                        {/* Package title and diamond */}
+                        {/* Package title */}
                         <div className="flex items-center justify-end gap-1 w-24 text-right">
                           <span className="text-xs font-medium text-gray-700">{pkg.name}</span>
-                          <Diamond size={8} fill="black" color="black" />
                         </div>
                         
                         {/* Progress bar container with dashed line */}
@@ -374,40 +375,13 @@ export default function Components() {
                           <div className="absolute inset-0 flex items-center z-0" style={{ top: '1px', right: '10px' }}>
                             <div className="w-full h-px border-t border-dashed border-gray-400" style={{ opacity: 0.5 }}></div>
                           </div>
-                          {/* Diamond at end aligned with contract completion */}
-                          <div className="absolute top-1/2 transform -translate-y-1/2 z-5" style={{ right: '-4px' }}>
-                            <Diamond size={8} fill="black" color="black" />
-                          </div>
+
                           {/* Package duration bar */}
                           <div
                             className="h-full absolute z-20 rounded"
                             style={{
                               top: '1px',
-                              backgroundColor: (() => {
-                                const baseColor = (() => {
-                                  switch (selectedPackageProject.status) {
-                                    case 'tender': return 'rgb(59, 130, 246)'; // blue base
-                                    case 'precon': return 'rgb(34, 197, 94)'; // green base
-                                    case 'construction': return 'rgb(234, 179, 8)'; // yellow base
-                                    case 'aftercare': return 'rgb(107, 114, 128)'; // grey base
-                                    default: return 'rgb(59, 130, 246)';
-                                  }
-                                })();
-                                
-                                // Create variations for each package
-                                switch (index) {
-                                  case 0: return baseColor; // Foundations - base color
-                                  case 1: return baseColor.replace(/rgb\((\d+), (\d+), (\d+)\)/, (match, r, g, b) => 
-                                    `rgb(${Math.max(0, parseInt(r) - 20)}, ${Math.max(0, parseInt(g) - 10)}, ${Math.min(255, parseInt(b) + 20)})`); // Envelope - darker/bluer
-                                  case 2: return baseColor.replace(/rgb\((\d+), (\d+), (\d+)\)/, (match, r, g, b) => 
-                                    `rgb(${Math.min(255, parseInt(r) + 20)}, ${Math.max(0, parseInt(g) - 20)}, ${Math.max(0, parseInt(b) - 10)})`); // Internals - redder
-                                  case 3: return baseColor.replace(/rgb\((\d+), (\d+), (\d+)\)/, (match, r, g, b) => 
-                                    `rgb(${Math.max(0, parseInt(r) - 10)}, ${Math.min(255, parseInt(g) + 20)}, ${Math.max(0, parseInt(b) - 20)})`); // MEP - greener
-                                  case 4: return baseColor.replace(/rgb\((\d+), (\d+), (\d+)\)/, (match, r, g, b) => 
-                                    `rgb(${Math.min(255, parseInt(r) + 10)}, ${Math.max(0, parseInt(g) - 15)}, ${Math.min(255, parseInt(b) + 30)})`); // Externals - purple-ish
-                                  default: return baseColor;
-                                }
-                              })(),
+                              backgroundColor: 'rgb(234, 179, 8)', // Construction color (yellow) for all package bars
                               left: `${(pkg.startWeek / totalWeeks) * 100}%`,
                               width: `${(pkg.duration / totalWeeks) * 100}%`
                             }}
