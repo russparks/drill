@@ -374,7 +374,6 @@ export default function Components() {
                     </div>
                   </div>
                 </div>
-                <hr className="border-gray-200 mt-[5px] mb-[5px] text-[#ffffff]" />
                 <div className="flex flex-col gap-2">
                   {(() => {
                     // Calculate total project weeks for positioning
