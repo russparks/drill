@@ -218,50 +218,6 @@ export default function Components() {
                   <div className="flex-1 flex flex-col">
                     {/* Timeline bar with week markers */}
                     <div className="relative h-2 mb-3" style={{ marginTop: '-16px' }}>
-                      {/* Week numbers above timeline */}
-                      {(() => {
-                        const startDate = new Date(selectedPackageProject.startOnSiteDate);
-                        const contractDate = new Date(selectedPackageProject.contractCompletionDate);
-                        const totalWeeks = Math.ceil((contractDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
-                        
-                        // Calculate week positions: week 1, interim weeks, and last week
-                        const weekPositions = [];
-                        
-                        // Add week 1
-                        weekPositions.push({ week: 1, position: 0 });
-                        
-                        // Determine week interval based on project duration
-                        const weekInterval = totalWeeks > 100 ? 8 : totalWeeks > 8 ? 4 : 2;
-                        
-                        // Add interim weeks, but omit the last one to avoid clashing with final week
-                        for (let week = weekInterval; week < totalWeeks; week += weekInterval) {
-                          // Skip if this interim week is too close to the final week
-                          if (week >= totalWeeks - 3) {
-                            break;
-                          }
-                          const position = (week / totalWeeks) * 100;
-                          weekPositions.push({ week, position });
-                        }
-                        
-                        // Add last week
-                        weekPositions.push({ week: totalWeeks, position: 100 });
-                        
-                        return weekPositions.map((item, i) => (
-                          <div
-                            key={i}
-                            className="absolute text-gray-400"
-                            style={{
-                              left: `${item.position}%`,
-                              top: '-12px',
-                              fontSize: '8px',
-                              transform: i === 0 ? 'translateX(0%)' : i === weekPositions.length - 1 ? 'translateX(-100%)' : 'translateX(-50%)'
-                            }}
-                          >
-                            w{item.week}
-                          </div>
-                        ));
-                      })()}
-                      
                       {/* Horizontal timeline line */}
                       <div className="absolute top-1/2 w-full h-px bg-gray-400"></div>
                       
@@ -629,6 +585,51 @@ export default function Components() {
                     </div>
                   )}
                 </div>
+              </div>
+              
+              {/* Week numbers at bottom of card */}
+              <div className="relative mt-4" style={{ marginLeft: '103px', marginRight: '10px' }}>
+                {(() => {
+                  const startDate = new Date(selectedPackageProject.startOnSiteDate);
+                  const contractDate = new Date(selectedPackageProject.contractCompletionDate);
+                  const totalWeeks = Math.ceil((contractDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
+                  
+                  // Calculate week positions: week 1, interim weeks, and last week
+                  const weekPositions = [];
+                  
+                  // Add week 1
+                  weekPositions.push({ week: 1, position: 0 });
+                  
+                  // Determine week interval based on project duration
+                  const weekInterval = totalWeeks > 100 ? 8 : totalWeeks > 8 ? 4 : 2;
+                  
+                  // Add interim weeks, but omit the last one to avoid clashing with final week
+                  for (let week = weekInterval; week < totalWeeks; week += weekInterval) {
+                    // Skip if this interim week is too close to the final week
+                    if (week >= totalWeeks - 3) {
+                      break;
+                    }
+                    const position = (week / totalWeeks) * 100;
+                    weekPositions.push({ week, position });
+                  }
+                  
+                  // Add last week
+                  weekPositions.push({ week: totalWeeks, position: 100 });
+                  
+                  return weekPositions.map((item, i) => (
+                    <div
+                      key={i}
+                      className="absolute text-gray-400"
+                      style={{
+                        left: `${item.position}%`,
+                        fontSize: '8px',
+                        transform: i === 0 ? 'translateX(0%)' : i === weekPositions.length - 1 ? 'translateX(-100%)' : 'translateX(-50%)'
+                      }}
+                    >
+                      w{item.week}
+                    </div>
+                  ));
+                })()}
               </div>
               
               </div>
