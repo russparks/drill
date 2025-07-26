@@ -729,7 +729,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 default: return 'rgb(55, 65, 81)'; // default gray-700
                               }
                             })()
-                          }}>{project.projectNumber}</span> <span className="font-light mx-1" style={{
+                          }}>{project.projectNumber}</span> <span className="font-light mx-1 text-lg" style={{
                             color: (() => {
                               switch (project.status) {
                                 case 'tender': return 'rgb(59, 130, 246)'; // blue
@@ -739,7 +739,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 default: return 'inherit';
                               }
                             })()
-                          }}>|</span> <span style={{
+                          }}>|</span> <span className="text-lg" style={{
                             color: (() => {
                               switch (project.status) {
                                 case 'tender': return 'rgb(59, 130, 246)'; // blue
