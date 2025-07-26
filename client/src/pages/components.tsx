@@ -224,14 +224,17 @@ export default function Components() {
                         const contractDate = new Date(selectedPackageProject.contractCompletionDate);
                         const totalWeeks = Math.ceil((contractDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
                         
-                        // Calculate week positions: week 1, interim weeks every 4 weeks, and last week
+                        // Calculate week positions: week 1, interim weeks, and last week
                         const weekPositions = [];
                         
                         // Add week 1
                         weekPositions.push({ week: 1, position: 0 });
                         
-                        // Add interim weeks every 4 weeks, but omit the last one to avoid clashing with final week
-                        for (let week = 4; week < totalWeeks; week += 4) {
+                        // Determine week interval: every 4 weeks for projects > 12 weeks, otherwise every 2 weeks
+                        const weekInterval = totalWeeks > 12 ? 4 : 2;
+                        
+                        // Add interim weeks, but omit the last one to avoid clashing with final week
+                        for (let week = weekInterval; week < totalWeeks; week += weekInterval) {
                           // Skip if this interim week is too close to the final week
                           if (week >= totalWeeks - 3) {
                             break;
