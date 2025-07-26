@@ -399,7 +399,7 @@ export default function Components() {
                       <div key={index} className="flex items-center h-[11px]">
                         {/* Package title */}
                         <div className="flex items-center justify-end gap-1 w-24 text-right">
-                          <span className="text-xs font-medium text-gray-700">{pkg.name}</span>
+                          <span className="text-xs font-medium text-[#666666]">{pkg.name}</span>
                         </div>
                         
                         {/* Progress bar container with dashed line */}
