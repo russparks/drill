@@ -224,15 +224,25 @@ export default function Components() {
                         const contractDate = new Date(selectedPackageProject.contractCompletionDate);
                         const totalWeeks = Math.ceil((contractDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
                         
-                        // Calculate 6 week positions: week 1, 4 equally spaced weeks, and last week
-                        const weekPositions = [
-                          { week: 1, position: 0 },
-                          { week: Math.round(totalWeeks * 0.2), position: 20 },
-                          { week: Math.round(totalWeeks * 0.4), position: 40 },
-                          { week: Math.round(totalWeeks * 0.6), position: 60 },
-                          { week: Math.round(totalWeeks * 0.8), position: 80 },
-                          { week: totalWeeks, position: 100 }
-                        ];
+                        // Calculate week positions: week 1, interim weeks (4 or 5 based on even/odd), and last week
+                        const isEven = totalWeeks % 2 === 0;
+                        const interimCount = isEven ? 5 : 4;
+                        const totalPositions = interimCount + 2; // +2 for first and last week
+                        
+                        const weekPositions = [];
+                        
+                        // Add week 1
+                        weekPositions.push({ week: 1, position: 0 });
+                        
+                        // Add interim weeks
+                        for (let i = 1; i <= interimCount; i++) {
+                          const position = (i / (totalPositions - 1)) * 100;
+                          const week = Math.round((position / 100) * totalWeeks);
+                          weekPositions.push({ week, position });
+                        }
+                        
+                        // Add last week
+                        weekPositions.push({ week: totalWeeks, position: 100 });
                         
                         return weekPositions.map((item, i) => (
                           <div
