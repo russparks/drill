@@ -242,7 +242,7 @@ export default function Components() {
                               left: `${item.position}%`,
                               top: '-12px',
                               fontSize: '8px',
-                              transform: 'translateX(-50%)'
+                              transform: i === 0 ? 'translateX(0%)' : i === weekPositions.length - 1 ? 'translateX(-100%)' : 'translateX(-50%)'
                             }}
                           >
                             w{item.week}
