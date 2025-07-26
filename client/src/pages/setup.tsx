@@ -715,21 +715,43 @@ export default function Setup({ onTabChange }: SetupProps) {
                   <div key={project.id} className={weekInfo?.isGreyedOut ? 'opacity-60' : ''}>
                     <Card className="material-shadow">
                   <CardContent className="p-2.5 pb-8">
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1">
-                        <div className={`flex items-center gap-2 mb-0.5 ${weekInfo?.hasPositiveRetention ? 'opacity-60' : ''}`}>
-                          <CardTitle className="text-lg flex items-center">
-                            <span className="font-normal text-sm" style={{
-                              color: (() => {
-                                switch (project.status) {
-                                  case 'tender': return 'rgb(59, 130, 246)'; // blue
-                                  case 'precon': return 'rgb(34, 197, 94)'; // green
-                                  case 'construction': return 'rgb(234, 179, 8)'; // yellow
-                                  case 'aftercare': return 'rgb(107, 114, 128)'; // grey
-                                  default: return 'rgb(55, 65, 81)'; // default gray-700
-                                }
-                              })()
-                            }}>{project.projectNumber}</span> <span className="font-light mx-1" style={{
+                    {/* Header section with title, phase indicator, and action buttons */}
+                    <div className={`flex items-center justify-between gap-2 mb-0.5 ${weekInfo?.hasPositiveRetention ? 'opacity-60' : ''}`}>
+                      <div className="flex items-center gap-2 flex-1">
+                        <CardTitle className="text-lg flex items-center">
+                          <span className="font-normal text-sm" style={{
+                            color: (() => {
+                              switch (project.status) {
+                                case 'tender': return 'rgb(59, 130, 246)'; // blue
+                                case 'precon': return 'rgb(34, 197, 94)'; // green
+                                case 'construction': return 'rgb(234, 179, 8)'; // yellow
+                                case 'aftercare': return 'rgb(107, 114, 128)'; // grey
+                                default: return 'rgb(55, 65, 81)'; // default gray-700
+                              }
+                            })()
+                          }}>{project.projectNumber}</span> <span className="font-light mx-1" style={{
+                            color: (() => {
+                              switch (project.status) {
+                                case 'tender': return 'rgb(59, 130, 246)'; // blue
+                                case 'precon': return 'rgb(34, 197, 94)'; // green
+                                case 'construction': return 'rgb(234, 179, 8)'; // yellow
+                                case 'aftercare': return 'rgb(107, 114, 128)'; // grey
+                                default: return 'inherit';
+                              }
+                            })()
+                          }}>|</span> <span style={{
+                            color: (() => {
+                              switch (project.status) {
+                                case 'tender': return 'rgb(59, 130, 246)'; // blue
+                                case 'precon': return 'rgb(34, 197, 94)'; // green
+                                case 'construction': return 'rgb(234, 179, 8)'; // yellow
+                                case 'aftercare': return 'rgb(107, 114, 128)'; // grey
+                                default: return 'inherit'; // default color
+                              }
+                            })()
+                          }}>{project.name}{project.city && (
+                            <span style={{ 
+                              fontSize: '0.7em',
                               color: (() => {
                                 switch (project.status) {
                                   case 'tender': return 'rgb(59, 130, 246)'; // blue
@@ -738,60 +760,69 @@ export default function Setup({ onTabChange }: SetupProps) {
                                   case 'aftercare': return 'rgb(107, 114, 128)'; // grey
                                   default: return 'inherit';
                                 }
-                              })()
-                            }}>|</span> <span style={{
-                              color: (() => {
-                                switch (project.status) {
-                                  case 'tender': return 'rgb(59, 130, 246)'; // blue
-                                  case 'precon': return 'rgb(34, 197, 94)'; // green
-                                  case 'construction': return 'rgb(234, 179, 8)'; // yellow
-                                  case 'aftercare': return 'rgb(107, 114, 128)'; // grey
-                                  default: return 'inherit'; // default color
-                                }
-                              })()
-                            }}>{project.name}{project.city && (
-                              <span style={{ 
-                                fontSize: '0.7em',
-                                color: (() => {
-                                  switch (project.status) {
-                                    case 'tender': return 'rgb(59, 130, 246)'; // blue
-                                    case 'precon': return 'rgb(34, 197, 94)'; // green
-                                    case 'construction': return 'rgb(234, 179, 8)'; // yellow
-                                    case 'aftercare': return 'rgb(107, 114, 128)'; // grey
-                                    default: return 'inherit';
-                                  }
-                                })(),
-                                opacity: 0.8
-                              }}>
-                                {` - ${project.city}`}
-                              </span>
-                            )}</span>
-                          </CardTitle>
-                          {project.value && (
-                            <span className="text-sm text-action-text-secondary">
-                              (<span className={isZeroOrNegativeValue(project.value) ? 'text-red-400' : ''}>{formatValue(project.value)}</span>)
+                              })(),
+                              opacity: 0.8
+                            }}>
+                              {` - ${project.city}`}
                             </span>
-                          )}
-                          {/* Process indicator */}
-                          <div className="ml-auto">
-                            <button
-                              className={`
-                                rounded-full px-2 py-0.5 text-xs font-medium border transition-colors
-                                ${project.status === "tender" ? "bg-blue-100 text-blue-800 border-blue-200" : ""}
-                                ${project.status === "precon" ? "bg-green-100 text-green-800 border-green-200" : ""}
-                                ${project.status === "construction" ? "bg-yellow-100 text-yellow-800 border-yellow-200" : ""}
-                                ${project.status === "aftercare" ? "bg-gray-100 text-gray-800 border-gray-200" : ""}
-                                ${!project.status ? "bg-gray-100 text-gray-800 border-gray-200" : ""}
-                              `}
-                            >
-                              {project.status === "tender" && "TEN"}
-                              {project.status === "precon" && "PRE"}
-                              {project.status === "construction" && "CON"}
-                              {project.status === "aftercare" && "AFT"}
-                              {!project.status && "UNK"}
-                            </button>
-                          </div>
+                          )}</span>
+                        </CardTitle>
+                        {project.value && (
+                          <span className="text-sm text-action-text-secondary">
+                            (<span className={isZeroOrNegativeValue(project.value) ? 'text-red-400' : ''}>{formatValue(project.value)}</span>)
+                          </span>
+                        )}
+                      </div>
+                      
+                      {/* Phase indicator and action buttons grouped together */}
+                      <div className="flex items-center gap-2">
+                        <button
+                          className={`
+                            rounded-full px-2 py-0.5 text-xs font-medium border transition-colors
+                            ${project.status === "tender" ? "bg-blue-100 text-blue-800 border-blue-200" : ""}
+                            ${project.status === "precon" ? "bg-green-100 text-green-800 border-green-200" : ""}
+                            ${project.status === "construction" ? "bg-yellow-100 text-yellow-800 border-yellow-200" : ""}
+                            ${project.status === "aftercare" ? "bg-gray-100 text-gray-800 border-gray-200" : ""}
+                            ${!project.status ? "bg-gray-100 text-gray-800 border-gray-200" : ""}
+                          `}
+                        >
+                          {project.status === "tender" && "TEN"}
+                          {project.status === "precon" && "PRE"}
+                          {project.status === "construction" && "CON"}
+                          {project.status === "aftercare" && "AFT"}
+                          {!project.status && "UNK"}
+                        </button>
+                        
+                        <div className="flex space-x-1">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-7 w-7"
+                            onClick={() => {
+                              setSelectedProject(project);
+                              setSelectedPhase(project.status || "tender");
+                              setIsProjectDialogOpen(true);
+                            }}
+                          >
+                            <Edit className="h-3 w-3" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-7 w-7"
+                            onClick={() => {
+                              setItemToDelete({ type: 'project', id: project.id, name: project.name });
+                              setIsConfirmDialogOpen(true);
+                            }}
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
                         </div>
+                      </div>
+                    </div>
+                    
+                    {/* Project details section */}
+                    <div className="flex-1">
                         {weekInfo && (
                           <div className="flex items-center justify-between" style={{ fontSize: '10px' }}>
                             <div className="flex items-center" style={{ gap: '10px' }}>
@@ -1008,32 +1039,6 @@ export default function Setup({ onTabChange }: SetupProps) {
                         {/* Add 8px vertical space below indicators */}
                         <div style={{ height: '8px' }}></div>
                       </div>
-                      <div className={`flex space-x-1 ml-2 ${weekInfo?.hasPositiveRetention ? 'opacity-60' : ''}`}>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-7 w-7"
-                          onClick={() => {
-                            setSelectedProject(project);
-                            setSelectedPhase(project.status || "tender");
-                            setIsProjectDialogOpen(true);
-                          }}
-                        >
-                          <Edit className="h-3 w-3" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-7 w-7"
-                          onClick={() => {
-                            setItemToDelete({ type: 'project', id: project.id, name: project.name });
-                            setIsConfirmDialogOpen(true);
-                          }}
-                        >
-                          <Trash2 className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    </div>
                     
                     {/* Timeline bar chart with completion percentage */}
                     {weekInfo && (
