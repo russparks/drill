@@ -408,7 +408,7 @@ export default function Components() {
 
                           {/* Package duration bar with elapsed weeks shading */}
                           <div
-                            className="h-full absolute z-20 rounded"
+                            className="h-full absolute z-20 rounded overflow-hidden"
                             style={{
                               top: '-1px',
                               left: `${(pkg.startWeek / totalWeeks) * 100}%`,
