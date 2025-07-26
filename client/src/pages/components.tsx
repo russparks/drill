@@ -369,17 +369,11 @@ export default function Components() {
                           <span className="text-xs font-medium text-gray-700">{pkg.name}</span>
                         </div>
                         
-                        {/* Progress bar container with dashed line and dates */}
+                        {/* Progress bar container with dashed line */}
                         <div className="flex-1 ml-4 h-[5px] relative">
                           {/* Horizontal dashed line behind progress bars */}
                           <div className="absolute inset-0 flex items-center z-0" style={{ top: '1px', right: '10px' }}>
-                            <div 
-                              className="w-full h-px bg-transparent" 
-                              style={{ 
-                                opacity: 0.5,
-                                backgroundImage: 'repeating-linear-gradient(to right, rgb(156, 163, 175) 0px, rgb(156, 163, 175) 10px, transparent 10px, transparent 20px)'
-                              }}>
-                            </div>
+                            <div className="w-full h-px border-t border-dashed border-gray-400" style={{ opacity: 0.5 }}></div>
                           </div>
 
                           {/* Package duration bar */}
@@ -393,48 +387,6 @@ export default function Components() {
                             }}
                             title={`${pkg.name}: Week ${pkg.startWeek} to ${pkg.startWeek + pkg.duration} (${pkg.duration} weeks)`}
                           />
-                          
-                          {/* Start date positioned at start of progress bar */}
-                          <div 
-                            className="absolute z-30 text-gray-400"
-                            style={{ 
-                              fontSize: '10px',
-                              left: `${(pkg.startWeek / totalWeeks) * 100}%`,
-                              top: '-12px',
-                              transform: 'translateX(-50%)'
-                            }}
-                          >
-                            {(() => {
-                              const startDate = new Date(selectedPackageProject.startOnSiteDate);
-                              startDate.setDate(startDate.getDate() + (pkg.startWeek * 7));
-                              const day = String(startDate.getDate()).padStart(2, '0');
-                              const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                              const month = months[startDate.getMonth()];
-                              const year = String(startDate.getFullYear()).slice(-2);
-                              return `${day}-${month}-${year}`;
-                            })()}
-                          </div>
-                          
-                          {/* End date positioned at end of progress bar */}
-                          <div 
-                            className="absolute z-30 text-gray-400"
-                            style={{ 
-                              fontSize: '10px',
-                              left: `${((pkg.startWeek + pkg.duration) / totalWeeks) * 100}%`,
-                              top: '-12px',
-                              transform: 'translateX(-50%)'
-                            }}
-                          >
-                            {(() => {
-                              const endDate = new Date(selectedPackageProject.startOnSiteDate);
-                              endDate.setDate(endDate.getDate() + ((pkg.startWeek + pkg.duration) * 7));
-                              const day = String(endDate.getDate()).padStart(2, '0');
-                              const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                              const month = months[endDate.getMonth()];
-                              const year = String(endDate.getFullYear()).slice(-2);
-                              return `${day}-${month}-${year}`;
-                            })()}
-                          </div>
                         </div>
                       </div>
                     ));
