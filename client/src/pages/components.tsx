@@ -630,8 +630,7 @@ export default function Components() {
                 </div>
               </div>
               
-              <hr className="border-gray-200 mt-[20px] mb-[20px]" />
-            </div>
+              </div>
 
             
           </>
