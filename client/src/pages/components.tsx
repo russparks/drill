@@ -403,7 +403,17 @@ export default function Components() {
                         <div className="flex-1 ml-4 h-[5px] relative">
                           {/* Horizontal dashed line behind progress bars */}
                           <div className="absolute inset-0 flex items-center z-0" style={{ top: '-1px', right: '10px' }}>
-                            <div className="w-full h-px border-t border-dashed border-gray-400" style={{ opacity: 0.5 }}></div>
+                            <svg className="w-full h-px" style={{ opacity: 0.5 }}>
+                              <line 
+                                x1="0" 
+                                y1="0.5" 
+                                x2="100%" 
+                                y2="0.5" 
+                                stroke="rgb(156, 163, 175)" 
+                                strokeWidth="1" 
+                                strokeDasharray="9 9"
+                              />
+                            </svg>
                           </div>
 
                           {/* Package duration bar with elapsed weeks shading */}
