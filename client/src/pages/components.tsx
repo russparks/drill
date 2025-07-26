@@ -411,7 +411,7 @@ export default function Components() {
                                 y2="0.5" 
                                 stroke="rgb(156, 163, 175)" 
                                 strokeWidth="1" 
-                                strokeDasharray="9 9"
+                                strokeDasharray="6 6"
                               />
                             </svg>
                           </div>
