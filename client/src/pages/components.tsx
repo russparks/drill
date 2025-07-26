@@ -422,8 +422,11 @@ export default function Components() {
                     <div className="absolute left-0 top-full w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto mt-[-22px] mb-[-22px] ml-[28px] mr-[28px] pt-[3px] pb-[3px]">
                       <div className="py-1">
                         {(() => {
-                          // Sort projects: live projects first (tender, precon, construction), then completed projects (tender complete, precon complete, aftercare)
-                          const sortedProjects = [...(projects as any[])].sort((a, b) => {
+                          // Filter to only include construction and aftercare projects, then sort
+                          const filteredProjects = (projects as any[]).filter(project => 
+                            project.status === 'construction' || project.status === 'aftercare'
+                          );
+                          const sortedProjects = [...filteredProjects].sort((a, b) => {
                             const getProjectInfo = (project: any) => {
                               const retentionValue = parseFloat(project.retention?.replace(/[£,]/g, '') || '0');
                               const contractDate = new Date(project.contractCompletionDate);
