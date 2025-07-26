@@ -230,8 +230,8 @@ export default function Components() {
                         // Add week 1
                         weekPositions.push({ week: 1, position: 0 });
                         
-                        // Determine week interval: every 4 weeks for projects > 8 weeks, otherwise every 2 weeks
-                        const weekInterval = totalWeeks > 8 ? 4 : 2;
+                        // Determine week interval based on project duration
+                        const weekInterval = totalWeeks > 100 ? 8 : totalWeeks > 8 ? 4 : 2;
                         
                         // Add interim weeks, but omit the last one to avoid clashing with final week
                         for (let week = weekInterval; week < totalWeeks; week += weekInterval) {
