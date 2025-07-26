@@ -234,10 +234,21 @@ export default function Components() {
                         // Add week 1
                         weekPositions.push({ week: 1, position: 0 });
                         
-                        // Add interim weeks
+                        // Add interim weeks (always even numbers)
                         for (let i = 1; i <= interimCount; i++) {
                           const position = (i / (totalPositions - 1)) * 100;
-                          const week = Math.round((position / 100) * totalWeeks);
+                          let week = Math.round((position / 100) * totalWeeks);
+                          // Ensure interim weeks are always even
+                          if (week % 2 !== 0) {
+                            week = week + 1;
+                          }
+                          // Make sure we don't exceed totalWeeks
+                          if (week >= totalWeeks) {
+                            week = totalWeeks - 1;
+                            if (week % 2 !== 0) {
+                              week = week - 1;
+                            }
+                          }
                           weekPositions.push({ week, position });
                         }
                         
