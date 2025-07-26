@@ -739,7 +739,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 default: return 'inherit';
                               }
                             })()
-                          }}>|</span> <span className="text-lg" style={{
+                          }}>-</span> <span className="text-lg" style={{
                             color: (() => {
                               switch (project.status) {
                                 case 'tender': return 'rgb(59, 130, 246)'; // blue
