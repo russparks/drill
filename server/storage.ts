@@ -14,6 +14,46 @@ import {
 import { db } from "./db";
 import { eq, and, or, ilike, desc } from "drizzle-orm";
 
+// Postcode to city mapping
+const postcodeToCity: { [key: string]: string } = {
+  // Yorkshire and surrounding areas (actual postcodes from database)
+  'LS1 4DT': 'Leeds',
+  'LS6 3HG': 'Leeds', 
+  'S1 2HE': 'Sheffield',
+  'BD1 1DB': 'Bradford',
+  'BD18 3SE': 'Bradford',
+  'YO1 7PR': 'York',
+  'YO31 0UR': 'York',
+  'YO24 4AB': 'York',
+  'YO19 5LJ': 'York',
+  'HG1 2RQ': 'Harrogate',
+  'HU1 3UB': 'Hull',
+  'DN4 5HT': 'Doncaster',
+  'WF2 6SE': 'Wakefield',
+  'HD3 4UY': 'Huddersfield',
+  
+  // Original mapping (kept for compatibility)
+  'SW1A 1AA': 'London',
+  'M1 1AA': 'Manchester',
+  'B1 1TT': 'Birmingham',
+  'E1 6AN': 'London',
+  'LS1 2TW': 'Leeds',
+  'NE1 7RU': 'Newcastle',
+  'CB2 1TN': 'Cambridge',
+  'BS1 6XN': 'Bristol',
+  'SE1 7TP': 'London',
+  'CF10 3NP': 'Cardiff',
+  'G1 2FF': 'Glasgow',
+  'RG1 3EH': 'Reading',
+  'NG1 5DT': 'Nottingham',
+  'L1 8JQ': 'Liverpool'
+};
+
+function getCityFromPostcode(postcode: string | null): string | null {
+  if (!postcode) return null;
+  return postcodeToCity[postcode] || null;
+}
+
 export interface IStorage {
   // Users
   getUser(id: number): Promise<User | undefined>;
@@ -107,17 +147,29 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createProject(insertProject: InsertProject): Promise<Project> {
+    // Automatically set city based on postcode
+    const projectData = {
+      ...insertProject,
+      city: getCityFromPostcode(insertProject.postcode || null)
+    };
+    
     const [project] = await db
       .insert(projects)
-      .values(insertProject)
+      .values(projectData)
       .returning();
     return project;
   }
 
   async updateProject(id: number, updates: Partial<InsertProject>): Promise<Project | undefined> {
+    // Automatically update city if postcode is being updated
+    const updateData = { ...updates };
+    if (updates.postcode !== undefined) {
+      updateData.city = getCityFromPostcode(updates.postcode);
+    }
+    
     const [project] = await db
       .update(projects)
-      .set(updates)
+      .set(updateData)
       .where(eq(projects.id, id))
       .returning();
     return project || undefined;

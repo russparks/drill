@@ -24,6 +24,7 @@ export const projects = pgTable("projects", {
   value: text("value"),
   retention: text("retention"),
   postcode: text("postcode"),
+  city: text("city"),
   latitude: text("latitude"),
   longitude: text("longitude"),
   

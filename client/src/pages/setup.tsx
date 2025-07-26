@@ -749,7 +749,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                                   default: return 'inherit'; // default color
                                 }
                               })()
-                            }}>{project.name}{project.postcode && (
+                            }}>{project.name}{project.city && (
                               <span style={{ 
                                 fontSize: '0.7em',
                                 color: (() => {
@@ -763,25 +763,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                                 })(),
                                 opacity: 0.8
                               }}>
-                                {` - ${(() => {
-                                  const postcodeToCity: { [key: string]: string } = {
-                                    'SW1A 1AA': 'London',
-                                    'M1 1AA': 'Manchester',
-                                    'B1 1TT': 'Birmingham',
-                                    'E1 6AN': 'London',
-                                    'LS1 2TW': 'Leeds',
-                                    'NE1 7RU': 'Newcastle',
-                                    'CB2 1TN': 'Cambridge',
-                                    'BS1 6XN': 'Bristol',
-                                    'SE1 7TP': 'London',
-                                    'CF10 3NP': 'Cardiff',
-                                    'G1 2FF': 'Glasgow',
-                                    'RG1 3EH': 'Reading',
-                                    'NG1 5DT': 'Nottingham',
-                                    'L1 8JQ': 'Liverpool'
-                                  };
-                                  return postcodeToCity[project.postcode] || 'UK';
-                                })()}`}
+                                {` - ${project.city}`}
                               </span>
                             )}</span>
                           </CardTitle>

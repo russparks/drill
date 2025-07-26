@@ -42,7 +42,8 @@ Color scheme: Accent color changed to #cc3333 (hsl(350, 61%, 50%)) instead of bl
 
 ### Data Models
 - **Users**: Authentication and user management (id, username, password, name, email)
-- **Projects**: Project organization (id, name, description, status, timestamps)
+- **Projects**: Project organization (id, name, description, status, postcode, city, timestamps)
+  - **City Field**: Automatically populated from postcode mapping for Yorkshire-based locations
 - **Actions**: Core task management (id, title, description, discipline, phase, status, priority, assignee, project, due date, timestamps)
   - **Disciplines**: Operations, Commercial, Design, SHE, QA
   - **Phases**: Tender, Precon, Construction, Aftercare
