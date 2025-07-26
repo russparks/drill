@@ -406,17 +406,55 @@ export default function Components() {
                             <div className="w-full h-px border-t border-dashed border-gray-400" style={{ opacity: 0.5 }}></div>
                           </div>
 
-                          {/* Package duration bar */}
+                          {/* Package duration bar with elapsed weeks shading */}
                           <div
                             className="h-full absolute z-20 rounded"
                             style={{
                               top: '-1px',
-                              backgroundColor: 'rgb(234, 179, 8)', // Construction color (yellow) for all package bars
                               left: `${(pkg.startWeek / totalWeeks) * 100}%`,
                               width: `${(pkg.duration / totalWeeks) * 100}%`
                             }}
-                            title={`${pkg.name}: Week ${pkg.startWeek} to ${pkg.startWeek + pkg.duration} (${pkg.duration} weeks)`}
-                          />
+                          >
+                            {(() => {
+                              // Calculate current week for elapsed shading
+                              const currentDate = new Date();
+                              const currentWeek = Math.ceil((currentDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
+                              const packageEndWeek = pkg.startWeek + pkg.duration;
+                              
+                              // Calculate elapsed portion within this package
+                              const elapsedInPackage = Math.max(0, Math.min(currentWeek - pkg.startWeek, pkg.duration));
+                              const elapsedPercent = elapsedInPackage / pkg.duration * 100;
+                              const remainingPercent = 100 - elapsedPercent;
+                              
+                              return (
+                                <>
+                                  {/* Elapsed portion (light gray) */}
+                                  {elapsedPercent > 0 && (
+                                    <div
+                                      className="h-full bg-gray-300"
+                                      style={{
+                                        width: `${elapsedPercent}%`,
+                                        float: 'left'
+                                      }}
+                                      title={`${pkg.name} elapsed: ${elapsedInPackage} weeks`}
+                                    />
+                                  )}
+                                  {/* Remaining portion (yellow construction color) */}
+                                  {remainingPercent > 0 && (
+                                    <div
+                                      className="h-full"
+                                      style={{
+                                        backgroundColor: 'rgb(234, 179, 8)', // Construction color (yellow)
+                                        width: `${remainingPercent}%`,
+                                        float: 'left'
+                                      }}
+                                      title={`${pkg.name} remaining: ${pkg.duration - elapsedInPackage} weeks`}
+                                    />
+                                  )}
+                                </>
+                              );
+                            })()}
+                          </div>
                         </div>
                       </div>
                     ));
