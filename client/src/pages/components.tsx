@@ -369,23 +369,8 @@ export default function Components() {
                           <span className="text-xs font-medium text-gray-700">{pkg.name}</span>
                         </div>
                         
-                        {/* Start date */}
-                        <div className="ml-2 w-16 text-left">
-                          <span className="text-gray-400" style={{ fontSize: '10px' }}>
-                            {(() => {
-                              const startDate = new Date(selectedPackageProject.startOnSiteDate);
-                              startDate.setDate(startDate.getDate() + (pkg.startWeek * 7));
-                              const day = String(startDate.getDate()).padStart(2, '0');
-                              const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                              const month = months[startDate.getMonth()];
-                              const year = String(startDate.getFullYear()).slice(-2);
-                              return `${day}-${month}-${year}`;
-                            })()}
-                          </span>
-                        </div>
-                        
-                        {/* Progress bar container with dashed line */}
-                        <div className="flex-1 ml-2 h-[5px] relative">
+                        {/* Progress bar container with dashed line and dates */}
+                        <div className="flex-1 ml-4 h-[5px] relative">
                           {/* Horizontal dashed line behind progress bars */}
                           <div className="absolute inset-0 flex items-center z-0" style={{ top: '1px', right: '10px' }}>
                             <div 
@@ -408,11 +393,38 @@ export default function Components() {
                             }}
                             title={`${pkg.name}: Week ${pkg.startWeek} to ${pkg.startWeek + pkg.duration} (${pkg.duration} weeks)`}
                           />
-                        </div>
-                        
-                        {/* End date */}
-                        <div className="ml-2 w-16 text-right">
-                          <span className="text-gray-400" style={{ fontSize: '10px' }}>
+                          
+                          {/* Start date positioned at start of progress bar */}
+                          <div 
+                            className="absolute z-30 text-gray-400"
+                            style={{ 
+                              fontSize: '10px',
+                              left: `${(pkg.startWeek / totalWeeks) * 100}%`,
+                              top: '-12px',
+                              transform: 'translateX(-50%)'
+                            }}
+                          >
+                            {(() => {
+                              const startDate = new Date(selectedPackageProject.startOnSiteDate);
+                              startDate.setDate(startDate.getDate() + (pkg.startWeek * 7));
+                              const day = String(startDate.getDate()).padStart(2, '0');
+                              const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                              const month = months[startDate.getMonth()];
+                              const year = String(startDate.getFullYear()).slice(-2);
+                              return `${day}-${month}-${year}`;
+                            })()}
+                          </div>
+                          
+                          {/* End date positioned at end of progress bar */}
+                          <div 
+                            className="absolute z-30 text-gray-400"
+                            style={{ 
+                              fontSize: '10px',
+                              left: `${((pkg.startWeek + pkg.duration) / totalWeeks) * 100}%`,
+                              top: '-12px',
+                              transform: 'translateX(-50%)'
+                            }}
+                          >
                             {(() => {
                               const endDate = new Date(selectedPackageProject.startOnSiteDate);
                               endDate.setDate(endDate.getDate() + ((pkg.startWeek + pkg.duration) * 7));
@@ -422,7 +434,7 @@ export default function Components() {
                               const year = String(endDate.getFullYear()).slice(-2);
                               return `${day}-${month}-${year}`;
                             })()}
-                          </span>
+                          </div>
                         </div>
                       </div>
                     ));
