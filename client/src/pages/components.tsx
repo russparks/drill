@@ -172,58 +172,47 @@ export default function Components() {
             <div>
               <h3 className="text-lg font-medium text-gray-700 mb-4">Package Timeline</h3>
               <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm relative z-10 pl-[10px] pr-[10px] pt-[13.5px] pb-[13.5px]">
-                <div className="flex items-center mb-4">
-                  <span 
-                    className="text-sm font-medium"
-                    style={{
+                <div className="flex items-baseline gap-1 mb-0.5">
+                  <div className="text-lg flex items-center">
+                    <span className="font-normal text-sm" style={{
                       color: (() => {
                         switch (selectedPackageProject.status) {
                           case 'tender': return 'rgb(59, 130, 246)'; // blue
                           case 'precon': return 'rgb(34, 197, 94)'; // green
                           case 'construction': return 'rgb(234, 179, 8)'; // yellow
                           case 'aftercare': return 'rgb(107, 114, 128)'; // grey
-                          default: return 'rgb(75, 85, 99)'; // default gray
+                          default: return 'rgb(55, 65, 81)'; // default gray-700
                         }
                       })()
-                    }}
-                  >
-                    {selectedPackageProject.projectNumber}
-                  </span>
-                  <span 
-                    className="mx-2 text-sm font-medium"
-                    style={{
+                    }}>{selectedPackageProject.projectNumber}</span> 
+                    <span className="font-light mx-1" style={{
                       color: (() => {
                         switch (selectedPackageProject.status) {
                           case 'tender': return 'rgb(59, 130, 246)'; // blue
                           case 'precon': return 'rgb(34, 197, 94)'; // green
                           case 'construction': return 'rgb(234, 179, 8)'; // yellow
                           case 'aftercare': return 'rgb(107, 114, 128)'; // grey
-                          default: return 'rgb(75, 85, 99)'; // default gray
+                          default: return 'inherit';
                         }
                       })()
-                    }}
-                  >|</span>
-                  <span 
-                    className="text-sm font-medium"
-                    style={{
+                    }}>|</span> 
+                    <span style={{
                       color: (() => {
                         switch (selectedPackageProject.status) {
                           case 'tender': return 'rgb(59, 130, 246)'; // blue
                           case 'precon': return 'rgb(34, 197, 94)'; // green
                           case 'construction': return 'rgb(234, 179, 8)'; // yellow
                           case 'aftercare': return 'rgb(107, 114, 128)'; // grey
-                          default: return 'rgb(75, 85, 99)'; // default gray
+                          default: return 'inherit'; // default color
                         }
                       })()
-                    }}
-                  >
-                    {selectedPackageProject.name}
-                  </span>
+                    }}>{selectedPackageProject.name}</span>
+                  </div>
                 </div>
                 
-                <div className="flex items-end gap-4 mb-1" style={{ marginTop: '-5px' }}>
+                <div className="flex items-end gap-4 mb-1" style={{ marginTop: '15px' }}>
                   <div className="flex items-center justify-end gap-1 w-24">
-                    <span className="text-xs font-medium text-[#ffffff]">Main Project</span>
+                    <span className="text-xs font-medium text-gray-700">Main Project</span>
                   </div>
                   
                   <div className="flex-1 flex flex-col">
