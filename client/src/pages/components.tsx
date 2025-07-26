@@ -361,7 +361,7 @@ export default function Components() {
                         {/* Progress bar container with dashed line */}
                         <div className="flex-1 ml-4 h-[5px] relative">
                           {/* Horizontal dashed line behind progress bars */}
-                          <div className="absolute inset-0 flex items-center z-0" style={{ top: '1px', right: '10px' }}>
+                          <div className="absolute inset-0 flex items-center z-0" style={{ top: '-1px', right: '10px' }}>
                             <div className="w-full h-px border-t border-dashed border-gray-400" style={{ opacity: 0.5 }}></div>
                           </div>
 
@@ -369,7 +369,7 @@ export default function Components() {
                           <div
                             className="h-full absolute z-20 rounded"
                             style={{
-                              top: '1px',
+                              top: '-1px',
                               backgroundColor: 'rgb(234, 179, 8)', // Construction color (yellow) for all package bars
                               left: `${(pkg.startWeek / totalWeeks) * 100}%`,
                               width: `${(pkg.duration / totalWeeks) * 100}%`
