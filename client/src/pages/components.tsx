@@ -348,7 +348,7 @@ export default function Components() {
                       { name: 'Envelope', startWeek: 8, duration: 18, color: 'rgb(34, 197, 94)' }, // green - weeks 8-26
                       { name: 'Internals', startWeek: 20, duration: Math.max(16, constructionWeeks - 24), color: 'rgb(59, 130, 246)' }, // blue - overlapping with envelope
                       { name: 'MEP', startWeek: 25, duration: Math.max(12, constructionWeeks - 29), color: 'rgb(234, 179, 8)' }, // yellow - overlapping with internals
-                      { name: 'Externals', startWeek: Math.max(30, Math.min(constructionWeeks - 8, totalWeeks - 8)), duration: Math.min(8, totalWeeks - Math.max(30, constructionWeeks - 8)), color: 'rgb(168, 85, 247)' } // purple - ensures it fits within timeline
+                      { name: 'Externals', startWeek: Math.max(30, constructionWeeks - 8), duration: 8, color: 'rgb(168, 85, 247)' } // purple - finishes around 2 weeks before construction completion
                     ];
                     
                     return packages.map((pkg, index) => (
@@ -361,45 +361,21 @@ export default function Components() {
                         {/* Progress bar container with dashed line */}
                         <div className="flex-1 ml-4 h-[5px] relative">
                           {/* Horizontal dashed line behind progress bars */}
-                          <div className="absolute inset-0 flex items-center z-0" style={{ top: '-1px', right: '10px' }}>
+                          <div className="absolute inset-0 flex items-center z-0" style={{ top: '1px', right: '10px' }}>
                             <div className="w-full h-px border-t border-dashed border-gray-400" style={{ opacity: 0.5 }}></div>
                           </div>
 
                           {/* Package duration bar */}
                           <div
-                            className="h-full absolute z-20 rounded flex items-center justify-center"
+                            className="h-full absolute z-20 rounded"
                             style={{
-                              top: '-1px',
+                              top: '1px',
                               backgroundColor: 'rgb(234, 179, 8)', // Construction color (yellow) for all package bars
                               left: `${(pkg.startWeek / totalWeeks) * 100}%`,
-                              width: `${Math.max(1, (pkg.duration / totalWeeks) * 100)}%`
+                              width: `${(pkg.duration / totalWeeks) * 100}%`
                             }}
                             title={`${pkg.name}: Week ${pkg.startWeek} to ${pkg.startWeek + pkg.duration} (${pkg.duration} weeks)`}
-                          >
-                            {(() => {
-                              // Calculate start and finish dates for this package
-                              const startDate = new Date(selectedPackageProject.startOnSiteDate);
-                              const packageStartDate = new Date(startDate.getTime() + (pkg.startWeek * 7 * 24 * 60 * 60 * 1000));
-                              const packageFinishDate = new Date(startDate.getTime() + ((pkg.startWeek + pkg.duration) * 7 * 24 * 60 * 60 * 1000));
-                              
-                              // Format dates as dd-mmm-yy
-                              const formatDate = (date: Date) => {
-                                const day = date.getDate().toString().padStart(2, '0');
-                                const month = date.toLocaleDateString('en-GB', { month: 'short' }).toLowerCase();
-                                const year = date.getFullYear().toString().slice(-2);
-                                return `${day}-${month}-${year}`;
-                              };
-                              
-                              return (
-                                <span 
-                                  className="text-gray-500 bg-white px-1 rounded"
-                                  style={{ fontSize: '8px', whiteSpace: 'nowrap' }}
-                                >
-                                  {formatDate(packageStartDate)} | {formatDate(packageFinishDate)}
-                                </span>
-                              );
-                            })()}
-                          </div>
+                          />
                         </div>
                       </div>
                     ));
