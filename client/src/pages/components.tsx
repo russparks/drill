@@ -367,7 +367,7 @@ export default function Components() {
 
                           {/* Package duration bar */}
                           <div
-                            className="h-full absolute z-20 rounded"
+                            className="h-full absolute z-20 rounded flex items-center justify-center"
                             style={{
                               top: '1px',
                               backgroundColor: 'rgb(234, 179, 8)', // Construction color (yellow) for all package bars
@@ -375,7 +375,31 @@ export default function Components() {
                               width: `${(pkg.duration / totalWeeks) * 100}%`
                             }}
                             title={`${pkg.name}: Week ${pkg.startWeek} to ${pkg.startWeek + pkg.duration} (${pkg.duration} weeks)`}
-                          />
+                          >
+                            {(() => {
+                              // Calculate start and finish dates for this package
+                              const startDate = new Date(selectedPackageProject.startOnSiteDate);
+                              const packageStartDate = new Date(startDate.getTime() + (pkg.startWeek * 7 * 24 * 60 * 60 * 1000));
+                              const packageFinishDate = new Date(startDate.getTime() + ((pkg.startWeek + pkg.duration) * 7 * 24 * 60 * 60 * 1000));
+                              
+                              // Format dates as dd-mmm-yy
+                              const formatDate = (date: Date) => {
+                                const day = date.getDate().toString().padStart(2, '0');
+                                const month = date.toLocaleDateString('en-GB', { month: 'short' }).toLowerCase();
+                                const year = date.getFullYear().toString().slice(-2);
+                                return `${day}-${month}-${year}`;
+                              };
+                              
+                              return (
+                                <span 
+                                  className="text-gray-500 bg-white px-1 rounded"
+                                  style={{ fontSize: '8px', whiteSpace: 'nowrap' }}
+                                >
+                                  {formatDate(packageStartDate)} | {formatDate(packageFinishDate)}
+                                </span>
+                              );
+                            })()}
+                          </div>
                         </div>
                       </div>
                     ));
