@@ -172,6 +172,7 @@ export default function Components() {
             <div>
               <h3 className="text-lg font-medium text-gray-700 mb-4">Package Timeline</h3>
               <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm relative z-10 pl-[10px] pr-[10px] pt-[6.5px] pb-[6.5px]">
+                <hr className="bg-white border-white" style={{ height: '2px', marginTop: '2px', marginBottom: '2px', padding: '0' }} />
                 <div className="flex items-baseline gap-1 mb-0.5">
                   <div className="text-lg flex items-center mt-[3px] mb-[3px]">
                     <span className="font-normal text-sm" style={{
