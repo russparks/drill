@@ -171,7 +171,7 @@ export default function Components() {
             {/* Package Timeline Examples */}
             <div>
               <h3 className="text-lg font-medium text-gray-700 mb-4">Package Timeline</h3>
-              <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm relative z-10">
+              <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm relative z-10 pl-[10px] pr-[10px] pt-[13.5px] pb-[13.5px]">
                 <div className="flex items-center mb-4">
                   <span 
                     className="text-sm font-medium"
