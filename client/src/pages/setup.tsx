@@ -714,7 +714,7 @@ export default function Setup({ onTabChange }: SetupProps) {
                 return (
                   <div key={project.id} className={weekInfo?.isGreyedOut ? 'opacity-60' : ''}>
                     <Card className="material-shadow">
-                  <CardContent className="px-2.5 pt-1.5 pb-6">
+                  <CardContent className="px-2.5 pt-1.5 pb-7">
                     {/* Header section with title, phase indicator, and action buttons */}
                     <div className={`flex items-center justify-between gap-2 mb-0.5 ${weekInfo?.hasPositiveRetention ? 'opacity-60' : ''}`}>
                       <div className="flex items-center gap-2 flex-1">
