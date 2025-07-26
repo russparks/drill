@@ -401,13 +401,13 @@ export default function Components() {
                         
                         {/* Progress bar container with dashed line */}
                         <div className="flex-1 ml-4 h-[5px] relative">
-                          {/* Horizontal dashed line behind progress bars */}
+                          {/* Horizontal dashed line behind progress bars - only on left side */}
                           <div className="absolute inset-0 flex items-center z-0" style={{ top: '-1px', right: '10px' }}>
                             <svg className="w-full h-px" style={{ opacity: 0.5 }}>
                               <line 
                                 x1="0" 
                                 y1="0.5" 
-                                x2="100%" 
+                                x2={`${(pkg.startWeek / totalWeeks) * 100}%`}
                                 y2="0.5" 
                                 stroke="rgb(156, 163, 175)" 
                                 strokeWidth="1" 
