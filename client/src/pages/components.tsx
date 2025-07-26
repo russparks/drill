@@ -174,7 +174,7 @@ export default function Components() {
               <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm relative z-10">
                 <div className="flex items-center mb-4">
                   <span 
-                    className="text-sm font-medium"
+                    className="text-sm font-normal"
                     style={{
                       color: (() => {
                         switch (selectedPackageProject.status) {
