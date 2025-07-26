@@ -404,15 +404,16 @@ export default function Components() {
                         
                         {/* Progress bar container with dashed line */}
                         <div className="flex-1 ml-4 h-[5px] relative">
-                          {/* Horizontal dashed line behind progress bars - only on left side and only for packages with no elapsed time */}
+                          {/* Horizontal dashed line behind progress bars - only on left side and only for packages not yet completed */}
                           {(() => {
-                            // Calculate if this package has elapsed time
+                            // Calculate if this package is completed
                             const currentDate = new Date();
                             const currentWeek = Math.ceil((currentDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7));
-                            const hasElapsed = currentWeek >= pkg.startWeek;
+                            const packageEndWeek = pkg.startWeek + pkg.duration;
+                            const isCompleted = currentWeek >= packageEndWeek;
                             
-                            // Only show dashed line if package hasn't started yet
-                            return !hasElapsed ? (
+                            // Only show dashed line if package is not completed yet
+                            return !isCompleted ? (
                               <div className="absolute inset-0 flex items-center z-0" style={{ top: '-1px', right: '10px' }}>
                                 <svg className="w-full h-px" style={{ opacity: 0.5 }}>
                                   <line 
