@@ -253,7 +253,7 @@ export default function TimelineCard({ project, onProjectChange }: TimelineCardP
 
   return (
     <div>
-      <Card className="material-shadow" style={{ zIndex: 1, position: 'relative' }}>
+      <Card className="material-shadow" style={{ zIndex: 2, position: 'relative' }}>
         <CardContent className={`p-2.5 ${weekInfo?.isGreyedOut ? 'opacity-60' : ''}`} style={{ paddingBottom: '17px' }}>
           <div className="flex justify-between items-start">
             <div className="flex-1">
