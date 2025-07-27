@@ -79,7 +79,7 @@ export default function Actions() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-20 md:pb-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-20 md:pb-8 pb-safe">
       <div className="mb-8">
         <div className="md:flex md:items-center md:justify-between mb-6">
           <div className="flex-1 min-w-0">

@@ -182,7 +182,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-20 md:pb-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-20 md:pb-8 pb-safe">
       <div className="mb-4">
         {/* Filter Buttons in Three Rows */}
         <div className="space-y-0.5 mb-4">

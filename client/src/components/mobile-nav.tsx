@@ -10,10 +10,10 @@ export default function MobileNav({ onCreateAction }: MobileNavProps) {
   const [location] = useLocation();
 
   return (
-    <nav className="md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-gray-200 material-shadow pb-safe">
+    <nav className="md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-gray-200 material-shadow pb-safe px-safe">
       <div className="flex justify-around py-2">
         <Link href="/">
-          <span className={`flex flex-col items-center p-2 cursor-pointer ${
+          <span className={`flex flex-col items-center p-2 cursor-pointer min-w-[44px] ${
             location === "/" ? "text-primary" : "text-action-text-secondary"
           }`}>
             <Home className="h-5 w-5" />
@@ -22,7 +22,7 @@ export default function MobileNav({ onCreateAction }: MobileNavProps) {
         </Link>
 
         <Link href="/actions">
-          <span className={`flex flex-col items-center p-2 cursor-pointer ${
+          <span className={`flex flex-col items-center p-2 cursor-pointer min-w-[44px] ${
             location === "/actions" ? "text-primary" : "text-action-text-secondary"
           }`}>
             <BarChart3 className="h-5 w-5" />
@@ -31,7 +31,7 @@ export default function MobileNav({ onCreateAction }: MobileNavProps) {
         </Link>
 
         <Link href="/projects">
-          <span className={`flex flex-col items-center p-2 cursor-pointer ${
+          <span className={`flex flex-col items-center p-2 cursor-pointer min-w-[44px] ${
             (location.startsWith("/projects") || location === "/W0013" || location === "/L0011" || location === "/M0006") ? "text-primary" : "text-action-text-secondary"
           }`}>
             <FileText className="h-5 w-5" />
@@ -40,7 +40,7 @@ export default function MobileNav({ onCreateAction }: MobileNavProps) {
         </Link>
         
         <Link href="/locations">
-          <span className={`flex flex-col items-center p-2 cursor-pointer ${
+          <span className={`flex flex-col items-center p-2 cursor-pointer min-w-[44px] ${
             location === "/locations" ? "text-primary" : "text-action-text-secondary"
           }`}>
             <MapPin className="h-5 w-5" />
@@ -57,7 +57,7 @@ export default function MobileNav({ onCreateAction }: MobileNavProps) {
         </Button>
         
         <Link href="/people">
-          <span className={`flex flex-col items-center p-2 cursor-pointer ${
+          <span className={`flex flex-col items-center p-2 cursor-pointer min-w-[44px] ${
             location === "/people" ? "text-primary" : "text-action-text-secondary"
           }`}>
             <Settings className="h-5 w-5" />
