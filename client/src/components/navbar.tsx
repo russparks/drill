@@ -1,5 +1,6 @@
 import { Link, useLocation } from "wouter";
-import { Plus, Menu, Settings, ChevronDown } from "lucide-react";
+import { Plus, Menu, Settings } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import logo from "@assets/drill logo_1753113360383.png";
 
@@ -12,6 +13,7 @@ interface NavbarProps {
 
 export default function Navbar({ onCreateAction, onCreateProject, onCreatePerson, activeTab }: NavbarProps) {
   const [location] = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   // Determine which button to show based on current location and active tab
   const getCreateButton = () => {
@@ -79,32 +81,6 @@ export default function Navbar({ onCreateAction, onCreateProject, onCreatePerson
                   Projects
                 </span>
               </Link>
-              <div className="relative group">
-                <span className={`px-3 py-2 text-sm font-medium cursor-pointer ${
-                  location === "/W0013" || location === "/L0011" || location === "/M0006"
-                    ? "border-b-2" 
-                    : "text-action-text-secondary hover:text-action-text-primary"
-                }`} style={(location === "/W0013" || location === "/L0011" || location === "/M0006") ? { color: '#333333', borderColor: '#333333' } : {}}>
-                  Timelines <ChevronDown className="inline h-3 w-3 ml-1" />
-                </span>
-                <div className="absolute left-0 top-full w-48 bg-white border border-gray-200 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                  <Link href="/W0013">
-                    <div className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
-                      W0013
-                    </div>
-                  </Link>
-                  <Link href="/L0011">
-                    <div className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
-                      L0011
-                    </div>
-                  </Link>
-                  <Link href="/M0006">
-                    <div className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
-                      M0006
-                    </div>
-                  </Link>
-                </div>
-              </div>
               <Link href="/locations">
                 <span className={`px-3 py-2 text-sm font-medium cursor-pointer ${
                   location === "/locations" 
@@ -133,10 +109,64 @@ export default function Navbar({ onCreateAction, onCreateProject, onCreatePerson
               </Button>
             </Link>
           </div>
-          <Button variant="ghost" size="icon" className="md:hidden">
-            <Menu className="h-6 w-6" />
-          </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="md:hidden"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          <Menu className="h-6 w-6" />
+        </Button>
         </div>
+        {menuOpen && (
+          <div className="md:hidden px-4 pb-4 space-y-1">
+            <Link href="/actions">
+              <span
+                className={`block py-2 ${
+                  location === "/actions" ? "text-primary" : "text-action-text-secondary"
+                }`}
+              >
+                Actions
+              </span>
+            </Link>
+            <Link href="/projects">
+              <span
+                className={`block py-2 ${
+                  location === "/projects" ? "text-primary" : "text-action-text-secondary"
+                }`}
+              >
+                Projects
+              </span>
+            </Link>
+            <Link href="/locations">
+              <span
+                className={`block py-2 ${
+                  location === "/locations" ? "text-primary" : "text-action-text-secondary"
+                }`}
+              >
+                Locations
+              </span>
+            </Link>
+            <Link href="/components">
+              <span
+                className={`block py-2 ${
+                  location === "/components" ? "text-primary" : "text-action-text-secondary"
+                }`}
+              >
+                Components
+              </span>
+            </Link>
+            <Link href="/people">
+              <span
+                className={`block py-2 ${
+                  location === "/people" ? "text-primary" : "text-action-text-secondary"
+                }`}
+              >
+                People
+              </span>
+            </Link>
+          </div>
+        )}
       </div>
     </header>
   );

@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { Home, BarChart3, MapPin, Plus, Settings, FileText } from "lucide-react";
+import { Home, BarChart3, MapPin, Plus, Settings, FileText, Layout } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface MobileNavProps {
@@ -31,9 +31,11 @@ export default function MobileNav({ onCreateAction }: MobileNavProps) {
         </Link>
 
         <Link href="/projects">
-          <span className={`flex flex-col items-center p-2 cursor-pointer min-w-[44px] ${
-            (location.startsWith("/projects") || location === "/W0013" || location === "/L0011" || location === "/M0006") ? "text-primary" : "text-action-text-secondary"
-          }`}>
+          <span
+            className={`flex flex-col items-center p-2 cursor-pointer min-w-[44px] ${
+              location.startsWith("/projects") ? "text-primary" : "text-action-text-secondary"
+            }`}
+          >
             <FileText className="h-5 w-5" />
             <span className="text-xs mt-1">Projects</span>
           </span>
@@ -45,6 +47,15 @@ export default function MobileNav({ onCreateAction }: MobileNavProps) {
           }`}>
             <MapPin className="h-5 w-5" />
             <span className="text-xs mt-1">Locations</span>
+          </span>
+        </Link>
+
+        <Link href="/components">
+          <span className={`flex flex-col items-center p-2 cursor-pointer min-w-[44px] ${
+            location === "/components" ? "text-primary" : "text-action-text-secondary"
+          }`}>
+            <Layout className="h-5 w-5" />
+            <span className="text-xs mt-1">Components</span>
           </span>
         </Link>
         
