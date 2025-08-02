@@ -94,7 +94,7 @@ export default function Components() {
         {/* Component Library Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <h1 className="text-2xl font-semibold text-gray-900">Component Library</h1>
+            <h1 className="text-2xl font-semibold text-gray-900">Component and Example Library</h1>
           </div>
           <p className="text-gray-600 mb-4">Interactive showcase of reusable UI components for project management</p>
           <hr className="border-gray-200" />
